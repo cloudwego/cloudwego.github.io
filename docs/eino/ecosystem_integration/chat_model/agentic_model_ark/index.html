@@ -4,7 +4,7 @@ Features Implements the github.com/cloudwego/eino/components/model.AgenticModel 
 💡 This component was introduced in version alpha/09
 Features Implements the github.com/cloudwego/eino/components/model.AgenticModel interface Easy integration into Eino’s agent system Configurable model parameters Supports Responses API Supports streaming responses Supports tool calling, including Function Tools, MCP Tools, and Server Tools Supports Prefix Cache and Session Cache Installation go get github.com/cloudwego/eino-ext/components/model/agenticark@latest Quick Start Here’s a quick example of how to use AgenticModel:"><meta itemprop=datePublished content="2026-03-02T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-02T21:50:06+08:00"><meta itemprop=wordCount content="1289"><meta name=twitter:card content="summary"><meta name=twitter:title content="AgenticModel - ARK"><meta name=twitter:description content="An implementation of the Volcengine Ark model based on Eino, implementing the AgenticModel component interface. This enables the model to seamlessly integrate into Eino’s Agent capabilities, providing enhanced natural language processing and generation features.
 💡 This component was introduced in version alpha/09
-Features Implements the github.com/cloudwego/eino/components/model.AgenticModel interface Easy integration into Eino’s agent system Configurable model parameters Supports Responses API Supports streaming responses Supports tool calling, including Function Tools, MCP Tools, and Server Tools Supports Prefix Cache and Session Cache Installation go get github.com/cloudwego/eino-ext/components/model/agenticark@latest Quick Start Here’s a quick example of how to use AgenticModel:"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+Features Implements the github.com/cloudwego/eino/components/model.AgenticModel interface Easy integration into Eino’s agent system Configurable model parameters Supports Responses API Supports streaming responses Supports tool calling, including Function Tools, MCP Tools, and Server Tools Supports Prefix Cache and Session Cache Installation go get github.com/cloudwego/eino-ext/components/model/agenticark@latest Quick Start Here’s a quick example of how to use AgenticModel:"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -110,7 +110,448 @@ Features Implements the github.com/cloudwego/eino/components/model.AgenticModel 
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/ecosystem_integration/chat_model/agentic_model_ark.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/ecosystem_integration/chat_model?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=AgenticModel%20-%20ARK" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#features>Features</a></li><li><a href=#installation>Installation</a></li><li><a href=#quick-start>Quick Start</a></li><li><a href=#configuration>Configuration</a></li><li><a href=#advanced-usage>Advanced Usage</a><ul><li><a href=#tool-calling>Tool Calling</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/ecosystem_integration/>Eino: Component Integration</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/ecosystem_integration/chat_model/>ChatModel</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/ecosystem_integration/chat_model/agentic_model_ark/>AgenticModel - ARK</a></li></ol></nav><div class=td-content><h1>AgenticModel - ARK</h1><header class=article-meta></header><p>An implementation of the Volcengine Ark model based on <a href=https://github.com/cloudwego/eino>Eino</a>, implementing the <code>AgenticModel</code> component interface. This enables the model to seamlessly integrate into Eino&rsquo;s Agent capabilities, providing enhanced natural language processing and generation features.</p><blockquote><p>💡
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#features>Features</a></li><li><a href=#installation>Installation</a></li><li><a href=#quick-start>Quick Start</a></li><li><a href=#configuration>Configuration</a></li><li><a href=#advanced-usage>Advanced Usage</a><ul><li><a href=#tool-calling>Tool Calling</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/ecosystem_integration/>Eino: Component Integration</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/ecosystem_integration/chat_model/>ChatModel</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/ecosystem_integration/chat_model/agentic_model_ark/>AgenticModel - ARK</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="AgenticModel - ARK" data-url=https://www.cloudwego.io/docs/eino/ecosystem_integration/chat_model/agentic_model_ark/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+An implementation of the Volcengine Ark model based on [Eino](https://github.com/cloudwego/eino), implementing the `AgenticModel` component interface. This enables the model to seamlessly integrate into Eino's Agent capabilities, providing enhanced natural language processing and generation features.
+
+> 💡
+> This component was introduced in version alpha/09
+
+## Features
+
+- Implements the `github.com/cloudwego/eino/components/model.AgenticModel` interface
+- Easy integration into Eino's agent system
+- Configurable model parameters
+- Supports Responses API
+- Supports streaming responses
+- Supports tool calling, including Function Tools, MCP Tools, and Server Tools
+- Supports Prefix Cache and Session Cache
+
+## Installation
+
+```bash
+go get github.com/cloudwego/eino-ext/components/model/agenticark@latest
+```
+
+## Quick Start
+
+Here's a quick example of how to use `AgenticModel`:
+
+```go
+package main
+
+import (
+        "context"
+        "log"
+        "os"
+
+        "github.com/bytedance/sonic"
+        "github.com/cloudwego/eino-ext/components/model/agenticark"
+        "github.com/cloudwego/eino/schema"
+)
+
+func main() {
+        ctx := context.Background()
+
+        // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+        am, err := agenticark.New(ctx, &agenticark.Config{
+                Model:  os.Getenv("ARK_MODEL_ID"),
+                APIKey: os.Getenv("ARK_API_KEY"),
+        })
+        if err != nil {
+                log.Fatalf("failed to create agentic model, err: %v", err)
+        }
+
+        input := []*schema.AgenticMessage{
+                schema.UserAgenticMessage("what is the weather like in Beijing"),
+        }
+
+        msg, err := am.Generate(ctx, input)
+        if err != nil {
+                log.Fatalf("failed to generate, err: %v", err)
+        }
+
+        meta := msg.ResponseMeta.Extension.(*agenticark.ResponseMetaExtension)
+
+        log.Printf("request_id: %s
+", meta.ID)
+        respBody, _ := sonic.MarshalIndent(msg, "  ", "  ")
+        log.Printf("  body: %s
+", string(respBody))
+}
+```
+
+## Configuration
+
+The `AgenticModel` can be configured using the `agenticark.Config` struct:
+
+```go
+type Config struct {
+    // Timeout specifies the maximum duration to wait for API responses
+    // If HTTPClient is set, Timeout will not be used.
+    // Optional. Default: 10 minutes
+    Timeout *time.Duration
+    
+    // HTTPClient specifies the client to use for sending HTTP requests.
+    // If HTTPClient is set, Timeout will not be used.
+    // Optional. Default: &http.Client{Timeout: Timeout}
+    HTTPClient *http.Client
+    
+    // RetryTimes specifies the number of retries for failed API calls
+    // Optional. Default: 2
+    RetryTimes *int
+    
+    // BaseURL specifies the base URL of the Ark service
+    // Optional. Default: "https://agenticark.cn-beijing.volces.com/api/v3"
+    BaseURL string 
+    
+    // Region specifies the region where the Ark service is located
+    // Optional. Default: "cn-beijing"
+    Region string
+    
+    // The following three fields are authentication related - either APIKey or AccessKey/SecretKey pair is required
+    // For authentication details, see: https://www.volcengine.com/docs/82379/1298459
+    // If both are provided, APIKey takes precedence
+    APIKey string 
+    
+    AccessKey string 
+    
+    SecretKey string 
+    
+    // The following fields correspond to Ark's responses API parameters
+    // Reference: https://www.volcengine.com/docs/82379/1298454
+    
+    // Model specifies the endpoint ID on the ark platform
+    // Required
+    Model string 
+    
+    // MaxTokens specifies the maximum number of tokens to generate in the response.
+    // Optional.
+        MaxTokens *int
+    
+    // Temperature specifies the sampling temperature to use
+    // It's generally recommended to modify this or TopP, but not both
+    // Range: 0.0 to 1.0. Higher values make the output more random
+    // Optional. Default: 1.0
+    Temperature *float64
+    
+    // TopP controls diversity through nucleus sampling
+    // It's generally recommended to modify this or Temperature, but not both
+    // Range: 0.0 to 1.0. Lower values make the output more focused
+    // Optional. Default: 0.7
+    TopP *float64
+    
+    // Stop sequences where the API will stop generating more tokens
+    // Optional. Example: []string{"
+", "User:"}
+    Stop []string
+    
+    // FrequencyPenalty penalizes tokens based on frequency to prevent repetition
+    // Range: -2.0 to 2.0. Positive values reduce the likelihood of repetition
+    // Optional. Default: 0
+    FrequencyPenalty *float64 
+    
+    // LogitBias modifies the likelihood of specific tokens appearing in completions
+    // Optional. Maps token IDs to bias values from -100 to 100
+    LogitBias map[string]int32
+    
+    // PresencePenalty penalizes tokens based on presence to prevent repetition
+    // Range: -2.0 to 2.0. Positive values increase the likelihood of new topics
+    // Optional. Default: 0
+    PresencePenalty *float64
+        
+    // LogProbs specifies whether to return log probabilities of the output tokens.
+    LogProbs *bool
+    
+    // TopLogProbs specifies the number of most likely tokens to return at each token position, each with an associated log probability.
+    TopLogProbs *int 
+    
+    // RepetitionPenalty penalizes tokens based on their existing frequency in the text so far.
+    // Range: 0.0 to 2.0. 1.0 means no penalty.
+    RepetitionPenalty *float64
+
+    // Thinking controls whether the model is set to activate deep thinking mode.
+    // Enabled by default.
+    Thinking *responses.ResponsesThinking
+
+    // Reasoning specifies the reasoning effort for the model.
+    // Optional.
+
+    // EnablePassBackReasoning controls whether the model passes back reasoning items in the next request.
+    // Note that doubao 1.6 does not support passing back reasoning items.
+    // Optional. Default: true
+    EnablePassBackReasoning *bool
+
+    // MaxToolCalls limits the maximum number of tool calls generated in chat completions.
+    // Optional.
+    MaxToolCalls *int64
+
+    // ParallelToolCalls controls whether the model is set to perform parallel tool calls.
+    // Optional.
+    ParallelToolCalls *bool
+
+    // ServerTools specifies server-side tools available to the model.
+    // Optional.
+    ServerTools []*ServerToolConfig
+
+    // MCPTools specifies MCP tools available to the model.
+    // Optional.
+    MCPTools []*responses.ToolMcp
+
+    // Cache specifies the cache configuration for the model.
+    // Optional.
+    Cache *CacheConfig
+
+    // CustomHeader HTTP headers to pass when requesting the model
+    CustomHeader map[string]string 
+}
+```
+
+## Advanced Usage
+
+### Tool Calling
+
+`AgenticModel` supports tool calling, including Function Tools, MCP Tools, and Server Tools.
+
+#### Function Tool Example
+
+```go
+package main
+
+import (
+        "context"
+        "errors"
+        "io"
+        "log"
+        "os"
+
+        "github.com/bytedance/sonic"
+        "github.com/cloudwego/eino-ext/components/model/agenticark"
+        "github.com/cloudwego/eino/components/model"
+        "github.com/cloudwego/eino/schema"
+        "github.com/eino-contrib/jsonschema"
+        "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model/responses"
+        "github.com/wk8/go-ordered-map/v2"
+)
+
+func main() {
+        ctx := context.Background()
+
+        // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+        am, err := agenticark.New(ctx, &agenticark.Config{
+                Model:  os.Getenv("ARK_MODEL_ID"),
+                APIKey: os.Getenv("ARK_API_KEY"),
+                Thinking: &responses.ResponsesThinking{
+                        Type: responses.ThinkingType_disabled.Enum(),
+                },
+        })
+        if err != nil {
+                log.Fatalf("failed to create agentic model, err=%v", err)
+        }
+
+        functionTools := []*schema.ToolInfo{
+                {
+                        Name: "get_weather",
+                        Desc: "get the weather in a city",
+                        ParamsOneOf: schema.NewParamsOneOfByJSONSchema(&jsonschema.Schema{
+                                Type: "object",
+                                Properties: orderedmap.New[string, *jsonschema.Schema](
+                                        orderedmap.WithInitialData(
+                                                orderedmap.Pair[string, *jsonschema.Schema]{
+                                                        Key: "city",
+                                                        Value: &jsonschema.Schema{
+                                                                Type:        "string",
+                                                                Description: "the city to get the weather",
+                                                        },
+                                                },
+                                        ),
+                                ),
+                                Required: []string{"city"},
+                        }),
+                },
+        }
+
+        allowedTools := []*schema.AllowedTool{
+                {
+                        FunctionName: "get_weather",
+                },
+        }
+
+        opts := []model.Option{
+                model.WithAgenticToolChoice(&schema.AgenticToolChoice{
+                        Type: schema.ToolChoiceForced,
+                        Forced: &schema.AgenticForcedToolChoice{
+                                Tools: allowedTools,
+                        },
+                }),
+                model.WithTools(functionTools),
+        }
+
+        firstInput := []*schema.AgenticMessage{
+                schema.UserAgenticMessage("what's the weather like in Beijing today"),
+        }
+
+        sResp, err := am.Stream(ctx, firstInput, opts...)
+        if err != nil {
+                log.Fatalf("failed to stream, err: %v", err)
+        }
+
+        var msgs []*schema.AgenticMessage
+        for {
+                msg, err := sResp.Recv()
+                if err != nil {
+                        if errors.Is(err, io.EOF) {
+                                break
+                        }
+                        log.Fatalf("failed to receive stream response, err: %v", err)
+                }
+                msgs = append(msgs, msg)
+        }
+
+        concatenated, err := schema.ConcatAgenticMessages(msgs)
+        if err != nil {
+                log.Fatalf("failed to concat agentic messages, err: %v", err)
+        }
+
+        lastBlock := concatenated.ContentBlocks[len(concatenated.ContentBlocks)-1]
+        
+        toolCall := lastBlock.FunctionToolCall
+        toolResultMsg := schema.FunctionToolResultAgenticMessage(toolCall.CallID, toolCall.Name, "20 degrees")
+
+        secondInput := append(firstInput, concatenated, toolResultMsg)
+
+        gResp, err := am.Generate(ctx, secondInput)
+        if err != nil {
+                log.Fatalf("failed to generate, err: %v", err)
+        }
+
+        meta := concatenated.ResponseMeta.Extension.(*agenticark.ResponseMetaExtension)
+        log.Printf("request_id: %s
+", meta.ID)
+
+        respBody, _ := sonic.MarshalIndent(gResp, "  ", "  ")
+        log.Printf("  body: %s
+", string(respBody))
+}
+```
+
+#### Server Tool Example
+
+```go
+package main
+
+import (
+        "context"
+        "errors"
+        "io"
+        "log"
+        "os"
+
+        "github.com/bytedance/sonic"
+        "github.com/cloudwego/eino-ext/components/model/agenticark"
+        "github.com/cloudwego/eino/components/model"
+        "github.com/cloudwego/eino/schema"
+        "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model/responses"
+)
+
+func main() {
+        ctx := context.Background()
+
+        // Get ARK_API_KEY and ARK_MODEL_ID: https://www.volcengine.com/docs/82379/1399008
+        am, err := agenticark.New(ctx, &agenticark.Config{
+                Model:  os.Getenv("ARK_MODEL_ID"),
+                APIKey: os.Getenv("ARK_API_KEY"),
+        })
+        if err != nil {
+                log.Fatalf("failed to create agentic model, err=%v", err)
+        }
+
+        serverTools := []*agenticark.ServerToolConfig{
+                {
+                        WebSearch: &responses.ToolWebSearch{
+                                Type: responses.ToolType_web_search,
+                        },
+                },
+        }
+
+        allowedTools := []*schema.AllowedTool{
+                {
+                        ServerTool: &schema.AllowedServerTool{
+                                Name: string(agenticark.ServerToolNameWebSearch),
+                        },
+                },
+        }
+
+        opts := []model.Option{
+                agenticark.WithServerTools(serverTools),
+                model.WithAgenticToolChoice(&schema.AgenticToolChoice{
+                        Type: schema.ToolChoiceForced,
+                        Forced: &schema.AgenticForcedToolChoice{
+                                Tools: allowedTools,
+                        },
+                }),
+                agenticark.WithThinking(&responses.ResponsesThinking{
+                        Type: responses.ThinkingType_disabled.Enum(),
+                }),
+        }
+
+        input := []*schema.AgenticMessage{
+                schema.UserAgenticMessage("what's the weather like in Beijing today"),
+        }
+
+        resp, err := am.Stream(ctx, input, opts...)
+        if err != nil {
+                log.Fatalf("failed to stream, err: %v", err)
+        }
+
+        var msgs []*schema.AgenticMessage
+        for {
+                msg, err := resp.Recv()
+                if err != nil {
+                        if errors.Is(err, io.EOF) {
+                                break
+                        }
+                        log.Fatalf("failed to receive stream response, err: %v", err)
+                }
+                msgs = append(msgs, msg)
+        }
+
+        concatenated, err := schema.ConcatAgenticMessages(msgs)
+        if err != nil {
+                log.Fatalf("failed to concat agentic messages, err: %v", err)
+        }
+
+        meta := concatenated.ResponseMeta.Extension.(*agenticark.ResponseMetaExtension)
+        for _, block := range concatenated.ContentBlocks {
+                if block.ServerToolCall == nil {
+                        continue
+                }
+
+                serverToolArgs := block.ServerToolCall.Arguments.(*agenticark.ServerToolCallArguments)
+
+                args, _ := sonic.MarshalIndent(serverToolArgs, "  ", "  ")
+                log.Printf("server_tool_args: %s
+", string(args))
+        }
+
+        log.Printf("request_id: %s
+", meta.ID)
+        respBody, _ := sonic.MarshalIndent(concatenated, "  ", "  ")
+        log.Printf("  body: %s
+", string(respBody))
+}
+```
+
+For more examples, please refer to the `examples` directory.
+</script><h1>AgenticModel - ARK</h1><header class=article-meta></header><p>An implementation of the Volcengine Ark model based on <a href=https://github.com/cloudwego/eino>Eino</a>, implementing the <code>AgenticModel</code> component interface. This enables the model to seamlessly integrate into Eino&rsquo;s Agent capabilities, providing enhanced natural language processing and generation features.</p><blockquote><p>💡
 This component was introduced in version alpha/09</p></blockquote><h2 id=features>Features</h2><ul><li>Implements the <code>github.com/cloudwego/eino/components/model.AgenticModel</code> interface</li><li>Easy integration into Eino&rsquo;s agent system</li><li>Configurable model parameters</li><li>Supports Responses API</li><li>Supports streaming responses</li><li>Supports tool calling, including Function Tools, MCP Tools, and Server Tools</li><li>Supports Prefix Cache and Session Cache</li></ul><h2 id=installation>Installation</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>go get github.com/cloudwego/eino-ext/components/model/agenticark@latest
 </span></span></code></pre></div><h2 id=quick-start>Quick Start</h2><p>Here&rsquo;s a quick example of how to use <code>AgenticModel</code>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>package</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>main</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
@@ -494,4 +935,4 @@ This component was introduced in version alpha/09</p></blockquote><h2 id=feature
 </span></span></span></code></pre></div><p>For more examples, please refer to the <code>examples</code> directory.</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 2, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/96139d4140c93a677eec194c2d34dffa3e2673dd>feat: sync eino docs (#1512) (96139d41)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

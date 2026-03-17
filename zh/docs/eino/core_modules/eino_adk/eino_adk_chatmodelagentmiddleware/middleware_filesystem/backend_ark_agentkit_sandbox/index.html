@@ -7,7 +7,7 @@
 核心特性 安全隔离 - 所有操作在远程沙箱环境中执行 会话管理 - 支持会话隔离与可配置的 TTL 请求签名 - 自动使用 AK/SK 进行火山引擎 API 认证 安装 go get github.com/cloudwego/eino-ext/adk/backend/agentkit 配置 环境变量 export VOLC_ACCESS_KEY_ID="your_access_key" export VOLC_SECRET_ACCESS_KEY="your_secret_key" export VOLC_TOOL_ID="your_tool_id" Config 结构 type Config struct { // 必填 AccessKeyID string // 访问密钥 ID SecretAccessKey string // 访问密钥 Secret ToolID string // 沙箱工具 ID // 可选 UserSessionID string // 用户会话 ID，用于隔离 Region Region // 区域，默认 cn-beijing SessionTTL int // 会话 TTL（60-86400 秒） ExecutionTimeout int // 命令执行超时 HTTPClient *http.Client // 自定义 HTTP 客户端 } 快速开始 基本用法 import ( "context" "os" "time" "github.com/cloudwego/eino-ext/adk/backend/agentkit" "github.com/cloudwego/eino/adk/filesystem" ) func main() { ctx := context.Background() backend, err := agentkit.NewSandboxToolBackend(&amp;agentkit.Config{ AccessKeyID: os.Getenv("VOLC_ACCESS_KEY_ID"), SecretAccessKey: os.Getenv("VOLC_SECRET_ACCESS_KEY"), ToolID: os.Getenv("VOLC_TOOL_ID"), UserSessionID: "session-" + time.Now().Format("20060102-150405"), Region: agentkit.RegionOfBeijing, }) if err != nil { panic(err) } // 写入文件 err = backend.Write(ctx, &amp;filesystem.WriteRequest{ FilePath: "/home/gem/hello.txt", Content: "Hello, Sandbox!", }) // 读取文件 fContent, err := backend.Read(ctx, &amp;filesystem.ReadRequest{ FilePath: "/home/gem/hello.txt", }) fmt.Println(fContent.Content) } 与 Agent 集成 import ( "github.com/cloudwego/eino/adk" fsMiddleware "github.com/cloudwego/eino/adk/middlewares/filesystem" ) // 创建 Backend backend, _ := agentkit.NewSandboxToolBackend(config) // 创建 Middleware middleware, _ := fsMiddleware.New(ctx, &amp;fsMiddleware.Config{ Backend: backend, Shell: backend, }) // 创建 Agent agent, _ := adk.NewChatModelAgent(ctx, &amp;adk.ChatModelAgentConfig{ Name: "SandboxAgent", Description: "具有安全文件系统访问能力的 AI Agent", Model: chatModel, Handlers: []adk.ChatModelAgentMiddleware{middleware}, }) API 参考 方法描述 LsInfo列出目录内容 Read读取文件内容（支持分页） Write创建新文件（已存在则报错） Edit替换文件内容 GrepRaw搜索文件内容 GlobInfo按模式查找文件 Execute执行 shell 命令 示例 // 列出目录 files, _ := backend.LsInfo(ctx, &amp;filesystem.LsInfoRequest{ Path: "/home/gem", }) // 读取文件（分页） fcontent, _ := backend.Read(ctx, &amp;filesystem.ReadRequest{ FilePath: "/home/gem/file.txt", Offset: 0, Limit: 100, }) // 搜索内容 matches, _ := backend.GrepRaw(ctx, &amp;filesystem.GrepRequest{ Path: "/home/gem", Pattern: "keyword", Glob: "*.txt", }) // 查找文件 files, _ := backend.GlobInfo(ctx, &amp;filesystem.GlobInfoRequest{ Path: "/home/gem", Pattern: "**/*.txt", }) // 编辑文件 backend.Edit(ctx, &amp;filesystem.EditRequest{ FilePath: "/home/gem/file.txt", OldString: "old", NewString: "new", ReplaceAll: true, }) // 执行命令 result, _ := backend.Execute(ctx, &amp;filesystem.ExecuteRequest{ Command: "ls -la /home/gem", }) 与 Local Backend 对比 特性AgentkitLocal 执行模型远程沙箱本地直接 网络依赖需要不需要 配置复杂度需要凭证零配置 安全模型隔离沙箱OS 权限 适用场景多租户/生产环境开发/本地环境 常见问题 Q: 认证失败'><meta itemprop=datePublished content="2026-03-16T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-16T20:55:36+08:00"><meta itemprop=wordCount content="332"><meta name=twitter:card content="summary"><meta name=twitter:title content="Ark Agentkit Sandbox"><meta name=twitter:description content='Agentkit Sandbox Backend Package: github.com/cloudwego/eino-ext/adk/backend/agentkit
 注意：如果 eino 版本是 v0.8.0 及以上，需要使用 ark agentkit backend 的 adk/backend/agentkit/v0.2.1 版本。
 概述 Agentkit Sandbox Backend 是 EINO ADK FileSystem 的远程沙箱实现，通过火山引擎 Agentkit 服务在隔离的云端环境中执行文件系统操作。
-核心特性 安全隔离 - 所有操作在远程沙箱环境中执行 会话管理 - 支持会话隔离与可配置的 TTL 请求签名 - 自动使用 AK/SK 进行火山引擎 API 认证 安装 go get github.com/cloudwego/eino-ext/adk/backend/agentkit 配置 环境变量 export VOLC_ACCESS_KEY_ID="your_access_key" export VOLC_SECRET_ACCESS_KEY="your_secret_key" export VOLC_TOOL_ID="your_tool_id" Config 结构 type Config struct { // 必填 AccessKeyID string // 访问密钥 ID SecretAccessKey string // 访问密钥 Secret ToolID string // 沙箱工具 ID // 可选 UserSessionID string // 用户会话 ID，用于隔离 Region Region // 区域，默认 cn-beijing SessionTTL int // 会话 TTL（60-86400 秒） ExecutionTimeout int // 命令执行超时 HTTPClient *http.Client // 自定义 HTTP 客户端 } 快速开始 基本用法 import ( "context" "os" "time" "github.com/cloudwego/eino-ext/adk/backend/agentkit" "github.com/cloudwego/eino/adk/filesystem" ) func main() { ctx := context.Background() backend, err := agentkit.NewSandboxToolBackend(&amp;agentkit.Config{ AccessKeyID: os.Getenv("VOLC_ACCESS_KEY_ID"), SecretAccessKey: os.Getenv("VOLC_SECRET_ACCESS_KEY"), ToolID: os.Getenv("VOLC_TOOL_ID"), UserSessionID: "session-" + time.Now().Format("20060102-150405"), Region: agentkit.RegionOfBeijing, }) if err != nil { panic(err) } // 写入文件 err = backend.Write(ctx, &amp;filesystem.WriteRequest{ FilePath: "/home/gem/hello.txt", Content: "Hello, Sandbox!", }) // 读取文件 fContent, err := backend.Read(ctx, &amp;filesystem.ReadRequest{ FilePath: "/home/gem/hello.txt", }) fmt.Println(fContent.Content) } 与 Agent 集成 import ( "github.com/cloudwego/eino/adk" fsMiddleware "github.com/cloudwego/eino/adk/middlewares/filesystem" ) // 创建 Backend backend, _ := agentkit.NewSandboxToolBackend(config) // 创建 Middleware middleware, _ := fsMiddleware.New(ctx, &amp;fsMiddleware.Config{ Backend: backend, Shell: backend, }) // 创建 Agent agent, _ := adk.NewChatModelAgent(ctx, &amp;adk.ChatModelAgentConfig{ Name: "SandboxAgent", Description: "具有安全文件系统访问能力的 AI Agent", Model: chatModel, Handlers: []adk.ChatModelAgentMiddleware{middleware}, }) API 参考 方法描述 LsInfo列出目录内容 Read读取文件内容（支持分页） Write创建新文件（已存在则报错） Edit替换文件内容 GrepRaw搜索文件内容 GlobInfo按模式查找文件 Execute执行 shell 命令 示例 // 列出目录 files, _ := backend.LsInfo(ctx, &amp;filesystem.LsInfoRequest{ Path: "/home/gem", }) // 读取文件（分页） fcontent, _ := backend.Read(ctx, &amp;filesystem.ReadRequest{ FilePath: "/home/gem/file.txt", Offset: 0, Limit: 100, }) // 搜索内容 matches, _ := backend.GrepRaw(ctx, &amp;filesystem.GrepRequest{ Path: "/home/gem", Pattern: "keyword", Glob: "*.txt", }) // 查找文件 files, _ := backend.GlobInfo(ctx, &amp;filesystem.GlobInfoRequest{ Path: "/home/gem", Pattern: "**/*.txt", }) // 编辑文件 backend.Edit(ctx, &amp;filesystem.EditRequest{ FilePath: "/home/gem/file.txt", OldString: "old", NewString: "new", ReplaceAll: true, }) // 执行命令 result, _ := backend.Execute(ctx, &amp;filesystem.ExecuteRequest{ Command: "ls -la /home/gem", }) 与 Local Backend 对比 特性AgentkitLocal 执行模型远程沙箱本地直接 网络依赖需要不需要 配置复杂度需要凭证零配置 安全模型隔离沙箱OS 权限 适用场景多租户/生产环境开发/本地环境 常见问题 Q: 认证失败'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+核心特性 安全隔离 - 所有操作在远程沙箱环境中执行 会话管理 - 支持会话隔离与可配置的 TTL 请求签名 - 自动使用 AK/SK 进行火山引擎 API 认证 安装 go get github.com/cloudwego/eino-ext/adk/backend/agentkit 配置 环境变量 export VOLC_ACCESS_KEY_ID="your_access_key" export VOLC_SECRET_ACCESS_KEY="your_secret_key" export VOLC_TOOL_ID="your_tool_id" Config 结构 type Config struct { // 必填 AccessKeyID string // 访问密钥 ID SecretAccessKey string // 访问密钥 Secret ToolID string // 沙箱工具 ID // 可选 UserSessionID string // 用户会话 ID，用于隔离 Region Region // 区域，默认 cn-beijing SessionTTL int // 会话 TTL（60-86400 秒） ExecutionTimeout int // 命令执行超时 HTTPClient *http.Client // 自定义 HTTP 客户端 } 快速开始 基本用法 import ( "context" "os" "time" "github.com/cloudwego/eino-ext/adk/backend/agentkit" "github.com/cloudwego/eino/adk/filesystem" ) func main() { ctx := context.Background() backend, err := agentkit.NewSandboxToolBackend(&amp;agentkit.Config{ AccessKeyID: os.Getenv("VOLC_ACCESS_KEY_ID"), SecretAccessKey: os.Getenv("VOLC_SECRET_ACCESS_KEY"), ToolID: os.Getenv("VOLC_TOOL_ID"), UserSessionID: "session-" + time.Now().Format("20060102-150405"), Region: agentkit.RegionOfBeijing, }) if err != nil { panic(err) } // 写入文件 err = backend.Write(ctx, &amp;filesystem.WriteRequest{ FilePath: "/home/gem/hello.txt", Content: "Hello, Sandbox!", }) // 读取文件 fContent, err := backend.Read(ctx, &amp;filesystem.ReadRequest{ FilePath: "/home/gem/hello.txt", }) fmt.Println(fContent.Content) } 与 Agent 集成 import ( "github.com/cloudwego/eino/adk" fsMiddleware "github.com/cloudwego/eino/adk/middlewares/filesystem" ) // 创建 Backend backend, _ := agentkit.NewSandboxToolBackend(config) // 创建 Middleware middleware, _ := fsMiddleware.New(ctx, &amp;fsMiddleware.Config{ Backend: backend, Shell: backend, }) // 创建 Agent agent, _ := adk.NewChatModelAgent(ctx, &amp;adk.ChatModelAgentConfig{ Name: "SandboxAgent", Description: "具有安全文件系统访问能力的 AI Agent", Model: chatModel, Handlers: []adk.ChatModelAgentMiddleware{middleware}, }) API 参考 方法描述 LsInfo列出目录内容 Read读取文件内容（支持分页） Write创建新文件（已存在则报错） Edit替换文件内容 GrepRaw搜索文件内容 GlobInfo按模式查找文件 Execute执行 shell 命令 示例 // 列出目录 files, _ := backend.LsInfo(ctx, &amp;filesystem.LsInfoRequest{ Path: "/home/gem", }) // 读取文件（分页） fcontent, _ := backend.Read(ctx, &amp;filesystem.ReadRequest{ FilePath: "/home/gem/file.txt", Offset: 0, Limit: 100, }) // 搜索内容 matches, _ := backend.GrepRaw(ctx, &amp;filesystem.GrepRequest{ Path: "/home/gem", Pattern: "keyword", Glob: "*.txt", }) // 查找文件 files, _ := backend.GlobInfo(ctx, &amp;filesystem.GlobInfoRequest{ Path: "/home/gem", Pattern: "**/*.txt", }) // 编辑文件 backend.Edit(ctx, &amp;filesystem.EditRequest{ FilePath: "/home/gem/file.txt", OldString: "old", NewString: "new", ReplaceAll: true, }) // 执行命令 result, _ := backend.Execute(ctx, &amp;filesystem.ExecuteRequest{ Command: "ls -la /home/gem", }) 与 Local Backend 对比 特性AgentkitLocal 执行模型远程沙箱本地直接 网络依赖需要不需要 配置复杂度需要凭证零配置 安全模型隔离沙箱OS 权限 适用场景多租户/生产环境开发/本地环境 常见问题 Q: 认证失败'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -116,7 +116,210 @@
 <label for=m-zhdocseinofaq-check><a href=/zh/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_FileSystem/Backend_Ark_Agentkit_Sandbox.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_FileSystem?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Ark%20Agentkit%20Sandbox" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#agentkit-sandbox-backend>Agentkit Sandbox Backend</a><ul><li><a href=#概述>概述</a></li><li><a href=#安装>安装</a></li><li><a href=#配置>配置</a></li><li><a href=#快速开始>快速开始</a></li><li><a href=#api-参考>API 参考</a></li><li><a href=#与-local-backend-对比>与 Local Backend 对比</a></li><li><a href=#常见问题>常见问题</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/>ADK - Agent Development Kit</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/>ChatModelAgentMiddleware</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem/>FileSystem</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem/backend_ark_agentkit_sandbox/>Ark Agentkit Sandbox</a></li></ol></nav><div class=td-content><h1>Ark Agentkit Sandbox</h1><header class=article-meta></header><h2 id=agentkit-sandbox-backend>Agentkit Sandbox Backend</h2><p>Package: <code>github.com/cloudwego/eino-ext/adk/backend/agentkit</code></p><p>注意：如果 eino 版本是 v0.8.0 及以上，需要使用 ark agentkit backend 的<a href=https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.1> adk/backend/agentkit/v0.2.1</a> 版本。</p><h3 id=概述>概述</h3><p>Agentkit Sandbox Backend 是 EINO ADK FileSystem 的远程沙箱实现，通过火山引擎 Agentkit 服务在隔离的云端环境中执行文件系统操作。</p><h4 id=核心特性>核心特性</h4><ul><li>安全隔离 - 所有操作在远程沙箱环境中执行</li><li>会话管理 - 支持会话隔离与可配置的 TTL</li><li>请求签名 - 自动使用 AK/SK 进行火山引擎 API 认证</li></ul><h3 id=安装>安装</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>go get github.com/cloudwego/eino-ext/adk/backend/agentkit
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#agentkit-sandbox-backend>Agentkit Sandbox Backend</a><ul><li><a href=#概述>概述</a></li><li><a href=#安装>安装</a></li><li><a href=#配置>配置</a></li><li><a href=#快速开始>快速开始</a></li><li><a href=#api-参考>API 参考</a></li><li><a href=#与-local-backend-对比>与 Local Backend 对比</a></li><li><a href=#常见问题>常见问题</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/>ADK - Agent Development Kit</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/>ChatModelAgentMiddleware</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem/>FileSystem</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem/backend_ark_agentkit_sandbox/>Ark Agentkit Sandbox</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Ark Agentkit Sandbox" data-url=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem/backend_ark_agentkit_sandbox/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Agentkit Sandbox Backend
+
+Package: `github.com/cloudwego/eino-ext/adk/backend/agentkit`
+
+注意：如果 eino 版本是 v0.8.0 及以上，需要使用 ark agentkit backend 的[ adk/backend/agentkit/v0.2.1](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.1) 版本。
+
+### 概述
+
+Agentkit Sandbox Backend 是 EINO ADK FileSystem 的远程沙箱实现，通过火山引擎 Agentkit 服务在隔离的云端环境中执行文件系统操作。
+
+#### 核心特性
+
+- 安全隔离 - 所有操作在远程沙箱环境中执行
+- 会话管理 - 支持会话隔离与可配置的 TTL
+- 请求签名 - 自动使用 AK/SK 进行火山引擎 API 认证
+
+### 安装
+
+```bash
+go get github.com/cloudwego/eino-ext/adk/backend/agentkit
+```
+
+### 配置
+
+#### 环境变量
+
+```bash
+export VOLC_ACCESS_KEY_ID="your_access_key"
+export VOLC_SECRET_ACCESS_KEY="your_secret_key"
+export VOLC_TOOL_ID="your_tool_id"
+```
+
+#### Config 结构
+
+```go
+type Config struct {
+    // 必填
+    AccessKeyID     string  // 访问密钥 ID
+    SecretAccessKey string  // 访问密钥 Secret
+    ToolID          string  // 沙箱工具 ID
+
+    // 可选
+    UserSessionID    string        // 用户会话 ID，用于隔离
+    Region           Region        // 区域，默认 cn-beijing
+    SessionTTL       int           // 会话 TTL（60-86400 秒）
+    ExecutionTimeout int           // 命令执行超时
+    HTTPClient       *http.Client  // 自定义 HTTP 客户端
+}
+```
+
+### 快速开始
+
+#### 基本用法
+
+```go
+import (
+    "context"
+    "os"
+    "time"
+
+    "github.com/cloudwego/eino-ext/adk/backend/agentkit"
+    "github.com/cloudwego/eino/adk/filesystem"
+)
+
+func main() {
+    ctx := context.Background()
+
+    backend, err := agentkit.NewSandboxToolBackend(&agentkit.Config{
+        AccessKeyID:     os.Getenv("VOLC_ACCESS_KEY_ID"),
+        SecretAccessKey: os.Getenv("VOLC_SECRET_ACCESS_KEY"),
+        ToolID:          os.Getenv("VOLC_TOOL_ID"),
+        UserSessionID:   "session-" + time.Now().Format("20060102-150405"),
+        Region:          agentkit.RegionOfBeijing,
+    })
+    if err != nil {
+        panic(err)
+    }
+
+    // 写入文件
+    err = backend.Write(ctx, &filesystem.WriteRequest{
+        FilePath: "/home/gem/hello.txt",
+        Content:  "Hello, Sandbox!",
+    })
+
+    // 读取文件
+    fContent, err := backend.Read(ctx, &filesystem.ReadRequest{
+        FilePath: "/home/gem/hello.txt",
+    })
+    fmt.Println(fContent.Content)
+}
+```
+
+#### 与 Agent 集成
+
+```go
+import (
+    "github.com/cloudwego/eino/adk"
+    fsMiddleware "github.com/cloudwego/eino/adk/middlewares/filesystem"
+)
+
+// 创建 Backend
+backend, _ := agentkit.NewSandboxToolBackend(config)
+
+// 创建 Middleware
+middleware, _ := fsMiddleware.New(ctx, &fsMiddleware.Config{
+    Backend: backend,
+    Shell: backend,
+})
+
+// 创建 Agent
+agent, _ := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    Name:        "SandboxAgent",
+    Description: "具有安全文件系统访问能力的 AI Agent",
+    Model:       chatModel,
+    Handlers:    []adk.ChatModelAgentMiddleware{middleware},
+})
+```
+
+### API 参考
+
+<table>
+<tr><td>方法</td><td>描述</td></tr>
+<tr><td>LsInfo</td><td>列出目录内容</td></tr>
+<tr><td>Read</td><td>读取文件内容（支持分页）</td></tr>
+<tr><td>Write</td><td>创建新文件（已存在则报错）</td></tr>
+<tr><td>Edit</td><td>替换文件内容</td></tr>
+<tr><td>GrepRaw</td><td>搜索文件内容</td></tr>
+<tr><td>GlobInfo</td><td>按模式查找文件</td></tr>
+<tr><td>Execute</td><td>执行 shell 命令</td></tr>
+</table>
+
+#### 示例
+
+```go
+// 列出目录
+files, _ := backend.LsInfo(ctx, &filesystem.LsInfoRequest{
+    Path: "/home/gem",
+})
+
+// 读取文件（分页）
+fcontent, _ := backend.Read(ctx, &filesystem.ReadRequest{
+    FilePath: "/home/gem/file.txt",
+    Offset:   0,
+    Limit:    100,
+})
+
+// 搜索内容
+matches, _ := backend.GrepRaw(ctx, &filesystem.GrepRequest{
+    Path:    "/home/gem",
+    Pattern: "keyword",
+    Glob:    "*.txt",
+})
+
+// 查找文件
+files, _ := backend.GlobInfo(ctx, &filesystem.GlobInfoRequest{
+    Path:    "/home/gem",
+    Pattern: "**/*.txt",
+})
+
+// 编辑文件
+backend.Edit(ctx, &filesystem.EditRequest{
+    FilePath:   "/home/gem/file.txt",
+    OldString:  "old",
+    NewString:  "new",
+    ReplaceAll: true,
+})
+
+// 执行命令
+result, _ := backend.Execute(ctx, &filesystem.ExecuteRequest{
+    Command: "ls -la /home/gem",
+})
+```
+
+### 与 Local Backend 对比
+
+<table>
+<tr><td>特性</td><td>Agentkit</td><td>Local</td></tr>
+<tr><td>执行模型</td><td>远程沙箱</td><td>本地直接</td></tr>
+<tr><td>网络依赖</td><td>需要</td><td>不需要</td></tr>
+<tr><td>配置复杂度</td><td>需要凭证</td><td>零配置</td></tr>
+<tr><td>安全模型</td><td>隔离沙箱</td><td>OS 权限</td></tr>
+<tr><td>适用场景</td><td>多租户/生产环境</td><td>开发/本地环境</td></tr>
+</table>
+
+### 常见问题
+
+**Q: 认证失败**
+
+检查环境变量、AK/SK 是否匹配、账户是否有 Ark Sandbox 权限。
+
+**Q: 请求超时**
+
+增加 ExecutionTimeout 或 HTTPClient.Timeout 配置。
+</script><h1>Ark Agentkit Sandbox</h1><header class=article-meta></header><h2 id=agentkit-sandbox-backend>Agentkit Sandbox Backend</h2><p>Package: <code>github.com/cloudwego/eino-ext/adk/backend/agentkit</code></p><p>注意：如果 eino 版本是 v0.8.0 及以上，需要使用 ark agentkit backend 的<a href=https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.1> adk/backend/agentkit/v0.2.1</a> 版本。</p><h3 id=概述>概述</h3><p>Agentkit Sandbox Backend 是 EINO ADK FileSystem 的远程沙箱实现，通过火山引擎 Agentkit 服务在隔离的云端环境中执行文件系统操作。</p><h4 id=核心特性>核心特性</h4><ul><li>安全隔离 - 所有操作在远程沙箱环境中执行</li><li>会话管理 - 支持会话隔离与可配置的 TTL</li><li>请求签名 - 自动使用 AK/SK 进行火山引擎 API 认证</li></ul><h3 id=安装>安装</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>go get github.com/cloudwego/eino-ext/adk/backend/agentkit
 </span></span></code></pre></div><h3 id=配置>配置</h3><h4 id=环境变量>环境变量</h4><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#204a87>export</span> <span style=color:#000>VOLC_ACCESS_KEY_ID</span><span style=color:#ce5c00;font-weight:700>=</span><span style=color:#4e9a06>&#34;your_access_key&#34;</span>
 </span></span><span style=display:flex><span><span style=color:#204a87>export</span> <span style=color:#000>VOLC_SECRET_ACCESS_KEY</span><span style=color:#ce5c00;font-weight:700>=</span><span style=color:#4e9a06>&#34;your_secret_key&#34;</span>
 </span></span><span style=display:flex><span><span style=color:#204a87>export</span> <span style=color:#000>VOLC_TOOL_ID</span><span style=color:#ce5c00;font-weight:700>=</span><span style=color:#4e9a06>&#34;your_tool_id&#34;</span>
@@ -229,4 +432,4 @@
 </span></span></span></code></pre></div><h3 id=与-local-backend-对比>与 Local Backend 对比</h3><table><tr><td>特性</td><td>Agentkit</td><td>Local</td></tr><tr><td>执行模型</td><td>远程沙箱</td><td>本地直接</td></tr><tr><td>网络依赖</td><td>需要</td><td>不需要</td></tr><tr><td>配置复杂度</td><td>需要凭证</td><td>零配置</td></tr><tr><td>安全模型</td><td>隔离沙箱</td><td>OS 权限</td></tr><tr><td>适用场景</td><td>多租户/生产环境</td><td>开发/本地环境</td></tr></table><h3 id=常见问题>常见问题</h3><p><strong>Q: 认证失败</strong></p><p>检查环境变量、AK/SK 是否匹配、账户是否有 Ark Sandbox 权限。</p><p><strong>Q: 请求超时</strong></p><p>增加 ExecutionTimeout 或 HTTPClient.Timeout 配置。</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 March 16, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c29dac9efde882c20ad259db6f9616def269fa0d>docs(eino): sync docs from feishu (2026-03-16) (#1522) (c29dac9e)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

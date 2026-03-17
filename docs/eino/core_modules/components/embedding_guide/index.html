@@ -1,7 +1,7 @@
 <!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Eino: Embedding User Guide | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/core_modules/components/embedding_guide/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Eino: Embedding User Guide"><meta property="og:description" content="Introduction The Embedding component is a component for converting text into vector representations. Its main purpose is to map text content into vector space, so that semantically similar texts are closer in vector space. This component plays an important role in the following scenarios:
 Text similarity calculation Semantic search Text clustering analysis Component Definition Interface Definition type Embedder interface { EmbedStrings(ctx context.Context, texts []string, opts ...Option) ([][]float64, error) } EmbedStrings Method Function: Convert a set of texts into vector representations Parameters: ctx: Context object for passing request-level information and Callback Manager texts: List of texts to be converted opts: Conversion options for configuring conversion behavior Return values: [][]float64: List of vector representations for the texts, the dimension of each vector is determined by the specific implementation error: Error information during conversion Common Options The Embedding component uses EmbeddingOption to define optional parameters. Below are the abstracted common options. Each specific implementation can define its own specific Options, wrapped into a unified EmbeddingOption type through the WrapEmbeddingImplSpecificOptFn function."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2025-07-21T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-02T21:50:06+08:00"><meta itemprop=name content="Eino: Embedding User Guide"><meta itemprop=description content="Introduction The Embedding component is a component for converting text into vector representations. Its main purpose is to map text content into vector space, so that semantically similar texts are closer in vector space. This component plays an important role in the following scenarios:
 Text similarity calculation Semantic search Text clustering analysis Component Definition Interface Definition type Embedder interface { EmbedStrings(ctx context.Context, texts []string, opts ...Option) ([][]float64, error) } EmbedStrings Method Function: Convert a set of texts into vector representations Parameters: ctx: Context object for passing request-level information and Callback Manager texts: List of texts to be converted opts: Conversion options for configuring conversion behavior Return values: [][]float64: List of vector representations for the texts, the dimension of each vector is determined by the specific implementation error: Error information during conversion Common Options The Embedding component uses EmbeddingOption to define optional parameters. Below are the abstracted common options. Each specific implementation can define its own specific Options, wrapped into a unified EmbeddingOption type through the WrapEmbeddingImplSpecificOptFn function."><meta itemprop=datePublished content="2025-07-21T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-02T21:50:06+08:00"><meta itemprop=wordCount content="791"><meta name=twitter:card content="summary"><meta name=twitter:title content="Eino: Embedding User Guide"><meta name=twitter:description content="Introduction The Embedding component is a component for converting text into vector representations. Its main purpose is to map text content into vector space, so that semantically similar texts are closer in vector space. This component plays an important role in the following scenarios:
-Text similarity calculation Semantic search Text clustering analysis Component Definition Interface Definition type Embedder interface { EmbedStrings(ctx context.Context, texts []string, opts ...Option) ([][]float64, error) } EmbedStrings Method Function: Convert a set of texts into vector representations Parameters: ctx: Context object for passing request-level information and Callback Manager texts: List of texts to be converted opts: Conversion options for configuring conversion behavior Return values: [][]float64: List of vector representations for the texts, the dimension of each vector is determined by the specific implementation error: Error information during conversion Common Options The Embedding component uses EmbeddingOption to define optional parameters. Below are the abstracted common options. Each specific implementation can define its own specific Options, wrapped into a unified EmbeddingOption type through the WrapEmbeddingImplSpecificOptFn function."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+Text similarity calculation Semantic search Text clustering analysis Component Definition Interface Definition type Embedder interface { EmbedStrings(ctx context.Context, texts []string, opts ...Option) ([][]float64, error) } EmbedStrings Method Function: Convert a set of texts into vector representations Parameters: ctx: Context object for passing request-level information and Callback Manager texts: List of texts to be converted opts: Conversion options for configuring conversion behavior Return values: [][]float64: List of vector representations for the texts, the dimension of each vector is determined by the specific implementation error: Error information during conversion Common Options The Embedding component uses EmbeddingOption to define optional parameters. Below are the abstracted common options. Each specific implementation can define its own specific Options, wrapped into a unified EmbeddingOption type through the WrapEmbeddingImplSpecificOptFn function."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,281 @@ Text similarity calculation Semantic search Text clustering analysis Component D
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/components/embedding_guide.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/components?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino:%20Embedding%20User%20Guide" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction><strong>Introduction</strong></a></li><li><a href=#component-definition><strong>Component Definition</strong></a><ul><li><a href=#interface-definition><strong>Interface Definition</strong></a></li><li><a href=#common-options><strong>Common Options</strong></a></li></ul></li><li><a href=#usage><strong>Usage</strong></a><ul><li><a href=#standalone-usage><strong>Standalone Usage</strong></a></li><li><a href=#usage-in-orchestration><strong>Usage in Orchestration</strong></a></li></ul></li><li><a href=#option-and-callback-usage><strong>Option and Callback Usage</strong></a><ul><li><a href=#option-usage-example><strong>Option Usage Example</strong></a></li><li><a href=#callback-usage-example><strong>Callback Usage Example</strong></a></li></ul></li><li><a href=#existing-implementations><strong>Existing Implementations</strong></a></li><li><a href=#implementation-reference><strong>Implementation Reference</strong></a><ul><li><a href=#option-mechanism><strong>Option Mechanism</strong></a></li><li><a href=#callback-handling><strong>Callback Handling</strong></a></li><li><a href=#complete-implementation-example><strong>Complete Implementation Example</strong></a></li></ul></li><li><a href=#other-reference-documents>Other Reference Documents</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/components/>Eino: Components</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/components/embedding_guide/>Eino: Embedding User Guide</a></li></ol></nav><div class=td-content><h1>Eino: Embedding User Guide</h1><header class=article-meta></header><h2 id=introduction><strong>Introduction</strong></h2><p>The Embedding component is a component for converting text into vector representations. Its main purpose is to map text content into vector space, so that semantically similar texts are closer in vector space. This component plays an important role in the following scenarios:</p><ul><li>Text similarity calculation</li><li>Semantic search</li><li>Text clustering analysis</li></ul><h2 id=component-definition><strong>Component Definition</strong></h2><h3 id=interface-definition><strong>Interface Definition</strong></h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Embedder</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction><strong>Introduction</strong></a></li><li><a href=#component-definition><strong>Component Definition</strong></a><ul><li><a href=#interface-definition><strong>Interface Definition</strong></a></li><li><a href=#common-options><strong>Common Options</strong></a></li></ul></li><li><a href=#usage><strong>Usage</strong></a><ul><li><a href=#standalone-usage><strong>Standalone Usage</strong></a></li><li><a href=#usage-in-orchestration><strong>Usage in Orchestration</strong></a></li></ul></li><li><a href=#option-and-callback-usage><strong>Option and Callback Usage</strong></a><ul><li><a href=#option-usage-example><strong>Option Usage Example</strong></a></li><li><a href=#callback-usage-example><strong>Callback Usage Example</strong></a></li></ul></li><li><a href=#existing-implementations><strong>Existing Implementations</strong></a></li><li><a href=#implementation-reference><strong>Implementation Reference</strong></a><ul><li><a href=#option-mechanism><strong>Option Mechanism</strong></a></li><li><a href=#callback-handling><strong>Callback Handling</strong></a></li><li><a href=#complete-implementation-example><strong>Complete Implementation Example</strong></a></li></ul></li><li><a href=#other-reference-documents>Other Reference Documents</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/components/>Eino: Components</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/components/embedding_guide/>Eino: Embedding User Guide</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino: Embedding User Guide" data-url=https://www.cloudwego.io/docs/eino/core_modules/components/embedding_guide/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## **Introduction**
+
+The Embedding component is a component for converting text into vector representations. Its main purpose is to map text content into vector space, so that semantically similar texts are closer in vector space. This component plays an important role in the following scenarios:
+
+- Text similarity calculation
+- Semantic search
+- Text clustering analysis
+
+## **Component Definition**
+
+### **Interface Definition**
+
+```go
+type Embedder interface {
+    EmbedStrings(ctx context.Context, texts []string, opts ...Option) ([][]float64, error)
+}
+```
+
+#### **EmbedStrings Method**
+
+- Function: Convert a set of texts into vector representations
+- Parameters:
+  - ctx: Context object for passing request-level information and Callback Manager
+  - texts: List of texts to be converted
+  - opts: Conversion options for configuring conversion behavior
+- Return values:
+  - `[][]float64`: List of vector representations for the texts, the dimension of each vector is determined by the specific implementation
+  - error: Error information during conversion
+
+### **Common Options**
+
+The Embedding component uses EmbeddingOption to define optional parameters. Below are the abstracted common options. Each specific implementation can define its own specific Options, wrapped into a unified EmbeddingOption type through the WrapEmbeddingImplSpecificOptFn function.
+
+```go
+type Options struct {
+    // Model is the model name used for generating vectors
+    Model *string
+}
+```
+
+Options can be set in the following ways:
+
+```go
+// Set model name
+WithModel(model string) Option
+```
+
+## **Usage**
+
+### **Standalone Usage**
+
+> Code location: eino-ext/components/embedding/openai/examples/embedding
+
+```go
+import "github.com/cloudwego/eino-ext/components/embedding/openai"
+
+embedder, _ := openai.NewEmbedder(ctx, &openai.EmbeddingConfig{
+    APIKey:     accessKey,
+    Model:      "text-embedding-3-large",
+    Dimensions: &defaultDim,
+    Timeout:    0,
+})
+
+vectorIDs, _ := embedder.EmbedStrings(ctx, []string{"hello", "how are you"})
+```
+
+### **Usage in Orchestration**
+
+> Code location: eino-ext/components/embedding/openai/examples/embedding
+
+```go
+// Use in Chain
+chain := compose.NewChain[[]string, [][]float64]()
+chain.AppendEmbedding(embedder)
+
+// Use in Graph
+graph := compose.NewGraph[[]string, [][]float64]()
+graph.AddEmbeddingNode("embedding_node", embedder)
+```
+
+## **Option and Callback Usage**
+
+### **Option Usage Example**
+
+```go
+// Using options (standalone component usage example)
+vectors, err := embedder.EmbedStrings(ctx, texts,
+    embedding.WithModel("text-embedding-3-small"),
+)
+```
+
+### **Callback Usage Example**
+
+> Code location: eino-ext/components/embedding/openai/examples/embedding
+
+```go
+import (
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/components/embedding"
+    "github.com/cloudwego/eino/compose"
+    callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
+    "github.com/cloudwego/eino-ext/components/embedding/openai"
+)
+
+handler := &callbacksHelper.EmbeddingCallbackHandler{
+    OnStart: func(ctx context.Context, runInfo *callbacks.RunInfo, input *embedding.CallbackInput) context.Context {
+       log.Printf("input access, len: %v, content: %s\n", len(input.Texts), input.Texts)
+       return ctx
+    },
+    OnEnd: func(ctx context.Context, runInfo *callbacks.RunInfo, output *embedding.CallbackOutput) context.Context {
+       log.Printf("output finished, len: %v\n", len(output.Embeddings))
+       return ctx
+    },
+}
+
+callbackHandler := callbacksHelper.NewHandlerHelper().Embedding(handler).Handler()
+
+chain := compose.NewChain[[]string, [][]float64]()
+chain.AppendEmbedding(embedder)
+
+// Compile and run
+runnable, _ := chain.Compile(ctx)
+vectors, _ = runnable.Invoke(ctx, []string{"hello", "how are you"},
+    compose.WithCallbacks(callbackHandler))
+
+log.Printf("vectors in chain: %v", vectors)
+```
+
+## **Existing Implementations**
+
+1. OpenAI Embedding: Generate vectors using OpenAI's text embedding models [Embedding - OpenAI](/docs/eino/ecosystem_integration/embedding/embedding_openai)
+2. ARK Embedding: Generate vectors using ARK platform models [Embedding - ARK](/docs/eino/ecosystem_integration/embedding/embedding_ark)
+
+## **Implementation Reference**
+
+When implementing a custom Embedding component, note the following:
+
+1. Make sure to handle common options
+2. Make sure to implement callback mechanism
+
+### **Option Mechanism**
+
+Custom Embedding needs to implement its own Option mechanism:
+
+```go
+// Define Option struct
+type MyEmbeddingOptions struct {
+    BatchSize int
+    MaxRetries int
+    Timeout time.Duration
+}
+
+// Define Option functions
+func WithBatchSize(size int) embedding.Option {
+    return embedding.WrapEmbeddingImplSpecificOptFn(func(o *MyEmbeddingOptions) {
+        o.BatchSize = size
+    })
+}
+```
+
+### **Callback Handling**
+
+Embedder implementations need to trigger callbacks at appropriate times. The framework has defined standard callback input/output structs:
+
+```go
+// CallbackInput is the input for embedding callback
+type CallbackInput struct {
+    // Texts is the list of texts to be converted
+    Texts []string
+    // Config is the configuration for generating vectors
+    Config *Config
+    // Extra is additional information for the callback
+    Extra map[string]any
+}
+
+// CallbackOutput is the output for embedding callback
+type CallbackOutput struct {
+    // Embeddings is the list of generated vectors
+    Embeddings [][]float64
+    // Config is the configuration for generating vectors
+    Config *Config
+    // TokenUsage is the token usage information
+    TokenUsage *TokenUsage
+    // Extra is additional information for the callback
+    Extra map[string]any
+}
+
+// TokenUsage is the token usage information
+type TokenUsage struct {
+    // PromptTokens is the number of tokens in the prompt
+    PromptTokens int
+    // CompletionTokens is the number of tokens in the completion
+    CompletionTokens int
+    // TotalTokens is the total number of tokens
+    TotalTokens int
+}
+```
+
+### **Complete Implementation Example**
+
+```go
+type MyEmbedder struct {
+    model string
+    batchSize int
+}
+
+func NewMyEmbedder(config *MyEmbedderConfig) (*MyEmbedder, error) {
+    return &MyEmbedder{
+        model: config.DefaultModel,
+        batchSize: config.DefaultBatchSize,
+    }, nil
+}
+
+func (e *MyEmbedder) EmbedStrings(ctx context.Context, texts []string, opts ...embedding.Option) ([][]float64, error) {
+    // 1. Handle options
+    options := &MyEmbeddingOptions{
+        Options: &embedding.Options{},
+        BatchSize: e.batchSize,
+    }
+    options.Options = embedding.GetCommonOptions(options.Options, opts...)
+    options = embedding.GetImplSpecificOptions(options.Options, opts...)
+    
+    // 2. Get callback manager
+    cm := callbacks.ManagerFromContext(ctx)
+    
+    // 3. Callback before generation starts
+    ctx = cm.OnStart(ctx, info, &embedding.CallbackInput{
+        Texts: texts,
+        Config: &embedding.Config{
+            Model: e.model,
+        },
+    })
+    
+    // 4. Execute vector generation logic
+    vectors, tokenUsage, err := e.doEmbed(ctx, texts, options)
+    
+    // 5. Handle errors and completion callback
+    if err != nil {
+        ctx = cm.OnError(ctx, info, err)
+        return nil, err
+    }
+    
+    ctx = cm.OnEnd(ctx, info, &embedding.CallbackOutput{
+        Embeddings: vectors,
+        Config: &embedding.Config{
+            Model: e.model,
+        },
+        TokenUsage: tokenUsage,
+    })
+    
+    return vectors, nil
+}
+
+func (e *MyEmbedder) doEmbed(ctx context.Context, texts []string, opts *MyEmbeddingOptions) ([][]float64, *TokenUsage, error) {
+    // Implement logic
+    return vectors, tokenUsage, nil
+}
+```
+
+## Other Reference Documents
+
+- [Eino: Document Loader User Guide](/docs/eino/core_modules/components/document_loader_guide)
+- [Eino: Indexer User Guide](/docs/eino/core_modules/components/indexer_guide)
+- [Eino: Retriever User Guide](/docs/eino/core_modules/components/retriever_guide)
+</script><h1>Eino: Embedding User Guide</h1><header class=article-meta></header><h2 id=introduction><strong>Introduction</strong></h2><p>The Embedding component is a component for converting text into vector representations. Its main purpose is to map text content into vector space, so that semantically similar texts are closer in vector space. This component plays an important role in the following scenarios:</p><ul><li>Text similarity calculation</li><li>Semantic search</li><li>Text clustering analysis</li></ul><h2 id=component-definition><strong>Component Definition</strong></h2><h3 id=interface-definition><strong>Interface Definition</strong></h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Embedder</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>EmbedStrings</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>texts</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>[]</span><span style=color:#204a87;font-weight:700>string</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>opts</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000>Option</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>([][]</span><span style=color:#204a87;font-weight:700>float64</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#000;font-weight:700>}</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span></code></pre></div><h4 id=embedstrings-method><strong>EmbedStrings Method</strong></h4><ul><li>Function: Convert a set of texts into vector representations</li><li>Parameters:<ul><li>ctx: Context object for passing request-level information and Callback Manager</li><li>texts: List of texts to be converted</li><li>opts: Conversion options for configuring conversion behavior</li></ul></li><li>Return values:<ul><li><code>[][]float64</code>: List of vector representations for the texts, the dimension of each vector is determined by the specific implementation</li><li>error: Error information during conversion</li></ul></li></ul><h3 id=common-options><strong>Common Options</strong></h3><p>The Embedding component uses EmbeddingOption to define optional parameters. Below are the abstracted common options. Each specific implementation can define its own specific Options, wrapped into a unified EmbeddingOption type through the WrapEmbeddingImplSpecificOptFn function.</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Options</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -270,4 +544,4 @@ Text similarity calculation Semantic search Text clustering analysis Component D
 </span></span></span></code></pre></div><h2 id=other-reference-documents>Other Reference Documents</h2><ul><li><a href=/docs/eino/core_modules/components/document_loader_guide/>Eino: Document Loader User Guide</a></li><li><a href=/docs/eino/core_modules/components/indexer_guide/>Eino: Indexer User Guide</a></li><li><a href=/docs/eino/core_modules/components/retriever_guide/>Eino: Retriever User Guide</a></li></ul><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 2, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/96139d4140c93a677eec194c2d34dffa3e2673dd>feat: sync eino docs (#1512) (96139d41)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

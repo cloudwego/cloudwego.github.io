@@ -4,7 +4,7 @@ Kitex code generation relies on thriftgo and protoc compilers. You need to insta
 Installation If you want to use it in windows, please make sure the version of Kitex >= v0.5.2.
 Kitex code generation relies on thriftgo and protoc compilers. You need to install the corresponding compilers first: thriftgo or protoc."><meta itemprop=datePublished content="2023-03-10T00:00:00+00:00"><meta itemprop=dateModified content="2025-01-13T19:31:36+08:00"><meta itemprop=wordCount content="2029"><meta name=twitter:card content="summary"><meta name=twitter:title content="Code Generation Tool"><meta name=twitter:description content="kitex is a command line tool for code generation provided by the RPC framework Kitex. At present, kitex accepts both thrift and protobuf IDLs, and supports generating a skeleton of a server side project.
 Installation If you want to use it in windows, please make sure the version of Kitex >= v0.5.2.
-Kitex code generation relies on thriftgo and protoc compilers. You need to install the corresponding compilers first: thriftgo or protoc."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+Kitex code generation relies on thriftgo and protoc compilers. You need to install the corresponding compilers first: thriftgo or protoc."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -151,7 +151,328 @@ Kitex code generation relies on thriftgo and protoc compilers. You need to insta
 <label for=m-docskitexfaq-check><a href=/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-docskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/kitex/Tutorials/code-gen/code_generation.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/kitex/Tutorials/code-gen?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Code%20Generation%20Tool" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#installation>Installation</a></li><li><a href=#generate-code>Generate Code</a><ul><li><a href=#generate-code-with-scaffolding>Generate Code with Scaffolding</a></li><li><a href=#library-dependencies>Library Dependencies</a></li><li><a href=#notes-for-using-protobuf-idls>Notes for Using Protobuf IDLs</a></li><li><a href=#options>Options</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/code-gen/>Code Generation</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/>Code Generation Tool</a></li></ol></nav><div class=td-content><h1>Code Generation Tool</h1><header class=article-meta></header><p><strong>kitex</strong> is a command line tool for code generation provided by the RPC framework <strong>Kitex</strong>. At present, kitex accepts both thrift and protobuf IDLs, and supports generating a skeleton of a server side project.</p><h2 id=installation>Installation</h2><blockquote><p>If you want to use it in windows, please make sure the version of Kitex >= v0.5.2.</p></blockquote><p>Kitex code generation relies on thriftgo and protoc compilers. You need to install the corresponding compilers first: <a href=https://github.com/cloudwego/thriftgo>thriftgo</a> or <a href=https://github.com/protocolbuffers/protobuf/releases>protoc</a>.</p><p>After installing the aforementioned tools, you can install the Kitex command-line tool itself using the following go command:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#installation>Installation</a></li><li><a href=#generate-code>Generate Code</a><ul><li><a href=#generate-code-with-scaffolding>Generate Code with Scaffolding</a></li><li><a href=#library-dependencies>Library Dependencies</a></li><li><a href=#notes-for-using-protobuf-idls>Notes for Using Protobuf IDLs</a></li><li><a href=#options>Options</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/code-gen/>Code Generation</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/>Code Generation Tool</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Code Generation Tool" data-url=https://www.cloudwego.io/docs/kitex/tutorials/code-gen/code_generation/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+**kitex** is a command line tool for code generation provided by the RPC framework **Kitex**. At present, kitex accepts both thrift and protobuf IDLs, and supports generating a skeleton of a server side project.
+
+## Installation
+
+> If you want to use it in windows, please make sure the version of Kitex >= v0.5.2.
+
+Kitex code generation relies on thriftgo and protoc compilers. You need to install the corresponding compilers first: [thriftgo](https://github.com/cloudwego/thriftgo) or [protoc](https://github.com/protocolbuffers/protobuf/releases).
+
+After installing the aforementioned tools, you can install the Kitex command-line tool itself using the following go command:
+
+```shell
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
+```
+
+Alternatively, you can download the Kitex source code and navigate to the `tool/cmd/kitex` directory. From there, you can execute `go install` to install the Kitex command-line tool:
+
+After installation, you can check the version of the tool by executing `kitex -version` or view the usage help by executing `kitex -help`.
+
+## Generate Code
+
+Generating code involves two parts: one is the serialization and deserialization code for struct, which is generated by the underlying compilers, thriftgo or protoc. The other part is the stub code used for creating and initiating RPC calls, which is built on the top of the former by the Kitex tool. Users only need to run the Kitex code generation tool, and all the code generation process will be automatically completed by the underlying tools.
+
+The syntax for generating code with the Kitex tool is `kitex [options] xx.thrift/xxx.proto`. For information about the usage of options, please refer to the end of this document.
+
+Taking the thrift scenario as an example, there are two IDL files as follows:
+
+```thrift
+// File1：example.thrift
+namespace go test
+include "base.thrift"
+
+struct MyReq{
+    1:required string input
+    2:required base.BaseReq baseReq
+}
+
+service MyService{
+    string Hello(1:required MyReq req)
+}
+
+// File2：base.thrift
+struct BaseReq{
+    1:required string name
+}
+```
+
+{{< tabs "Execute outside GOPATH" "Execute under GOPATH">}}
+
+{{% codetab %}}
+
+```shell
+kitex -module xxx example.thrift
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```shell
+kitex example.thrift
+```
+
+If an error message `Outside of $GOPATH. Please specify a module name with the '-module' flag.` is displayed, it means that the current directory is not under GOPATH, and a new go mod needs to be created. Use the `-module` flag to specify the go mod.
+
+{{% /codetab %}}
+{{< /tabs >}}
+
+After execution, a directory named kitex_gen will be generated in the current directory with the following contents:
+
+```console
+kitex_gen/
+├── base					// The generated content of base.thrift, using lowercase IDL file name as the package name when there is no 'go namespace'
+│   ├── base.go				// Go code generated by thriftgo, containing the definitions from base.thrift
+│   ├── k-base.go			// Generated by Kitex and includes additional serialization optimization implementations provided by Kitex
+│   └── k-consts.go			// Avoiding placeholder files for 'import not used'
+└── test					// The generated content of example.thrift, use go namespace as package name
+    ├── example.go			// The Go code generated by Thriftgo, which includes the content defined in example.thrift
+    ├── k-consts.go			// Placeholder file to avoid 'import not used'
+    ├── k-example.go		// Generated by Kitex, which includes additional serialization optimization implementations provided by Kitex
+    └── myservice			// The code generated by kitex for the myservice defined in example.thrift
+        ├── client.go		// Provide NewClient API
+        ├── invoker.go		// Provide API in the form of a Server SDK.
+        ├── myservice.go	// Provide some definitions that are shared by both client.go and server.go
+        └── server.go		// Provide NewServer API
+```
+
+### Generate Code with Scaffolding
+
+The code example mentioned earlier cannot be directly executed and requires building NewClient and NewServer on your own. The kitex command-line tool provides the `-service` parameter to generate scaffolded code directly. Execute the following command:
+
+```shell
+kitex -service mydemoservice demo.thrift
+```
+
+The generated results are as follows:
+
+```console
+├── build.sh			// Script for quickly building services
+├── handler.go		    // Generate a handler scaffold for the server
+├── kitex_info.yaml  	// Record meta information for integration with cwgo tools
+├── main.go		 	 // Quickly start the main function of the server
+└── script			 // Build service related scripts
+│    └── bootstrap.sh
+├── kitex_gen
+     └── ....
+    
+```
+
+After filling in the business code in the generated function of `handler. go`, execute the main function of `main. go` to quickly start the Kitex Server.
+
+### Library Dependencies
+
+The codes generated by kitex may depends on certain Go libraries:
+
+- For thrift IDLs, it is `github.com/apache/thrift v0.13.0`
+- For protobuf IDLs, it is `google.golang.org/protobuf`, whose version depends on Kitex's version and no need to be specified manually by user;
+
+Do note that, since `github.com/apache/thrift/lib/go/thrift v0.14.0`, the APIs are **incompatible** with previous versions. If you specify the `-u` flag when using `go get` to update dependencies, this library will be updated to an incompatible version and you may encounter compilation errors like:
+
+> not enough arguments in call to iprot.ReadStructBegin
+
+Therefore, for versions >= v0.4.5, Kitex tool will automatically add a `replace` directive in `go.mod` to specify version `v0.13.0`. If by any chance the `replace` directive is missing, you can fix it by:
+
+```shell
+go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0
+```
+
+### Notes for Using Protobuf IDLs
+
+The kitex only supports the [proto3](https://developers.google.com/protocol-buffers/docs/proto3) version of the protocol buffers language.
+
+The `go_package` option in the IDL is required. Its value is a package name sequence separated by dots (`.`) or by slashes (`/`). It determines the suffix of the result import path. For instance,
+
+```protobuf
+option go_package = "hello.world"; // or hello/world
+```
+
+will generates an import path `${imoprt path of the current directory}/kitex_gen/hello/world`.
+
+If you assign a complete import path to `go_package`, then kitex will generate codes for this IDL only when the import path matches the kitex_gen directory. For example:
+
+- `go_package="${import path of current module}/kitex_gen/hello/world";`: OK. Kitex will generate codes for this IDL;
+- `go_package="${import path of current module}/hello/world";`: Kitex will not generate codes for this IDL;
+- `go_package="any.other.domain/some/module/kitex_gen/hello/world";`: Kitex will not generate codes for this IDL;
+
+You can overwrite the `go_package` value in a proto file with a command line option `--protobuf Msome.proto=your.package.name/kitex_gen/wherever/you/like`. For the usage of the option, please refer to the [official document](https://developers.google.com/protocol-buffers/docs/reference/go-generated#package) of Protocol Buffers.
+
+### Options
+
+The option description here may be outdated. Run `kitex -h` or `kitex --help` to get all usable options of kitex.
+
+#### `-service service_name`
+
+When this option is specified, kitex will generate a scaffold to build a server. Parameter `service_name` gives the name of the server itself when launched. Its value is usually up to the service registry and service disccovery components when using the Kitex framework.
+
+#### `-module module_name`
+
+This option is used to specify the Go module the generated codes belongs to. It affects import paths.
+
+1. If the current directory is a child path of `$GOPATH/src`, this option can be omitted; kitex will use a path relative to `$GOPATH/src` as the prefix of import path in generated codes. For example, if you run kitex under `$GOPATH/src/example.com/hello/world`, the import path of `kitex_gen/example_package/example_package.go` for other package will be `example.com/hello/world/kitex_gen/example_package`.
+2. If the current directory is not a child path of `$GOPATH/src`, this option must be specified.
+3. If `-module` is specified, then kitex searches for go.mod from the current directory to the root.
+
+   - If go.mod is not found, kitex will generated one with `go mod init`.
+   - If go.mod is found, then kitex will check if the module name in go.mod is identical with the argument of `-module`; if they diffs, kitex will report an error and exit.
+   - Finally, the position of go.mod and its module names determines the import path in generated codes.
+
+#### `-I path`
+
+Add a search path for IDL. Support adding multiple files. When searching for IDL (including other files included in IDL), it will search in the order of the added path.
+
+Path input can also support git pull. When the current suffix is git @, http://, https://, the remote git repository will be pulled to the local location and included in the search path. The usage method is as follows:
+
+```shell
+kitex -module xx -I xxx.git abc/xxx.thrift
+```
+
+Or use `@ xxx` to specify branch pull:
+
+```shell
+kitex -module xx -I xxx.git@branch abc/xxx.thrift
+
+```
+
+During execution, the git repository will be pulled first and stored in~/. kitex/cache/xxx/xxx/ xxx@branch Directory, then search for abc/xxx.thrift in this directory and generate code
+
+#### `-v` or `-verbose`
+
+Output more logs.
+
+#### `-use path`
+
+When generating server codes (with `-service`), the `-use` option stops kitex from generating the kitex_gen and uses the import path given by the argument instead.
+
+#### `-combine-service`
+
+For thrift IDLs, when generating codes for a server, kitex only generates methods for the last service definition in the IDL. If there are multiple services in the IDL and you want to export all their abilities, the `-combine-service` option is for that.
+
+This option creates a `CombineService` that assembles all methods of services in the target IDL and uses it in the main package. Notice that no two methods of services can have the same name.
+
+#### `-protobuf value`
+
+Pass an argument to protoc. The argument will be appended to the `-go_out` for protoc. See the documentation of protoc for available values.
+
+#### `-thrift value`
+
+Pass an argument to thriftgo. The argument will be appended to the `-g go:` for thriftgo. See the documentation of thriftgo for available values.
+
+Kitex by default passes `naming_style=golint,ignore_initialisms,gen_setter,gen_deep_equal` to thriftgo and it can be overridden if you specify the same parameter in addition.
+
+#### `-record`
+
+In some scenarios, it may be necessary to run the Kitex command multiple times to generate code for multiple IDLs. `-record` parameter is used to automatically record each Kitex command executed and generate a script file for batch re execution during updates.
+
+Usage:
+
+```shell
+kitex -module xxx -service xxx -record xxx.thrift
+```
+
+After executing with the - record parameter, generate the kitex-all.sh file in the execution directory and record the current command
+If the - record parameter is used multiple times, it will be recorded multiple times
+The content of kitex-all.sh is as follows:
+
+```shell
+
+#!/bin/bash
+
+kitex -module xxx -service xxx xxx.thrift
+kitex -module xxx xxxa.thrift
+kitex -module xxx xxxb.thrift
+kitex -module xxx xxxc.thrift
+kitex -module xxx xxxd.thrift
+
+....Continue Recording newly executed commands
+
+```
+
+Command records are not always appended backwards, as follows:
+
+- Only one command with - service will be recorded
+- If the idl path of the recorded command is new, append the record at the end
+- If the idl path already exists, overwrite the original record
+
+To regenerate the code, execute kitex-all.sh. If you want to manually adjust, simply open the script file and edit the command directly
+
+#### `-gen-path`
+
+> Currently, it only takes effect in the Thrift scenario, and the protobuf side needs to be further improved and implemented.
+
+Default scenario, kitex will generate code in kitex\_ Under the gen directory, adjustments can be made through - gen path
+
+#### `-gen-frugal`
+
+Use case: Gray-scale access to verify the stability of Frugal, specify certain structures, and bridge them via FastCodec to be encoded and decoded through Frugal.
+
+Add (go.codec='frugal') annotation to struct in IDL, such as:
+
+```thrift
+struct FrugalStruct{
+    1: required string st
+    2: required bool bl
+}(go.codec='frugal')
+```
+
+When generating code, adding the "-gen-frugal" parameter will transform the FastCodec function implementations of these structures into Frugal implementations.
+
+#### `-frugal_struct`
+
+Use case: Gray-scale access to verify the stability of Frugal, specify certain structures, and bridge them via FastCodec to be encoded and decoded through Frugal.
+
+Usage: The "-gen-frugal" mentioned above needs to be combined with modifications to the IDL content in order to specify the structure. This parameter provides a way to configure specifying structures directly during generation. Use "-frugal_struct $structName" to specify the structure during generation. You can append this parameter multiple times to specify multiple structure names, for example:
+
+```shell
+kitex -frugal_struct FrualStruct -frugal-struct MyStruct xxx.thrift
+```
+
+When specified using "-frugal_struct", the priority is higher, and Frugal encoding and decoding will no longer be generated for the annotated scenarios of "-gen-frugal".
+
+#### `-protobuf-plugin`
+
+Plugins that support extending protocs can be integrated into a rich protoc plugin ecosystem, providing convenience for expanding code generation
+
+The usage method is as follows:
+
+```shell
+kitex -protobuf-plugin {plugin_name:options:out_dir} idl/myservice.proto
+```
+
+Among them:
+
+- plugin_name: Indicates the name of the plugin to be executed; For example, 'protoc gen go', then its plugin name is 'go'
+- options: Represents the options passed to the plugin; Usually, some information such as 'go module' is passed on
+- out_dir: Represents the path where the plugin generates code; If there are no special needs, it is generally specified as "."
+
+The above three options can be mapped to the following protoc commands, which can be automatically concatenated and executed by kitex:
+
+```shell
+protoc
+    --{$plugin_name}_out={$out_dir}
+    --{$plugin_name}_opt={$options}
+    idl/myservice.proto
+```
+
+For example, if you want to use [protoc-gen-validator](https://github.com/cloudwego/protoc-gen-validator) plugin, you can execute the following command:
+
+```shell
+kitex
+    -protobuf-plugin=validator:module=toutiao/middleware/kitex,recurse=true:.
+    idl/myservice.proto
+```
+</script><h1>Code Generation Tool</h1><header class=article-meta></header><p><strong>kitex</strong> is a command line tool for code generation provided by the RPC framework <strong>Kitex</strong>. At present, kitex accepts both thrift and protobuf IDLs, and supports generating a skeleton of a server side project.</p><h2 id=installation>Installation</h2><blockquote><p>If you want to use it in windows, please make sure the version of Kitex >= v0.5.2.</p></blockquote><p>Kitex code generation relies on thriftgo and protoc compilers. You need to install the corresponding compilers first: <a href=https://github.com/cloudwego/thriftgo>thriftgo</a> or <a href=https://github.com/protocolbuffers/protobuf/releases>protoc</a>.</p><p>After installing the aforementioned tools, you can install the Kitex command-line tool itself using the following go command:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 </span></span></code></pre></div><p>Alternatively, you can download the Kitex source code and navigate to the <code>tool/cmd/kitex</code> directory. From there, you can execute <code>go install</code> to install the Kitex command-line tool:</p><p>After installation, you can check the version of the tool by executing <code>kitex -version</code> or view the usage help by executing <code>kitex -help</code>.</p><h2 id=generate-code>Generate Code</h2><p>Generating code involves two parts: one is the serialization and deserialization code for struct, which is generated by the underlying compilers, thriftgo or protoc. The other part is the stub code used for creating and initiating RPC calls, which is built on the top of the former by the Kitex tool. Users only need to run the Kitex code generation tool, and all the code generation process will be automatically completed by the underlying tools.</p><p>The syntax for generating code with the Kitex tool is <code>kitex [options] xx.thrift/xxx.proto</code>. For information about the usage of options, please refer to the end of this document.</p><p>Taking the thrift scenario as an example, there are two IDL files as follows:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-thrift data-lang=thrift><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// File1：example.thrift
 </span></span></span><span style=display:flex><span><span style=color:#8f5902;font-style:italic></span><span style=color:#204a87;font-weight:700>namespace</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>go</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>test</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>include</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#4e9a06>&#34;base.thrift&#34;</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -228,4 +549,4 @@ The content of kitex-all.sh is as follows:</p><div class=highlight><pre tabindex
 </span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified January 13, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/52b721a38f051cc14712b16ab397433a39d0b51f>docs: update code generate english document (#1201) (52b721a3)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

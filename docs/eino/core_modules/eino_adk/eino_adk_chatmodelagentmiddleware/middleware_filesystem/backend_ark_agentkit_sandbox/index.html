@@ -7,7 +7,7 @@ Overview Agentkit Sandbox Backend is a remote sandbox implementation of EINO ADK
 Core Features Security Isolation - All operations execute in a remote sandbox environment Session Management - Supports session isolation with configurable TTL Request Signing - Automatic AK/SK authentication for Volcengine API Installation go get github.com/cloudwego/eino-ext/adk/backend/agentkit Configuration Environment Variables export VOLC_ACCESS_KEY_ID="your_access_key" export VOLC_SECRET_ACCESS_KEY="your_secret_key" export VOLC_TOOL_ID="your_tool_id" Config Structure type Config struct { // Required AccessKeyID string // Access Key ID SecretAccessKey string // Access Key Secret ToolID string // Sandbox Tool ID // Optional UserSessionID string // User session ID for isolation Region Region // Region, defaults to cn-beijing SessionTTL int // Session TTL (60-86400 seconds) ExecutionTimeout int // Command execution timeout HTTPClient *http.Client // Custom HTTP client } Quick Start Basic Usage import ( "context" "os" "time" "github.com/cloudwego/eino-ext/adk/backend/agentkit" "github.com/cloudwego/eino/adk/filesystem" ) func main() { ctx := context.Background() backend, err := agentkit.NewSandboxToolBackend(&amp;agentkit.Config{ AccessKeyID: os.Getenv("VOLC_ACCESS_KEY_ID"), SecretAccessKey: os.Getenv("VOLC_SECRET_ACCESS_KEY"), ToolID: os.Getenv("VOLC_TOOL_ID"), UserSessionID: "session-" + time.Now().Format("20060102-150405"), Region: agentkit.RegionOfBeijing, }) if err != nil { panic(err) } // Write file err = backend.Write(ctx, &amp;filesystem.WriteRequest{ FilePath: "/home/gem/hello.txt", Content: "Hello, Sandbox!", }) // Read file content, err := backend.Read(ctx, &amp;filesystem.ReadRequest{ FilePath: "/home/gem/hello.txt", }) } Integration with Agent import ( "github.com/cloudwego/eino/adk" fsMiddleware "github.com/cloudwego/eino/adk/middlewares/filesystem" ) // Create Backend backend, _ := agentkit.NewSandboxToolBackend(config) // Create Middleware middleware, _ := fsMiddleware.New(ctx, &amp;fsMiddleware.Config{ Backend: backend, Shell: backend, }) // Create Agent agent, _ := adk.NewChatModelAgent(ctx, &amp;adk.ChatModelAgentConfig{ Name: "SandboxAgent", Description: "AI Agent with secure file system access capabilities", Model: chatModel, Handlers: []adk.ChatModelAgentMiddleware{middleware}, }) API Reference MethodDescription LsInfoList directory contents ReadRead file content (supports pagination) WriteCreate new file (error if exists) EditReplace file content GrepRawSearch file content GlobInfoFind files by pattern ExecuteExecute shell commands Examples // List directory files, _ := backend.LsInfo(ctx, &amp;filesystem.LsInfoRequest{ Path: "/home/gem", }) // Read file (paginated) content, _ := backend.Read(ctx, &amp;filesystem.ReadRequest{ FilePath: "/home/gem/file.txt", Offset: 0, Limit: 100, }) // Search content matches, _ := backend.GrepRaw(ctx, &amp;filesystem.GrepRequest{ Path: "/home/gem", Pattern: "keyword", Glob: "*.txt", }) // Find files files, _ := backend.GlobInfo(ctx, &amp;filesystem.GlobInfoRequest{ Path: "/home/gem", Pattern: "**/*.txt", }) // Edit file backend.Edit(ctx, &amp;filesystem.EditRequest{ FilePath: "/home/gem/file.txt", OldString: "old", NewString: "new", ReplaceAll: true, }) // Execute command result, _ := backend.Execute(ctx, &amp;filesystem.ExecuteRequest{ Command: "ls -la /home/gem", }) Comparison with Local Backend FeatureAgentkitLocal Execution ModelRemote SandboxLocal Direct Network DependencyRequiredNot Required Configuration ComplexityRequires CredentialsZero Config Security ModelIsolated SandboxOS Permissions Use CasesMulti-tenant/ProductionDevelopment/Local FAQ Q: Write returns “file already exists” error'><meta itemprop=datePublished content="2026-03-16T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-16T20:55:36+08:00"><meta itemprop=wordCount content="460"><meta name=twitter:card content="summary"><meta name=twitter:title content="Backend: Ark Agentkit Sandbox"><meta name=twitter:description content='Agentkit Sandbox Backend Package: github.com/cloudwego/eino-ext/adk/backend/agentkit
 Note: If your eino version is v0.8.0 or above, you need to use ark agentkit backend v0.2.0-alpha version.
 Overview Agentkit Sandbox Backend is a remote sandbox implementation of EINO ADK FileSystem that executes file system operations in an isolated cloud environment through Volcengine Agentkit service.
-Core Features Security Isolation - All operations execute in a remote sandbox environment Session Management - Supports session isolation with configurable TTL Request Signing - Automatic AK/SK authentication for Volcengine API Installation go get github.com/cloudwego/eino-ext/adk/backend/agentkit Configuration Environment Variables export VOLC_ACCESS_KEY_ID="your_access_key" export VOLC_SECRET_ACCESS_KEY="your_secret_key" export VOLC_TOOL_ID="your_tool_id" Config Structure type Config struct { // Required AccessKeyID string // Access Key ID SecretAccessKey string // Access Key Secret ToolID string // Sandbox Tool ID // Optional UserSessionID string // User session ID for isolation Region Region // Region, defaults to cn-beijing SessionTTL int // Session TTL (60-86400 seconds) ExecutionTimeout int // Command execution timeout HTTPClient *http.Client // Custom HTTP client } Quick Start Basic Usage import ( "context" "os" "time" "github.com/cloudwego/eino-ext/adk/backend/agentkit" "github.com/cloudwego/eino/adk/filesystem" ) func main() { ctx := context.Background() backend, err := agentkit.NewSandboxToolBackend(&amp;agentkit.Config{ AccessKeyID: os.Getenv("VOLC_ACCESS_KEY_ID"), SecretAccessKey: os.Getenv("VOLC_SECRET_ACCESS_KEY"), ToolID: os.Getenv("VOLC_TOOL_ID"), UserSessionID: "session-" + time.Now().Format("20060102-150405"), Region: agentkit.RegionOfBeijing, }) if err != nil { panic(err) } // Write file err = backend.Write(ctx, &amp;filesystem.WriteRequest{ FilePath: "/home/gem/hello.txt", Content: "Hello, Sandbox!", }) // Read file content, err := backend.Read(ctx, &amp;filesystem.ReadRequest{ FilePath: "/home/gem/hello.txt", }) } Integration with Agent import ( "github.com/cloudwego/eino/adk" fsMiddleware "github.com/cloudwego/eino/adk/middlewares/filesystem" ) // Create Backend backend, _ := agentkit.NewSandboxToolBackend(config) // Create Middleware middleware, _ := fsMiddleware.New(ctx, &amp;fsMiddleware.Config{ Backend: backend, Shell: backend, }) // Create Agent agent, _ := adk.NewChatModelAgent(ctx, &amp;adk.ChatModelAgentConfig{ Name: "SandboxAgent", Description: "AI Agent with secure file system access capabilities", Model: chatModel, Handlers: []adk.ChatModelAgentMiddleware{middleware}, }) API Reference MethodDescription LsInfoList directory contents ReadRead file content (supports pagination) WriteCreate new file (error if exists) EditReplace file content GrepRawSearch file content GlobInfoFind files by pattern ExecuteExecute shell commands Examples // List directory files, _ := backend.LsInfo(ctx, &amp;filesystem.LsInfoRequest{ Path: "/home/gem", }) // Read file (paginated) content, _ := backend.Read(ctx, &amp;filesystem.ReadRequest{ FilePath: "/home/gem/file.txt", Offset: 0, Limit: 100, }) // Search content matches, _ := backend.GrepRaw(ctx, &amp;filesystem.GrepRequest{ Path: "/home/gem", Pattern: "keyword", Glob: "*.txt", }) // Find files files, _ := backend.GlobInfo(ctx, &amp;filesystem.GlobInfoRequest{ Path: "/home/gem", Pattern: "**/*.txt", }) // Edit file backend.Edit(ctx, &amp;filesystem.EditRequest{ FilePath: "/home/gem/file.txt", OldString: "old", NewString: "new", ReplaceAll: true, }) // Execute command result, _ := backend.Execute(ctx, &amp;filesystem.ExecuteRequest{ Command: "ls -la /home/gem", }) Comparison with Local Backend FeatureAgentkitLocal Execution ModelRemote SandboxLocal Direct Network DependencyRequiredNot Required Configuration ComplexityRequires CredentialsZero Config Security ModelIsolated SandboxOS Permissions Use CasesMulti-tenant/ProductionDevelopment/Local FAQ Q: Write returns “file already exists” error'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+Core Features Security Isolation - All operations execute in a remote sandbox environment Session Management - Supports session isolation with configurable TTL Request Signing - Automatic AK/SK authentication for Volcengine API Installation go get github.com/cloudwego/eino-ext/adk/backend/agentkit Configuration Environment Variables export VOLC_ACCESS_KEY_ID="your_access_key" export VOLC_SECRET_ACCESS_KEY="your_secret_key" export VOLC_TOOL_ID="your_tool_id" Config Structure type Config struct { // Required AccessKeyID string // Access Key ID SecretAccessKey string // Access Key Secret ToolID string // Sandbox Tool ID // Optional UserSessionID string // User session ID for isolation Region Region // Region, defaults to cn-beijing SessionTTL int // Session TTL (60-86400 seconds) ExecutionTimeout int // Command execution timeout HTTPClient *http.Client // Custom HTTP client } Quick Start Basic Usage import ( "context" "os" "time" "github.com/cloudwego/eino-ext/adk/backend/agentkit" "github.com/cloudwego/eino/adk/filesystem" ) func main() { ctx := context.Background() backend, err := agentkit.NewSandboxToolBackend(&amp;agentkit.Config{ AccessKeyID: os.Getenv("VOLC_ACCESS_KEY_ID"), SecretAccessKey: os.Getenv("VOLC_SECRET_ACCESS_KEY"), ToolID: os.Getenv("VOLC_TOOL_ID"), UserSessionID: "session-" + time.Now().Format("20060102-150405"), Region: agentkit.RegionOfBeijing, }) if err != nil { panic(err) } // Write file err = backend.Write(ctx, &amp;filesystem.WriteRequest{ FilePath: "/home/gem/hello.txt", Content: "Hello, Sandbox!", }) // Read file content, err := backend.Read(ctx, &amp;filesystem.ReadRequest{ FilePath: "/home/gem/hello.txt", }) } Integration with Agent import ( "github.com/cloudwego/eino/adk" fsMiddleware "github.com/cloudwego/eino/adk/middlewares/filesystem" ) // Create Backend backend, _ := agentkit.NewSandboxToolBackend(config) // Create Middleware middleware, _ := fsMiddleware.New(ctx, &amp;fsMiddleware.Config{ Backend: backend, Shell: backend, }) // Create Agent agent, _ := adk.NewChatModelAgent(ctx, &amp;adk.ChatModelAgentConfig{ Name: "SandboxAgent", Description: "AI Agent with secure file system access capabilities", Model: chatModel, Handlers: []adk.ChatModelAgentMiddleware{middleware}, }) API Reference MethodDescription LsInfoList directory contents ReadRead file content (supports pagination) WriteCreate new file (error if exists) EditReplace file content GrepRawSearch file content GlobInfoFind files by pattern ExecuteExecute shell commands Examples // List directory files, _ := backend.LsInfo(ctx, &amp;filesystem.LsInfoRequest{ Path: "/home/gem", }) // Read file (paginated) content, _ := backend.Read(ctx, &amp;filesystem.ReadRequest{ FilePath: "/home/gem/file.txt", Offset: 0, Limit: 100, }) // Search content matches, _ := backend.GrepRaw(ctx, &amp;filesystem.GrepRequest{ Path: "/home/gem", Pattern: "keyword", Glob: "*.txt", }) // Find files files, _ := backend.GlobInfo(ctx, &amp;filesystem.GlobInfoRequest{ Path: "/home/gem", Pattern: "**/*.txt", }) // Edit file backend.Edit(ctx, &amp;filesystem.EditRequest{ FilePath: "/home/gem/file.txt", OldString: "old", NewString: "new", ReplaceAll: true, }) // Execute command result, _ := backend.Execute(ctx, &amp;filesystem.ExecuteRequest{ Command: "ls -la /home/gem", }) Comparison with Local Backend FeatureAgentkitLocal Execution ModelRemote SandboxLocal Direct Network DependencyRequiredNot Required Configuration ComplexityRequires CredentialsZero Config Security ModelIsolated SandboxOS Permissions Use CasesMulti-tenant/ProductionDevelopment/Local FAQ Q: Write returns “file already exists” error'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -113,7 +113,213 @@ Core Features Security Isolation - All operations execute in a remote sandbox en
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_FileSystem/Backend_Ark_Agentkit_Sandbox.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_FileSystem?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Backend:%20Ark%20Agentkit%20Sandbox" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#agentkit-sandbox-backend>Agentkit Sandbox Backend</a><ul><li><a href=#overview>Overview</a></li><li><a href=#installation>Installation</a></li><li><a href=#configuration>Configuration</a></li><li><a href=#quick-start>Quick Start</a></li><li><a href=#api-reference>API Reference</a></li><li><a href=#comparison-with-local-backend>Comparison with Local Backend</a></li><li><a href=#faq>FAQ</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino: ADK - Agent Development Kit</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/>Eino ADK: ChatModelAgentMiddleware</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem/>Middleware: FileSystem</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem/backend_ark_agentkit_sandbox/>Backend: Ark Agentkit Sandbox</a></li></ol></nav><div class=td-content><h1>Backend: Ark Agentkit Sandbox</h1><header class=article-meta></header><h2 id=agentkit-sandbox-backend>Agentkit Sandbox Backend</h2><p>Package: <code>github.com/cloudwego/eino-ext/adk/backend/agentkit</code></p><p>Note: If your eino version is v0.8.0 or above, you need to use ark agentkit backend <a href=https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.0-alpha.1>v0.2.0-alpha</a> version.</p><h3 id=overview>Overview</h3><p>Agentkit Sandbox Backend is a remote sandbox implementation of EINO ADK FileSystem that executes file system operations in an isolated cloud environment through Volcengine Agentkit service.</p><h4 id=core-features>Core Features</h4><ul><li>Security Isolation - All operations execute in a remote sandbox environment</li><li>Session Management - Supports session isolation with configurable TTL</li><li>Request Signing - Automatic AK/SK authentication for Volcengine API</li></ul><h3 id=installation>Installation</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>go get github.com/cloudwego/eino-ext/adk/backend/agentkit
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#agentkit-sandbox-backend>Agentkit Sandbox Backend</a><ul><li><a href=#overview>Overview</a></li><li><a href=#installation>Installation</a></li><li><a href=#configuration>Configuration</a></li><li><a href=#quick-start>Quick Start</a></li><li><a href=#api-reference>API Reference</a></li><li><a href=#comparison-with-local-backend>Comparison with Local Backend</a></li><li><a href=#faq>FAQ</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino: ADK - Agent Development Kit</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/>Eino ADK: ChatModelAgentMiddleware</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem/>Middleware: FileSystem</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem/backend_ark_agentkit_sandbox/>Backend: Ark Agentkit Sandbox</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Backend: Ark Agentkit Sandbox" data-url=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem/backend_ark_agentkit_sandbox/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Agentkit Sandbox Backend
+
+Package: `github.com/cloudwego/eino-ext/adk/backend/agentkit`
+
+Note: If your eino version is v0.8.0 or above, you need to use ark agentkit backend [v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.0-alpha.1) version.
+
+### Overview
+
+Agentkit Sandbox Backend is a remote sandbox implementation of EINO ADK FileSystem that executes file system operations in an isolated cloud environment through Volcengine Agentkit service.
+
+#### Core Features
+
+- Security Isolation - All operations execute in a remote sandbox environment
+- Session Management - Supports session isolation with configurable TTL
+- Request Signing - Automatic AK/SK authentication for Volcengine API
+
+### Installation
+
+```bash
+go get github.com/cloudwego/eino-ext/adk/backend/agentkit
+```
+
+### Configuration
+
+#### Environment Variables
+
+```bash
+export VOLC_ACCESS_KEY_ID="your_access_key"
+export VOLC_SECRET_ACCESS_KEY="your_secret_key"
+export VOLC_TOOL_ID="your_tool_id"
+```
+
+#### Config Structure
+
+```go
+type Config struct {
+    // Required
+    AccessKeyID     string  // Access Key ID
+    SecretAccessKey string  // Access Key Secret
+    ToolID          string  // Sandbox Tool ID
+
+    // Optional
+    UserSessionID    string        // User session ID for isolation
+    Region           Region        // Region, defaults to cn-beijing
+    SessionTTL       int           // Session TTL (60-86400 seconds)
+    ExecutionTimeout int           // Command execution timeout
+    HTTPClient       *http.Client  // Custom HTTP client
+}
+```
+
+### Quick Start
+
+#### Basic Usage
+
+```go
+import (
+    "context"
+    "os"
+    "time"
+
+    "github.com/cloudwego/eino-ext/adk/backend/agentkit"
+    "github.com/cloudwego/eino/adk/filesystem"
+)
+
+func main() {
+    ctx := context.Background()
+
+    backend, err := agentkit.NewSandboxToolBackend(&agentkit.Config{
+        AccessKeyID:     os.Getenv("VOLC_ACCESS_KEY_ID"),
+        SecretAccessKey: os.Getenv("VOLC_SECRET_ACCESS_KEY"),
+        ToolID:          os.Getenv("VOLC_TOOL_ID"),
+        UserSessionID:   "session-" + time.Now().Format("20060102-150405"),
+        Region:          agentkit.RegionOfBeijing,
+    })
+    if err != nil {
+        panic(err)
+    }
+
+    // Write file
+    err = backend.Write(ctx, &filesystem.WriteRequest{
+        FilePath: "/home/gem/hello.txt",
+        Content:  "Hello, Sandbox!",
+    })
+
+    // Read file
+    content, err := backend.Read(ctx, &filesystem.ReadRequest{
+        FilePath: "/home/gem/hello.txt",
+    })
+}
+```
+
+#### Integration with Agent
+
+```go
+import (
+    "github.com/cloudwego/eino/adk"
+    fsMiddleware "github.com/cloudwego/eino/adk/middlewares/filesystem"
+)
+
+// Create Backend
+backend, _ := agentkit.NewSandboxToolBackend(config)
+
+// Create Middleware
+middleware, _ := fsMiddleware.New(ctx, &fsMiddleware.Config{
+    Backend: backend,
+    Shell: backend,
+})
+
+// Create Agent
+agent, _ := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    Name:        "SandboxAgent",
+    Description: "AI Agent with secure file system access capabilities",
+    Model:       chatModel,
+    Handlers:    []adk.ChatModelAgentMiddleware{middleware},
+})
+```
+
+### API Reference
+
+<table>
+<tr><td>Method</td><td>Description</td></tr>
+<tr><td>LsInfo</td><td>List directory contents</td></tr>
+<tr><td>Read</td><td>Read file content (supports pagination)</td></tr>
+<tr><td>Write</td><td>Create new file (error if exists)</td></tr>
+<tr><td>Edit</td><td>Replace file content</td></tr>
+<tr><td>GrepRaw</td><td>Search file content</td></tr>
+<tr><td>GlobInfo</td><td>Find files by pattern</td></tr>
+<tr><td>Execute</td><td>Execute shell commands</td></tr>
+</table>
+
+#### Examples
+
+```go
+// List directory
+files, _ := backend.LsInfo(ctx, &filesystem.LsInfoRequest{
+    Path: "/home/gem",
+})
+
+// Read file (paginated)
+content, _ := backend.Read(ctx, &filesystem.ReadRequest{
+    FilePath: "/home/gem/file.txt",
+    Offset:   0,
+    Limit:    100,
+})
+
+// Search content
+matches, _ := backend.GrepRaw(ctx, &filesystem.GrepRequest{
+    Path:    "/home/gem",
+    Pattern: "keyword",
+    Glob:    "*.txt",
+})
+
+// Find files
+files, _ := backend.GlobInfo(ctx, &filesystem.GlobInfoRequest{
+    Path:    "/home/gem",
+    Pattern: "**/*.txt",
+})
+
+// Edit file
+backend.Edit(ctx, &filesystem.EditRequest{
+    FilePath:   "/home/gem/file.txt",
+    OldString:  "old",
+    NewString:  "new",
+    ReplaceAll: true,
+})
+
+// Execute command
+result, _ := backend.Execute(ctx, &filesystem.ExecuteRequest{
+    Command: "ls -la /home/gem",
+})
+```
+
+### Comparison with Local Backend
+
+<table>
+<tr><td>Feature</td><td>Agentkit</td><td>Local</td></tr>
+<tr><td>Execution Model</td><td>Remote Sandbox</td><td>Local Direct</td></tr>
+<tr><td>Network Dependency</td><td>Required</td><td>Not Required</td></tr>
+<tr><td>Configuration Complexity</td><td>Requires Credentials</td><td>Zero Config</td></tr>
+<tr><td>Security Model</td><td>Isolated Sandbox</td><td>OS Permissions</td></tr>
+<tr><td>Use Cases</td><td>Multi-tenant/Production</td><td>Development/Local</td></tr>
+</table>
+
+### FAQ
+
+**Q: Write returns "file already exists" error**
+
+This is a security feature. Use a different filename or use Edit to modify existing files.
+
+**Q: Authentication failed**
+
+Check environment variables, verify AK/SK match, and ensure account has Ark Sandbox permissions.
+
+**Q: Request timeout**
+
+Increase ExecutionTimeout or HTTPClient.Timeout configuration.
+</script><h1>Backend: Ark Agentkit Sandbox</h1><header class=article-meta></header><h2 id=agentkit-sandbox-backend>Agentkit Sandbox Backend</h2><p>Package: <code>github.com/cloudwego/eino-ext/adk/backend/agentkit</code></p><p>Note: If your eino version is v0.8.0 or above, you need to use ark agentkit backend <a href=https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.0-alpha.1>v0.2.0-alpha</a> version.</p><h3 id=overview>Overview</h3><p>Agentkit Sandbox Backend is a remote sandbox implementation of EINO ADK FileSystem that executes file system operations in an isolated cloud environment through Volcengine Agentkit service.</p><h4 id=core-features>Core Features</h4><ul><li>Security Isolation - All operations execute in a remote sandbox environment</li><li>Session Management - Supports session isolation with configurable TTL</li><li>Request Signing - Automatic AK/SK authentication for Volcengine API</li></ul><h3 id=installation>Installation</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>go get github.com/cloudwego/eino-ext/adk/backend/agentkit
 </span></span></code></pre></div><h3 id=configuration>Configuration</h3><h4 id=environment-variables>Environment Variables</h4><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#204a87>export</span> <span style=color:#000>VOLC_ACCESS_KEY_ID</span><span style=color:#ce5c00;font-weight:700>=</span><span style=color:#4e9a06>&#34;your_access_key&#34;</span>
 </span></span><span style=display:flex><span><span style=color:#204a87>export</span> <span style=color:#000>VOLC_SECRET_ACCESS_KEY</span><span style=color:#ce5c00;font-weight:700>=</span><span style=color:#4e9a06>&#34;your_secret_key&#34;</span>
 </span></span><span style=display:flex><span><span style=color:#204a87>export</span> <span style=color:#000>VOLC_TOOL_ID</span><span style=color:#ce5c00;font-weight:700>=</span><span style=color:#4e9a06>&#34;your_tool_id&#34;</span>
@@ -225,4 +431,4 @@ Core Features Security Isolation - All operations execute in a remote sandbox en
 </span></span></span></code></pre></div><h3 id=comparison-with-local-backend>Comparison with Local Backend</h3><table><tr><td>Feature</td><td>Agentkit</td><td>Local</td></tr><tr><td>Execution Model</td><td>Remote Sandbox</td><td>Local Direct</td></tr><tr><td>Network Dependency</td><td>Required</td><td>Not Required</td></tr><tr><td>Configuration Complexity</td><td>Requires Credentials</td><td>Zero Config</td></tr><tr><td>Security Model</td><td>Isolated Sandbox</td><td>OS Permissions</td></tr><tr><td>Use Cases</td><td>Multi-tenant/Production</td><td>Development/Local</td></tr></table><h3 id=faq>FAQ</h3><p><strong>Q: Write returns &ldquo;file already exists&rdquo; error</strong></p><p>This is a security feature. Use a different filename or use Edit to modify existing files.</p><p><strong>Q: Authentication failed</strong></p><p>Check environment variables, verify AK/SK match, and ensure account has Ark Sandbox permissions.</p><p><strong>Q: Request timeout</strong></p><p>Increase ExecutionTimeout or HTTPClient.Timeout configuration.</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 16, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c29dac9efde882c20ad259db6f9616def269fa0d>docs(eino): sync docs from feishu (2026-03-16) (#1522) (c29dac9e)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

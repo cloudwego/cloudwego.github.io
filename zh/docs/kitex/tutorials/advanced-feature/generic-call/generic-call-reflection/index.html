@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>使用 Thrift 反射提升泛化调用性能 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-reflection/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="使用 Thrift 反射提升泛化调用性能"><meta property="og:description" content="使用 Thrift 反射提升泛化调用性能"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-12-17T00:00:00+00:00"><meta property="article:modified_time" content="2025-05-19T03:47:23+02:00"><meta itemprop=name content="使用 Thrift 反射提升泛化调用性能"><meta itemprop=description content="使用 Thrift 反射提升泛化调用性能"><meta itemprop=datePublished content="2023-12-17T00:00:00+00:00"><meta itemprop=dateModified content="2025-05-19T03:47:23+02:00"><meta itemprop=wordCount content="1244"><meta itemprop=keywords content="反射,泛化调用"><meta name=twitter:card content="summary"><meta name=twitter:title content="使用 Thrift 反射提升泛化调用性能"><meta name=twitter:description content="使用 Thrift 反射提升泛化调用性能"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>使用 Thrift 反射提升泛化调用性能 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-reflection/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="使用 Thrift 反射提升泛化调用性能"><meta property="og:description" content="使用 Thrift 反射提升泛化调用性能"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-12-17T00:00:00+00:00"><meta property="article:modified_time" content="2025-05-19T03:47:23+02:00"><meta itemprop=name content="使用 Thrift 反射提升泛化调用性能"><meta itemprop=description content="使用 Thrift 反射提升泛化调用性能"><meta itemprop=datePublished content="2023-12-17T00:00:00+00:00"><meta itemprop=dateModified content="2025-05-19T03:47:23+02:00"><meta itemprop=wordCount content="1244"><meta itemprop=keywords content="反射,泛化调用"><meta name=twitter:card content="summary"><meta name=twitter:title content="使用 Thrift 反射提升泛化调用性能"><meta name=twitter:description content="使用 Thrift 反射提升泛化调用性能"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -149,7 +149,486 @@
 <label for=m-zhdocskitexfaq-check><a href=/zh/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/kitex/Tutorials/advanced-feature/generic-call/generic-call-reflection.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/kitex/Tutorials/advanced-feature/generic-call?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e4%bd%bf%e7%94%a8%20Thrift%20%e5%8f%8d%e5%b0%84%e6%8f%90%e5%8d%87%e6%b3%9b%e5%8c%96%e8%b0%83%e7%94%a8%e6%80%a7%e8%83%bd" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#什么是-thrift-反射>什么是 Thrift 反射？</a></li><li><a href=#thrift-valuenode>Thrift Value/Node</a></li><li><a href=#thrift-dom>Thrift DOM</a></li><li><a href=#为什么要用-thrift-泛型-替代-kitex-mapjson-泛化调用>为什么要用 Thrift 泛型 替代 Kitex Map/JSON 泛化调用？</a></li><li><a href=#使用示例>使用示例</a></li><li><a href=#server-thrift-value--dom>Server （Thrift Value + DOM）</a></li><li><a href=#client-thrift-node--dom>Client （Thrift Node + DOM）</a></li><li><a href=#性能测试>性能测试</a></li><li><a href=#tips>Tips:</a><ul><li><a href=#根据-idl-快速构造-dom>根据 IDL 快速构造 DOM</a></li><li><a href=#根据-样本请求-快速构造-nodevalue>根据 样本请求 快速构造 Node/Value</a></li></ul></li><li><a href=#注意>注意</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/>高级特性</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/>泛化调用</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-reflection/>使用 Thrift 反射提升泛化调用性能</a></li></ol></nav><div class=td-content><h1>使用 Thrift 反射提升泛化调用性能</h1><div class=lead>使用 Thrift 反射提升泛化调用性能</div><header class=article-meta></header><h2 id=什么是-thrift-反射>什么是 Thrift 反射？</h2><p>一句话总结，<strong>类似于</strong> <a href=https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect>pb reflec</a>，<strong>不依赖静态代码对 Thrift 数据进行增删改查写</strong>。</p><p>反射即采用特定的泛型来描述运行时的任意数据，相比于静态的 struct 具有 <strong>增删查改灵活、不依赖于静态代码</strong> 的特点。当前 <a href=https://github.com/cloudwego/dynamicgo>dynamicgo</a> 实现了一套 thrift binary 协议的反射 API，按使用场景大致分为 Thrift Value/Node 和 Thrift DOM 两种。</p><h2 id=thrift-valuenode>Thrift Value/Node</h2><p>用于 rpc 数据包中<strong>较少量字段的增删改查</strong>。对于给定的路径（field id/field name/map key/list index），基于编码带有的数据类型<strong>跳过字节流中不必要的数据节点</strong>，<strong>定位到所需数据在字节流的起止区间</strong>进行处理。具体使用场景包括 <strong>敏感字段擦除、数据包裁剪 、协议转换</strong>等。dynamicgo 提供了 <a href=https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-value>thrift/generic.Value</a> 和 <a href=https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-node>thrift/generic.Node</a> 两种封装：前者可以支持基于 FieldName 进行查找，但是需要绑定动态类型描述 TypeDescriptor；后者不支持基于 FieldName（但支持 FieldID）进行查找，因此也不需要动态类型描述。</p><h2 id=thrift-dom>Thrift DOM</h2><p>通过 <strong>文档对象树模型</strong>来<strong>描述全量反序列化的 Thrift 数据</strong>。由于 Thrift 协议本身具有自描述能力，我们可以将其反序列化到一种特定的树型结构中，来进行更为复杂的<strong>容器遍历、字段位移</strong>等操作。具体业务场景包括 BFF 服务中的 <strong>DSL 映射、数据包合并</strong>等。dynamicgo 提供了 <a href=https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode>thrift/generic.PathNode</a> 的封装，可以不需要绑定动态类型描述来处理任意复杂度的 thrift 数据。</p><h2 id=为什么要用-thrift-泛型-替代-kitex-mapjson-泛化调用>为什么要用 Thrift 泛型 替代 Kitex Map/JSON 泛化调用？</h2><p>一句话总结：<strong>性能更好</strong>。</p><p>Thrift 泛型需求一般来源于 <strong>rpc 泛化调用、http&lt;>rpc 协议转换</strong>等中心化 API 网关\BFF 场景，往往具有高性能的要求。但是 Kitex Map/JSON 泛化调用在当前 map+interface 模式下实现，由于其不可避免的带来大量的碎片化堆内存分配，其性能远差于正常代码生成模式的 kitex rpc 服务。相比之下，无论是 Thrift Value 高效的 skip 算法，还是 Thrift DOM 精心设计的内存结构，都能有效避免了大量的运行时的内存分配及中间编解码转换。详细设计与实现见 <a href=https://github.com/cloudwego/dynamicgo/blob/main/introduction.md>introduction.md</a>。</p><p>具体对比结果见下文【测试数据】部分。</p><h2 id=使用示例>使用示例</h2><p>下面将演示如何基于 <strong>kitex-二进制泛化 +dynamicgo</strong> 进行泛化调用。注不熟悉的 kitex-二进制泛化同学可以先参阅<a href=/zh/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic>泛化调用文档</a>。</p><p>完整示例：</p><ul><li><a href=https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go>代码</a></li><li><a href=https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift>IDL</a></li></ul><h2 id=server-thrift-value--dom>Server （Thrift Value + DOM）</h2><ol><li>首先实现一个 kitex/generic/Server 接口的类型，内部将 thrift-binary message 拆包为 methodName，seqID， request body</li></ol><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// ExampleValueServiceImpl ...</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#什么是-thrift-反射>什么是 Thrift 反射？</a></li><li><a href=#thrift-valuenode>Thrift Value/Node</a></li><li><a href=#thrift-dom>Thrift DOM</a></li><li><a href=#为什么要用-thrift-泛型-替代-kitex-mapjson-泛化调用>为什么要用 Thrift 泛型 替代 Kitex Map/JSON 泛化调用？</a></li><li><a href=#使用示例>使用示例</a></li><li><a href=#server-thrift-value--dom>Server （Thrift Value + DOM）</a></li><li><a href=#client-thrift-node--dom>Client （Thrift Node + DOM）</a></li><li><a href=#性能测试>性能测试</a></li><li><a href=#tips>Tips:</a><ul><li><a href=#根据-idl-快速构造-dom>根据 IDL 快速构造 DOM</a></li><li><a href=#根据-样本请求-快速构造-nodevalue>根据 样本请求 快速构造 Node/Value</a></li></ul></li><li><a href=#注意>注意</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/>高级特性</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/>泛化调用</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-reflection/>使用 Thrift 反射提升泛化调用性能</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="使用 Thrift 反射提升泛化调用性能" data-url=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-reflection/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 什么是 Thrift 反射？
+
+一句话总结，**类似于** [pb reflec](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect)，**不依赖静态代码对 Thrift 数据进行增删改查写**。
+
+反射即采用特定的泛型来描述运行时的任意数据，相比于静态的 struct 具有 **增删查改灵活、不依赖于静态代码** 的特点。当前 [dynamicgo](https://github.com/cloudwego/dynamicgo) 实现了一套 thrift binary 协议的反射 API，按使用场景大致分为 Thrift Value/Node 和 Thrift DOM 两种。
+
+## Thrift Value/Node
+
+用于 rpc 数据包中**较少量字段的增删改查**。对于给定的路径（field id/field name/map key/list index），基于编码带有的数据类型**跳过字节流中不必要的数据节点**，**定位到所需数据在字节流的起止区间**进行处理。具体使用场景包括 **敏感字段擦除、数据包裁剪 、协议转换**等。dynamicgo 提供了 [thrift/generic.Value](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-value) 和 [thrift/generic.Node](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-node) 两种封装：前者可以支持基于 FieldName 进行查找，但是需要绑定动态类型描述 TypeDescriptor；后者不支持基于 FieldName（但支持 FieldID）进行查找，因此也不需要动态类型描述。
+
+## Thrift DOM
+
+通过 **文档对象树模型**来**描述全量反序列化的 Thrift 数据**。由于 Thrift 协议本身具有自描述能力，我们可以将其反序列化到一种特定的树型结构中，来进行更为复杂的**容器遍历、字段位移**等操作。具体业务场景包括 BFF 服务中的 **DSL 映射、数据包合并**等。dynamicgo 提供了 [thrift/generic.PathNode](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode) 的封装，可以不需要绑定动态类型描述来处理任意复杂度的 thrift 数据。
+
+## 为什么要用 Thrift 泛型 替代 Kitex Map/JSON 泛化调用？
+
+一句话总结：**性能更好**。
+
+Thrift 泛型需求一般来源于 **rpc 泛化调用、http<>rpc 协议转换**等中心化 API 网关\BFF 场景，往往具有高性能的要求。但是 Kitex Map/JSON 泛化调用在当前 map+interface 模式下实现，由于其不可避免的带来大量的碎片化堆内存分配，其性能远差于正常代码生成模式的 kitex rpc 服务。相比之下，无论是 Thrift Value 高效的 skip 算法，还是 Thrift DOM 精心设计的内存结构，都能有效避免了大量的运行时的内存分配及中间编解码转换。详细设计与实现见 [introduction.md](https://github.com/cloudwego/dynamicgo/blob/main/introduction.md)。
+
+具体对比结果见下文【测试数据】部分。
+
+## 使用示例
+
+下面将演示如何基于 **kitex-二进制泛化 +dynamicgo** 进行泛化调用。注不熟悉的 kitex-二进制泛化同学可以先参阅[泛化调用文档](/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic)。
+
+完整示例：
+
+- [代码](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
+- [IDL](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift)
+
+## Server （Thrift Value + DOM）
+
+1. 首先实现一个 kitex/generic/Server 接口的类型，内部将 thrift-binary message 拆包为 methodName，seqID， request body
+
+```go
+// ExampleValueServiceImpl ...
+type ExampleValueServiceImpl struct{}
+
+// GenericCall ...
+func (g *ExampleValueServiceImpl) GenericCall(ctx context.Context, method string, request interface{}) (interface{}, error) {
+    // get and unwrap body with message
+    in := request.([]byte)
+
+    // unwarp thrift message and get request body
+    methodName, _, seqID, _, body, err := dt.UnwrapBinaryMessage(in)
+    if err != nil {
+        return nil, err
+    }
+
+    // biz logic
+    resp, err := ExampleServerHandler(body)
+    if err != nil {
+        return nil, err
+    }
+
+    // wrap response as thrift REPLY message
+    return dt.WrapBinaryBody(resp, methodName, dt.REPLY, 0, seqID)
+}
+```
+
+2. 由于这里使用 Thrift Value 需要具体绑定对应 IDL 的动态类型描述，可以在初始化阶段进行加载（注：这里不考虑动态更新，如果需要可以自行实现一个原子更新全局变量）
+
+```go
+var (
+    ExampleReqDesc *dt.TypeDescriptor
+    ExampleRespDesc *dt.TypeDescriptor
+    StrDesc *dt.TypeDescriptor
+    BaseLogidPath []dg.Path
+    DynamicgoOptions = &dg.Options{}
+)
+
+func initDescriptor() {
+    sdesc, err := dt.NewDescriptorFromPath(context.Background(), "idl/example.thrift")
+    if err != nil {
+        panic(err)
+    }
+    ExampleReqDesc = sdesc.Functions()["ExampleMethod"].Request().Struct().FieldById(1).Type()
+    ExampleRespDesc = sdesc.Functions()["ExampleMethod"].Response().Struct().FieldById(0).Type()
+    StrDesc = ExampleReqDesc.Struct().FieldById(1).Type()
+    BaseLogidPath = []dg.Path{dg.NewPathFieldName("Base"), dg.NewPathFieldName("LogID")}
+}
+```
+
+3. 将 request body 传递给业务 handler 进行处理逻辑，具体操作基于 dynamicgo/thrift.Value 的封装 API 进行。路径传递有两种方式（假设 A 为 Struct 字段名，B 为 Map key）：
+
+   1. 一次性传入：`Value.GetByPath([]Path{NewPathFieldName(A), NewPathStrKey(B)})`
+   2. 链式调用：`Value.FieldByName(A).GetByStr(B)`
+
+```go
+ // biz logic
+func ExampleValueServiceHandler(request []byte) (resp []byte, err error) {
+    // wrap body as Value
+    req := dg.NewValue(ExampleReqDesc, request)
+    if err != nil {
+        return nil, err
+    }
+
+    required_field := ""
+    logid := ""
+    // if B == true then get logid and required_field
+    if b, err := req.FieldByName("B").Bool(); err == nil && b {
+        if e := req.GetByPath(BaseLogidPath...); e.Error() != ""{
+            return nil, e
+        } else {
+            logid, _ = e.String()
+        }
+        if a := req.FieldByName("TestMap").GetByStr("a"); a.Error() != "" {
+            return nil, a
+        } else {
+            required_field, _ = a.FieldByName("Bar").String()
+        }
+    }
+
+    // make response with checked values
+    return MakeExampleRespBinary(RespMsg, required_field, logid)
+}
+
+```
+
+4. 处理完 request 之后，基于 dynamicgo/thrift.PathNode 进行构造 response 进行返回
+
+```go
+
+// MakeExampleRespBinary make a Thrift-Binary-Encoding response using ExampleResp structured DOM
+// Except msg, required_field and logid, which are reset everytime
+func MakeExampleRespBinary(msg string, require_field string, logid string) ([]byte, error) {
+    dom := dg.PathNode{
+        Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+        Next: []dg.PathNode{
+            {
+                Path: dg.NewPathFieldId(1),
+                Node: dg.NewNodeString(msg),
+            },
+            {
+                Path: dg.NewPathFieldId(2),
+                Node: dg.NewNodeString(require_field),
+            },
+            {
+                Path: dg.NewPathFieldId(255),
+                Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+                Next: []dg.PathNode{
+                    {
+                        Path: dg.NewPathFieldId(1),
+                        Node: dg.NewNodeString(logid),
+                    },
+                },
+            },
+        },
+    }
+    return dom.Marshal(DynamicgoOptions)
+}
+```
+
+5. 最后，注册并启动二进制泛化 server
+
+```go
+func initServer() {
+    // init special server
+    addr, _ := net.ResolveTCPAddr("tcp", ":9009")
+    g := generic.BinaryThriftGeneric()
+    svr := genericserver.NewServer(new(ExampleValueServiceImpl), g, server.WithServiceAddr(addr))
+    go func() {
+        err := svr.Run()
+        if err != nil {
+            panic(err)
+        }
+    }()
+    time.Sleep(500 * time.Millisecond)
+}
+```
+
+## Client （Thrift Node + DOM）
+
+1. 初始化二进制泛化 client
+
+```go
+var cli genericclient.Client
+
+func initClient() {
+    g := generic.BinaryThriftGeneric()
+    genericCli, _ := genericclient.NewClient("destServiceName", g, client.WithHostPorts("127.0.0.1:9009"))
+    cli = genericCli
+}
+```
+
+2. 构造业务请求，基于 dynamicgo/generic.PathNode 进行
+
+```go
+// MakeExampleReqBinary make a Thrift-Binary-Encoding request using ExampleReq structured DOM
+// Except B, A and logid, which are reset everytime
+func MakeExampleReqBinary(B bool, A string, logid string) ([]byte, error) {
+    dom := dg.PathNode{
+        Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+        Next: []dg.PathNode{
+            {
+                Path: dg.NewPathFieldId(1),
+                Node: dg.NewNodeString("Hello"),
+            },
+            {
+                Path: dg.NewPathFieldId(2),
+                Node: dg.NewNodeInt32(1),
+            },
+            {
+                Path: dg.NewPathFieldId(3),
+                Node: dg.NewTypedNode(thrift.LIST, thrift.STRUCT, 0),
+                Next: []dg.PathNode{
+                    {
+                        Path: dg.NewPathIndex(0),
+                        Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+                        Next: []dg.PathNode{
+                            {
+                                Path: dg.NewPathFieldId(1),
+                                Node: dg.NewNodeString(A),
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                Path: dg.NewPathFieldId(4),
+                Node: dg.NewTypedNode(thrift.MAP, thrift.STRUCT, thrift.STRING),
+                Next: []dg.PathNode{
+                    {
+                        Path: dg.NewPathStrKey("a"),
+                        Node:  dg.NewTypedNode(thrift.STRUCT, 0, 0),
+                        Next: []dg.PathNode{
+                            {
+                                Path: dg.NewPathFieldId(1),
+                                Node: dg.NewNodeString(A),
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                Path: dg.NewPathFieldId(6),
+                Node: dg.NewTypedNode(thrift.LIST,  thrift.I64, 0),
+                Next: []dg.PathNode{
+                    {
+                        Path: dg.NewPathIndex(0),
+                        Node: dg.NewNodeInt64(1),
+                    },
+                    {
+                        Path: dg.NewPathIndex(1),
+                        Node: dg.NewNodeInt64(2),
+                    },
+                    {
+                        Path: dg.NewPathIndex(2),
+                        Node: dg.NewNodeInt64(3),
+                    },
+                },
+            },
+            {
+                Path: dg.NewPathFieldId(7),
+                Node: dg.NewNodeBool(B),
+            },
+            {
+                Path: dg.NewPathFieldId(255),
+                Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+                Next: []dg.PathNode{
+                    {
+                        Path: dg.NewPathFieldId(1),
+                        Node: dg.NewNodeString(logid),
+                    },
+                    {
+                        Path: dg.NewPathFieldId(2),
+                        Node: dg.NewNodeString("a.b.c"),
+                    },
+                    {
+                        Path: dg.NewPathFieldId(3),
+                        Node: dg.NewNodeString("127.0.0.1"),
+                    },
+                    {
+                        Path: dg.NewPathFieldId(4),
+                        Node: dg.NewNodeString("dynamicgo"),
+                    },
+                },
+            },
+        },
+    }
+    return dom.Marshal(DynamicgoOptions)
+}
+```
+
+3. 封装 thrift binary message，发起二进制泛化调用
+
+```go
+func TestThriftReflect(t *testing.T) {
+    log_id := strconv.Itoa(rand.Int())
+
+    // make a request body
+    req, err := MakeExampleReqBinary(true, ReqMsg, log_id)
+    test.Assert(t, err == nil, err)
+
+    // wrap request as thrift CALL message
+    buf, err := dt.WrapBinaryBody(req, Method, dt.CALL, 1, 0)
+    test.Assert(t, err == nil, err)
+
+    // generic call
+    out, err := cli.GenericCall(context.Background(), Method, buf, callopt.WithRPCTimeout(1*time.Second))
+    test.Assert(t, err == nil, err)
+
+    // unwrap REPLY message and get resp body
+    _, _, _, _, body, err := dt.UnwrapBinaryMessage(out.([]byte))
+    test.Assert(t, err == nil, err)
+
+    // biz logic...
+    ExampleClientHandler(t, body, log_id)
+}
+```
+
+4. ExampleClientHandler 为具体业务逻辑，这里可根据业务需要先将 response body 封装成 dynamicgo/generic.Node **或** PathNode (DOM），并基于其 API 进行业务逻辑处理
+
+```go
+// biz logic...
+func ExampleClientHandler_Node(response []byte, log_id string) error {
+    // make dynamicgo/generic.Node with body
+    resp := dg.NewNode(dt.STRUCT, response)
+
+    // check node values by Node APIs
+    msg, err := resp.Field(1).String()
+    if err != nil {
+        return err
+    }
+    if msg != RespMsg {
+        return errors.New("msg does not match")
+    }
+    require_field, err := resp.Field(2).String()
+    if err != nil {
+        return err
+    }
+    if require_field != ReqMsg {
+        return errors.New("require_field does not match")
+    }
+
+    return nil
+}
+
+func ExampleClientHandler_DOM(response []byte, log_id string) error {
+    // get dom from memory pool
+    root := clientRespPool.Get().(*dg.PathNode)
+    root.Node = dg.NewNode(dt.STRUCT, response)
+
+    // load **first layer** children
+    err := root.Load(false, DynamicgoOptions)
+    if err != nil {
+        return err
+    }
+    // spew.Dump(root) // -- only root.Next is set
+    // check node values by PathNode APIs
+    require_field2, err := root.Field(2, DynamicgoOptions).Node.String()
+    if err != nil {
+        return err
+    }
+    if require_field2 != ReqMsg {
+        return errors.New("require_field2 does not match")
+    }
+
+    // load **all layers** children
+    err = root.Load(true, DynamicgoOptions)
+    if err != nil {
+        return err
+    }
+    // spew.Dump(root) // -- every PathNode.Next will be set if it is a nesting-typed (LIST/SET/MAP/STRUCT)
+    // check node values by PathNode APIs
+    logid, err := root.Field(255, DynamicgoOptions).Field(1, DynamicgoOptions).Node.String()
+    if logid != log_id {
+        return errors.New("logid not match")
+    }
+
+    // recycle DOM
+    root.ResetValue()
+    clientRespPool.Put(root)
+    return nil
+}
+```
+
+注意，这里使用了**内存池化来进行 DOM 的取用**，可大幅提升 Thrift 反序列化性能。
+
+## 性能测试
+
+- [数据](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift)
+- 代码
+
+  - [Thrift reflect](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
+  - [Map](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/map_test.go)
+
+- 环境
+
+  - goos: darwin
+  - goarch: amd64
+  - cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
+
+- 测试结果
+
+小数据 (266B)
+
+```go
+BenchmarkThriftMapExample-16                    9633        109521 ns/op        7622 B/op        138 allocs/op
+BenchmarkThriftReflectExample_Node-16          14732         74397 ns/op        4416 B/op         76 allocs/op
+BenchmarkThriftReflectExample_DOM-16           14666         84119 ns/op        4435 B/op         76 allocs/op
+```
+
+中数据（1766B）
+
+```go
+BenchmarkThriftMapExample-16                    3484        310349 ns/op      179561 B/op       2250 allocs/op
+BenchmarkThriftReflectExample_Node-16          10813        108230 ns/op       45291 B/op        478 allocs/op
+BenchmarkThriftReflectExample_DOM-16           10000        115363 ns/op       45412 B/op        478 allocs/op
+```
+
+大数据（150KB）
+
+```go
+BenchmarkThriftMapExample-16                      57      18063936 ns/op    17491551 B/op     220247 allocs/op
+BenchmarkThriftReflectExample_Node-16            322       3671377 ns/op     4332477 B/op      50029 allocs/op
+BenchmarkThriftReflectExample_DOM-16             321       3719926 ns/op     4333837 B/op      50032 allocs/op
+```
+
+可以看到，随着数据量级不断增加，Thrift 反射相比 map 泛化的性能优势越来越大（可达 3 倍以上）
+
+## Tips:
+
+### 根据 IDL 快速构造 DOM
+
+可以使用 [generic.DescriptorToPathNode ](https://github.com/cloudwego/dynamicgo/tree/main/thrift/generic#func-descriptortopathnode)进行快速构造 struct DOM（**零值）**
+
+```go
+svc, err := thrift.NewDescriptorFromPath(context.Background(), IDLPATH)
+desc := svc.Functions()[METHODNAME].Request().Struct().FieldById(1).Type() // ex: service.METHOD(1: req)
+
+var dom = new(PathNode)
+err := DescriptorToPathNode(desc, dom, &Options{})
+```
+
+然后根据业务逻辑遍历 DOM 去修改特定字段
+
+```go
+for i, v := range dom.Next {
+    if v.Path.Type() == PathTypeFieldName && v.Path.Str() == "XXXX" {
+        dom.Next[i] = NewNodeString("YYYY")
+    }
+    ....
+}
+```
+
+### 根据 样本请求 快速构造 Node/Value
+
+假定业务可以通过某种方式获取到下游服务的一个正常请求的 thrift message 二进制数据，则可以将其作为全局常量（或定时异步更新），每次 [NewNode(](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#func-newnode))+[Set](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#func-node-setbypath)()更新特定业务字段来实现快速构造 Node
+
+```go
+var sampleRequestData []byte // get it by RPC requestX.Write() ...
+
+func GetNewRequest(idXX int, nameXX string) []byte {
+    n := NewNode(thrift.STRUCT, sampleRequestData)
+    n.SetMany([]PathNode{
+        {Path:NewPathFieldId(1), Node:NewNodeInt64(idXXX)},
+        {Path:NewPathFieldId(2), Node:NewNodeString(nameXX)},
+    }, opts)
+    data, err := n.Marshal(opts)
+    return data
+}
+```
+
+## 注意
+
+1. 当前 dynamicgo 仅支持 **thrift-binary** 编码方式
+2. 当前 二进制泛化 仅支持 **thrift-framed** 传输协议
+</script><h1>使用 Thrift 反射提升泛化调用性能</h1><div class=lead>使用 Thrift 反射提升泛化调用性能</div><header class=article-meta></header><h2 id=什么是-thrift-反射>什么是 Thrift 反射？</h2><p>一句话总结，<strong>类似于</strong> <a href=https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect>pb reflec</a>，<strong>不依赖静态代码对 Thrift 数据进行增删改查写</strong>。</p><p>反射即采用特定的泛型来描述运行时的任意数据，相比于静态的 struct 具有 <strong>增删查改灵活、不依赖于静态代码</strong> 的特点。当前 <a href=https://github.com/cloudwego/dynamicgo>dynamicgo</a> 实现了一套 thrift binary 协议的反射 API，按使用场景大致分为 Thrift Value/Node 和 Thrift DOM 两种。</p><h2 id=thrift-valuenode>Thrift Value/Node</h2><p>用于 rpc 数据包中<strong>较少量字段的增删改查</strong>。对于给定的路径（field id/field name/map key/list index），基于编码带有的数据类型<strong>跳过字节流中不必要的数据节点</strong>，<strong>定位到所需数据在字节流的起止区间</strong>进行处理。具体使用场景包括 <strong>敏感字段擦除、数据包裁剪 、协议转换</strong>等。dynamicgo 提供了 <a href=https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-value>thrift/generic.Value</a> 和 <a href=https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-node>thrift/generic.Node</a> 两种封装：前者可以支持基于 FieldName 进行查找，但是需要绑定动态类型描述 TypeDescriptor；后者不支持基于 FieldName（但支持 FieldID）进行查找，因此也不需要动态类型描述。</p><h2 id=thrift-dom>Thrift DOM</h2><p>通过 <strong>文档对象树模型</strong>来<strong>描述全量反序列化的 Thrift 数据</strong>。由于 Thrift 协议本身具有自描述能力，我们可以将其反序列化到一种特定的树型结构中，来进行更为复杂的<strong>容器遍历、字段位移</strong>等操作。具体业务场景包括 BFF 服务中的 <strong>DSL 映射、数据包合并</strong>等。dynamicgo 提供了 <a href=https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode>thrift/generic.PathNode</a> 的封装，可以不需要绑定动态类型描述来处理任意复杂度的 thrift 数据。</p><h2 id=为什么要用-thrift-泛型-替代-kitex-mapjson-泛化调用>为什么要用 Thrift 泛型 替代 Kitex Map/JSON 泛化调用？</h2><p>一句话总结：<strong>性能更好</strong>。</p><p>Thrift 泛型需求一般来源于 <strong>rpc 泛化调用、http&lt;>rpc 协议转换</strong>等中心化 API 网关\BFF 场景，往往具有高性能的要求。但是 Kitex Map/JSON 泛化调用在当前 map+interface 模式下实现，由于其不可避免的带来大量的碎片化堆内存分配，其性能远差于正常代码生成模式的 kitex rpc 服务。相比之下，无论是 Thrift Value 高效的 skip 算法，还是 Thrift DOM 精心设计的内存结构，都能有效避免了大量的运行时的内存分配及中间编解码转换。详细设计与实现见 <a href=https://github.com/cloudwego/dynamicgo/blob/main/introduction.md>introduction.md</a>。</p><p>具体对比结果见下文【测试数据】部分。</p><h2 id=使用示例>使用示例</h2><p>下面将演示如何基于 <strong>kitex-二进制泛化 +dynamicgo</strong> 进行泛化调用。注不熟悉的 kitex-二进制泛化同学可以先参阅<a href=/zh/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic>泛化调用文档</a>。</p><p>完整示例：</p><ul><li><a href=https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go>代码</a></li><li><a href=https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift>IDL</a></li></ul><h2 id=server-thrift-value--dom>Server （Thrift Value + DOM）</h2><ol><li>首先实现一个 kitex/generic/Server 接口的类型，内部将 thrift-binary message 拆包为 methodName，seqID， request body</li></ol><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// ExampleValueServiceImpl ...</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>ExampleValueServiceImpl</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#000;font-weight:700>{}</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#8f5902;font-style:italic>// GenericCall ...</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -477,4 +956,4 @@
 </span></span></span></code></pre></div><h2 id=注意>注意</h2><ol><li>当前 dynamicgo 仅支持 <strong>thrift-binary</strong> 编码方式</li><li>当前 二进制泛化 仅支持 <strong>thrift-framed</strong> 传输协议</li></ol><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 May 19, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/a7a343ca0ce434586b1814f3fddc70efb02b010a>chore: upgrade typos (#1332) (a7a343ca)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

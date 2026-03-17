@@ -4,7 +4,7 @@ type Hertz struct { *route.Engine // 用于接收信号以实现优雅退出 sig
 type Hertz struct { *route.Engine // 用于接收信号以实现优雅退出 signalWaiter func (err chan error) error } route.Engine 为 server.Hertz 的重要组成部分，Engine 的定义位于 Engine。
 配置 配置项 默认值 说明 WithTransport network.NewTransporter 更换底层 transport WithHostPorts :8888 指定监听的地址和端口 WithKeepAliveTimeout 1min tcp 长连接保活时间，一般情况下不用修改，更应该关注 idleTimeout WithReadTimeout 3min 底层读取数据超时时间 WithIdleTimeout 3min 长连接请求链接空闲超时时间 WithMaxRequestBodySize 4 _ 1024 _ 1024 配置最大的请求体大小 WithRedirectTrailingSlash true 自动根据末尾的 / 转发，例如：如果 router 只有 /foo/，那么 /foo 会重定向到 /foo/ ；如果只有 /foo，那么 /foo/ 会重定向到 /foo WithRemoveExtraSlash false RemoveExtraSlash 当有额外的 / 时也可以当作参数。如：user/:name，如果开启该选项 user//xiaoming 也可匹配上参数 WithUnescapePathValues true 如果开启，请求路径会被自动转义（eg. ‘%2F’ -> ‘/’）。如果 UseRawPath 为 false（默认情况），则 UnescapePathValues 实际上为 true，因为 .URI().Path() 将被使用，它已经是转义后的。设置该参数为 false，需要配合 WithUseRawPath(true) WithUseRawPath false 如果开启，会使用原始 path 进行路由匹配 WithHandleMethodNotAllowed false 如果开启，当当前路径不能被匹配上时，server 会去检查其他方法是否注册了当前路径的路由，如果存在则会响应"Method Not Allowed"，并返回状态码 405; 如果没有，则会用 NotFound 的 handler 进行处理 WithDisablePreParseMultipartForm false 如果开启，则不会预处理 multipart form。可以通过 ctx.Request.Body() 获取到 body 后由用户处理 WithStreamBody false 如果开启，则会使用流式处理 body WithNetwork “tcp” 设置网络协议，可选：tcp，udp，unix（unix domain socket），默认为 tcp WithExitWaitTime 5s 设置优雅退出时间。Server 会停止建立新的连接，并对关闭后的每一个请求设置 Connection: Close 的 header，当到达设定的时间关闭 Server。当所有连接已经关闭时，Server 可以提前关闭 WithTLS nil 配置 server tls 能力，详情可见 TLS WithListenConfig nil 设置监听器配置，可用于设置是否允许 reuse port 等 WithALPN false 是否开启 ALPN WithTracer []interface{}{} 注入 tracer 实现，如不注入 Tracer 实现，默认关闭 WithTraceLevel LevelDetailed 设置 trace level WithWriteTimeout 无限长 写入数据超时时间 WithRedirectFixedPath false 如果开启，当当前请求路径不能匹配上时，server 会尝试修复请求路径并重新进行匹配，如果成功匹配并且为 GET 请求则会返回状态码 301 进行重定向，其他请求方式返回 308 进行重定向 WithBasePath / 设置基本路径，前缀和后缀必须为 / WithMaxKeepBodySize 4 _ 1024 _ 1024 设置回收时保留的请求体和响应体的最大大小。单位：字节 WithGetOnly false 如果开启则只接受 GET 请求 WithKeepAlive true 如果开启则使用 HTTP 长连接 WithAltTransport network.NewTransporter 设置备用 transport WithH2C false 设置是否开启 H2C WithReadBufferSize 4 * 1024 设置读缓冲区大小 WithRegistry registry.NoopRegistry, nil 设置注册中心配置，服务注册信息 WithAutoReloadRender false, 0 设置自动重载渲染配置 WithDisablePrintRoute false 设置是否禁用 debugPrintRoute WithOnAccept nil 设置在 netpoll 中当一个连接被接受但不能接收数据时的回调函数，在 go net 中在转换 TLS 连接之前被调用 WithOnConnect nil 设置 onConnect 函数。它可以接收来自 netpoll 连接的数据。在 go net 中，它将在转换 TLS 连接后被调用 WithDisableHeaderNamesNormalizing false 设置是否禁用 Request 和 Response Header 名字的规范化 (首字母和破折号后第一个字母大写) Server Connection 数量限制:'><meta itemprop=datePublished content="2023-08-18T00:00:00+00:00"><meta itemprop=dateModified content="2025-09-08T09:23:15+08:00"><meta itemprop=wordCount content="1281"><meta name=twitter:card content="summary"><meta name=twitter:title content="Engine"><meta name=twitter:description content='server.Hertz 是 Hertz 的核心类型，它由 route.Engine 以及 signalWaiter 组成，Hertz 服务器的启动、路由注册、中间件注册以及退出等重要方法均包含在 server.Hertz 中。以下是 server.Hertz 的定义：
 type Hertz struct { *route.Engine // 用于接收信号以实现优雅退出 signalWaiter func (err chan error) error } route.Engine 为 server.Hertz 的重要组成部分，Engine 的定义位于 Engine。
-配置 配置项 默认值 说明 WithTransport network.NewTransporter 更换底层 transport WithHostPorts :8888 指定监听的地址和端口 WithKeepAliveTimeout 1min tcp 长连接保活时间，一般情况下不用修改，更应该关注 idleTimeout WithReadTimeout 3min 底层读取数据超时时间 WithIdleTimeout 3min 长连接请求链接空闲超时时间 WithMaxRequestBodySize 4 _ 1024 _ 1024 配置最大的请求体大小 WithRedirectTrailingSlash true 自动根据末尾的 / 转发，例如：如果 router 只有 /foo/，那么 /foo 会重定向到 /foo/ ；如果只有 /foo，那么 /foo/ 会重定向到 /foo WithRemoveExtraSlash false RemoveExtraSlash 当有额外的 / 时也可以当作参数。如：user/:name，如果开启该选项 user//xiaoming 也可匹配上参数 WithUnescapePathValues true 如果开启，请求路径会被自动转义（eg. ‘%2F’ -> ‘/’）。如果 UseRawPath 为 false（默认情况），则 UnescapePathValues 实际上为 true，因为 .URI().Path() 将被使用，它已经是转义后的。设置该参数为 false，需要配合 WithUseRawPath(true) WithUseRawPath false 如果开启，会使用原始 path 进行路由匹配 WithHandleMethodNotAllowed false 如果开启，当当前路径不能被匹配上时，server 会去检查其他方法是否注册了当前路径的路由，如果存在则会响应"Method Not Allowed"，并返回状态码 405; 如果没有，则会用 NotFound 的 handler 进行处理 WithDisablePreParseMultipartForm false 如果开启，则不会预处理 multipart form。可以通过 ctx.Request.Body() 获取到 body 后由用户处理 WithStreamBody false 如果开启，则会使用流式处理 body WithNetwork “tcp” 设置网络协议，可选：tcp，udp，unix（unix domain socket），默认为 tcp WithExitWaitTime 5s 设置优雅退出时间。Server 会停止建立新的连接，并对关闭后的每一个请求设置 Connection: Close 的 header，当到达设定的时间关闭 Server。当所有连接已经关闭时，Server 可以提前关闭 WithTLS nil 配置 server tls 能力，详情可见 TLS WithListenConfig nil 设置监听器配置，可用于设置是否允许 reuse port 等 WithALPN false 是否开启 ALPN WithTracer []interface{}{} 注入 tracer 实现，如不注入 Tracer 实现，默认关闭 WithTraceLevel LevelDetailed 设置 trace level WithWriteTimeout 无限长 写入数据超时时间 WithRedirectFixedPath false 如果开启，当当前请求路径不能匹配上时，server 会尝试修复请求路径并重新进行匹配，如果成功匹配并且为 GET 请求则会返回状态码 301 进行重定向，其他请求方式返回 308 进行重定向 WithBasePath / 设置基本路径，前缀和后缀必须为 / WithMaxKeepBodySize 4 _ 1024 _ 1024 设置回收时保留的请求体和响应体的最大大小。单位：字节 WithGetOnly false 如果开启则只接受 GET 请求 WithKeepAlive true 如果开启则使用 HTTP 长连接 WithAltTransport network.NewTransporter 设置备用 transport WithH2C false 设置是否开启 H2C WithReadBufferSize 4 * 1024 设置读缓冲区大小 WithRegistry registry.NoopRegistry, nil 设置注册中心配置，服务注册信息 WithAutoReloadRender false, 0 设置自动重载渲染配置 WithDisablePrintRoute false 设置是否禁用 debugPrintRoute WithOnAccept nil 设置在 netpoll 中当一个连接被接受但不能接收数据时的回调函数，在 go net 中在转换 TLS 连接之前被调用 WithOnConnect nil 设置 onConnect 函数。它可以接收来自 netpoll 连接的数据。在 go net 中，它将在转换 TLS 连接后被调用 WithDisableHeaderNamesNormalizing false 设置是否禁用 Request 和 Response Header 名字的规范化 (首字母和破折号后第一个字母大写) Server Connection 数量限制:'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+配置 配置项 默认值 说明 WithTransport network.NewTransporter 更换底层 transport WithHostPorts :8888 指定监听的地址和端口 WithKeepAliveTimeout 1min tcp 长连接保活时间，一般情况下不用修改，更应该关注 idleTimeout WithReadTimeout 3min 底层读取数据超时时间 WithIdleTimeout 3min 长连接请求链接空闲超时时间 WithMaxRequestBodySize 4 _ 1024 _ 1024 配置最大的请求体大小 WithRedirectTrailingSlash true 自动根据末尾的 / 转发，例如：如果 router 只有 /foo/，那么 /foo 会重定向到 /foo/ ；如果只有 /foo，那么 /foo/ 会重定向到 /foo WithRemoveExtraSlash false RemoveExtraSlash 当有额外的 / 时也可以当作参数。如：user/:name，如果开启该选项 user//xiaoming 也可匹配上参数 WithUnescapePathValues true 如果开启，请求路径会被自动转义（eg. ‘%2F’ -> ‘/’）。如果 UseRawPath 为 false（默认情况），则 UnescapePathValues 实际上为 true，因为 .URI().Path() 将被使用，它已经是转义后的。设置该参数为 false，需要配合 WithUseRawPath(true) WithUseRawPath false 如果开启，会使用原始 path 进行路由匹配 WithHandleMethodNotAllowed false 如果开启，当当前路径不能被匹配上时，server 会去检查其他方法是否注册了当前路径的路由，如果存在则会响应"Method Not Allowed"，并返回状态码 405; 如果没有，则会用 NotFound 的 handler 进行处理 WithDisablePreParseMultipartForm false 如果开启，则不会预处理 multipart form。可以通过 ctx.Request.Body() 获取到 body 后由用户处理 WithStreamBody false 如果开启，则会使用流式处理 body WithNetwork “tcp” 设置网络协议，可选：tcp，udp，unix（unix domain socket），默认为 tcp WithExitWaitTime 5s 设置优雅退出时间。Server 会停止建立新的连接，并对关闭后的每一个请求设置 Connection: Close 的 header，当到达设定的时间关闭 Server。当所有连接已经关闭时，Server 可以提前关闭 WithTLS nil 配置 server tls 能力，详情可见 TLS WithListenConfig nil 设置监听器配置，可用于设置是否允许 reuse port 等 WithALPN false 是否开启 ALPN WithTracer []interface{}{} 注入 tracer 实现，如不注入 Tracer 实现，默认关闭 WithTraceLevel LevelDetailed 设置 trace level WithWriteTimeout 无限长 写入数据超时时间 WithRedirectFixedPath false 如果开启，当当前请求路径不能匹配上时，server 会尝试修复请求路径并重新进行匹配，如果成功匹配并且为 GET 请求则会返回状态码 301 进行重定向，其他请求方式返回 308 进行重定向 WithBasePath / 设置基本路径，前缀和后缀必须为 / WithMaxKeepBodySize 4 _ 1024 _ 1024 设置回收时保留的请求体和响应体的最大大小。单位：字节 WithGetOnly false 如果开启则只接受 GET 请求 WithKeepAlive true 如果开启则使用 HTTP 长连接 WithAltTransport network.NewTransporter 设置备用 transport WithH2C false 设置是否开启 H2C WithReadBufferSize 4 * 1024 设置读缓冲区大小 WithRegistry registry.NoopRegistry, nil 设置注册中心配置，服务注册信息 WithAutoReloadRender false, 0 设置自动重载渲染配置 WithDisablePrintRoute false 设置是否禁用 debugPrintRoute WithOnAccept nil 设置在 netpoll 中当一个连接被接受但不能接收数据时的回调函数，在 go net 中在转换 TLS 连接之前被调用 WithOnConnect nil 设置 onConnect 函数。它可以接收来自 netpoll 连接的数据。在 go net 中，它将在转换 TLS 连接后被调用 WithDisableHeaderNamesNormalizing false 设置是否禁用 Request 和 Response Header 名字的规范化 (首字母和破折号后第一个字母大写) Server Connection 数量限制:'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -116,7 +116,629 @@ type Hertz struct { *route.Engine // 用于接收信号以实现优雅退出 sig
 <label for=m-zhdocshertzreferenceversion-check><a href=/zh/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocshertzreferenceversion><span>版本说明</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/hertz/tutorials/basic-feature/engine.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/hertz/tutorials/basic-feature?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Engine" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#配置>配置</a></li><li><a href=#初始化服务>初始化服务</a><ul><li><a href=#default>Default</a></li><li><a href=#new>New</a></li></ul></li><li><a href=#服务运行与退出>服务运行与退出</a><ul><li><a href=#spin>Spin</a></li><li><a href=#run>Run</a></li><li><a href=#setcustomsignalwaiter>SetCustomSignalWaiter</a></li></ul></li><li><a href=#中间件>中间件</a><ul><li><a href=#use>Use</a></li></ul></li><li><a href=#流式处理>流式处理</a><ul><li><a href=#流式读>流式读</a></li><li><a href=#流式写>流式写</a></li></ul></li><li><a href=#注册自定义协议>注册自定义协议</a></li><li><a href=#setclientipfunc>SetClientIPFunc</a></li><li><a href=#setformvaluefunc>SetFormValueFunc</a></li><li><a href=#钩子函数>钩子函数</a></li><li><a href=#panic-处理函数>Panic 处理函数</a></li><li><a href=#continuehandler>ContinueHandler</a></li><li><a href=#渲染-template>渲染 template</a></li><li><a href=#noroute-与-nomethod-使用>NoRoute 与 NoMethod 使用</a></li><li><a href=#获取路由信息>获取路由信息</a><ul><li><a href=#routes>Routes</a></li></ul></li><li><a href=#底层网络库>底层网络库</a><ul><li><a href=#gettransportername>GetTransporterName</a></li><li><a href=#settransporter>SetTransporter</a></li></ul></li><li><a href=#链路追踪>链路追踪</a></li><li><a href=#hijack>Hijack</a><ul><li><a href=#nohijackconnpool>NoHijackConnPool</a></li><li><a href=#hijackconnhandle>HijackConnHandle</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/>基本特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/engine/>Engine</a></li></ol></nav><div class=td-content><h1>Engine</h1><header class=article-meta></header><p><code>server.Hertz</code> 是 <code>Hertz</code> 的核心类型，它由 <code>route.Engine</code> 以及 <code>signalWaiter</code> 组成，<code>Hertz</code> 服务器的启动、路由注册、中间件注册以及退出等重要方法均包含在 <code>server.Hertz</code> 中。以下是 <code>server.Hertz</code> 的定义：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Hertz</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#配置>配置</a></li><li><a href=#初始化服务>初始化服务</a><ul><li><a href=#default>Default</a></li><li><a href=#new>New</a></li></ul></li><li><a href=#服务运行与退出>服务运行与退出</a><ul><li><a href=#spin>Spin</a></li><li><a href=#run>Run</a></li><li><a href=#setcustomsignalwaiter>SetCustomSignalWaiter</a></li></ul></li><li><a href=#中间件>中间件</a><ul><li><a href=#use>Use</a></li></ul></li><li><a href=#流式处理>流式处理</a><ul><li><a href=#流式读>流式读</a></li><li><a href=#流式写>流式写</a></li></ul></li><li><a href=#注册自定义协议>注册自定义协议</a></li><li><a href=#setclientipfunc>SetClientIPFunc</a></li><li><a href=#setformvaluefunc>SetFormValueFunc</a></li><li><a href=#钩子函数>钩子函数</a></li><li><a href=#panic-处理函数>Panic 处理函数</a></li><li><a href=#continuehandler>ContinueHandler</a></li><li><a href=#渲染-template>渲染 template</a></li><li><a href=#noroute-与-nomethod-使用>NoRoute 与 NoMethod 使用</a></li><li><a href=#获取路由信息>获取路由信息</a><ul><li><a href=#routes>Routes</a></li></ul></li><li><a href=#底层网络库>底层网络库</a><ul><li><a href=#gettransportername>GetTransporterName</a></li><li><a href=#settransporter>SetTransporter</a></li></ul></li><li><a href=#链路追踪>链路追踪</a></li><li><a href=#hijack>Hijack</a><ul><li><a href=#nohijackconnpool>NoHijackConnPool</a></li><li><a href=#hijackconnhandle>HijackConnHandle</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/>基本特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/engine/>Engine</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=Engine data-url=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/engine/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+`server.Hertz` 是 `Hertz` 的核心类型，它由 `route.Engine` 以及 `signalWaiter` 组成，`Hertz` 服务器的启动、路由注册、中间件注册以及退出等重要方法均包含在 `server.Hertz` 中。以下是 `server.Hertz` 的定义：
+
+```go
+type Hertz struct {
+    *route.Engine
+    // 用于接收信号以实现优雅退出
+    signalWaiter func (err chan error) error
+}
+```
+
+`route.Engine` 为 `server.Hertz` 的重要组成部分，`Engine` 的定义位于 [Engine](https://github.com/cloudwego/hertz/blob/main/pkg/route/engine.go)。
+
+## 配置
+
+| 配置项                            | 默认值                     | 说明                                                                                                                                                                                                                            |
+| :-------------------------------- | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| WithTransport                     | network.NewTransporter     | 更换底层 transport                                                                                                                                                                                                              |
+| WithHostPorts                     | `:8888`                    | 指定监听的地址和端口                                                                                                                                                                                                            |
+| WithKeepAliveTimeout              | 1min                       | tcp 长连接保活时间，一般情况下不用修改，更应该关注 idleTimeout                                                                                                                                                                  |
+| WithReadTimeout                   | 3min                       | 底层读取数据超时时间                                                                                                                                                                                                            |
+| WithIdleTimeout                   | 3min                       | 长连接请求链接空闲超时时间                                                                                                                                                                                                      |
+| WithMaxRequestBodySize            | 4 _ 1024 _ 1024            | 配置最大的请求体大小                                                                                                                                                                                                            |
+| WithRedirectTrailingSlash         | true                       | 自动根据末尾的 / 转发，例如：如果 router 只有 /foo/，那么 /foo 会重定向到 /foo/ ；如果只有 /foo，那么 /foo/ 会重定向到 /foo                                                                                                     |
+| WithRemoveExtraSlash              | false                      | RemoveExtraSlash 当有额外的 / 时也可以当作参数。如：user/:name，如果开启该选项 user//xiaoming 也可匹配上参数                                                                                                                    |
+| WithUnescapePathValues            | true                       | 如果开启，请求路径会被自动转义（eg. '%2F' -> '/'）。如果 UseRawPath 为 false（默认情况），则 UnescapePathValues 实际上为 true，因为 .URI().Path() 将被使用，它已经是转义后的。设置该参数为 false，需要配合 WithUseRawPath(true) |
+| WithUseRawPath                    | false                      | 如果开启，会使用原始 path 进行路由匹配                                                                                                                                                                                          |
+| WithHandleMethodNotAllowed        | false                      | 如果开启，当当前路径不能被匹配上时，server 会去检查其他方法是否注册了当前路径的路由，如果存在则会响应"Method Not Allowed"，并返回状态码 405; 如果没有，则会用 NotFound 的 handler 进行处理                                      |
+| WithDisablePreParseMultipartForm  | false                      | 如果开启，则不会预处理 multipart form。可以通过 ctx.Request.Body() 获取到 body 后由用户处理                                                                                                                                     |
+| WithStreamBody                    | false                      | 如果开启，则会使用流式处理 body                                                                                                                                                                                                 |
+| WithNetwork                       | "tcp"                      | 设置网络协议，可选：tcp，udp，unix（unix domain socket），默认为 tcp                                                                                                                                                            |
+| WithExitWaitTime                  | 5s                         | 设置优雅退出时间。Server 会停止建立新的连接，并对关闭后的每一个请求设置 Connection: Close 的 header，当到达设定的时间关闭 Server。当所有连接已经关闭时，Server 可以提前关闭                                                     |
+| WithTLS                           | nil                        | 配置 server tls 能力，详情可见 [TLS](/zh/docs/hertz/tutorials/basic-feature/tls/)                                                                                                                                               |
+| WithListenConfig                  | nil                        | 设置监听器配置，可用于设置是否允许 reuse port 等                                                                                                                                                                                |
+| WithALPN                          | false                      | 是否开启 ALPN                                                                                                                                                                                                                   |
+| WithTracer                        | []interface{}{}            | 注入 tracer 实现，如不注入 Tracer 实现，默认关闭                                                                                                                                                                                |
+| WithTraceLevel                    | LevelDetailed              | 设置 trace level                                                                                                                                                                                                                |
+| WithWriteTimeout                  | 无限长                     | 写入数据超时时间                                                                                                                                                                                                                |
+| WithRedirectFixedPath             | false                      | 如果开启，当当前请求路径不能匹配上时，server 会尝试修复请求路径并重新进行匹配，如果成功匹配并且为 GET 请求则会返回状态码 301 进行重定向，其他请求方式返回 308 进行重定向                                                        |
+| WithBasePath                      | `/`                        | 设置基本路径，前缀和后缀必须为 `/`                                                                                                                                                                                              |
+| WithMaxKeepBodySize               | 4 _ 1024 _ 1024            | 设置回收时保留的请求体和响应体的最大大小。单位：字节                                                                                                                                                                            |
+| WithGetOnly                       | false                      | 如果开启则只接受 GET 请求                                                                                                                                                                                                       |
+| WithKeepAlive                     | true                       | 如果开启则使用 HTTP 长连接                                                                                                                                                                                                      |
+| WithAltTransport                  | network.NewTransporter     | 设置备用 transport                                                                                                                                                                                                              |
+| WithH2C                           | false                      | 设置是否开启 H2C                                                                                                                                                                                                                |
+| WithReadBufferSize                | 4 \* 1024                  | 设置读缓冲区大小                                                                                                                                                                                                                |
+| WithRegistry                      | registry.NoopRegistry, nil | 设置注册中心配置，服务注册信息                                                                                                                                                                                                  |
+| WithAutoReloadRender              | false, 0                   | 设置自动重载渲染配置                                                                                                                                                                                                            |
+| WithDisablePrintRoute             | false                      | 设置是否禁用 debugPrintRoute                                                                                                                                                                                                    |
+| WithOnAccept                      | nil                        | 设置在 netpoll 中当一个连接被接受但不能接收数据时的回调函数，在 go net 中在转换 TLS 连接之前被调用                                                                                                                              |
+| WithOnConnect                     | nil                        | 设置 onConnect 函数。它可以接收来自 netpoll 连接的数据。在 go net 中，它将在转换 TLS 连接后被调用                                                                                                                               |
+| WithDisableHeaderNamesNormalizing | false                      | 设置是否禁用 Request 和 Response Header 名字的规范化 (首字母和破折号后第一个字母大写)                                                                                                                                           |
+
+Server Connection 数量限制:
+
+- 如果是使用标准网络库，无此限制
+- 如果是使用 netpoll，最大连接数为 10000
+  （这个是 netpoll 底层使用的 [gopool](https://github.com/bytedance/gopkg/blob/b9c1c36b51a6837cef4c2223e11522e3a647460c/util/gopool/gopool.go#L46)
+  ）控制的，修改方式也很简单，调用 gopool 提供的函数即可：`gopool.SetCap(xxx)`(main.go 中调用一次即可)。
+
+Server 侧的配置项均在初始化 Server 时采用 `server.WithXXX` 的方式，如：
+
+```go
+func main() {
+	h := server.New(server.WithXXXX())
+	...
+}
+```
+
+## 初始化服务
+
+```go
+func Default(opts ...config.Option) *Hertz
+func New(opts ...config.Option) *Hertz
+```
+
+### Default
+
+`Default` 用于初始化服务，默认使用了 `Recovery` 中间件以保证服务在运行时不会因为 `panic` 导致服务崩溃。
+
+函数签名：
+
+```go
+func Default(opts ...config.Option) *Hertz
+```
+
+示例代码：
+
+```go
+func main() {
+    h := server.Default()
+    h.Spin()
+}
+```
+
+### New
+
+`New` 用于初始化服务，没有使用默认的 `Recovery` 中间件。
+
+函数签名：
+
+```go
+func New(opts ...config.Option) *Hertz
+```
+
+示例代码：
+
+```go
+func main() {
+    h := server.New()
+    h.Spin()
+}
+```
+
+## 服务运行与退出
+
+```go
+func (h *Hertz) Spin()
+func (engine *Engine) Run() (err error)
+func (h *Hertz) SetCustomSignalWaiter(f func(err chan error) error)
+```
+
+### Spin
+
+`Spin` 函数用于运行 Hertz 服务器，接收到退出信号后可退出服务。
+
+该函数支持服务的优雅退出，优雅退出的详细内容请看 [优雅退出](/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/)。
+
+在使用 [服务注册发现](/zh/docs/hertz/tutorials/third-party/service_discovery/) 的功能时，`Spin` 会在服务启动时将服务注册进入注册中心，并使用 `signalWaiter` 监测服务异常。
+
+函数签名：
+
+```go
+func (h *Hertz) Spin()
+```
+
+示例代码：
+
+```go
+func main() {
+    h := server.Default()
+    h.Spin()
+}
+```
+
+### Run
+
+`Run` 函数用于运行 Hertz 服务器，接收到退出信号后可退出服务。
+
+该函数不支持服务的优雅退出，除非有**特殊**需求，不然一般使用 [Spin](#spin) 函数用于运行服务。
+
+函数签名：
+
+```go
+func (engine *Engine) Run() (err error)
+```
+
+示例代码：
+
+```go
+func main() {
+    h := server.Default()
+    if err := h.Run(); err != nil {
+        // ...
+    	panic(err)
+    }
+}
+```
+
+### SetCustomSignalWaiter
+
+`SetCustomSignalWaiter` 函数用于自定义服务器接收信号后的处理函数，若没有设置自定义函数，Hertz 使用 `waitSignal` 函数作为信号处理的默认实现方式，详细内容请看 [优雅退出](/zh/docs/hertz/tutorials/basic-feature/graceful-shutdown/)。
+
+函数签名：
+
+```go
+func (h *Hertz) SetCustomSignalWaiter(f func(err chan error) error)
+```
+
+示例代码：
+
+```go
+func main() {
+	h := server.New()
+	h.SetCustomSignalWaiter(func(err chan error) error {
+		return nil
+	})
+	h.Spin()
+}
+```
+
+## 中间件
+
+```go
+func (engine *Engine) Use(middleware ...app.HandlerFunc) IRoutes
+```
+
+### Use
+
+`Use` 函数用于将中间件注册进入路由。
+
+Hertz 支持用户自定义中间件，Hertz 已经实现了一些常用的中间件，详情见 [hertz-contrib](https://github.com/hertz-contrib)。
+
+Hertz 支持的中间件的使用方法包括**全局注册**、**路由组**级别和**单一路由**级别的注册，详情见 [服务端中间件](/zh/docs/hertz/tutorials/basic-feature/middleware/#服务端中间件)。
+
+`Use` 函数中 `middleware` 的形参必须为 `app.HandlerFunc` 的 http 处理函数：
+
+```go
+type HandlerFunc func (ctx context.Context, c *app.RequestContext)
+```
+
+函数签名：
+
+```go
+func (engine *Engine) Use(middleware ...app.HandlerFunc) IRoutes
+```
+
+示例代码：
+
+```go
+func main() {
+    h := server.New()
+    // 将内置的 Recovery 中间件注册进入路由
+    h.Use(recovery.Recovery())
+    // 使用自定义的中间件
+    h.Use(exampleMiddleware())
+}
+
+func exampleMiddleware() app.HandlerFunc {
+    return func(ctx context.Context, c *app.RequestContext) {
+        // 在 Next 中的函数执行之前打印日志
+        hlog.Info("print before...")
+        // 使用 Next 使得路由匹配的函数执行
+        c.Next(ctx)
+        // 在 Next 中的函数执行之后打印日志
+        hlog.Info("print after...")
+    }
+}
+```
+
+## 流式处理
+
+Hertz 支持 Server 的流式处理，包括流式读和流式写。
+
+> 注意：由于 netpoll 和 go net 触发模式不同，netpoll 流式为“伪”流式（由于 LT 触发，会由网络库将数据读取到网络库的 buffer 中），在大包的场景下（如：上传文件等）可能会有内存问题，推荐使用 go net。
+
+### 流式读
+
+Hertz Server 支持流式读取请求内容。
+
+示例代码：
+
+```go
+func main() {
+	h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true), server.WithTransport(standard.NewTransporter))
+
+	h.POST("/bodyStream", handler)
+
+	h.Spin()
+}
+
+func handler(ctx context.Context, c *app.RequestContext) {
+	// Acquire body streaming
+	bodyStream := c.RequestBodyStream()
+	// Read half of body bytes
+	p := make([]byte, c.Request.Header.ContentLength()/2)
+	r, err := bodyStream.Read(p)
+	if err != nil {
+		panic(err)
+	}
+	left, _ := ioutil.ReadAll(bodyStream)
+	c.String(consts.StatusOK, "bytes streaming_read: %d\nbytes left: %d\n", r, len(left))
+}
+```
+
+### 流式写
+
+Hertz Server 支持流式写入响应。
+
+提供了两种方式：
+
+1. 用户在 handler 中通过 `ctx.SetBodyStream` 函数传入一个 `io.Reader`，然后按与示例代码（利用 channel 控制数据分块及读写顺序）类似的方式分块读写数据。**注意，数据需异步写入。**
+
+   若用户事先知道传输数据的总长度，可以在 `ctx.SetBodyStream` 函数中传入该长度进行流式写，示例代码如 `/streamWrite1`。
+
+   若用户事先不知道传输数据的总长度，可以在 `ctx.SetBodyStream` 函数中传入 -1 以 `Transfer-Encoding: chunked` 的方式进行流式写，示例代码如 `/streamWrite2`。
+
+   示例代码：
+
+   ```go
+   func main() {
+       h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true), server.WithTransport(standard.NewTransporter))
+
+       h.GET("/streamWrite1", func(ctx context.Context, c *app.RequestContext) {
+           rw := newChunkReader()
+           line := []byte("line\r\n")
+           c.SetBodyStream(rw, 500*len(line))
+
+           go func() {
+               for i := 1; i <= 500; i++ {
+                   // For each streaming_write, the upload_file prints
+                   rw.Write(line)
+                   fmt.Println(i)
+                   time.Sleep(10 * time.Millisecond)
+               }
+               rw.Close()
+           }()
+
+           go func() {
+               <-c.Finished()
+               fmt.Println("request process end")
+           }()
+       })
+
+       h.GET("/streamWrite2", func(ctx context.Context, c *app.RequestContext) {
+           rw := newChunkReader()
+           // Content-Length may be negative:
+           // -1 means Transfer-Encoding: chunked.
+           c.SetBodyStream(rw, -1)
+
+           go func() {
+               for i := 1; i < 1000; i++ {
+                   // For each streaming_write, the upload_file prints
+                   rw.Write([]byte(fmt.Sprintf("===%d===\n", i)))
+                   fmt.Println(i)
+                   time.Sleep(100 * time.Millisecond)
+               }
+               rw.Close()
+           }()
+
+           go func() {
+               <-c.Finished()
+               fmt.Println("request process end")
+           }()
+       })
+
+       h.Spin()
+   }
+
+   type ChunkReader struct {
+       rw  bytes.Buffer
+       w2r chan struct{}
+       r2w chan struct{}
+   }
+
+   func newChunkReader() *ChunkReader {
+       var rw bytes.Buffer
+       w2r := make(chan struct{})
+       r2w := make(chan struct{})
+       cr := &ChunkReader{rw, w2r, r2w}
+       return cr
+   }
+
+   var closeOnce = new(sync.Once)
+
+   func (cr *ChunkReader) Read(p []byte) (n int, err error) {
+       for {
+           _, ok := <-cr.w2r
+           if !ok {
+               closeOnce.Do(func() {
+                   close(cr.r2w)
+               })
+               n, err = cr.rw.Read(p)
+               return
+           }
+
+           n, err = cr.rw.Read(p)
+
+           cr.r2w <- struct{}{}
+
+           if n == 0 {
+               continue
+           }
+           return
+       }
+   }
+
+   func (cr *ChunkReader) Write(p []byte) (n int, err error) {
+       n, err = cr.rw.Write(p)
+       cr.w2r <- struct{}{}
+       <-cr.r2w
+       return
+   }
+
+   func (cr *ChunkReader) Close() {
+       close(cr.w2r)
+   }
+
+   ```
+
+2. 用户可以在 handler 中使用 `pkg/protocol/http1/resp/writer` 下提供的 `NewChunkedBodyWriter` 方法劫持 response 的 writer，然后使用 `ctx.Write` 函数将分块数据写入 Body 并将分块数据使用 `ctx.Flush` 函数立即发送给客户端。
+
+   示例代码：
+
+   ```go
+   h.GET("/flush/chunk", func(ctx context.Context, c *app.RequestContext) {
+   	// Hijack the writer of response
+   	c.Response.HijackWriter(resp.NewChunkedBodyWriter(&c.Response, c.GetWriter()))
+
+   	for i := 0; i < 10; i++ {
+   		c.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
+   		c.Flush()                                                                 // nolint: errcheck
+   		time.Sleep(200 * time.Millisecond)
+   	}
+   })
+   ```
+
+**这两种方式的区别：第一种在执行完 handler 逻辑后再将数据按分块发送给客户端，第二种在 handler 逻辑中就可以将分块数据发送出去。**
+
+更多示例代码可参考 [example](/zh/docs/hertz/tutorials/example/#流式读写)。
+
+## 注册自定义协议
+
+```go
+func (engine *Engine) AddProtocol(protocol string, factory interface{})
+```
+
+详细信息可见 [注册自定义协议](/zh/docs/hertz/tutorials/framework-exten/protocol/#注册自定义协议-server-到-hertz-中)。
+
+## SetClientIPFunc
+
+该函数的参数 f 会被传递到 `RequestContext.SetClientIPFunc` 函数中，作用及示例代码见 [SetClientIPFunc](/zh/docs/hertz/tutorials/basic-feature/context/request/#setclientipfunc)。
+
+函数签名：
+
+```go
+func (engine *Engine) SetClientIPFunc(f app.ClientIP)
+```
+
+## SetFormValueFunc
+
+该函数的参数 f 会被传递到 `RequestContext.SetFormValueFunc` 函数中，作用及示例代码见 [SetFormValueFunc](/zh/docs/hertz/tutorials/basic-feature/context/request/#setformvaluefunc)。
+
+函数签名：
+
+```go
+func (engine *Engine) SetFormValueFunc(f app.FormValueFunc)
+```
+
+## 钩子函数
+
+钩子函数（Hooks）是一个通用的概念，表示某事件触发时所伴随的操作。
+
+Hertz 提供了全局的 Hook 注入能力，用于在服务触发启动后和退出前注入自己的处理逻辑，详细信息可见 [Hooks](/zh/docs/hertz/tutorials/basic-feature/hooks/)。
+
+## Panic 处理函数
+
+用于设置当程序发生 panic 时的处理函数，默认为 `nil`。
+
+> 注意：如果同时设置了 `PanicHandler` 和 `Recovery` 中间件，则 `Recovery` 中间件会覆盖 `PanicHandler` 的处理逻辑。
+
+示例代码:
+
+```go
+func main() {
+    h := server.New()
+    // 在 panic 时，会触发 PanicHandler 中的函数，返回 500 状态码并携带错误信息
+    h.PanicHandler = func(ctx context.Context, c *app.RequestContext) {
+        c.JSON(500, utils.H{
+            "message": "panic",
+        })
+    }
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        panic("panic")
+    })
+    h.Spin()
+}
+```
+
+## ContinueHandler
+
+在接收到客户端发来的 Expect 100 Continue 头之后调用 ContinueHandler。使用 ContinueHandler，服务器可以决定是否读取可能很大的请求正文，默认情况下会读取。
+
+示例代码：
+
+```go
+h := server.Default()
+h.ContinueHandler = func(header *protocol.RequestHeader) bool {
+	return false
+}
+```
+
+## 渲染 template
+
+Hertz 提供了 `Delims`, `SetFuncMap`, `LoadHTMLGlob`, `LoadHTMLFiles` 等方法用于渲染 HTML 或模板文件，详细内容可参考 [HTML](/zh/docs/hertz/tutorials/basic-feature/render/#html)。
+
+## NoRoute 与 NoMethod 使用
+
+Hertz 提供了 `NoRoute` 与 `NoMethod` 方法用于全局处理 HTTP 404 与 405 请求，详细内容可参考 [NoRoute 与 NoMethod 使用](/zh/docs/hertz/tutorials/basic-feature/route/#noroute-与-nomethod-使用)。
+
+## 获取路由信息
+
+```go
+func (engine *Engine) Routes() (routes RoutesInfo)
+```
+
+### Routes
+
+`Routes` 函数返回一个按 HTTP 方法划分的包含路由信息（HTTP 方法名，路由路径，请求处理函数名）的切片。
+
+函数签名：
+
+```go
+func (engine *Engine) Routes() (routes RoutesInfo)
+```
+
+示例代码：
+
+```go
+func getHandler() app.HandlerFunc {
+	return func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "get handler")
+	}
+}
+
+func postHandler() app.HandlerFunc {
+	return func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "post handler")
+	}
+}
+
+func main() {
+	h := server.Default()
+	h.GET("/get", getHandler())
+	h.POST("/post", postHandler())
+	routesInfo := h.Routes()
+	fmt.Printf("%v\n", routesInfo)
+	// [{GET /get main.getHandler.func1 0xb2afa0} {POST /post main.postHandler.func1 0xb2b060}]
+}
+```
+
+## 底层网络库
+
+```go
+func (engine *Engine) GetTransporterName() (tName string)
+func SetTransporter(transporter func (options *config.Options) network.Transporter)
+```
+
+### GetTransporterName
+
+获取当前使用的网络库名称，现在有原生的 `go net` 和 `netpoll` 两种。
+
+linux 默认使用 `netpoll`, windows 只能使用 `go net`。
+
+如果对如何使用对应的网络库有疑惑，请查看 [此处](/zh/docs/hertz/tutorials/basic-feature/network-lib/)。
+
+函数签名:
+
+```go
+func (engine *Engine) GetTransporterName() (tName string)
+```
+
+示例代码：
+
+```go
+h := server.New()
+tName := h.GetTransporterName()
+```
+
+### SetTransporter
+
+`SetTransporter` 用于设置网络库。
+
+> 注意：`SetTransporter` 只设置 Engine 的全局默认值，所以在初始化 Engine 时使用 `WithTransporter` 来设置网络库会覆盖掉 `SetTransporter` 的设置。
+
+函数签名:
+
+```go
+func SetTransporter(transporter func (options *config.Options) network.Transporter)
+```
+
+示例代码：
+
+```go
+route.SetTransporter(standard.NewTransporter)
+```
+
+## 链路追踪
+
+Hertz 提供了链路追踪的能力，也支持用户自定义链路跟踪，详情可参考 [链路追踪](/zh/docs/hertz/tutorials/observability/tracing/)。
+
+## Hijack
+
+### NoHijackConnPool
+
+> Hertz 连接劫持时所使用的 hijack conn 是池化管理的，因此被劫持的连接在 websocket 中使用的时候，不支持异步操作。
+
+劫持的连接仅能被关闭一次，第二次关闭会导致空指针异常。
+
+NoHijackConnPool 将控制是否使用缓存池来获取/释放劫持连接。如果使用池，将提升内存资源分配的性能，但无法避免二次关闭连接导致的异常。
+
+如果很难保证 hijackConn 不会被反复关闭，可以将其设置为 true。
+
+示例代码：
+
+```go
+package main
+
+func main() {
+    // https://github.com/cloudwego/hertz/issues/121
+    h.NoHijackConnPool = true
+}
+```
+
+### HijackConnHandle
+
+设置 Hijack 连接处理函数。
+
+函数签名：
+
+```go
+func (engine *Engine) HijackConnHandle(c network.Conn, h app.HijackHandler)
+```
+</script><h1>Engine</h1><header class=article-meta></header><p><code>server.Hertz</code> 是 <code>Hertz</code> 的核心类型，它由 <code>route.Engine</code> 以及 <code>signalWaiter</code> 组成，<code>Hertz</code> 服务器的启动、路由注册、中间件注册以及退出等重要方法均包含在 <code>server.Hertz</code> 中。以下是 <code>server.Hertz</code> 的定义：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Hertz</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>route</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Engine</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#8f5902;font-style:italic>// 用于接收信号以实现优雅退出</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>signalWaiter</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#000>err</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>chan</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -370,4 +992,4 @@ type Hertz struct { *route.Engine // 用于接收信号以实现优雅退出 sig
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 September 8, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/5252c1d1b32b0194806fe9a3113e5fd05bc4b9fc>docs(hertz): fix outdated doc of hertz server config (#1408) (5252c1d1)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

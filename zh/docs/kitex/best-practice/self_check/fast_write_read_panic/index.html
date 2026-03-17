@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>FastWrite/FastRead 报错 Panic | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/best-practice/self_check/fast_write_read_panic/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="FastWrite/FastRead 报错 Panic"><meta property="og:description" content="与 FastCodec（含 FastThrift、FastPB）有关的一些常见错误及解决方案"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-02-18T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-19T18:09:44+08:00"><meta itemprop=name content="FastWrite/FastRead 报错 Panic"><meta itemprop=description content="与 FastCodec（含 FastThrift、FastPB）有关的一些常见错误及解决方案"><meta itemprop=datePublished content="2024-02-18T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-19T18:09:44+08:00"><meta itemprop=wordCount content="703"><meta name=twitter:card content="summary"><meta name=twitter:title content="FastWrite/FastRead 报错 Panic"><meta name=twitter:description content="与 FastCodec（含 FastThrift、FastPB）有关的一些常见错误及解决方案"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>FastWrite/FastRead 报错 Panic | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/best-practice/self_check/fast_write_read_panic/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="FastWrite/FastRead 报错 Panic"><meta property="og:description" content="与 FastCodec（含 FastThrift、FastPB）有关的一些常见错误及解决方案"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-02-18T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-19T18:09:44+08:00"><meta itemprop=name content="FastWrite/FastRead 报错 Panic"><meta itemprop=description content="与 FastCodec（含 FastThrift、FastPB）有关的一些常见错误及解决方案"><meta itemprop=datePublished content="2024-02-18T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-19T18:09:44+08:00"><meta itemprop=wordCount content="703"><meta name=twitter:card content="summary"><meta name=twitter:title content="FastWrite/FastRead 报错 Panic"><meta name=twitter:description content="与 FastCodec（含 FastThrift、FastPB）有关的一些常见错误及解决方案"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -149,7 +149,280 @@
 <label for=m-zhdocskitexfaq-check><a href=/zh/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/kitex/Best%20Practice/self_check/fast_write_read_panic.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/kitex/Best%20Practice/self_check?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=FastWrite/FastRead%20%e6%8a%a5%e9%94%99%20Panic" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#fastwrite>FastWrite</a><ul><li><a href=#典型现象>典型现象</a></li><li><a href=#case-分析>Case 分析</a></li><li><a href=#排查建议>排查建议</a></li></ul></li><li><a href=#fastread>FastRead</a><ul><li><a href=#典型现象-1>典型现象</a></li><li><a href=#原因>原因</a></li><li><a href=#排查建议-1>排查建议</a></li></ul></li><li><a href=#faq>FAQ</a><ul><li><a href=#如何关闭-fastwriteread>如何关闭 FastWrite/Read</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/best-practice/>最佳实践</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/best-practice/self_check/>自查手册</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/best-practice/self_check/fast_write_read_panic/>FastWrite/FastRead 报错 Panic</a></li></ol></nav><div class=td-content><h1>FastWrite/FastRead 报错 Panic</h1><div class=lead>与 FastCodec（含 FastThrift、FastPB）有关的一些常见错误及解决方案</div><header class=article-meta></header><h2 id=fastwrite>FastWrite</h2><p>FastWrite 的实现是：(1) 扫描对象计算所需内存；(2) 分配内存；(3) 完成序列化。由于该方案不需要 append slice，减少了内存分配、拷贝，大幅提高了性能。</p><p>但是如果<strong>用户代码有并发</strong> <strong>Bug</strong>，在 Kitex「1-计算所需内存」和「3-序列化」之间，有另一个 <code>goroutine</code> 并发写入被序列化的对象（Client端-请求参数，Server端-返回值），可能会导致 Kitex 读到异常的对象，从而报错甚至 panic。</p><p><strong>注意</strong>：</p><ol><li>虽然直接发生错误的位置是 Kitex 生成的 <code>FastWriteField</code> 方法，但导致产生错误数据的地方是用户代码，这是典型的并发现象；</li><li><strong>此类问题是用户代码的并发 Bug（不是 Kitex 的 Bug）</strong>，FastWrite 只是让这类问题更容易暴露；</li><li>典型情况是 Request/Response 对象中引用的某一个字段被复用，详见下文「case 分析」章节；</li><li>特别地，没报错或没 panic 并不意味着没有并发问题，实际<strong>可能已构造了异常数据，并传递给了上下游</strong>。</li></ol><h3 id=典型现象>典型现象</h3><p>可能出现以下几种不同的报错信息：</p><ul><li><code>runtime error: index out of range [3] with length 3</code></li><li><code>runtime error: slice bounds out of range [86:59]</code></li><li><code>runtime error: invalid memory address or nil pointer dereference</code></li></ul><h3 id=case-分析>Case 分析</h3><h4 id=client-panic>Client Panic</h4><p>典型情况是 Request 内引用的某个字段是全局变量（或被缓存的对象），而该对象可能被并发写入。</p><p>报错信息简化如下：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#000>KITEX</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>panic</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>=</span><span style=color:#000>runtime</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>invalid</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>memory</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>address</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>or</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>nil</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>pointer</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>dereference</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#fastwrite>FastWrite</a><ul><li><a href=#典型现象>典型现象</a></li><li><a href=#case-分析>Case 分析</a></li><li><a href=#排查建议>排查建议</a></li></ul></li><li><a href=#fastread>FastRead</a><ul><li><a href=#典型现象-1>典型现象</a></li><li><a href=#原因>原因</a></li><li><a href=#排查建议-1>排查建议</a></li></ul></li><li><a href=#faq>FAQ</a><ul><li><a href=#如何关闭-fastwriteread>如何关闭 FastWrite/Read</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/best-practice/>最佳实践</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/best-practice/self_check/>自查手册</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/best-practice/self_check/fast_write_read_panic/>FastWrite/FastRead 报错 Panic</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="FastWrite/FastRead 报错 Panic" data-url=https://www.cloudwego.io/zh/docs/kitex/best-practice/self_check/fast_write_read_panic/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## FastWrite
+
+FastWrite 的实现是：(1) 扫描对象计算所需内存；(2) 分配内存；(3) 完成序列化。由于该方案不需要 append slice，减少了内存分配、拷贝，大幅提高了性能。
+
+但是如果**用户代码有并发** **Bug**，在 Kitex「1-计算所需内存」和「3-序列化」之间，有另一个 `goroutine` 并发写入被序列化的对象（Client端-请求参数，Server端-返回值），可能会导致 Kitex 读到异常的对象，从而报错甚至 panic。
+
+**注意**：
+
+1. 虽然直接发生错误的位置是 Kitex 生成的 `FastWriteField` 方法，但导致产生错误数据的地方是用户代码，这是典型的并发现象；
+2. **此类问题是用户代码的并发 Bug（不是 Kitex 的 Bug）**，FastWrite 只是让这类问题更容易暴露；
+3. 典型情况是 Request/Response 对象中引用的某一个字段被复用，详见下文「case 分析」章节；
+4. 特别地，没报错或没 panic 并不意味着没有并发问题，实际**可能已构造了异常数据，并传递给了上下游**。
+
+### 典型现象
+
+可能出现以下几种不同的报错信息：
+
+- `runtime error: index out of range [3] with length 3`
+- `runtime error: slice bounds out of range [86:59]`
+- `runtime error: invalid memory address or nil pointer dereference`
+
+### Case 分析
+
+#### Client Panic
+
+典型情况是 Request 内引用的某个字段是全局变量（或被缓存的对象），而该对象可能被并发写入。
+
+报错信息简化如下：
+
+```go
+KITEX: panic, ..., error=runtime error: invalid memory address or nil pointer dereference
+panic(...):
+github.com/cloudwego/kitex/pkg/protocol/bthrift.binaryProcotol.WriteBinaryNocopy(...)
+git/to/project/kitex_gen/some_package.(*SomeType).fastWriteField2(...)
+```
+
+其 panic 的 stack 中有 `fastWriteField2`，是典型的业务并发读写 case，其业务代码可简化为：
+
+```go
+key := "default" // reflect.StringHeader{Data=0xXXX, Len=7}
+fallbackKey = "" // reflect.StringHeader{Data=nil, Len=0}
+wg := sync.WaitGroup{}
+for _, task := range taskList {
+    wg.Add(1)
+    go func() {
+        defer wg.Done()
+        if someCondition {
+            key = fallbackKey // `key` may be read by another goroutine
+        }
+        kitexClient.GetByKey(ctx, &Request{Key: key})
+    }()
+}
+wg.Wait()
+```
+
+**分析：**
+
+1. `string` 类型变量 key **在循环中可能被不同的 `goroutine` 读/写**。
+2. **`string` 的读写不是并发安全的**：在 Go Runtime 的实现是 `reflect.StringHeader{Data uintptr, Len int}`，有两个字段需要分别赋值。
+3. Kitex `FastWrite` 可能会读到被「写了一半的 `string`」（Data = nil, Len = 7）并传给 `fastWriteField2` 方法
+4. `fastWriteField2` 在尝试从 `Data = nil` 中读取 7 个字符时，会触发 `nil pointer dereference` panic。
+
+**注意：**
+
+1. slice 对应 `reflect.SliceHeader` 包含 `Data`、`Len`、`Cap` 3个字段，也存在类似问题；
+2. map 的并发读写更到表现为 go 的 `fatal error`；
+3. 没报错或没 panic 并不意味着没有并发问题，实际**可能已构造了异常数据，并传递给了上下游：**例如上面代码的 `fallbackKey = "123456789"`，那么可能序列化时读到的是 "1234567" ；如果 `fallbackKey = "123"`，还可能越界读取数据，甚至 panic。
+
+#### Server Panic
+
+典型情况是 Response 内引用的某个字段是全局变量（或被缓存的对象），而该对象可能被并发写入。
+
+该 Case 报错信息如下（略作简化）：
+
+```go
+KITEX: panic happened, ..., error=<Error: runtime error: index out of range [3] with length 1>
+panic(...)
+encoding/binary.bigEndian.PutUint32(...)
+github.com/cloudwego/kitex/pkg/protocol/bthrift.binaryProtocol.WriteI32(...)
+git/to/project/kitex_gen/some_package.(*SomeType).fastWriteField3(...)
+```
+
+从 panic stack 可以看出，触发 panic 的是 Kitex 生成 `fastWriteField3` 方法，是典型的业务并发读写 case，其业务代码可简化为：
+
+```go
+var localCache sync.Map{}
+
+func (*Handler) GetByKey(ctx context.Context, req *xxx.Request) (*xxx.Response, error) {
+    resp := localCache.Get(req.Key)
+    resp.UserID = req.UserID
+    return resp, nil
+}
+```
+
+**分析：**
+
+1. `PutUint32(b []byte, v uint32)` 将 v 写入 b 前会先检查 b[3] 是否可读，panic 发生在这里，表示越界了；
+2. `FastWrite` 事先已遍历 resp 得出所需长度，说明在「(1) 计算所需内存」和「(3) 序列化」之间，`resp` 中某个字段被修改了，需要更多的内存空间；
+3. 假设 server 同时收到两个请求（Key 都是 "X"）
+   1. `A.Request: {Key="X", UserID = "123" }`
+   2. `B.Request: {Key="X", UserID = "123456"} `
+
+4. 进程可能会按如下顺序执行:
+   1. A 请求的 `FastWrite` 计算需要 N+3 个字节（N 表示 resp 里其他字段所需空间），完成内存分配
+   2. B 请求执行了第 5 行，替换了 `UserID` 为 "123456" （注意 Response 是被缓存的，意味着 A 也将返回这个对象）
+   3. A 请求开始将 resp 序列化到分配的空间中，尝试写入最后一个字段 UserID 时，发现所需空间不够了（需要 N+6 个字节了）：**`index out of range [3] with length 1`**
+
+**注意：**
+
+1. 没报错或没 panic 并不意味着没有并发问题，实际**可能已构造了异常数据，并传递给了上下游：**例如上面 A、B 的执行顺序反过来，不会报错，但是期望写入返回报文的是 "123456"，实际写入的是 "123"，**并且 Kitex Client 可以正常解码**。
+
+### 排查建议
+
+#### 参考上述 case 自查代码
+
+如有对 Request 或 Response（包括其直接及间接引用的对象）的并发读写，请先修复该问题。
+
+#### Go Race Detector
+
+有条件的话请用 -race 排除掉代码里的并发问题，详见 https://go.dev/blog/race-detector
+
+注意：生产环境慎用，有较大性能损失。
+
+#### 定位异常字段：根据报错信息
+
+可根据 panic stack 里出错的字段类型和 `fastWriteFieldN` 定位到具体的字段。
+
+例如 stack panic 中最内层的 `fastWriteField*` 方法为：`kitex_gen/some_package.(***Base**).**fastWriteField3**(...)  `
+
+那么直接导致错误的是 Base 类型下编号为 3 的字段，如下 IDL，3 号字段是 `string` 类型的 `Addr` 字段：
+
+```go
+struct Base {
+    1: string LogID = "",
+    2: string Caller = "",
+    3: string Addr = "",
+}
+```
+
+如果 panic 错误信息包含 `invalid memory address or nil pointer dereference`，说明 Addr 字段可能被另一个 `goroutine` 并发写入空值。
+
+如果 panic 错误信息是其他错误（例如 `index out of range [3] with length 3`），**可能是**其他字段被并发读写（变长，占用了更多内存），导致该字段写入时分配的内存已经不够了，可参考下面的「对比两次采样结果」来定位。
+
+**Client 端**
+
+参考方案如下：
+
+1. 第一次采样：在请求发出前，先用对 Request 整体做一次 json 序列化
+   1. 注意：**性能有损**；可考虑按比例采样，降低对生产环境影响，但可能需要更长时间才能抓到case
+
+2. 第二次采样（有两种思路，供参考）
+
+   1. panic 采样：判断发生了 panic，再对 Request 做 json 序列化 
+
+      判断方法：
+
+      1. client 返回的 err 信息包含 panic 信息
+      2. 在中间件中判断是否发生 panic，详见 「[Kitex - Panic 处理](https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/panic/)」
+
+   2. 延迟采样：创建 goroutine，sleep 若干时间后对 Request 做 json 序列化
+      - sleep 时间越长，出现 diff 的概率越大
+
+3. 对比两次采样的结果，找到不同的字段，再查看代码里可能有并发读写该字段的地方
+
+注：
+
+1. 如果可以接受一定的性能损失（两次额外的 `json.Marshal`、对比），可考虑 diff 所有请求。有些请求虽然没有panic，但是可能已经产生了脏数据了。
+2. 通过 middleware 注入排查更简单，不需要修改业务代码
+
+**Server** **端**
+
+  由于  Server 端在 encode 时已退出了所有 middleware，因此无法捕捉到 panic、不能用中间件做采样对比  
+
+参考方案如下：
+
+1. 自定义 `PayloadCodec`：
+   1. 在 Marshal 里执行采样，panic 时对比
+   2. 注意：**性能有损**；可考虑按比例采样，降低对生产环境影响，但可能需要更长时间才能抓到case
+
+```go
+type codecForPanic struct {
+    payloadCodec remote.PayloadCodec
+}
+
+func (c *codecForPanic) Marshal(ctx context.Context, message remote.Message, out remote.ByteBuffer) error {
+    var before, after []byte
+    var err error
+    defer func() {
+       if err := recover(); err != nil {
+          klog.Errorf("panic: %v", err)
+          after, _ = json.Marshal(message.Data())
+          if bytes.Compare(before, after) != 0 {
+             klog.Errorf("before = %s, after = %s", before, after)
+          }
+       }
+    }()
+    before, err = json.Marshal(message.Data()) // note the performance loss 
+    if err != nil {
+        klog.Errorf("json encode before Marshal failed: err = %v", err)
+    }
+    return c.payloadCodec.Marshal(ctx, message, out)
+}
+
+func (c *codecForPanic) Unmarshal(ctx context.Context, message remote.Message, in remote.ByteBuffer) error {
+    // recover and compare here
+    return c.payloadCodec.Unmarshal(ctx, message, in)
+}
+
+func (c *codecForPanic) Name() string {
+    return "codecForPanic"
+}
+```
+
+2. 在初始化 server 时指定该 PayloadCodec：
+
+```go
+svr := test.NewServer(new(TestServiceImpl),
+    server.WithPayloadCodec(&codecForPanic{
+       payloadCodec: thrift.NewThriftCodecWithConfig(thrift.FastRead | thrift.FastWrite),
+    }),
+    // other options
+)
+```
+
+3. 对比两次采样的结果，找到不同的字段，再查看代码里可能有并发读写该字段的地方 
+
+如果 panic 发生频率较低，也可以考虑新启动一个 goroutine，sleep 一段时间，再对比，这样更容易找到被修改的地方。
+
+## FastRead
+
+### 典型现象
+
+`runtime error: slice bounds out of range [1600217702:1678338]`
+
+### 原因
+
+收到的报文（Client：收到Response，Server：收到 Request）编码有错。
+
+### 排查建议
+
+参考 FastWrite 的「排查建议」，在对端排查（如果报错在 server 端，就查 client；反之亦然）。
+
+## FAQ
+
+### 如何关闭 FastWrite/Read
+
+> **不建议「掩耳盗铃」**：业务逻辑有竞态 bug 可能会导致业务数据不一致，产生难以预料的后果。
+
+确有需要，可按需选择以下方式：
+
+1. 通过 Option 关闭 Thrift 的 `FastCodec`:
+
+```go
+// Server side
+svr := xxxService.NewServer(handler, server.WithPayloadCodec(
+    thrift.NewThriftCodecDisableFastMode(true, false)))
+
+// Client side
+cli, err := xxxService.NewClient("", client.WithPayloadCodec(
+    thrift.NewThriftCodecDisableFastMode(true, false)))
+```
+
+2. 不生成 `FastCodec` 编解码代码：使用 Kitex 命令行工具的参数 `-no-fast-api` 重新生成代码。
+</script><h1>FastWrite/FastRead 报错 Panic</h1><div class=lead>与 FastCodec（含 FastThrift、FastPB）有关的一些常见错误及解决方案</div><header class=article-meta></header><h2 id=fastwrite>FastWrite</h2><p>FastWrite 的实现是：(1) 扫描对象计算所需内存；(2) 分配内存；(3) 完成序列化。由于该方案不需要 append slice，减少了内存分配、拷贝，大幅提高了性能。</p><p>但是如果<strong>用户代码有并发</strong> <strong>Bug</strong>，在 Kitex「1-计算所需内存」和「3-序列化」之间，有另一个 <code>goroutine</code> 并发写入被序列化的对象（Client端-请求参数，Server端-返回值），可能会导致 Kitex 读到异常的对象，从而报错甚至 panic。</p><p><strong>注意</strong>：</p><ol><li>虽然直接发生错误的位置是 Kitex 生成的 <code>FastWriteField</code> 方法，但导致产生错误数据的地方是用户代码，这是典型的并发现象；</li><li><strong>此类问题是用户代码的并发 Bug（不是 Kitex 的 Bug）</strong>，FastWrite 只是让这类问题更容易暴露；</li><li>典型情况是 Request/Response 对象中引用的某一个字段被复用，详见下文「case 分析」章节；</li><li>特别地，没报错或没 panic 并不意味着没有并发问题，实际<strong>可能已构造了异常数据，并传递给了上下游</strong>。</li></ol><h3 id=典型现象>典型现象</h3><p>可能出现以下几种不同的报错信息：</p><ul><li><code>runtime error: index out of range [3] with length 3</code></li><li><code>runtime error: slice bounds out of range [86:59]</code></li><li><code>runtime error: invalid memory address or nil pointer dereference</code></li></ul><h3 id=case-分析>Case 分析</h3><h4 id=client-panic>Client Panic</h4><p>典型情况是 Request 内引用的某个字段是全局变量（或被缓存的对象），而该对象可能被并发写入。</p><p>报错信息简化如下：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#000>KITEX</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>panic</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>=</span><span style=color:#000>runtime</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>invalid</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>memory</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>address</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>or</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>nil</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>pointer</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>dereference</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87>panic</span><span style=color:#000;font-weight:700>(</span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000;font-weight:700>):</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#000>github</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>com</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>cloudwego</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>kitex</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>pkg</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>protocol</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>bthrift</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>binaryProcotol</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>WriteBinaryNocopy</span><span style=color:#000;font-weight:700>(</span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#000>git</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>to</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>project</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>kitex_gen</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>some_package</span><span style=color:#000;font-weight:700>.(</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>SomeType</span><span style=color:#000;font-weight:700>).</span><span style=color:#000>fastWriteField2</span><span style=color:#000;font-weight:700>(</span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -231,4 +504,4 @@
 </span></span></span></code></pre></div><ol start=2><li>不生成 <code>FastCodec</code> 编解码代码：使用 Kitex 命令行工具的参数 <code>-no-fast-api</code> 重新生成代码。</li></ol><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 May 19, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c7da1fe22256b2c7fdd3c186c7aba1fa47f1c98e>docs: add FAQ and best practice docs (#1060) (c7da1fe2)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

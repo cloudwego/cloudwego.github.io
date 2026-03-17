@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>TLS | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/tls/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="TLS"><meta property="og:description" content="Hertz 支持 TLS 安全传输，帮助用户实现数据的保密性和完整性。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2022-11-06T00:00:00+00:00"><meta property="article:modified_time" content="2025-02-06T10:45:48+08:00"><meta itemprop=name content="TLS"><meta itemprop=description content="Hertz 支持 TLS 安全传输，帮助用户实现数据的保密性和完整性。"><meta itemprop=datePublished content="2022-11-06T00:00:00+00:00"><meta itemprop=dateModified content="2025-02-06T10:45:48+08:00"><meta itemprop=wordCount content="759"><meta itemprop=keywords content="TLS,HTTP"><meta name=twitter:card content="summary"><meta name=twitter:title content="TLS"><meta name=twitter:description content="Hertz 支持 TLS 安全传输，帮助用户实现数据的保密性和完整性。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>TLS | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/tls/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="TLS"><meta property="og:description" content="Hertz 支持 TLS 安全传输，帮助用户实现数据的保密性和完整性。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2022-11-06T00:00:00+00:00"><meta property="article:modified_time" content="2025-02-06T10:45:48+08:00"><meta itemprop=name content="TLS"><meta itemprop=description content="Hertz 支持 TLS 安全传输，帮助用户实现数据的保密性和完整性。"><meta itemprop=datePublished content="2022-11-06T00:00:00+00:00"><meta itemprop=dateModified content="2025-02-06T10:45:48+08:00"><meta itemprop=wordCount content="759"><meta itemprop=keywords content="TLS,HTTP"><meta name=twitter:card content="summary"><meta name=twitter:title content="TLS"><meta name=twitter:description content="Hertz 支持 TLS 安全传输，帮助用户实现数据的保密性和完整性。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -110,7 +110,391 @@
 <label for=m-zhdocshertzreferenceversion-check><a href=/zh/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocshertzreferenceversion><span>版本说明</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/hertz/tutorials/basic-feature/tls.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/hertz/tutorials/basic-feature?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=TLS" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#服务端>服务端</a><ul><li><a href=#参数>参数</a></li><li><a href=#示例代码>示例代码</a></li></ul></li><li><a href=#客户端>客户端</a><ul><li><a href=#参数-1>参数</a></li><li><a href=#示例代码-1>示例代码</a></li></ul></li><li><a href=#autotls-中间件>Autotls 中间件</a><ul><li><a href=#安装>安装</a></li><li><a href=#配置>配置</a></li></ul></li><li><a href=#注意>注意</a><ul><li><a href=#client-报错-not-support-tls>Client 报错 not support tls</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/>基本特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/tls/>TLS</a></li></ol></nav><div class=td-content><h1>TLS</h1><div class=lead>Hertz 支持 TLS 安全传输，帮助用户实现数据的保密性和完整性。</div><header class=article-meta></header><p>Hertz 支持 TLS 安全传输，帮助用户实现了数据的保密性和完整性。</p><blockquote><p>如果有 TLS 的需求，请使用 go net 网络库。Netpoll 尚未实现对 TLS 的支持。</p></blockquote><p>在 <code>tls.Config</code> 中，服务端和客户端都可使用的参数如下：</p><table><thead><tr><th style=text-align:center>参数名</th><th style=text-align:left>介绍</th></tr></thead><tbody><tr><td style=text-align:center>Certificates</td><td style=text-align:left>用于添加证书，可以配置多个证书。<br>两端自动选择第一个证书进行验证。</td></tr><tr><td style=text-align:center>VerifyPeerCertificate</td><td style=text-align:left>用于验证对端证书。<br>在任意一端证书验证后调用。</td></tr><tr><td style=text-align:center>VerifyConnection</td><td style=text-align:left>在两端证书均验证后，进行 TLS 连接验证。</td></tr><tr><td style=text-align:center>NextProtos</td><td style=text-align:left>用于设置支持的应用层协议。</td></tr><tr><td style=text-align:center>CipherSuites</td><td style=text-align:left>用于协商加密策略，支持 TLS 1.0-1.2。</td></tr><tr><td style=text-align:center>MaxVersion</td><td style=text-align:left>用于设置 TLS 支持的最大版本，目前是 1.3。</td></tr></tbody></table><h2 id=服务端>服务端</h2><p>Hertz 在 <code>server</code> 包提供了 <code>WithTLS</code> Option 用于配置 TLS 服务。但是目前 Hertz 只有 标准网络库 支持 TLS，<a href=https://github.com/cloudwego/netpoll>Netpoll</a> 网络库的支持还在路上。
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#服务端>服务端</a><ul><li><a href=#参数>参数</a></li><li><a href=#示例代码>示例代码</a></li></ul></li><li><a href=#客户端>客户端</a><ul><li><a href=#参数-1>参数</a></li><li><a href=#示例代码-1>示例代码</a></li></ul></li><li><a href=#autotls-中间件>Autotls 中间件</a><ul><li><a href=#安装>安装</a></li><li><a href=#配置>配置</a></li></ul></li><li><a href=#注意>注意</a><ul><li><a href=#client-报错-not-support-tls>Client 报错 not support tls</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/>基本特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/tls/>TLS</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=TLS data-url=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/tls/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+Hertz 支持 TLS 安全传输，帮助用户实现了数据的保密性和完整性。
+
+> 如果有 TLS 的需求，请使用 go net 网络库。Netpoll 尚未实现对 TLS 的支持。
+
+在 `tls.Config` 中，服务端和客户端都可使用的参数如下：
+
+|        参数名         | 介绍                                                                   |
+| :-------------------: | :--------------------------------------------------------------------- |
+|     Certificates      | 用于添加证书，可以配置多个证书。 <br/>两端自动选择第一个证书进行验证。 |
+| VerifyPeerCertificate | 用于验证对端证书。<br/>在任意一端证书验证后调用。                      |
+|   VerifyConnection    | 在两端证书均验证后，进行 TLS 连接验证。                                |
+|      NextProtos       | 用于设置支持的应用层协议。                                             |
+|     CipherSuites      | 用于协商加密策略，支持 TLS 1.0-1.2。                                   |
+|      MaxVersion       | 用于设置 TLS 支持的最大版本，目前是 1.3。                              |
+
+## 服务端
+
+Hertz 在 `server` 包提供了 `WithTLS` Option 用于配置 TLS 服务。但是目前 Hertz 只有 标准网络库 支持 TLS，[Netpoll](https://github.com/cloudwego/netpoll) 网络库的支持还在路上。
+`WithTLS` 的 `Transporter` 默认设置为标准库的 `Transporter`。
+
+```go
+// WithTLS sets TLS config to start a tls server.
+// NOTE: If a tls server is started, it won't accept non-tls request.
+func WithTLS(cfg *tls.Config) config.Option {
+	return config.Option{F: func(o *config.Options) {
+		route.SetTransporter(standard.NewTransporter)
+		o.TLS = cfg
+	}}
+}
+```
+
+### 参数
+
+在 `tls.Config` 中，除了上述基本参数，服务端可以配置的参数如下：
+
+|        参数名        | 介绍                                                                                                             |
+| :------------------: | :--------------------------------------------------------------------------------------------------------------- |
+|    GetCertificate    | 基于客户端 SNI 信息或证书集为空时，返回证书。                                                                    |
+| GetClientCertificate | 用于服务端要求验证客户端证书时，返回客户端证书。                                                                 |
+|  GetConfigForClient  | 当服务端从客户端接收了 ClientHello 后，返回配置信息。 <br/>如果返回的是非空的配置信息，将会被用于这次 TLS 连接。 |
+|      ClientAuth      | 用于客户端验证策略设置，默认为 `NoClientCert`。                                                                  |
+|      ClientCAs       | 当启用了 `ClientAuth`, 用于验证客户端证书的真实性。                                                              |
+
+服务器端 TLS 主要流程：
+
+1. 载入根证书，用于验证客户端的真实性。
+2. 载入服务器证书，用于发送给客户端以验证服务器真实性。
+3. 配置 `tls.Config`。
+4. 使用 `WithTLS` 配置服务端 TLS，默认使用标准库的 Transporter。
+
+### 示例代码
+
+本次示例中的 `ca.key`、`ca.crt`、`server.key` 和 `server.crt` 均通过 openssl 生成。
+首先生成 CA 的私钥和证书，命令如下：
+
+```shell
+openssl ecparam -genkey -name prime256v1 -out ca.key
+openssl req -new -key ca.key -out ca.req
+# country=cn, common name=ca.example.com
+openssl x509 -req -in ca.req -signkey ca.key -out ca.crt -days 365
+```
+
+通过 CA 签名，生成服务端的私钥和证书，命令如下：
+
+```shell
+openssl ecparam -genkey -name prime256v1 -out server.key
+openssl req -new -key server.key -out server.req
+# country=cn, common name=server.example.com
+openssl x509 -req -in server.req -CA ca.crt -CAkey ca.key -out server.crt -CAcreateserial -days 365
+```
+
+服务端示例代码：
+
+```go
+package main
+
+// ...
+
+func main() {
+	// load server certificate
+	cert, err := tls.LoadX509KeyPair("./tls/server.crt", "./tls/server.key")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	// load root certificate
+	certBytes, err := ioutil.ReadFile("./tls/ca.crt")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	caCertPool := x509.NewCertPool()
+	ok := caCertPool.AppendCertsFromPEM(certBytes)
+	if !ok {
+		panic("Failed to parse root certificate.")
+	}
+	// set server tls.Config
+	cfg := &tls.Config{
+        // add certificate
+		Certificates: []tls.Certificate{cert},
+		MaxVersion:   tls.VersionTLS13,
+        // enable client authentication
+		ClientAuth:   tls.RequireAndVerifyClientCert,
+		ClientCAs:    caCertPool,
+        // cipher suites supported
+		CipherSuites: []uint16{
+			tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
+			tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+			tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+		},
+        // set application protocol http2
+		NextProtos: []string{http2.NextProtoTLS},
+	}
+	// set TLS server
+	// default is standard.NewTransporter
+	h := server.Default(server.WithTLS(cfg), server.WithHostPorts(":8443"))
+
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "TLS test\n")
+	})
+
+	h.Spin()
+}
+```
+
+完整用法示例详见 [example](https://github.com/cloudwego/hertz-examples/tree/main/protocol/tls) 。
+
+## 客户端
+
+### 参数
+
+在 `tls.Config` 中，除了上述基本参数，客户端可以配置的参数如下：
+
+|       参数名       | 介绍                                 |
+| :----------------: | :----------------------------------- |
+|     ServerName     | 根据返回的证书信息验证主机名。       |
+| InsecureSkipVerify | 用于客户端是否开启服务端的证书验证。 |
+|      RootCAs       | 用于客户端验证服务端的证书。         |
+
+客户端 TLS 主要流程：
+
+1. 载入根证书，用于验证服务器端的真实性。
+2. 载入客户证书，用于发送给服务器端以验证客户端的真实性。
+3. 配置 `tls.Config`。
+4. 使用 `WithTLS` 配置客户端 TLS，默认使用标准库的 Dialer。
+
+### 示例代码
+
+通过 CA 签名，生成客户端的私钥和证书，命令如下：
+
+```shell
+openssl ecparam -genkey -name prime256v1 -out client.key
+openssl req -new -key client.key -out client.req
+# country=cn, common name=client.example.com
+openssl x509 -req -in client.req -CA ca.crt -CAkey ca.key -out client.crt -CAcreateserial -days 365
+```
+
+客户端示例代码：
+
+```go
+package main
+
+// ...
+
+func main() {
+	// load root certificate to verify the client validity
+	certBytes, err := ioutil.ReadFile("./tls/ca.crt")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	caCertPool := x509.NewCertPool()
+	ok := caCertPool.AppendCertsFromPEM(certBytes)
+	if !ok {
+		panic("Failed to parse root certificate.")
+	}
+    // load client certificate to send to server
+	cert, err := tls.LoadX509KeyPair("./tls/client.crt", "./tls/client.key")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+    // set TLS configuration
+	cfg := &tls.Config{
+		MaxVersion:   tls.VersionTLS13,
+		Certificates: []tls.Certificate{cert},
+        // verify the server certificate
+		RootCAs:      caCertPool,
+        // ignored the server certificate
+		InsecureSkipVerify: true,
+	}
+
+	c, err := client.NewClient(
+		// default dialer is standard
+		client.WithTLSConfig(cfg),
+		client.WithDialer(standard.NewDialer()),
+	)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+    // ...
+}
+```
+
+完整用法示例详见 [example](https://github.com/cloudwego/hertz-examples/tree/main/protocol/tls) 。
+
+## Autotls 中间件
+
+Hertz 提供了 [autotls](https://github.com/hertz-contrib/autotls) 扩展适配 [Let's Encrypt](https://letsencrypt.org/) ，方便用户进行 TLS 服务自动配置。
+
+### 安装
+
+```shell
+go get github.com/hertz-contrib/autotls
+```
+
+### 配置
+
+#### NewTlsConfig
+
+`autotls` 扩展提供了 `NewTlsConfig` 用于帮助用户使用一行代码支持 LetsEncrypt HTTPS servers。
+
+NewTlsConfig 函数签名如下：
+
+```go
+func NewTlsConfig(domains ...string) *tls.Config
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+	"context"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/hertz-contrib/autotls"
+)
+
+func main() {
+	h := server.Default(
+		server.WithTLS(autotls.NewTlsConfig("example1.com", "example2.com")),
+		server.WithHostPorts(":https"),
+	)
+
+	// Ping handler
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+		c.JSON(200, map[string]interface{}{
+			"ping": "pong",
+		})
+	})
+
+	hlog.Fatal(autotls.Run(h))
+}
+```
+
+#### RunWithContext
+
+`autotls` 扩展提供了 `RunWithContext` 用于帮助用户使用一行代码支持 LetsEncrypt HTTPS servers 的同时能够让服务优雅关机。
+
+RunWithContext 函数签名如下：
+
+```go
+func RunWithContext(ctx context.Context, h *server.Hertz) error
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+	"context"
+	"os/signal"
+	"syscall"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/hertz-contrib/autotls"
+)
+
+func main() {
+	// Create context that listens for the interrupt signal from the OS.
+	ctx, stop := signal.NotifyContext(
+		context.Background(),
+		syscall.SIGINT,
+		syscall.SIGTERM,
+	)
+	defer stop()
+
+	h := server.Default(
+		server.WithTLS(autotls.NewTlsConfig("example1.com", "example2.com")),
+		server.WithHostPorts(":https"),
+	)
+
+	// Ping handler
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+		c.JSON(200, map[string]interface{}{
+			"ping": "pong",
+		})
+	})
+
+	hlog.Fatal(autotls.RunWithContext(ctx, h))
+}
+```
+
+#### NewServerWithManagerAndTlsConfig
+
+`autotls` 扩展提供了 `NewServerWithManagerAndTlsConfig` 用于帮助用户自动证书管理和 TLS 配置。
+
+NewServerWithManagerAndTlsConfig 函数签名如下：
+
+```go
+func NewServerWithManagerAndTlsConfig(m *autocert.Manager, tlsc *tls.Config, opts ...config.Option) *server.Hertz
+```
+
+示例代码：
+
+```go
+package main
+
+import (
+	"context"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/hertz-contrib/autotls"
+	"golang.org/x/crypto/acme/autocert"
+)
+
+func main() {
+	m := autocert.Manager{
+		Prompt:     autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist("example1.com", "example2.com"),
+		Cache:      autocert.DirCache("/var/www/.cache"),
+	}
+
+	h := autotls.NewServerWithManagerAndTlsConfig(&m, nil)
+
+	// Ping handler
+	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+		c.JSON(200, map[string]interface{}{
+			"ping": "pong",
+		})
+	})
+
+	hlog.Fatal(autotls.Run(h))
+}
+```
+
+完整用法示例详见 [example](https://github.com/hertz-contrib/autotls/tree/main/examples) 。
+
+## 注意
+
+### Client 报错 not support tls
+
+Hertz 默认使用了 `netpoll` 作为网络库并且目前 `netpoll` 不支持 TLS。使用 TLS 需要切换到标准网络库，代码如下:
+
+```go
+import (
+    "github.com/cloudwego/hertz/pkg/app/client"
+    "github.com/cloudwego/hertz/pkg/network/standard"
+    "github.com/cloudwego/hertz/pkg/protocol"
+)
+
+func main() {
+	clientCfg := &tls.Config{
+		InsecureSkipVerify: true,
+	}
+	c, err := client.NewClient(
+		client.WithTLSConfig(clientCfg),
+		client.WithDialer(standard.NewDialer()),
+	)
+}
+```
+</script><h1>TLS</h1><div class=lead>Hertz 支持 TLS 安全传输，帮助用户实现数据的保密性和完整性。</div><header class=article-meta></header><p>Hertz 支持 TLS 安全传输，帮助用户实现了数据的保密性和完整性。</p><blockquote><p>如果有 TLS 的需求，请使用 go net 网络库。Netpoll 尚未实现对 TLS 的支持。</p></blockquote><p>在 <code>tls.Config</code> 中，服务端和客户端都可使用的参数如下：</p><table><thead><tr><th style=text-align:center>参数名</th><th style=text-align:left>介绍</th></tr></thead><tbody><tr><td style=text-align:center>Certificates</td><td style=text-align:left>用于添加证书，可以配置多个证书。<br>两端自动选择第一个证书进行验证。</td></tr><tr><td style=text-align:center>VerifyPeerCertificate</td><td style=text-align:left>用于验证对端证书。<br>在任意一端证书验证后调用。</td></tr><tr><td style=text-align:center>VerifyConnection</td><td style=text-align:left>在两端证书均验证后，进行 TLS 连接验证。</td></tr><tr><td style=text-align:center>NextProtos</td><td style=text-align:left>用于设置支持的应用层协议。</td></tr><tr><td style=text-align:center>CipherSuites</td><td style=text-align:left>用于协商加密策略，支持 TLS 1.0-1.2。</td></tr><tr><td style=text-align:center>MaxVersion</td><td style=text-align:left>用于设置 TLS 支持的最大版本，目前是 1.3。</td></tr></tbody></table><h2 id=服务端>服务端</h2><p>Hertz 在 <code>server</code> 包提供了 <code>WithTLS</code> Option 用于配置 TLS 服务。但是目前 Hertz 只有 标准网络库 支持 TLS，<a href=https://github.com/cloudwego/netpoll>Netpoll</a> 网络库的支持还在路上。
 <code>WithTLS</code> 的 <code>Transporter</code> 默认设置为标准库的 <code>Transporter</code>。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// WithTLS sets TLS config to start a tls server.</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#8f5902;font-style:italic>// NOTE: If a tls server is started, it won&#39;t accept non-tls request.</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>WithTLS</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>cfg</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>tls</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Config</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>config</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Option</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -331,4 +715,4 @@
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 February 6, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/56182a0b6683435df62c058e045cde3ae3ad2263>refactor(Hertz): add third-party directory and update doc (#1224) (56182a0b)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

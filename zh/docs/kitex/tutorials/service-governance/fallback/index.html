@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Fallback | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/fallback/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Fallback"><meta property="og:description" content="Kitex 自定义 Fallback 使用指南。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-03-09T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="Fallback"><meta itemprop=description content="Kitex 自定义 Fallback 使用指南。"><meta itemprop=datePublished content="2023-03-09T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="654"><meta itemprop=keywords content="Kitex,Fallback,降级"><meta name=twitter:card content="summary"><meta name=twitter:title content="Fallback"><meta name=twitter:description content="Kitex 自定义 Fallback 使用指南。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Fallback | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/fallback/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Fallback"><meta property="og:description" content="Kitex 自定义 Fallback 使用指南。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-03-09T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="Fallback"><meta itemprop=description content="Kitex 自定义 Fallback 使用指南。"><meta itemprop=datePublished content="2023-03-09T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="654"><meta itemprop=keywords content="Kitex,Fallback,降级"><meta name=twitter:card content="summary"><meta name=twitter:title content="Fallback"><meta name=twitter:description content="Kitex 自定义 Fallback 使用指南。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -149,7 +149,228 @@
 <label for=m-zhdocskitexfaq-check><a href=/zh/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/kitex/Tutorials/service-governance/fallback.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/kitex/Tutorials/service-governance?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Fallback" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#1-kitex-fallback-功能说明>1. Kitex Fallback 功能说明</a><ul><li><a href=#11-支持-fallback-的结果类型>1.1 支持 Fallback 的结果类型</a></li><li><a href=#12-监控上报>1.2 监控上报</a></li></ul></li><li><a href=#2-使用方式>2. 使用方式</a><ul><li><a href=#21-client-维度配置>2.1 Client 维度配置</a></li><li><a href=#22-call-维度配置>2.2 Call 维度配置</a></li><li><a href=#23-如何配置-fallback-policy>2.3 如何配置 Fallback Policy</a></li><li><a href=#24-配置示例>2.4 配置示例</a></li></ul></li><li><a href=#3注意事项>3.注意事项</a><ul><li><a href=#31-特殊返回值说明>3.1 特殊返回值说明</a></li><li><a href=#32-kitex-protobuf--kitex-grpc-使用>3.2 Kitex Protobuf / Kitex gRPC 使用</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/>治理特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/fallback/>Fallback</a></li></ol></nav><div class=td-content><h1>Fallback</h1><div class=lead>Kitex 自定义 Fallback 使用指南。</div><header class=article-meta></header><blockquote><p><strong>支持版本：>= v0.5.0 （go.mod依赖 <a href=https://github.com/cloudwego/kitex>github/cloudwego/kitex</a>)</strong></p><p>Protobuf 生成代码版本：>=v0.5.0（版本见生成代码文件头部与版本注释）</p><p>Thrift 对生成代码版本无要求</p></blockquote><h2 id=1-kitex-fallback-功能说明>1. Kitex Fallback 功能说明</h2><p>业务在 RPC 请求失败后通常会有一些降级措施保证有效返回（比如请求超时、熔断后，构造默认返回），Kitex 的 Fallback 支持对所有异常请求进行处理。同时，因为业务异常通常会通过 Resp（BaseResp） 返回，所以也支持对 Resp 进行处理。</p><h3 id=11-支持-fallback-的结果类型>1.1 支持 Fallback 的结果类型</h3><ol><li><strong>RPC</strong> <strong>Error</strong>：RPC 请求异常，如超时、熔断、限流、协议等 RPC 层面的异常</li><li><strong>业务 Error</strong>：业务自定义的异常，区别于 RPC 异常，具体是 <a href=/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/>Kitex - 业务异常处理使用文档</a></li><li><strong>Resp</strong>：在没有使用业务异常的情况下，用户会在 Resp（BaseResp） 中定义错误返回，所以也支持对 Resp 判断做 fallback</li></ol><h3 id=12-监控上报>1.2 监控上报</h3><p>Fallback 后可能直接返回成功的 Resp，对用户而言是一次成功请求，但 RPC 层面还是失败请求，所以监控默认以原来的结果上报，但支持配置化调整为以 Fallback 结果上报。</p><h2 id=2-使用方式>2. 使用方式</h2><p>因为 Fallback 涉及业务逻辑，只支持代码配置。</p><h3 id=21-client-维度配置>2.1 Client 维度配置</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=display:flex><span><span style=color:#204a87;font-weight:700>import</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#1-kitex-fallback-功能说明>1. Kitex Fallback 功能说明</a><ul><li><a href=#11-支持-fallback-的结果类型>1.1 支持 Fallback 的结果类型</a></li><li><a href=#12-监控上报>1.2 监控上报</a></li></ul></li><li><a href=#2-使用方式>2. 使用方式</a><ul><li><a href=#21-client-维度配置>2.1 Client 维度配置</a></li><li><a href=#22-call-维度配置>2.2 Call 维度配置</a></li><li><a href=#23-如何配置-fallback-policy>2.3 如何配置 Fallback Policy</a></li><li><a href=#24-配置示例>2.4 配置示例</a></li></ul></li><li><a href=#3注意事项>3.注意事项</a><ul><li><a href=#31-特殊返回值说明>3.1 特殊返回值说明</a></li><li><a href=#32-kitex-protobuf--kitex-grpc-使用>3.2 Kitex Protobuf / Kitex gRPC 使用</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/>治理特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/fallback/>Fallback</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=Fallback data-url=https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/fallback/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+> **支持版本：>= v0.5.0 （go.mod依赖 [github/cloudwego/kitex](https://github.com/cloudwego/kitex))**
+>
+> Protobuf 生成代码版本：>=v0.5.0（版本见生成代码文件头部与版本注释）
+>
+> Thrift 对生成代码版本无要求
+
+## 1. Kitex Fallback 功能说明
+
+业务在 RPC 请求失败后通常会有一些降级措施保证有效返回（比如请求超时、熔断后，构造默认返回），Kitex 的 Fallback 支持对所有异常请求进行处理。同时，因为业务异常通常会通过 Resp（BaseResp） 返回，所以也支持对 Resp 进行处理。
+
+### 1.1 支持 Fallback 的结果类型
+
+1. **RPC** **Error**：RPC 请求异常，如超时、熔断、限流、协议等 RPC 层面的异常
+2. **业务 Error**：业务自定义的异常，区别于 RPC 异常，具体是 [Kitex - 业务异常处理使用文档](/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/)
+3. **Resp**：在没有使用业务异常的情况下，用户会在 Resp（BaseResp） 中定义错误返回，所以也支持对 Resp 判断做 fallback
+
+### 1.2 监控上报
+
+Fallback 后可能直接返回成功的 Resp，对用户而言是一次成功请求，但 RPC 层面还是失败请求，所以监控默认以原来的结果上报，但支持配置化调整为以 Fallback 结果上报。
+
+## 2. 使用方式
+
+因为 Fallback 涉及业务逻辑，只支持代码配置。
+
+### 2.1 Client 维度配置
+
+```Go
+import (
+    "github.com/cloudwego/kitex/client"
+)
+
+var opts []client.Option
+opts = append(opts, client.WithFallback(yourFallbackPolicy))
+
+xxxCli := xxxservice.NewClient("target_service", opts...)
+```
+
+### 2.2 Call 维度配置
+
+```Go
+import (
+    "github.com/cloudwego/kitex/client/callopt"
+)
+
+xxxCli.XXXMethod(ctx, req, callopt.WithFallback(yourFallbackPolicy))
+```
+
+### 2.3 如何配置 Fallback Policy
+
+#### 2.3.1 Fallback Func 定义
+
+Kitex 提供两种 Fallback Func 定义：
+
+1. 以 XXXArgs/XXXResult 作为 req/resp 参数，与 Middleware 相同
+
+2. 以真实的 RPC Req/Resp 作为参数，与 Handler 的参数类型相同
+
+后者符合使用直觉，对用户更加友好，但不兼容有多个请求参数的 API，因此框架默认使用前一种方法。
+
+**XXXArgs/XXXResult 作为 req/resp 参数**
+
+注意：必须通过 result.SetSuccess(yourFallbackResult) 替换原返回值。
+
+```go
+// Func is the definition for fallback func, which can do fallback both for error and resp.
+// Notice !! The args and result are not the real rpc req and resp, are respectively XXArgs and XXXResult of generated code.
+// setup eg: client.WithFallback(fallback.NewFallbackPolicy(yourFunc))
+type Func func(ctx context.Context, args utils.KitexArgs, result utils.KitexResult, err error) (fbErr error)
+
+// use demo
+client.WithFallback(
+fallback.NewFallbackPolicy(
+func(ctx context.Context, args utils.KitexArgs,
+result utils.KitexResult, err error) (fbErr error) {
+// your fallback logic...
+result.SetSuccess(yourFallbackResult)
+return
+}))
+```
+
+**真实的** **RPC** **Req/Resp 作为参数**
+
+通过使用 Kitex 提供的 **fallback.UnwrapHelper**，可以定义签名为 RealReqRespFunc 的 Fallback Func，参数类型和 Handler 的 req、resp 一致。
+
+注意：如果需要返回 resp，这里需要构造真实的 RPC resp 作为返回值，Helper 会调用 SetSuccess 方法 替换原返回值。
+
+```Go
+// RealReqRespFunc is the definition for fallback func with real rpc req as param, and must return the real rpc resp.
+// setup eg: client.WithFallback(fallback.NewFallbackPolicy(fallback.UnwrapHelper(yourRealReqRespFunc)))
+type RealReqRespFunc func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error)
+
+// use demo
+client.WithFallback(fallback.NewFallbackPolicy(fallback.UnwrapHelper(func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
+// your fallback logic...
+return fbResp, fbErr
+}))
+```
+
+#### 2.3.2 构造 Fallback Policy
+
+默认的构造方法 NewFallbackPolicy，框架会对 Error 和 Resp 均触发 Fallback 执行，为了方便业务使用，如果用户是希望对 Error 或者 超时/熔断 做 fallback，框架也提供了封装。
+
+1. **对 Error 和 Resp 均做判断执行 Fallback**
+
+```Go
+// 方法1：XXXArgs/XXXResult as params
+fallback.NewFallbackPolicy(func(ctx context.Context, args utils.KitexArgs, result utils.KitexResult, err error) (fbErr error) {
+   // your fallback logic...
+   result.SetSuccess(yourFallbackResult)
+   return
+})
+
+// 方法2：real rpc req/resp as params
+fallback.NewFallbackPolicy(fallback.UnwrapHelper(func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
+   // your fallback logic...
+   return
+})
+```
+
+2. **只对 Error（包括业务 Error） 进行 Fallback**
+
+   非 Error 不会执行 Fallback
+
+```Go
+// 1: XXXArgs/XXXResult as params
+fallback.ErrorFallback(func(ctx context.Context, args utils.KitexArgs, result utils.KitexResult, err error) (fbErr error) {
+   // your fallback logic...
+   result.SetSuccess(yourFallbackResult)
+   return
+})
+
+// 2: real rpc req/resp as params
+fallback.ErrorFallback(fallback.UnwrapHelper(func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
+   // your fallback logic...
+   return
+})
+```
+
+3. **只对超时和熔断 Error 进行 Fallback**
+
+   非 超时 和 熔断 Error 不会执行 Fallback
+
+```Go
+// 1: XXXArgs/XXXResult as params
+fallback.TimeoutAndCBFallback(func(ctx context.Context, args utils.KitexArgs, result utils.KitexResult, err error) (fbErr error) {
+   // your fallback logic...
+   result.SetSuccess(yourFallbackResult)
+   return
+})
+
+// 2: real rpc req/resp as params
+fallback.TimeoutAndCBFallback(fallback.UnwrapHelper(func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
+   // your fallback logic...
+   return
+})
+```
+
+#### 2.3.3 如何以 Fallback 结果进行监控上报
+
+框架默认以原来的 RPC 结果进行监控上报，fallback.Policy 提供了 **EnableReportAsFallback()** 方法可以选择以 Fallback 结果上报。
+
+**注意**：如果原结果本来就不是 RPC 失败（业务 Error），但如果在 Fallback 里返回了 error，即使 设置了 EnableReportAsFallback，框架也不会以 Fallback 结果上报。
+
+| **原结果**                                  | **是否使用 EnableReportAsFallback()** | **上报结果**                                                         |
+| ------------------------------------------- | ------------------------------------- | -------------------------------------------------------------------- |
+| RPC 失败                                    | 是                                    | fallback 结果                                                        |
+| RPC 失败                                    | 否                                    | is_error=1 <br/>(rpcinfo.GetRPCInfo(ctx).Stats().Error() is not nil) |
+| 业务错误 （Biz Err 或 BaseResp 非成功状态） | 是/否                                 | is_error=0 <br/>(rpcinfo.GetRPCInfo(ctx).Stats().Error() is nil)     |
+
+### 2.4 配置示例
+
+#### **示例1**：只对 超时和熔断 error 做 fallback，且以 fallback 结果进行监控上报
+
+```Go
+yourFallbackPolicy := fallback.TimeoutAndCBFallback(func(ctx context.Context, args utils.KitexArgs, result utils.KitexResult, err error) (fbErr error) {
+   methodName := rpcinfo.GetRPCInfo(ctx).To().Method()
+   fbRPCResp := buildFallbackRPCResp(methodName, req)
+   result.SetSuccess(fbRPCResp)
+   return nil
+}).EnableReportAsFallback()
+
+var opts []client.Option
+opts = append(opts, client.WithFallback(yourFallbackPolicy))
+
+xxxCli := xxxservice.NewClient("target_service", opts...)
+```
+
+#### **示例2**：对 Error 和 Resp 都需要 fallback，使用真实的 RPC req/resp 类型作为参数
+
+```Go
+yourFallbackPolicy := fallback.NewFallbackPolicy(fallback.UnwrapHelper(func(ctx context.Context, req, resp interface{}, err error) (fbResp interface{}, fbErr error) {
+   methodName := rpcinfo.GetRPCInfo(ctx).To().Method()
+   fbResp = buildFallbackRPCResp(methodName, req, resp)
+   return fbResp, nil
+})).EnableReportAsFallback()
+
+xxxCli.XXXMethod(ctx, req, callopt.WithFallback(yourFallbackPolicy))
+```
+
+## 3.注意事项
+
+### 3.1 特殊返回值说明
+
+- 若 Fallback 的 resp, err 均为 nil，框架将返回原来的 resp 和 error
+- 若 Fallback 的 resp, err 均不为 nil，不会返回 resp 给用户
+- 允许 fallback 返回 error
+
+### 3.2 Kitex Protobuf / Kitex gRPC 使用
+
+- Kitex Protobuf 和 Kitex gRPC 的 Unary 请求均支持 fallback ，但需要用 >=v0.5.0 工具版本生成的代码（版本见生成代码文件头部与版本注释）
+- Kitex gRPC streaming 请求不支持 fallback
+</script><h1>Fallback</h1><div class=lead>Kitex 自定义 Fallback 使用指南。</div><header class=article-meta></header><blockquote><p><strong>支持版本：>= v0.5.0 （go.mod依赖 <a href=https://github.com/cloudwego/kitex>github/cloudwego/kitex</a>)</strong></p><p>Protobuf 生成代码版本：>=v0.5.0（版本见生成代码文件头部与版本注释）</p><p>Thrift 对生成代码版本无要求</p></blockquote><h2 id=1-kitex-fallback-功能说明>1. Kitex Fallback 功能说明</h2><p>业务在 RPC 请求失败后通常会有一些降级措施保证有效返回（比如请求超时、熔断后，构造默认返回），Kitex 的 Fallback 支持对所有异常请求进行处理。同时，因为业务异常通常会通过 Resp（BaseResp） 返回，所以也支持对 Resp 进行处理。</p><h3 id=11-支持-fallback-的结果类型>1.1 支持 Fallback 的结果类型</h3><ol><li><strong>RPC</strong> <strong>Error</strong>：RPC 请求异常，如超时、熔断、限流、协议等 RPC 层面的异常</li><li><strong>业务 Error</strong>：业务自定义的异常，区别于 RPC 异常，具体是 <a href=/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/>Kitex - 业务异常处理使用文档</a></li><li><strong>Resp</strong>：在没有使用业务异常的情况下，用户会在 Resp（BaseResp） 中定义错误返回，所以也支持对 Resp 判断做 fallback</li></ol><h3 id=12-监控上报>1.2 监控上报</h3><p>Fallback 后可能直接返回成功的 Resp，对用户而言是一次成功请求，但 RPC 层面还是失败请求，所以监控默认以原来的结果上报，但支持配置化调整为以 Fallback 结果上报。</p><h2 id=2-使用方式>2. 使用方式</h2><p>因为 Fallback 涉及业务逻辑，只支持代码配置。</p><h3 id=21-client-维度配置>2.1 Client 维度配置</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=display:flex><span><span style=color:#204a87;font-weight:700>import</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#4e9a06>&#34;github.com/cloudwego/kitex/client&#34;</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
@@ -242,4 +463,4 @@
 </span></span></span></code></pre></div><h2 id=3注意事项>3.注意事项</h2><h3 id=31-特殊返回值说明>3.1 特殊返回值说明</h3><ul><li>若 Fallback 的 resp, err 均为 nil，框架将返回原来的 resp 和 error</li><li>若 Fallback 的 resp, err 均不为 nil，不会返回 resp 给用户</li><li>允许 fallback 返回 error</li></ul><h3 id=32-kitex-protobuf--kitex-grpc-使用>3.2 Kitex Protobuf / Kitex gRPC 使用</h3><ul><li>Kitex Protobuf 和 Kitex gRPC 的 Unary 请求均支持 fallback ，但需要用 >=v0.5.0 工具版本生成的代码（版本见生成代码文件头部与版本注释）</li><li>Kitex gRPC streaming 请求不支持 fallback</li></ul><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 May 8, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/dff8f175d96e832fb521f13246cce14399aefcdb>style: prettier lint fix (#1069) (dff8f175)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

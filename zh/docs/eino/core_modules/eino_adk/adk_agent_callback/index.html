@@ -19,7 +19,7 @@ AgentCallbackInput Agent 回调的输入类型，在 OnStart 回调中传递：'
 使用相同的 callbacks.Handler 接口 使用相同的 callbacks.RunInfo 结构 可以与其他组件回调（如 ChatModel、Tool 等）组合使用 💡 通过 Agent Callback，你可以在 Agent 执行的关键节点介入，实现 tracing、logging、metrics 等可观测性能力。本能力在 v0.8.0 版本引入。
 核心类型 ComponentOfAgent 组件类型标识符，用于在回调中识别 Agent 相关事件：
 const ComponentOfAgent components.Component = "Agent" 在 callbacks.RunInfo.Component 中使用，用于过滤仅与 Agent 相关的回调事件。
-AgentCallbackInput Agent 回调的输入类型，在 OnStart 回调中传递：'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+AgentCallbackInput Agent 回调的输入类型，在 OnStart 回调中传递：'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -128,7 +128,369 @@ AgentCallbackInput Agent 回调的输入类型，在 OnStart 回调中传递：'
 <label for=m-zhdocseinofaq-check><a href=/zh/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/eino/core_modules/eino_adk/adk_agent_callback.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/eino/core_modules/eino_adk?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Agent%20Callback" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#概述>概述</a></li><li><a href=#核心类型>核心类型</a><ul><li><a href=#componentofagent>ComponentOfAgent</a></li><li><a href=#agentcallbackinput>AgentCallbackInput</a></li><li><a href=#agentcallbackoutput>AgentCallbackOutput</a></li></ul></li><li><a href=#api-使用>API 使用</a><ul><li><a href=#withcallbacks>WithCallbacks</a></li><li><a href=#类型转换函数>类型转换函数</a></li></ul></li><li><a href=#使用示例>使用示例</a><ul><li><a href=#方式一使用-handlerbuilder>方式一：使用 HandlerBuilder</a></li><li><a href=#方式二使用-handlerhelper推荐>方式二：使用 HandlerHelper（推荐）</a></li></ul></li><li><a href=#tracing-场景应用>Tracing 场景应用</a></li><li><a href=#agent-类型标识>Agent 类型标识</a></li><li><a href=#回调行为说明>回调行为说明</a><ul><li><a href=#回调调用时机>回调调用时机</a></li><li><a href=#onend-调用时机>OnEnd 调用时机</a></li></ul></li><li><a href=#注意事项>注意事项</a><ul><li><a href=#1-异步消费事件流>1. 异步消费事件流</a></li><li><a href=#2-无-onerror-回调>2. 无 OnError 回调</a></li><li><a href=#3-事件流复制机制>3. 事件流复制机制</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/>ADK - Agent Development Kit</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/adk_agent_callback/>Agent Callback</a></li></ol></nav><div class=td-content><h1>Agent Callback</h1><header class=article-meta></header><p>此功能为 ADK Agent 添加了回调（Callback）支持，类似于 compose 包中的回调机制。通过回调，用户可以观测 Agent 的执行生命周期，实现日志记录、追踪、监控等功能。</p><blockquote><p>💡
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#概述>概述</a></li><li><a href=#核心类型>核心类型</a><ul><li><a href=#componentofagent>ComponentOfAgent</a></li><li><a href=#agentcallbackinput>AgentCallbackInput</a></li><li><a href=#agentcallbackoutput>AgentCallbackOutput</a></li></ul></li><li><a href=#api-使用>API 使用</a><ul><li><a href=#withcallbacks>WithCallbacks</a></li><li><a href=#类型转换函数>类型转换函数</a></li></ul></li><li><a href=#使用示例>使用示例</a><ul><li><a href=#方式一使用-handlerbuilder>方式一：使用 HandlerBuilder</a></li><li><a href=#方式二使用-handlerhelper推荐>方式二：使用 HandlerHelper（推荐）</a></li></ul></li><li><a href=#tracing-场景应用>Tracing 场景应用</a></li><li><a href=#agent-类型标识>Agent 类型标识</a></li><li><a href=#回调行为说明>回调行为说明</a><ul><li><a href=#回调调用时机>回调调用时机</a></li><li><a href=#onend-调用时机>OnEnd 调用时机</a></li></ul></li><li><a href=#注意事项>注意事项</a><ul><li><a href=#1-异步消费事件流>1. 异步消费事件流</a></li><li><a href=#2-无-onerror-回调>2. 无 OnError 回调</a></li><li><a href=#3-事件流复制机制>3. 事件流复制机制</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/>ADK - Agent Development Kit</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/adk_agent_callback/>Agent Callback</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Agent Callback" data-url=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/adk_agent_callback/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+此功能为 ADK Agent 添加了回调（Callback）支持，类似于 compose 包中的回调机制。通过回调，用户可以观测 Agent 的执行生命周期，实现日志记录、追踪、监控等功能。
+
+> 💡
+> **提示**：cozeloop 的 adk trace 版本见 [https://github.com/cloudwego/eino-ext/releases/tag/callbacks%2Fcozeloop%2Fv0.2.0](https://github.com/cloudwego/eino-ext/releases/tag/callbacks%2Fcozeloop%2Fv0.2.0)
+>
+> 务必同时使用支持 v0.8 的 trace callback handler 实现，才能正常使用 Agent trace 功能
+
+## 概述
+
+ADK Agent Callback 机制与 Eino compose 中的回调系统共享相同的基础设施：
+
+- 使用相同的 `callbacks.Handler` 接口
+- 使用相同的 `callbacks.RunInfo` 结构
+- 可以与其他组件回调（如 ChatModel、Tool 等）组合使用
+
+> 💡
+> 通过 Agent Callback，你可以在 Agent 执行的关键节点介入，实现 tracing、logging、metrics 等可观测性能力。本能力在 v0.8.0 版本引入。
+
+## 核心类型
+
+### ComponentOfAgent
+
+组件类型标识符，用于在回调中识别 Agent 相关事件：
+
+```go
+const ComponentOfAgent components.Component = "Agent"
+```
+
+在 `callbacks.RunInfo.Component` 中使用，用于过滤仅与 Agent 相关的回调事件。
+
+### AgentCallbackInput
+
+Agent 回调的输入类型，在 `OnStart` 回调中传递：
+
+```go
+type AgentCallbackInput struct {
+    // Input 包含新运行的 Agent 输入。恢复执行时为 nil。
+    Input *AgentInput
+    // ResumeInfo 包含从中断恢复时的信息。新运行时为 nil。
+    ResumeInfo *ResumeInfo
+}
+```
+
+<table>
+<tr><td>调用方式</td><td>字段值</td></tr>
+<tr><td><pre>Agent.Run()</pre></td><td><pre>Input</pre> 字段有值，<pre>ResumeInfo</pre> 为 nil</td></tr>
+<tr><td><pre>Agent.Resume()</pre></td><td><pre>ResumeInfo</pre> 字段有值，<pre>Input</pre> 为 nil</td></tr>
+</table>
+
+### AgentCallbackOutput
+
+Agent 回调的输出类型，在 `OnEnd` 回调中传递：
+
+```go
+type AgentCallbackOutput struct {
+    // Events 提供 Agent 事件流。每个 handler 接收独立的副本。
+    Events *AsyncIterator[*AgentEvent]
+}
+```
+
+> 💡
+> **重要**：`Events` 迭代器应**异步消费**，以避免阻塞 Agent 执行。每个回调 handler 接收独立的事件流副本，互不干扰。
+
+## API 使用
+
+### WithCallbacks
+
+添加回调 handler 以接收 Agent 生命周期事件的运行选项：
+
+```go
+func WithCallbacks(handlers ...callbacks.Handler) AgentRunOption
+```
+
+### 类型转换函数
+
+将通用回调类型转换为 Agent 专用类型：
+
+```go
+// 转换输入类型
+func ConvAgentCallbackInput(input callbacks.CallbackInput) *AgentCallbackInput
+
+// 转换输出类型
+func ConvAgentCallbackOutput(output callbacks.CallbackOutput) *AgentCallbackOutput
+```
+
+如果类型不匹配，函数返回 nil。
+
+## 使用示例
+
+### 方式一：使用 HandlerBuilder
+
+使用 `callbacks.NewHandlerBuilder()` 构建通用的 callback handler：
+
+```go
+import (
+    "github.com/cloudwego/eino/adk"
+    "github.com/cloudwego/eino/callbacks"
+)
+
+handler := callbacks.NewHandlerBuilder().
+    OnStartFn(func(ctx context.Context, info *callbacks.RunInfo, input callbacks.CallbackInput) context.Context {
+        if info.Component == adk.ComponentOfAgent {
+            agentInput := adk.ConvAgentCallbackInput(input)
+            if agentInput.Input != nil {
+                fmt.Printf("Agent %s started with new run\n", info.Name)
+            } else {
+                fmt.Printf("Agent %s resumed from interrupt\n", info.Name)
+            }
+        }
+        return ctx
+    }).
+    OnEndFn(func(ctx context.Context, info *callbacks.RunInfo, output callbacks.CallbackOutput) context.Context {
+        if info.Component == adk.ComponentOfAgent {
+            agentOutput := adk.ConvAgentCallbackOutput(output)
+            // 异步消费事件流
+            go func() {
+                for {
+                    event, ok := agentOutput.Events.Next()
+                    if !ok {
+                        break
+                    }
+                    // 处理事件...
+                    fmt.Printf("Event from %s: %+v\n", event.AgentName, event)
+                }
+            }()
+        }
+        return ctx
+    }).
+    Build()
+
+// 创建 Runner - 必须通过 Runner 执行 Agent，callback 才会生效
+runner := adk.NewRunner(ctx, adk.RunnerConfig{
+    Agent:           agent,
+    EnableStreaming: input.EnableStreaming,
+})
+
+iter := runner.Run(ctx, input.Messages, adk.WithCallbacks(handler))
+```
+
+> 💡
+> **重要提示**：上面的示例展示了正确的使用方式。必须通过 Runner 执行 Agent，AgentCallback 才会生效。直接使用 `agent.Run()` 时，callback 不会被触发。
+
+### 方式二：使用 HandlerHelper（推荐）
+
+使用 `template.HandlerHelper` 可以更方便地处理类型转换：
+
+```go
+import (
+    "github.com/cloudwego/eino/adk"
+    "github.com/cloudwego/eino/callbacks"
+    template "github.com/cloudwego/eino/utils/callbacks"
+)
+
+helper := template.NewHandlerHelper().
+    Agent(&template.AgentCallbackHandler{
+        OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *adk.AgentCallbackInput) context.Context {
+            if input.Input != nil {
+                fmt.Printf("Agent %s started with input\n", info.Name)
+            } else {
+                fmt.Printf("Agent %s resumed\n", info.Name)
+            }
+            return ctx
+        },
+        OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *adk.AgentCallbackOutput) context.Context {
+            // 异步消费事件
+            go func() {
+                for {
+                    event, ok := output.Events.Next()
+                    if !ok {
+                        break
+                    }
+                    // 处理事件...
+                }
+            }()
+            return ctx
+        },
+    }).
+    Handler()
+
+// 创建 Runner - 必须通过 Runner 执行 Agent，callback 才会生效
+runner := adk.NewRunner(ctx, adk.RunnerConfig{
+    Agent:           agent,
+    EnableStreaming: input.EnableStreaming,
+})
+
+iter := runner.Run(ctx, input.Messages, adk.WithCallbacks(helper))
+```
+
+> 💡
+> **重要提示**：必须通过 Runner 执行 Agent，AgentCallback 才会生效。直接使用 `agent.Run()` 时，callback 不会被触发。
+
+> 💡
+> `HandlerHelper` 会自动进行类型转换，代码更简洁。同时支持组合多种组件的回调处理器。
+
+## Tracing 场景应用
+
+> 💡
+> **重要提示**：AgentCallback 必须通过 Runner 来执行才会生效。直接使用 Agent.Run() 时，callback 不会被触发，因为 callback 机制是在 flowAgent 层面实现的。请使用 adk.NewRunner() 创建 Runner 后，通过 Runner.Run() 或 Runner.Query() 来执行 Agent。
+
+Agent Callback 最常见的应用场景是实现分布式追踪（Tracing）。以下是使用 OpenTelemetry 实现 tracing 的示例：
+
+```go
+import (
+    "go.opentelemetry.io/otel"
+    "go.opentelemetry.io/otel/attribute"
+    "go.opentelemetry.io/otel/codes"
+    "go.opentelemetry.io/otel/trace"
+    
+    "github.com/cloudwego/eino/adk"
+    "github.com/cloudwego/eino/callbacks"
+)
+
+// 创建 Agent（以 ChatModelAgent 为例）
+agent, _ := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    Name:        "my_agent",
+    Description: "A helpful assistant",
+    Model:       chatModel,
+})
+
+// 创建 Runner - 必须通过 Runner 执行 Agent，callback 才会生效
+runner := adk.NewRunner(ctx, adk.RunnerConfig{
+    Agent:           agent,
+    EnableStreaming: true,
+})
+
+tracer := otel.Tracer("my-agent-tracer")
+
+handler := callbacks.NewHandlerBuilder().
+    OnStartFn(func(ctx context.Context, info *callbacks.RunInfo, input callbacks.CallbackInput) context.Context {
+        // 创建 span
+        ctx, span := tracer.Start(ctx, info.Name,
+            trace.WithAttributes(
+                attribute.String("component", string(info.Component)),
+                attribute.String("type", info.Type),
+            ))
+        
+        // Agent 特定的属性
+        if info.Component == adk.ComponentOfAgent {
+            agentInput := adk.ConvAgentCallbackInput(input)
+            if agentInput != nil && agentInput.Input != nil {
+                span.SetAttributes(attribute.Bool("is_new_run", true))
+            } else {
+                span.SetAttributes(attribute.Bool("is_resume", true))
+            }
+        }
+        
+        return ctx
+    }).
+    OnEndFn(func(ctx context.Context, info *callbacks.RunInfo, output callbacks.CallbackOutput) context.Context {
+        span := trace.SpanFromContext(ctx)
+        span.End()
+        return ctx
+    }).
+    OnErrorFn(func(ctx context.Context, info *callbacks.RunInfo, err error) context.Context {
+        span := trace.SpanFromContext(ctx)
+        span.RecordError(err)
+        span.SetStatus(codes.Error, err.Error())
+        span.End()
+        return ctx
+    }).
+    Build()
+
+// 使用 Runner 执行 Agent，并传入 callback handler
+iter := runner.Query(ctx, "Hello, agent!", adk.WithCallbacks(handler))
+
+// 处理事件流
+for {
+    event, ok := iter.Next()
+    if !ok {
+        break
+    }
+    if event.Err != nil {
+        log.Error(event.Err)
+        break
+    }
+    // 处理事件...
+}
+```
+
+> 💡
+> **再次提醒**：必须通过 Runner 执行 Agent，callback 才会生效。直接使用 `agent.Run()` 时，即使传入了 `adk.WithCallbacks(handler)`，Agent 级别的 callback 也不会被触发。
+
+> 💡
+> **提示**：cozeloop 的 adk trace 版本见 [https://github.com/cloudwego/eino-ext/releases/tag/callbacks%2Fcozeloop%2Fv0.2.0](https://github.com/cloudwego/eino-ext/releases/tag/callbacks%2Fcozeloop%2Fv0.2.0)
+
+## Agent 类型标识
+
+内置 Agent 实现了 `components.Typer` 接口，返回其类型标识，该信息会填充到 `callbacks.RunInfo.Type` 字段中：
+
+<table>
+<tr><td>Agent 类型</td><td>GetType() 返回值</td></tr>
+<tr><td>ChatModelAgent</td><td><pre>"ChatModel"</pre></td></tr>
+<tr><td>workflowAgent (Sequential)</td><td><pre>"Sequential"</pre></td></tr>
+<tr><td>workflowAgent (Parallel)</td><td><pre>"Parallel"</pre></td></tr>
+<tr><td>workflowAgent (Loop)</td><td><pre>"Loop"</pre></td></tr>
+<tr><td>DeterministicTransfer Agent</td><td><pre>"DeterministicTransfer"</pre></td></tr>
+</table>
+
+## 回调行为说明
+
+### 回调调用时机
+
+<table><tbody><tr>
+<td>
+<strong>Run 方法</strong>1. 初始化回调上下文2. 处理输入3. 调用 <pre>OnStart</pre>4. 执行 Agent 逻辑5. 注册 <pre>OnEnd</pre>（在事件流创建时）</td><td>
+<strong>Resume 方法</strong>1. 构建 ResumeInfo2. 初始化回调上下文3. 调用 <pre>OnStart</pre>4. 恢复 Agent 执行5. 注册 <pre>OnEnd</pre>（在事件流创建时）</td></tr></tbody></table>
+
+### OnEnd 调用时机
+
+`OnEnd` 回调在**迭代器创建时**注册，而非在生成器关闭时。这允许 handler 在事件流式传输时消费事件。
+
+## 注意事项
+
+### 1. 异步消费事件流
+
+回调 handler 中的 `AgentCallbackOutput.Events` **必须**异步消费，否则会阻塞 Agent 执行：
+
+```go
+// ✅ 正确
+OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *adk.AgentCallbackOutput) context.Context {
+    go func() {
+        for {
+            event, ok := output.Events.Next()
+            if !ok {
+                break
+            }
+            // 处理事件
+        }
+    }()
+    return ctx
+}
+
+// ❌ 错误 - 会导致死锁
+OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *adk.AgentCallbackOutput) context.Context {
+    for {
+        event, ok := output.Events.Next()
+        if !ok {
+            break
+        }
+        // 处理事件
+    }
+    return ctx
+}
+```
+
+### 2. 无 OnError 回调
+
+由于 `Agent.Run()` 和 `Agent.Resume()` 方法签名不返回 error，Agent 回调**不支持** `OnError`。错误信息通过 `AgentEvent.Err` 字段在事件流中传递。
+
+### 3. 事件流复制机制
+
+当有多个回调 handler 时，每个 handler 接收独立的事件流副本，互不干扰。最后一个 handler 接收原始事件以减少内存分配。
+</script><h1>Agent Callback</h1><header class=article-meta></header><p>此功能为 ADK Agent 添加了回调（Callback）支持，类似于 compose 包中的回调机制。通过回调，用户可以观测 Agent 的执行生命周期，实现日志记录、追踪、监控等功能。</p><blockquote><p>💡
 <strong>提示</strong>：cozeloop 的 adk trace 版本见 <a href=https://github.com/cloudwego/eino-ext/releases/tag/callbacks%2Fcozeloop%2Fv0.2.0>https://github.com/cloudwego/eino-ext/releases/tag/callbacks%2Fcozeloop%2Fv0.2.0</a></p><p>务必同时使用支持 v0.8 的 trace callback handler 实现，才能正常使用 Agent trace 功能</p></blockquote><h2 id=概述>概述</h2><p>ADK Agent Callback 机制与 Eino compose 中的回调系统共享相同的基础设施：</p><ul><li>使用相同的 <code>callbacks.Handler</code> 接口</li><li>使用相同的 <code>callbacks.RunInfo</code> 结构</li><li>可以与其他组件回调（如 ChatModel、Tool 等）组合使用</li></ul><blockquote><p>💡
 通过 Agent Callback，你可以在 Agent 执行的关键节点介入，实现 tracing、logging、metrics 等可观测性能力。本能力在 v0.8.0 版本引入。</p></blockquote><h2 id=核心类型>核心类型</h2><h3 id=componentofagent>ComponentOfAgent</h3><p>组件类型标识符，用于在回调中识别 Agent 相关事件：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>const</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>ComponentOfAgent</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>components</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Component</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>=</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#4e9a06>&#34;Agent&#34;</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span></code></pre></div><p>在 <code>callbacks.RunInfo.Component</code> 中使用，用于过滤仅与 Agent 相关的回调事件。</p><h3 id=agentcallbackinput>AgentCallbackInput</h3><p>Agent 回调的输入类型，在 <code>OnStart</code> 回调中传递：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>AgentCallbackInput</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -339,4 +701,4 @@ AgentCallbackInput Agent 回调的输入类型，在 OnStart 回调中传递：'
 </span></span></span></code></pre></div><h3 id=2-无-onerror-回调>2. 无 OnError 回调</h3><p>由于 <code>Agent.Run()</code> 和 <code>Agent.Resume()</code> 方法签名不返回 error，Agent 回调<strong>不支持</strong> <code>OnError</code>。错误信息通过 <code>AgentEvent.Err</code> 字段在事件流中传递。</p><h3 id=3-事件流复制机制>3. 事件流复制机制</h3><p>当有多个回调 handler 时，每个 handler 接收独立的事件流副本，互不干扰。最后一个 handler 接收原始事件以减少内存分配。</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 March 16, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c29dac9efde882c20ad259db6f9616def269fa0d>docs(eino): sync docs from feishu (2026-03-16) (#1522) (c29dac9e)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

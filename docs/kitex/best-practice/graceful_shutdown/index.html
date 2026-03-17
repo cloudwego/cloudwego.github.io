@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Graceful Shutdown | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/kitex/best-practice/graceful_shutdown/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Graceful Shutdown"><meta property="og:description" content="Using a K8s deployment platform as an example, let's explain how to build a service architecture with graceful shutdown capability based on the principles of Kubernetes and Kitex's graceful shutdown feature."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-02-18T00:00:00+00:00"><meta property="article:modified_time" content="2024-03-05T17:46:07+08:00"><meta itemprop=name content="Graceful Shutdown"><meta itemprop=description content="Using a K8s deployment platform as an example, let's explain how to build a service architecture with graceful shutdown capability based on the principles of Kubernetes and Kitex's graceful shutdown feature."><meta itemprop=datePublished content="2024-02-18T00:00:00+00:00"><meta itemprop=dateModified content="2024-03-05T17:46:07+08:00"><meta itemprop=wordCount content="1824"><meta itemprop=keywords content="Graceful Shutdown,Kubernetes,Best Practice"><meta name=twitter:card content="summary"><meta name=twitter:title content="Graceful Shutdown"><meta name=twitter:description content="Using a K8s deployment platform as an example, let's explain how to build a service architecture with graceful shutdown capability based on the principles of Kubernetes and Kitex's graceful shutdown feature."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Graceful Shutdown | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/kitex/best-practice/graceful_shutdown/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Graceful Shutdown"><meta property="og:description" content="Using a K8s deployment platform as an example, let's explain how to build a service architecture with graceful shutdown capability based on the principles of Kubernetes and Kitex's graceful shutdown feature."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-02-18T00:00:00+00:00"><meta property="article:modified_time" content="2024-03-05T17:46:07+08:00"><meta itemprop=name content="Graceful Shutdown"><meta itemprop=description content="Using a K8s deployment platform as an example, let's explain how to build a service architecture with graceful shutdown capability based on the principles of Kubernetes and Kitex's graceful shutdown feature."><meta itemprop=datePublished content="2024-02-18T00:00:00+00:00"><meta itemprop=dateModified content="2024-03-05T17:46:07+08:00"><meta itemprop=wordCount content="1824"><meta itemprop=keywords content="Graceful Shutdown,Kubernetes,Best Practice"><meta name=twitter:card content="summary"><meta name=twitter:title content="Graceful Shutdown"><meta name=twitter:description content="Using a K8s deployment platform as an example, let's explain how to build a service architecture with graceful shutdown capability based on the principles of Kubernetes and Kitex's graceful shutdown feature."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -145,7 +145,223 @@
 <label for=m-docskitexfaq-check><a href=/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-docskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/kitex/Best%20Practice/graceful_shutdown.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/kitex/Best%20Practice?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Graceful%20Shutdown" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#background>Background</a></li><li><a href=#k8s-service-registration>K8s Service Registration</a><ul><li><a href=#principle>Principle</a></li><li><a href=#issues-and-solutions>Issues and Solutions</a></li></ul></li><li><a href=#k8s-service-discovery>K8s Service Discovery</a><ul><li><a href=#principles>Principles</a></li><li><a href=#issues-and-solutions-1>Issues and Solutions</a></li></ul></li><li><a href=#destroying-pods-in-k8s>Destroying Pods in K8s</a><ul><li><a href=#principle-1>Principle</a></li><li><a href=#issues-and-solutions-2>Issues and Solutions</a></li></ul></li><li><a href=#summary>Summary</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/best-practice/>Best Practice</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/kitex/best-practice/graceful_shutdown/>Graceful Shutdown</a></li></ol></nav><div class=td-content><h1>Graceful Shutdown</h1><div class=lead>Using a K8s deployment platform as an example, let&rsquo;s explain how to build a service architecture with graceful shutdown capability based on the principles of Kubernetes and Kitex&rsquo;s graceful shutdown feature.</div><header class=article-meta></header><h2 id=background>Background</h2><p>Kubernetes (K8s) is currently the most popular container deployment platform in the community. In the past, there have been cases where the graceful shutdown functionality of Kitex services deployed in K8s clusters did not meet expectations. However, graceful shutdown is tightly coupled with the service registration and discovery mechanisms of the deployment environment, as well as the characteristics of the service itself. The framework and container orchestration platform only provide the capability for &ldquo;graceful shutdown,&rdquo; but achieving true graceful shutdown relies on the overall planning and coordination of the service architecture.</p><p>With the above goals in mind, we aim to provide some corresponding solutions to address these issues from a theoretical perspective. These solutions are intended to help the community make better use of Kitex&rsquo;s graceful shutdown capability in the context of a K8s architecture. Since each component in the K8s architecture is pluggable, different companies, especially those with a large number of instances, may have varying degrees of customization in terms of K8s service registration and discovery. Therefore, we will only discuss the default and most widely used K8s service registration and discovery patterns.</p><h2 id=k8s-service-registration>K8s Service Registration</h2><p>Below is a common YAML configuration example for an online Pod:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#204a87;font-weight:700>apiVersion</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>v1</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#background>Background</a></li><li><a href=#k8s-service-registration>K8s Service Registration</a><ul><li><a href=#principle>Principle</a></li><li><a href=#issues-and-solutions>Issues and Solutions</a></li></ul></li><li><a href=#k8s-service-discovery>K8s Service Discovery</a><ul><li><a href=#principles>Principles</a></li><li><a href=#issues-and-solutions-1>Issues and Solutions</a></li></ul></li><li><a href=#destroying-pods-in-k8s>Destroying Pods in K8s</a><ul><li><a href=#principle-1>Principle</a></li><li><a href=#issues-and-solutions-2>Issues and Solutions</a></li></ul></li><li><a href=#summary>Summary</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/best-practice/>Best Practice</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/kitex/best-practice/graceful_shutdown/>Graceful Shutdown</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Graceful Shutdown" data-url=https://www.cloudwego.io/docs/kitex/best-practice/graceful_shutdown/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Background
+
+Kubernetes (K8s) is currently the most popular container deployment platform in the community. In the past, there have been cases where the graceful shutdown functionality of Kitex services deployed in K8s clusters did not meet expectations. However, graceful shutdown is tightly coupled with the service registration and discovery mechanisms of the deployment environment, as well as the characteristics of the service itself. The framework and container orchestration platform only provide the capability for "graceful shutdown," but achieving true graceful shutdown relies on the overall planning and coordination of the service architecture.
+
+With the above goals in mind, we aim to provide some corresponding solutions to address these issues from a theoretical perspective. These solutions are intended to help the community make better use of Kitex's graceful shutdown capability in the context of a K8s architecture. Since each component in the K8s architecture is pluggable, different companies, especially those with a large number of instances, may have varying degrees of customization in terms of K8s service registration and discovery. Therefore, we will only discuss the default and most widely used K8s service registration and discovery patterns.
+
+## K8s Service Registration
+
+Below is a common YAML configuration example for an online Pod:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: xxx-service
+spec:
+  containers:
+    - name: xxx-service
+      ports:
+        - containerPort: 8080
+      readinessProbe:
+        tcpSocket:
+          port: 8080
+        initialDelaySeconds: 5
+        periodSeconds: 10
+```
+
+### Principle
+
+In K8s, after a Pod is launched, it checks whether the Pod is ready to serve based on the configuration of the `readinessProbe`. The readiness check starts after the specified `initialDelaySeconds` and continues periodically with an interval defined by `periodSeconds`. Only when the `readinessProbe` criteria are met, such as establishing a connection to the container's IP on the specified port (8080 in this example), the container's IP is registered in the healthy Endpoints associated with the Service. This enables the container to be discovered and accessed by other services.
+
+### Issues and Solutions
+
+**Being accessible doesn't always mean being able to provide service**
+
+In the YAML example above, we assume that establishing a listener in the business process is equivalent to the process being able to provide the service. However, in complex business scenarios, this equation may not always hold true. For example, some services may require a series of initialization operations to be performed before they can provide the service properly. If we stick to the configuration mentioned above, it is likely that when performing rolling updates downstream, we may observe errors such as timeouts upstream, indicating that the downstream service did not achieve "graceful shutdown" in practice.
+
+To address this situation, we need to customize our health check function:
+
+```go
+func healthCheck() {
+    // Perform cache warming logic
+    cache.Warming()
+    // Ensure that the database connection pool is ready
+    mysqlDB.Select(*).Where(...).Limit(1)
+    // Ensure that the necessary configurations are retrieved from the external dependency configuration center
+    config.Ready()
+    // ... Other necessary dependency checks
+    return
+}
+```
+
+The prerequisite for a successful health check result is to ensure that the service is ready to handle requests.
+
+We can register this health check function within the service. For example, if the service is using the HTTP protocol, we can configure the `readinessProbe` as follows:
+
+```yaml
+readinessProbe:
+  httpGet:
+    scheme: HTTP
+    path: /health
+    port: 8080
+```
+
+If the service is using RPC protocols (such as Kitex with the default Thrift protocol) or other less common protocols, you can have the monitoring program communicate with the application through commands to check the health status. In this case, the business process, upon startup, will only create the `/tmp/healthy` file when the health check passes, indicating to K8s that the service is accessible:
+
+```yaml
+readinessProbe:
+  exec:
+    command:
+      - cat
+      - /tmp/healthy
+```
+
+## K8s Service Discovery
+
+Kubernetes (K8s) uses `Service` as the identifier for services. Here is a common definition of a Service:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app
+  namespace: my-ns
+spec:
+  type: ClusterIP
+  clusterIP: 10.1.1.101
+```
+
+### Principles
+
+Kubernetes provides the ability to translate a `ServiceName` into a Cluster IP using DNS. By default, the Cluster IP is globally unique and does not change with the underlying Pods. In other words, the client-side service discovery always resolves to a single IP address.
+
+Once the client obtains the Cluster IP through DNS, it directly initiates a connection to the Cluster IP. The underlying operating system then redirects the connection to the actual Pod IP using iptables.
+
+### Issues and Solutions
+
+#### Lack of Strict Load Balancing
+
+Under the iptables mechanism, load balancing between the client and server is achieved at the connection creation stage. However, since the client only sees a fixed Cluster IP, it can only achieve load balancing across different connections and cannot control load balancing across different destination IP addresses.
+
+If the client maintains long-lived connections and new Pods are added on the backend without the client establishing new connections, the new Pods may not receive sufficient traffic, resulting in an imbalance.
+
+**Solution**
+
+- Use K8s [headless service](https://kubernetes.io/docs/concepts/services-networking/service/#headless-services):
+
+  Instead of using the default Cluster IP, each service discovery returns the complete set of real Pod IPs.
+
+  This solution addresses the issue of upstream's awareness of downstream node updates and achieves true load balancing between downstream instances.
+
+- Use short-lived connections with Kitex:
+
+  Create a new short-lived connection for each request, leveraging iptables' load balancing capability. This approach also solves the problem of smooth transition in which the upstream does not access the Pod that is about to be destroyed.
+
+- Use a Service Mesh:
+
+  Rely on the data plane to handle load balancing and delegate the problem to the data plane.
+
+## Destroying Pods in K8s
+
+Kubernetes (K8s) provides hooks to control the behavior when destroying Pods:
+
+```yaml
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+    - name: xxx-service
+      preStop:
+        exec:
+          command: ["sleep", "5"]
+  terminationGracePeriodSeconds: 30
+```
+
+### Principle
+
+When a Pod is about to be destroyed, K8s performs the following actions:
+
+1. **kube-proxy removes the target IP from upstream iptables**
+
+   Although this step is generally a relatively fast operation and may not be as exaggerated as depicted in the diagram, the execution time is still not guaranteed and depends on factors such as cluster size and the level of change activity. Therefore, it is represented by a dashed line.
+
+   After this step is completed, it can only ensure that new connections are no longer directed to the IP of the old container, but existing connections will not be affected.
+
+2. **kubelet executes the preStop operation**
+
+   Since the next step will immediately close the listener, it is advisable to include a sleep time (the duration depends on the cluster size) in the preStop section to ensure that kube-proxy can promptly notify all upstream components not to establish new connections to the Pod.
+
+3. **kubelet sends the TERM signal**
+
+   At this point, the graceful shutdown process controlled by Kitex can commence:
+
+   - Stop accepting new connections: Kitex will immediately close the currently listened port, and any new incoming connections will be rejected. Existing connections will not be affected. Therefore, it is necessary to ensure that a sufficient waiting time for service discovery updates is configured in the preStop section.
+   - Wait for old connections to be processed:
+     - In non-multiplexing mode (short connections/long connection pools):
+       - Check whether all connections have been processed every 1 second until there are no active connections, then exit directly.
+     - In multiplexing mode:
+       - Immediately send a control frame (a thrift response with seqID 0) to all connections and wait for 1 second (waiting for the client on the other end to receive the control frame).
+       - When the client receives this message, it marks the current connection as invalid and stops reusing it (the ongoing send and receive operations are not affected). The purpose of this operation is to ensure that the client no longer sends requests on existing connections.
+       - Check whether all existing connections have been processed every 1 second until there are no active connections, then exit directly.
+   - If the Kitex exit wait timeout (ExitWaitTime, default 5 seconds) is reached, exit directly regardless of whether old connections have been processed.
+
+4. If the terminationGracePeriodSeconds set by K8s is reached (counting from the time the Pod enters the Termination state, including the time to execute preStop), send the KILL signal to forcefully terminate the process, regardless of whether the process has finished processing.
+
+### Issues and Solutions
+
+#### Client Cannot Detect Closing Connections
+
+This problem is similar to the underlying issue of load balancing during service discovery.
+
+When a downstream node begins to be destroyed, the client relies entirely on kube-proxy to promptly remove the corresponding Pod IP from the iptables on the machine. The client itself continues to create connections and send requests to the ClusterIP without interruption.
+
+Therefore, if kube-proxy does not remove the IP of the destroyed Pod in a timely manner, connection creation issues may arise. Even if kube-proxy removes the rules corresponding to the Pod IP, existing connections will not be affected and will still be used to send new requests (in the case of long-lived connections). In this scenario, the next time this old connection is used, it may collide with the situation where the Pod on the other end is being closed, resulting in errors such as connection reset.
+
+**Solution**
+
+- Use a K8s [headless service](https://kubernetes.io/docs/concepts/services-networking/service/#headless-services):
+
+  When the offline IP is unregistered, the upstream Kitex client will automatically stop assigning new requests to that IP. As the subsequent server is also shut down, the upstream connections will naturally be closed.
+
+- Use a Service Mesh:
+
+  In a Mesh mode, the control plane takes over the service discovery mechanism, while the data plane handles the graceful shutdown process. This frees the upstream application from the details of service governance.
+
+#### Server Cannot Finish Processing all Requests before Shutdown
+
+This problem fundamentally depends on several time durations:
+
+1. Upstream service discovery update time (client.DiscoverLatency)
+2. K8s preStop waiting time (k8s.PreStopTime)
+3. Maximum processing time for downstream service requests (server.MaxLatency)
+4. Exit wait time for the Kitex framework (kitex.ExitWaitTime)
+5. K8s terminationGracePeriodSeconds
+
+These durations must strictly follow the size relationship depicted in the sequence diagram. Otherwise, the graceful shutdown may not be achieved:
+
+![image](/img/blog/kitex_graceful_shutdown/2.png)
+
+## Summary
+
+Through the complex process described above, it becomes evident that Kubernetes (K8s) and the Kitex framework only provide parameters to enable users to achieve graceful shutdowns. They do not guarantee the automatic implementation of graceful shutdown in all types of services and deployment environments. In fact, it is not possible to achieve such a guarantee.
+
+Furthermore, while it is feasible to achieve near 100% graceful shutdown for each specific service, it is rare to have enough resources to individually configure parameters for every service on a global scale. Therefore, in real-world scenarios, we recommend understanding the principles of each component in the system and, based on the overall characteristics of the business, configuring a relatively broad and secure set of default parameters for graceful shutdown. For extremely critical services with unique latency requirements, specific parameters can be considered.
+
+Finally, upstream services should not assume that downstream services will always achieve 100% graceful shutdown. Upstream services should also implement capabilities such as retrying with alternative nodes in case of connection failures to shield against small-scale node fluctuations and achieve higher SLAs.
+</script><h1>Graceful Shutdown</h1><div class=lead>Using a K8s deployment platform as an example, let&rsquo;s explain how to build a service architecture with graceful shutdown capability based on the principles of Kubernetes and Kitex&rsquo;s graceful shutdown feature.</div><header class=article-meta></header><h2 id=background>Background</h2><p>Kubernetes (K8s) is currently the most popular container deployment platform in the community. In the past, there have been cases where the graceful shutdown functionality of Kitex services deployed in K8s clusters did not meet expectations. However, graceful shutdown is tightly coupled with the service registration and discovery mechanisms of the deployment environment, as well as the characteristics of the service itself. The framework and container orchestration platform only provide the capability for &ldquo;graceful shutdown,&rdquo; but achieving true graceful shutdown relies on the overall planning and coordination of the service architecture.</p><p>With the above goals in mind, we aim to provide some corresponding solutions to address these issues from a theoretical perspective. These solutions are intended to help the community make better use of Kitex&rsquo;s graceful shutdown capability in the context of a K8s architecture. Since each component in the K8s architecture is pluggable, different companies, especially those with a large number of instances, may have varying degrees of customization in terms of K8s service registration and discovery. Therefore, we will only discuss the default and most widely used K8s service registration and discovery patterns.</p><h2 id=k8s-service-registration>K8s Service Registration</h2><p>Below is a common YAML configuration example for an online Pod:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#204a87;font-weight:700>apiVersion</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>v1</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>kind</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Pod</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>metadata</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>  </span><span style=color:#204a87;font-weight:700>name</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>xxx-service</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -199,4 +415,4 @@
 </span></span></span></code></pre></div><h3 id=principle-1>Principle</h3><p>When a Pod is about to be destroyed, K8s performs the following actions:</p><ol><li><p><strong>kube-proxy removes the target IP from upstream iptables</strong></p><p>Although this step is generally a relatively fast operation and may not be as exaggerated as depicted in the diagram, the execution time is still not guaranteed and depends on factors such as cluster size and the level of change activity. Therefore, it is represented by a dashed line.</p><p>After this step is completed, it can only ensure that new connections are no longer directed to the IP of the old container, but existing connections will not be affected.</p></li><li><p><strong>kubelet executes the preStop operation</strong></p><p>Since the next step will immediately close the listener, it is advisable to include a sleep time (the duration depends on the cluster size) in the preStop section to ensure that kube-proxy can promptly notify all upstream components not to establish new connections to the Pod.</p></li><li><p><strong>kubelet sends the TERM signal</strong></p><p>At this point, the graceful shutdown process controlled by Kitex can commence:</p><ul><li>Stop accepting new connections: Kitex will immediately close the currently listened port, and any new incoming connections will be rejected. Existing connections will not be affected. Therefore, it is necessary to ensure that a sufficient waiting time for service discovery updates is configured in the preStop section.</li><li>Wait for old connections to be processed:<ul><li>In non-multiplexing mode (short connections/long connection pools):<ul><li>Check whether all connections have been processed every 1 second until there are no active connections, then exit directly.</li></ul></li><li>In multiplexing mode:<ul><li>Immediately send a control frame (a thrift response with seqID 0) to all connections and wait for 1 second (waiting for the client on the other end to receive the control frame).</li><li>When the client receives this message, it marks the current connection as invalid and stops reusing it (the ongoing send and receive operations are not affected). The purpose of this operation is to ensure that the client no longer sends requests on existing connections.</li><li>Check whether all existing connections have been processed every 1 second until there are no active connections, then exit directly.</li></ul></li></ul></li><li>If the Kitex exit wait timeout (ExitWaitTime, default 5 seconds) is reached, exit directly regardless of whether old connections have been processed.</li></ul></li><li><p>If the terminationGracePeriodSeconds set by K8s is reached (counting from the time the Pod enters the Termination state, including the time to execute preStop), send the KILL signal to forcefully terminate the process, regardless of whether the process has finished processing.</p></li></ol><h3 id=issues-and-solutions-2>Issues and Solutions</h3><h4 id=client-cannot-detect-closing-connections>Client Cannot Detect Closing Connections</h4><p>This problem is similar to the underlying issue of load balancing during service discovery.</p><p>When a downstream node begins to be destroyed, the client relies entirely on kube-proxy to promptly remove the corresponding Pod IP from the iptables on the machine. The client itself continues to create connections and send requests to the ClusterIP without interruption.</p><p>Therefore, if kube-proxy does not remove the IP of the destroyed Pod in a timely manner, connection creation issues may arise. Even if kube-proxy removes the rules corresponding to the Pod IP, existing connections will not be affected and will still be used to send new requests (in the case of long-lived connections). In this scenario, the next time this old connection is used, it may collide with the situation where the Pod on the other end is being closed, resulting in errors such as connection reset.</p><p><strong>Solution</strong></p><ul><li><p>Use a K8s <a href=https://kubernetes.io/docs/concepts/services-networking/service/#headless-services>headless service</a>:</p><p>When the offline IP is unregistered, the upstream Kitex client will automatically stop assigning new requests to that IP. As the subsequent server is also shut down, the upstream connections will naturally be closed.</p></li><li><p>Use a Service Mesh:</p><p>In a Mesh mode, the control plane takes over the service discovery mechanism, while the data plane handles the graceful shutdown process. This frees the upstream application from the details of service governance.</p></li></ul><h4 id=server-cannot-finish-processing-all-requests-before-shutdown>Server Cannot Finish Processing all Requests before Shutdown</h4><p>This problem fundamentally depends on several time durations:</p><ol><li>Upstream service discovery update time (client.DiscoverLatency)</li><li>K8s preStop waiting time (k8s.PreStopTime)</li><li>Maximum processing time for downstream service requests (server.MaxLatency)</li><li>Exit wait time for the Kitex framework (kitex.ExitWaitTime)</li><li>K8s terminationGracePeriodSeconds</li></ol><p>These durations must strictly follow the size relationship depicted in the sequence diagram. Otherwise, the graceful shutdown may not be achieved:</p><p><img src=/img/blog/kitex_graceful_shutdown/2.png alt=image></p><h2 id=summary>Summary</h2><p>Through the complex process described above, it becomes evident that Kubernetes (K8s) and the Kitex framework only provide parameters to enable users to achieve graceful shutdowns. They do not guarantee the automatic implementation of graceful shutdown in all types of services and deployment environments. In fact, it is not possible to achieve such a guarantee.</p><p>Furthermore, while it is feasible to achieve near 100% graceful shutdown for each specific service, it is rare to have enough resources to individually configure parameters for every service on a global scale. Therefore, in real-world scenarios, we recommend understanding the principles of each component in the system and, based on the overall characteristics of the business, configuring a relatively broad and secure set of default parameters for graceful shutdown. For extremely critical services with unique latency requirements, specific parameters can be considered.</p><p>Finally, upstream services should not assume that downstream services will always achieve 100% graceful shutdown. Upstream services should also implement capabilities such as retrying with alternative nodes in case of connection failures to shield against small-scale node fluctuations and achieve higher SLAs.</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 5, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/7ef5fa5b95568ff88e6e30655ab326c0035cb25c>chore: fix typo in kitex best practice (#1003) (7ef5fa5b)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

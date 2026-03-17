@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>File | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/kitex/tutorials/third-party/config-center/file/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="File"><meta property="og:description" content="Use local files as Kitex's service governance configuration center"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-12-18T00:00:00+00:00"><meta property="article:modified_time" content="2025-02-07T18:46:06+08:00"><meta itemprop=name content="File"><meta itemprop=description content="Use local files as Kitex's service governance configuration center"><meta itemprop=datePublished content="2023-12-18T00:00:00+00:00"><meta itemprop=dateModified content="2025-02-07T18:46:06+08:00"><meta itemprop=wordCount content="1176"><meta itemprop=keywords content="ConfigCenter Extension,file"><meta name=twitter:card content="summary"><meta name=twitter:title content="File"><meta name=twitter:description content="Use local files as Kitex's service governance configuration center"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>File | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/kitex/tutorials/third-party/config-center/file/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="File"><meta property="og:description" content="Use local files as Kitex's service governance configuration center"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-12-18T00:00:00+00:00"><meta property="article:modified_time" content="2025-02-07T18:46:06+08:00"><meta itemprop=name content="File"><meta itemprop=description content="Use local files as Kitex's service governance configuration center"><meta itemprop=datePublished content="2023-12-18T00:00:00+00:00"><meta itemprop=dateModified content="2025-02-07T18:46:06+08:00"><meta itemprop=wordCount content="1176"><meta itemprop=keywords content="ConfigCenter Extension,file"><meta name=twitter:card content="summary"><meta name=twitter:title content="File"><meta name=twitter:description content="Use local files as Kitex's service governance configuration center"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -145,7 +145,524 @@
 <label for=m-docskitexfaq-check><a href=/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-docskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/kitex/Tutorials/third-party/config-center/file.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/kitex/Tutorials/third-party/config-center?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=File" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#supported-file-type>Supported file type</a></li><li><a href=#install>Install</a></li><li><a href=#suite>Suite</a><ul><li><a href=#server>Server</a></li><li><a href=#client>Client</a></li></ul></li><li><a href=#newfilewatcher>NewFileWatcher</a></li><li><a href=#configuration>Configuration</a><ul><li><a href=#custom-parser>Custom Parser</a></li><li><a href=#governance-policy>Governance Policy</a></li></ul></li><li><a href=#note>Note</a><ul><li><a href=#clientserver-key>Client/Server Key</a></li><li><a href=#compatibility>Compatibility</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/third-party/>Third-Party</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/third-party/config-center/>ConfigCenter</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/kitex/tutorials/third-party/config-center/file/>File</a></li></ol></nav><div class=td-content><h1>File</h1><div class=lead>Use local files as Kitex&rsquo;s service governance configuration center</div><header class=article-meta></header><h2 id=supported-file-type>Supported file type</h2><table><thead><tr><th>json</th><th>yaml</th></tr></thead><tbody><tr><td>✔</td><td>✔</td></tr></tbody></table><h2 id=install>Install</h2><p><code>go get github.com/kitex-contrib/config-file</code></p><h2 id=suite>Suite</h2><p>Local file configuration center adapter, kitex converts the configuration in local files into governance feature configurations of kitex through <code>WithSuite</code>.</p><p>The usage can be divided into two steps:</p><ol><li>Create a file watcher (FileWatcher).</li><li>Use <code>WithSuite</code> to introduce configuration monitoring.</li></ol><h3 id=server>Server</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>FileConfigServerSuite</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#supported-file-type>Supported file type</a></li><li><a href=#install>Install</a></li><li><a href=#suite>Suite</a><ul><li><a href=#server>Server</a></li><li><a href=#client>Client</a></li></ul></li><li><a href=#newfilewatcher>NewFileWatcher</a></li><li><a href=#configuration>Configuration</a><ul><li><a href=#custom-parser>Custom Parser</a></li><li><a href=#governance-policy>Governance Policy</a></li></ul></li><li><a href=#note>Note</a><ul><li><a href=#clientserver-key>Client/Server Key</a></li><li><a href=#compatibility>Compatibility</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/third-party/>Third-Party</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/third-party/config-center/>ConfigCenter</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/kitex/tutorials/third-party/config-center/file/>File</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=File data-url=https://www.cloudwego.io/docs/kitex/tutorials/third-party/config-center/file/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Supported file type
+
+| json     | yaml     |
+| -------- | -------- |
+| &#10004; | &#10004; |
+
+## Install
+
+`go get github.com/kitex-contrib/config-file`
+
+## Suite
+
+Local file configuration center adapter, kitex converts the configuration in local files into governance feature configurations of kitex through `WithSuite`.
+
+The usage can be divided into two steps:
+
+1. Create a file watcher (FileWatcher).
+2. Use `WithSuite` to introduce configuration monitoring.
+
+### Server
+
+```go
+type FileConfigServerSuite struct {
+	watcher monitor.ConfigMonitor
+}
+```
+
+Function Signature:
+
+`func NewSuite(key string, watcher filewatcher.FileWatcher, opts ...utils.Option) *FileConfigServerSuite`
+
+Sample code(or visit [here](https://github.com/kitex-contrib/config-file/blob/main/example/server/main.go)):
+
+```go
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"log"
+
+	"github.com/cloudwego/kitex-examples/kitex_gen/api"
+	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/pkg/rpcinfo"
+	kitexserver "github.com/cloudwego/kitex/server"
+	"github.com/kitex-contrib/config-file/filewatcher"
+	"github.com/kitex-contrib/config-file/parser"
+	fileserver "github.com/kitex-contrib/config-file/server"
+)
+
+var _ api.Echo = &EchoImpl{}
+
+const (
+	filepath    = "kitex_server.json"
+	key         = "ServiceName"
+	serviceName = "ServiceName"
+)
+
+// EchoImpl implements the last service interface defined in the IDL.
+type EchoImpl struct{}
+
+// Echo implements the Echo interface.
+func (s *EchoImpl) Echo(ctx context.Context, req *api.Request) (resp *api.Response, err error) {
+	klog.Info("echo called")
+	return &api.Response{Message: req.Message}, nil
+}
+
+// customed by user
+type MyParser struct{}
+
+// one example for custom parser
+// if the type of server config is json or yaml,just using default parser
+func (p *MyParser) Decode(kind parser.ConfigType, data []byte, config interface{}) error {
+	return json.Unmarshal(data, config)
+}
+
+func main() {
+	klog.SetLevel(klog.LevelDebug)
+
+	// Create a filewatcher object.
+	fw, err := filewatcher.NewFileWatcher(filepath)
+	if err != nil {
+		panic(err)
+	}
+	// Start monitoring file changes.
+	if err = fw.StartWatching(); err != nil {
+		panic(err)
+	}
+	defer fw.StopWatching()
+
+	svr := echo.NewServer(
+		new(EchoImpl),
+		kitexserver.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+		kitexserver.WithSuite(fileserver.NewSuite(key, fw)), // Add watcher
+	)
+	if err := svr.Run(); err != nil {
+		log.Println("server stopped with error:", err)
+	} else {
+		log.Println("server stopped")
+	}
+}
+```
+
+### Client
+
+```go
+type FileConfigClientSuite struct {
+	watcher monitor.ConfigMonitor
+	service string
+}
+```
+
+Function Signature:
+
+`func NewSuite(service, key string, watcher filewatcher.FileWatcher,opts ...utils.Option)*FileConfigClientSuite`
+
+Sample code(or visit [here](https://github.com/kitex-contrib/config-file/blob/main/example/client/main.go)):
+
+```go
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"log"
+	"os"
+	"os/signal"
+	"time"
+
+	"github.com/cloudwego/kitex-examples/kitex_gen/api"
+	"github.com/cloudwego/kitex-examples/kitex_gen/api/echo"
+	kitexclient "github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/klog"
+	fileclient "github.com/kitex-contrib/config-file/client"
+	"github.com/kitex-contrib/config-file/filewatcher"
+	"github.com/kitex-contrib/config-file/parser"
+)
+
+const (
+	filepath    = "kitex_client.json"
+	key         = "ClientName/ServiceName"
+	serviceName = "ServiceName"
+	clientName  = "ClientName"
+)
+
+// customed by user
+type MyParser struct{}
+
+// one example for custom parser
+// if the type of client config is json or yaml,just using default parser
+func (p *MyParser) Decode(kind parser.ConfigType, data []byte, config interface{}) error {
+	return json.Unmarshal(data, config)
+}
+
+func main() {
+	klog.SetLevel(klog.LevelDebug)
+
+	// Create a file watcher object.
+	fw, err := filewatcher.NewFileWatcher(filepath)
+	if err != nil {
+		panic(err)
+	}
+	// Start monitoring file changes.
+	if err = fw.StartWatching(); err != nil {
+		panic(err)
+	}
+
+	go func() {
+		sig := make(chan os.Signal, 1)
+		signal.Notify(sig, os.Interrupt, os.Kill)
+		<-sig
+		fw.StopWatching()
+		os.Exit(1)
+	}()
+
+	client, err := echo.NewClient(
+		serviceName,
+		kitexclient.WithHostPorts("0.0.0.0:8888"),
+		kitexclient.WithSuite(fileclient.NewSuite(serviceName, key, fw)),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for {
+		req := &api.Request{Message: "my request"}
+		resp, err := client.Echo(context.Background(), req)
+		if err != nil {
+			klog.Errorf("take request error: %v", err)
+		} else {
+			klog.Infof("receive response %v", resp)
+		}
+		time.Sleep(time.Second * 10)
+	}
+}
+```
+
+## NewFileWatcher
+
+Create a local file watcher
+
+Function Signature:
+
+`func NewFileWatcher(filePath string) (FileWatcher, error)`
+
+Sample code:
+
+```go
+package main
+
+import "github.com/kitex-contrib/config-file/filewatcher"
+
+func main() {
+	// Create a filewatcher object.
+	fw, err := filewatcher.NewFileWatcher(filepath)
+	if err != nil {
+		panic(err)
+	}
+	// Start file monitoring (should be started before importing the Suite).
+	if err = fw.StartWatching(); err != nil {
+		panic(err)
+	}
+
+    // Cancel watching when the program exits.
+	go func() {
+		sig := make(chan os.Signal, 1)
+		signal.Notify(sig, os.Interrupt, os.Kill)
+		<-sig
+		fw.StopWatching()
+		os.Exit(1)
+	}()
+}
+```
+
+In the server-side (Server), due to the characteristics of KitexServer, we only need to define `defer fw.StopWatching()`
+
+## Configuration
+
+### Custom Parser
+
+Define a custom format parser and pass it in through `option` of `NewSuite`. The format supports `json` and `yaml` by default.
+
+Interface Definition:
+
+```go
+// ConfigParser the parser for config file.
+type ConfigParser interface {
+	Decode(kind ConfigType, data []byte, config interface{}) error
+}
+```
+
+Sample:
+
+Extend parsing YAML types.
+
+```go
+// customed by user
+type MyParser struct{}
+
+// one example for custom parser
+// if the type of client config is json or yaml,just using default parser
+func (p *MyParser) Decode(kind parser.ConfigType, data []byte, config interface{}) error {
+	return yaml.Unmarshal(data, config)
+}
+
+const YAML parser.ConfigType = "yaml"
+
+func withParser(o *utils.Options) {
+	o.Parser = &MyParser{}
+	o.Params = &parser.ConfigParam{
+		Type: YAML,
+	}
+}
+
+// passed in with `NewSuite`
+
+// server
+svr := echo.NewServer(
+		new(EchoImpl),
+		kitexserver.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
+		kitexserver.WithSuite(fileserver.NewSuite(key, fw, withParser)), // add watcher
+	)
+
+// client
+client, err := echo.NewClient(
+		serviceName,
+		kitexclient.WithHostPorts("0.0.0.0:8888"),
+		kitexclient.WithSuite(fileclient.NewSuite(serviceName, key, fw, withParser)),
+	)
+```
+
+### Governance Policy
+
+In subsequent examples, we set the service name to `ServiceName` and the client name to `ClientName`.
+
+#### Rate Limit
+
+Category=limit
+
+> Currently, current limiting only supports the server side, so ClientServiceName is empty.
+
+[JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/limiter/item_limiter.go#L33)
+
+| Variable         | Introduction                       |
+| ---------------- | ---------------------------------- |
+| connection_limit | Maximum concurrent connections     |
+| qps_limit        | Maximum request number every 100ms |
+
+Example:
+
+```json
+{
+  "ServiceName": {
+    "limit": {
+      "connection_limit": 300,
+      "qps_limit": 200
+    }
+  }
+}
+```
+
+Note:
+
+- The granularity of the current limit configuration is server global, regardless of client or method.
+- Not configured or value is 0 means not enabled.
+- connection_limit and qps_limit can be configured independently, e.g. connection_limit = 100, qps_limit = 0
+- Multiple different rate limiting strategies for multiple services can be written within a single JSON file. Simply use filewatch to monitor the same file and pass in different keys. As shown in the example, the key is `ServiceName`
+
+#### Retry Policy
+
+Category=retry
+
+[JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/retry/policy.go#L63)
+
+| Variable                      | Introduction                                   |
+| ----------------------------- | ---------------------------------------------- |
+| type                          | 0: failure_policy 1: backup_policy             |
+| failure_policy.backoff_policy | Can only be set one of `fixed` `none` `random` |
+
+Example：
+
+> key is ClientName/ServiceName
+
+```json
+{
+  "ClientName/ServiceName": {
+    "retry": {
+      "*": {
+        "enable": true,
+        "type": 0,
+        "failure_policy": {
+          "stop_policy": {
+            "max_retry_times": 3,
+            "max_duration_ms": 2000,
+            "cb_policy": {
+              "error_rate": 0.2
+            }
+          }
+        }
+      },
+      "Echo": {
+        "enable": true,
+        "type": 1,
+        "backup_policy": {
+          "retry_delay_ms": 200,
+          "stop_policy": {
+            "max_retry_times": 2,
+            "max_duration_ms": 1000,
+            "cb_policy": {
+              "error_rate": 0.3
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+Note: retry.Container has built-in support for specifying the default configuration using the `*` wildcard (see the [getRetryer](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/retry/retryer.go#L240) method for details).
+
+#### RPC Timeout
+
+Category=rpc_timeout
+
+[JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/rpctimeout/item_rpc_timeout.go#L42)
+
+Example：
+
+> key is ClientName/ServiceName
+
+```json
+{
+  "ClientName/ServiceName": {
+    "timeout": {
+      "*": {
+        "conn_timeout_ms": 100,
+        "rpc_timeout_ms": 2000
+      },
+      "Pay": {
+        "conn_timeout_ms": 50,
+        "rpc_timeout_ms": 1000
+      }
+    }
+  }
+}
+```
+
+#### Circuit Break
+
+Category=circuit_break
+
+[JSON Schema](https://github.com/cloudwego/kitex/blob/develop/pkg/circuitbreak/item_circuit_breaker.go#L30)
+
+| Variable   | Introduction                      |
+| ---------- | --------------------------------- |
+| min_sample | Minimum statistical sample number |
+
+The echo method uses the following configuration (0.3, 100) and other methods use the global default configuration (0.5, 200)
+
+Example：
+
+> key is ClientName/ServiceName
+
+```json
+{
+  "ClientName/ServiceName": {
+    "circuitbreaker": {
+      "Echo": {
+        "enable": true,
+        "err_rate": 0.3,
+        "min_sample": 100
+      }
+    }
+  }
+}
+```
+
+Note: The circuit breaker implementation of kitex does not currently support changing the global default configuration (see [initServiceCB](https://github.com/cloudwego/kitex/blob/v0.5.1/pkg/circuitbreak/cbsuite.go#L195) for details).
+
+#### More Info
+
+Refer to [example](https://github.com/kitex-contrib/config-file/tree/main/example) for more usage.
+
+## Note
+
+### Client/Server Key
+
+For client configuration, you should write all their configurations in the same pair of `$UserServiceName/$ServerServiceName`, for example
+
+```json
+{
+  "ClientName/ServiceName": {
+    "timeout": {
+      "*": {
+        "conn_timeout_ms": 100,
+        "rpc_timeout_ms": 2000
+      },
+      "Pay": {
+        "conn_timeout_ms": 50,
+        "rpc_timeout_ms": 1000
+      }
+    },
+    "circuitbreaker": {
+      "Echo": {
+        "enable": true,
+        "err_rate": 0.3,
+        "min_sample": 100
+      }
+    },
+    "retry": {
+      "*": {
+        "enable": true,
+        "type": 0,
+        "failure_policy": {
+          "stop_policy": {
+            "max_retry_times": 3,
+            "max_duration_ms": 2000,
+            "cb_policy": {
+              "error_rate": 0.2
+            }
+          }
+        }
+      },
+      "Echo": {
+        "enable": true,
+        "type": 1,
+        "backup_policy": {
+          "retry_delay_ms": 200,
+          "stop_policy": {
+            "max_retry_times": 2,
+            "max_duration_ms": 1000,
+            "cb_policy": {
+              "error_rate": 0.3
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### Compatibility
+
+The project uses the new features of `sync/atomic` added in version 1.19, so the Go version must be >= 1.19
+</script><h1>File</h1><div class=lead>Use local files as Kitex&rsquo;s service governance configuration center</div><header class=article-meta></header><h2 id=supported-file-type>Supported file type</h2><table><thead><tr><th>json</th><th>yaml</th></tr></thead><tbody><tr><td>✔</td><td>✔</td></tr></tbody></table><h2 id=install>Install</h2><p><code>go get github.com/kitex-contrib/config-file</code></p><h2 id=suite>Suite</h2><p>Local file configuration center adapter, kitex converts the configuration in local files into governance feature configurations of kitex through <code>WithSuite</code>.</p><p>The usage can be divided into two steps:</p><ol><li>Create a file watcher (FileWatcher).</li><li>Use <code>WithSuite</code> to introduce configuration monitoring.</li></ol><h3 id=server>Server</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>FileConfigServerSuite</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>	</span><span style=color:#000>watcher</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>monitor</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>ConfigMonitor</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#000;font-weight:700>}</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span></code></pre></div><p>Function Signature:</p><p><code>func NewSuite(key string, watcher filewatcher.FileWatcher, opts ...utils.Option) *FileConfigServerSuite</code></p><p>Sample code(or visit <a href=https://github.com/kitex-contrib/config-file/blob/main/example/server/main.go>here</a>):</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>package</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>main</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -476,4 +993,4 @@
 </span></span></code></pre></div><h3 id=compatibility>Compatibility</h3><p>The project uses the new features of <code>sync/atomic</code> added in version 1.19, so the Go version must be >= 1.19</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified February 7, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/3f66e0dca056a2597c87f7bc8817724e4d7f4ed6>refactor(kitex): add thrid-party directory and update doc (#1228) (3f66e0dc)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

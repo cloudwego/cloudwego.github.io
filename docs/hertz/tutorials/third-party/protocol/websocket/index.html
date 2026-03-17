@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Websocket | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/third-party/protocol/websocket/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Websocket"><meta property="og:description" content="Hertz implements support for Gorilla WebSocket based on hijack."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2025-12-12T00:00:00+00:00"><meta property="article:modified_time" content="2025-12-16T15:46:24+08:00"><meta itemprop=name content="Websocket"><meta itemprop=description content="Hertz implements support for Gorilla WebSocket based on hijack."><meta itemprop=datePublished content="2025-12-12T00:00:00+00:00"><meta itemprop=dateModified content="2025-12-16T15:46:24+08:00"><meta itemprop=wordCount content="1411"><meta itemprop=keywords content="WebSocket,HTTP,hijack,TCP"><meta name=twitter:card content="summary"><meta name=twitter:title content="Websocket"><meta name=twitter:description content="Hertz implements support for Gorilla WebSocket based on hijack."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Websocket | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/third-party/protocol/websocket/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Websocket"><meta property="og:description" content="Hertz implements support for Gorilla WebSocket based on hijack."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2025-12-12T00:00:00+00:00"><meta property="article:modified_time" content="2025-12-16T15:46:24+08:00"><meta itemprop=name content="Websocket"><meta itemprop=description content="Hertz implements support for Gorilla WebSocket based on hijack."><meta itemprop=datePublished content="2025-12-12T00:00:00+00:00"><meta itemprop=dateModified content="2025-12-16T15:46:24+08:00"><meta itemprop=wordCount content="1411"><meta itemprop=keywords content="WebSocket,HTTP,hijack,TCP"><meta name=twitter:card content="summary"><meta name=twitter:title content="Websocket"><meta name=twitter:description content="Hertz implements support for Gorilla WebSocket based on hijack."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,373 @@
 <label for=m-docshertzreferenceversion-check><a href=/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshertzreferenceversion><span>Version Descriptions</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/hertz/tutorials/third-party/protocol/websocket.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/hertz/tutorials/third-party/protocol?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Websocket" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#overview>Overview</a></li><li><a href=#migration-guide>Migration Guide</a></li><li><a href=#example-usage>Example Usage</a></li><li><a href=#legacy-documentation-deprecated>Legacy Documentation (Deprecated)</a><ul><li><a href=#install>Install</a></li><li><a href=#example>Example</a></li><li><a href=#config>Config</a></li><li><a href=#nohijackconnpool>NoHijackConnPool</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/>Third-Party</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/protocol/>Protocol</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/protocol/websocket/>Websocket</a></li></ol></nav><div class=td-content><h1>Websocket</h1><div class=lead>Hertz implements support for Gorilla WebSocket based on hijack.</div><header class=article-meta></header><blockquote><p><strong>⚠️ Deprecated</strong></p><p>The <code>hertz-contrib/websocket</code> middleware is now deprecated.<br>Hertz recommends all users to migrate to the official <code>gorilla/websocket</code> toolchain using the <a href=/docs/hertz/tutorials/basic-feature/http-adaptor/>Hertz HTTP Adaptor</a>.</p><p>See the migration guide below.</p></blockquote><h2 id=overview>Overview</h2><p>WebSocket is a type of full-duplex communication that can be performed on a single TCP connection and is located at the application layer of the OSI model.
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#overview>Overview</a></li><li><a href=#migration-guide>Migration Guide</a></li><li><a href=#example-usage>Example Usage</a></li><li><a href=#legacy-documentation-deprecated>Legacy Documentation (Deprecated)</a><ul><li><a href=#install>Install</a></li><li><a href=#example>Example</a></li><li><a href=#config>Config</a></li><li><a href=#nohijackconnpool>NoHijackConnPool</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/>Third-Party</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/protocol/>Protocol</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/protocol/websocket/>Websocket</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=Websocket data-url=https://www.cloudwego.io/docs/hertz/tutorials/third-party/protocol/websocket/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+> **⚠️ Deprecated**
+>
+> The `hertz-contrib/websocket` middleware is now deprecated.  
+> Hertz recommends all users to migrate to the official `gorilla/websocket` toolchain using the [Hertz HTTP Adaptor](../../basic-feature/http-adaptor/).
+>
+> See the migration guide below.
+
+## Overview
+
+WebSocket is a type of full-duplex communication that can be performed on a single TCP connection and is located at the application layer of the OSI model.
+WebSocket makes data exchange between client and server easier, allowing the server to actively push data to the client.
+In the WebSocket API, the browser and the server only need to complete a handshake that a persistent connection can be created between the two, and two-way data transmission can be performed.
+
+Historically, Hertz provided WebSocket support via [`hertz-contrib/websocket`](https://github.com/hertz-contrib/websocket), which adapts
+[`gorilla/websocket`](https://github.com/gorilla/websocket) using HTTP connection hijacking.
+This approach is now deprecated in favor of using the official Gorilla WebSocket implementation directly via the Hertz HTTP Adaptor.
+
+## Migration Guide
+
+1. Remove deprecated dependencies
+
+```sh
+github.com/hertz-contrib/websocket
+```
+
+2. Use hertz adaptor
+
+```go
+// Before (deprecated: hertz-contrib/websocket)
+import "github.com/hertz-contrib/websocket"
+var upgrader = websocket.HertzUpgrader{}
+func echo(_ context.Context, c *app.RequestContext) {
+    err := upgrader.Upgrade(c, func(conn *websocket.Conn) {
+        // Implementation
+    })
+}
+h.GET("/echo", echo)
+```
+
+```go
+// After (recommended: gorilla/websocket + adaptor)
+import "github.com/gorilla/websocket"
+import "github.com/cloudwego/hertz/pkg/common/adaptor"
+var upgrader = websocket.Upgrader{}
+func echo(w http.ResponseWriter, r *http.Request) {
+    c, err := upgrader.Upgrade(w, r, nil)
+    // Implementation
+}
+
+h.GET("/echo", adaptor.HertzHandler(http.HandlerFunc(echo)))
+```
+
+## Example Usage
+
+The following example demonstrates how to modify the `server.go` code in the hertz-contrib/echo [example](https://github.com/hertz-contrib/websocket/tree/main/examples/echo) to directly use the adaptor with gorilla/websocket. There is no change to `client.go`
+
+```go
+package main
+
+import (
+    "flag"
+    "html/template"
+    "log"
+    "net/http"
+
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/adaptor"
+    "github.com/gorilla/websocket"
+)
+
+var addr = flag.String("addr", "localhost:8080", "http service address")
+
+var upgrader = websocket.Upgrader{} // use default options
+
+func echo(w http.ResponseWriter, r *http.Request) {
+    c, err := upgrader.Upgrade(w, r, nil)
+    if err != nil {
+        log.Print("upgrade:", err)
+        return
+    }
+    defer c.Close()
+    for {
+        mt, message, err := c.ReadMessage()
+        if err != nil {
+            log.Println("read:", err)
+            break
+        }
+        log.Printf("recv: %s", message)
+        err = c.WriteMessage(mt, message)
+        if err != nil {
+            log.Println("write:", err)
+            break
+        }
+    }
+}
+
+func home(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "text/html; charset=utf-8")
+    homeTemplate.Execute(w, "ws://"+r.Host+"/echo")
+}
+
+func main() {
+    h := server.New(server.WithHostPorts(":8080"))
+
+    h.GET("/", adaptor.HertzHandler(http.HandlerFunc(home)))
+    h.GET("/echo", adaptor.HertzHandler(http.HandlerFunc(echo)))
+
+    h.Spin()
+}
+
+// Web client code details are available at: https://github.com/hertz-contrib/websocket/blob/main/examples/echo/server.go#L64
+var homeTemplate = ""
+```
+
+## Legacy Documentation (Deprecated)
+
+### Install
+
+```shell
+go get github.com/hertz-contrib/websocket
+```
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "flag"
+    "html/template"
+    "log"
+
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/hertz-contrib/websocket"
+)
+
+var addr = flag.String("addr", "localhost:8080", "http service address")
+
+var upgrader = websocket.HertzUpgrader{} // use default options
+
+func echo(_ context.Context, c *app.RequestContext) {
+    err := upgrader.Upgrade(c, func(conn *websocket.Conn) {
+        for {
+            mt, message, err := conn.ReadMessage()
+            if err != nil {
+                log.Println("read:", err)
+                break
+            }
+            log.Printf("recv: %s", message)
+            err = conn.WriteMessage(mt, message)
+            if err != nil {
+                log.Println("write:", err)
+                break
+            }
+        }
+    })
+    if err != nil {
+        log.Print("upgrade:", err)
+        return
+    }
+}
+
+func home(_ context.Context, c *app.RequestContext) {
+    c.SetContentType("text/html; charset=utf-8")
+    homeTemplate.Execute(c, "ws://"+string(c.Host())+"/echo")
+}
+
+func main() {
+    flag.Parse()
+    h := server.Default(server.WithHostPorts(*addr))
+    // https://github.com/cloudwego/hertz/issues/121
+    h.NoHijackConnPool = true
+    h.GET("/", home)
+    h.GET("/echo", echo)
+    h.Spin()
+}
+
+// Web client code details are available at: https://github.com/hertz-contrib/websocket/blob/main/examples/echo/server.go#L64
+var homeTemplate = ""
+```
+
+run websocket server:
+
+```shell
+go run server.go
+```
+
+In the example code above, the server includes a simple web client. To use this client, open [http://127.0.0.1:8080]() in your browser and follow the instructions on the page.
+
+### Config
+
+The following is the optional configuration parameters for using Hertz WebSocket.
+
+This section is organized around the `websocket.HertzUpgrader` structure.
+
+| Parameter           | Introduction                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ReadBufferSize`    | Used to set the size of the read buffer in bytes. If the buffer size is zero, then the size allocated by the HTTP server is used. The read buffer size does not limit the size of the messages that can be received.                                                                                                                                                         |
+| `WriteBufferSize`   | Used to set the size of the write buffer in bytes. If the buffer size is zero, then the size allocated by the HTTP server is used. The write buffer size does not limit the size of the messages that can be sent.                                                                                                                                                           |
+| `WriteBufferPool`   | Used to set the buffer pool for write operations.                                                                                                                                                                                                                                                                                                                            |
+| `Subprotocols`      | Used to set the protocols supported by the server in order of preference. If this field is not nil, then the Upgrade method negotiates a sub-protocol by selecting the first match in this list to the protocol requested by the client. If there is no match, then no protocol is negotiated (the Sec-Websocket-Protocol header is not included in the handshake response). |
+| `Error`             | Used to set a function the generation of HTTP error responses.                                                                                                                                                                                                                                                                                                               |
+| `CheckOrigin`       | Used to set a check function for Origin header for the request. If the Origin header of the request is acceptable, CheckOrigin returns true.                                                                                                                                                                                                                                 |
+| `EnableCompression` | Used to set whether the server should attempt to negotiate compression for each message (RFC 7692). Setting this value to true does not guarantee that compression will be supported.                                                                                                                                                                                        |
+
+#### WriteBufferPool
+
+If this value is not set, an additional write buffer is initialized and allocated to the connection for the current lifetime. The buffer pool is most useful when the application has a moderate amount of writes on a large number of connections.
+
+Applications should use **a single** buffer pool to allocate buffers for different connections.
+
+Interface Description:
+
+```go
+// BufferPool represents a pool of buffers. The *sync.Pool type satisfies this
+// interface.  The type of the value stored in a pool is not specified.
+type BufferPool interface {
+    // Get gets a value from the pool or returns nil if the pool is empty.
+    Get() interface{}
+    // Put adds a value to the pool.
+    Put(interface{})
+}
+```
+
+Sample Code:
+
+```go
+type simpleBufferPool struct {
+    v interface{}
+}
+
+func (p *simpleBufferPool) Get() interface{} {
+    v := p.v
+    p.v = nil
+    return v
+}
+
+func (p *simpleBufferPool) Put(v interface{}) {
+    p.v = v
+}
+
+var upgrader = websocket.HertzUpgrader{
+    WriteBufferPool: &simpleBufferPool{},
+}
+```
+
+#### Subprotocols
+
+WebSocket simply defines a mechanism for exchanging arbitrary messages. What those messages mean, what kind of messages the client can expect at any given point in time, or what kind of messages they are allowed to send, depends entirely on the implementing application.
+
+So you need an agreement between the server and the client about these things. The subprotocol parameters simply allow the client and server to formally exchange this information. You can make up any name for any protocol you want. The server can simply check that the client has followed that protocol during the handshake.
+
+#### Error
+
+If Error is nil, then use the API provided by Hertz to generate the HTTP error response.
+
+Function signatures:
+
+```go
+func(c *app.RequestContext, status int, reason error)
+```
+
+Sample Code:
+
+```go
+var upgrader = websocket.HertzUpgrader{
+    Error: func(c *app.RequestContext, status int, reason error) {
+        c.Response.Header.Set("Sec-Websocket-Version", "13")
+        c.AbortWithMsg(reason.Error(), status)
+    },
+}
+```
+
+#### CheckOrigin
+
+CheckOrigin returns true if the request Origin header is acceptable. If CheckOrigin is nil, then a safe default is used: return false if the Origin request header is present and the origin host is not equal to request Host header.
+
+A CheckOrigin function should carefully validate the request origin to
+prevent cross-site request forgery.
+
+Function signatures:
+
+```go
+func(c *app.RequestContext) bool
+```
+
+Default Implementation:
+
+```go
+func fastHTTPCheckSameOrigin(c *app.RequestContext) bool {
+    origin := c.Request.Header.Peek("Origin")
+    if len(origin) == 0 {
+        return true
+    }
+    u, err := url.Parse(b2s(origin))
+    if err != nil {
+        return false
+    }
+    return equalASCIIFold(u.Host, b2s(c.Host()))
+}
+```
+
+#### EnableCompression
+
+The server accepts one or more extension fields that are included in the `Sec-WebSocket-Extensions` header field extensions requested by the client. When EnableCompression is true, the server matches the extensions it currently supports with its extensions, and supports compression if the match is successful.
+
+Currently only the "no context takeover" mode is supported, as described in the `HertzUpgrader.Upgrade`.
+
+#### SetReadTimeout/SetWriteTimeout
+
+When using websockets for reading and writing, the read timeout or write timeout can be set similarly as follows.
+
+Sample Code:
+
+```go
+func echo(_ context.Context, c *app.RequestContext) {
+    err := upgrader.Upgrade(c, func(conn *websocket.Conn) {
+        defer conn.Close()
+        // "github.com/cloudwego/hertz/pkg/network"
+        conn.NetConn().(network.Conn).SetReadTimeout(1 * time.Second)
+        conn.NetConn().(network.Conn).SetWriteTimeout(1 * time.Second)
+        ...
+    })
+    if err != nil {
+        log.Print("upgrade:", err)
+        return
+    }
+}
+```
+
+### NoHijackConnPool
+
+> The hijack conn used for Hertz connection hijacking is pooled and therefore does not support asynchronous operations when the hijacked connection is used in a websocket.
+
+A hijacked connection can only be closed once, and a second closure will result in a null pointer exception.
+
+NoHijackConnPool will control whether invite pool to acquire/release the hijackConn or not.
+
+If cache pooling is used, it will improve the performance of memory resource allocation, but it will not avoid the exception caused by closing the connection twice.
+
+If it is difficult to guarantee that hijackConn will not be closed repeatedly, set it to true.
+
+Sample Code:
+
+```go
+func main() {
+    ...
+    // https://github.com/cloudwego/hertz/issues/121
+    h.NoHijackConnPool = true
+    ...
+}
+```
+
+As for usage, you may refer to [examples](https://github.com/hertz-contrib/websocket/tree/main/examples).
+</script><h1>Websocket</h1><div class=lead>Hertz implements support for Gorilla WebSocket based on hijack.</div><header class=article-meta></header><blockquote><p><strong>⚠️ Deprecated</strong></p><p>The <code>hertz-contrib/websocket</code> middleware is now deprecated.<br>Hertz recommends all users to migrate to the official <code>gorilla/websocket</code> toolchain using the <a href=/docs/hertz/tutorials/basic-feature/http-adaptor/>Hertz HTTP Adaptor</a>.</p><p>See the migration guide below.</p></blockquote><h2 id=overview>Overview</h2><p>WebSocket is a type of full-duplex communication that can be performed on a single TCP connection and is located at the application layer of the OSI model.
 WebSocket makes data exchange between client and server easier, allowing the server to actively push data to the client.
 In the WebSocket API, the browser and the server only need to complete a handshake that a persistent connection can be created between the two, and two-way data transmission can be performed.</p><p>Historically, Hertz provided WebSocket support via <a href=https://github.com/hertz-contrib/websocket><code>hertz-contrib/websocket</code></a>, which adapts
 <a href=https://github.com/gorilla/websocket><code>gorilla/websocket</code></a> using HTTP connection hijacking.
@@ -311,4 +677,4 @@ prevent cross-site request forgery.</p><p>Function signatures:</p><div class=hig
 </span></span></span></code></pre></div><p>As for usage, you may refer to <a href=https://github.com/hertz-contrib/websocket/tree/main/examples>examples</a>.</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified December 16, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/f63ff556663060183592062596d4f247e794efa8>fix: improve readability of websocket and swagger docs (#1480) (f63ff556)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Use Thrift reflection to improve generic-call performance | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-reflection/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Use Thrift reflection to improve generic-call performance"><meta property="og:description" content="Use Thrift reflection to improve generic-call performance"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-12-17T00:00:00+00:00"><meta property="article:modified_time" content="2025-05-19T03:47:23+02:00"><meta itemprop=name content="Use Thrift reflection to improve generic-call performance"><meta itemprop=description content="Use Thrift reflection to improve generic-call performance"><meta itemprop=datePublished content="2023-12-17T00:00:00+00:00"><meta itemprop=dateModified content="2025-05-19T03:47:23+02:00"><meta itemprop=wordCount content="1846"><meta itemprop=keywords content="dynamic,thrift,generic-call"><meta name=twitter:card content="summary"><meta name=twitter:title content="Use Thrift reflection to improve generic-call performance"><meta name=twitter:description content="Use Thrift reflection to improve generic-call performance"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Use Thrift reflection to improve generic-call performance | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-reflection/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Use Thrift reflection to improve generic-call performance"><meta property="og:description" content="Use Thrift reflection to improve generic-call performance"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-12-17T00:00:00+00:00"><meta property="article:modified_time" content="2025-05-19T03:47:23+02:00"><meta itemprop=name content="Use Thrift reflection to improve generic-call performance"><meta itemprop=description content="Use Thrift reflection to improve generic-call performance"><meta itemprop=datePublished content="2023-12-17T00:00:00+00:00"><meta itemprop=dateModified content="2025-05-19T03:47:23+02:00"><meta itemprop=wordCount content="1846"><meta itemprop=keywords content="dynamic,thrift,generic-call"><meta name=twitter:card content="summary"><meta name=twitter:title content="Use Thrift reflection to improve generic-call performance"><meta name=twitter:description content="Use Thrift reflection to improve generic-call performance"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -145,7 +145,486 @@
 <label for=m-docskitexfaq-check><a href=/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-docskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/kitex/Tutorials/advanced-feature/generic-call/generic-call-reflection.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/kitex/Tutorials/advanced-feature/generic-call?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Use%20Thrift%20reflection%20to%20improve%20generic-call%20performance" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#what-is-thrift-reflection->What is Thrift Reflection ?</a></li><li><a href=#thrift-valuenode>Thrift Value/Node</a></li><li><a href=#thrift-dom>Thrift DOM</a></li><li><a href=#why-use-thrift-generics-instead-of-kitex-mapjson-generalization-calls->Why use Thrift generics instead of Kitex Map/JSON generalization calls ?</a></li><li><a href=#usage-example>Usage example</a></li><li><a href=#server-thrift-value--dom>Server （Thrift Value + DOM）</a></li><li><a href=#client-thrift-node--dom>Client （Thrift Node + DOM）</a></li><li><a href=#performance-testing>Performance testing</a></li><li><a href=#tips>Tips:</a><ul><li><a href=#quickly-construct-dom-from-idl>Quickly construct DOM from IDL</a></li><li><a href=#quickly-construct-a-node-value-from-sample>Quickly Construct a Node /Value From Sample</a></li></ul></li><li><a href=#attention>Attention</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/>Advanced Feature</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/>Generic Call</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-reflection/>Use Thrift reflection to improve generic-call performance</a></li></ol></nav><div class=td-content><h1>Use Thrift reflection to improve generic-call performance</h1><div class=lead>Use Thrift reflection to improve generic-call performance</div><header class=article-meta></header><h2 id=what-is-thrift-reflection->What is Thrift Reflection ?</h2><p>In short, <strong>similar to <a href=https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect>pb reflect</a>, it does not rely on static code to add, delete, modify, and write Thrift data</strong> .</p><p>Reflection uses specific generics to describe any data at runtime. Compared with static struct, it has the characteristics of <strong>flexible addition, deletion, and modification, and does not depend on static code</strong> . Currently <a href=https://github.com/cloudwego/dynamicgo>dynamicgo</a> has implemented a set of reflection APIs for the thrift binary protocol, which can be roughly divided into Thrift Value/Node and Thrift DOM according to usage scenarios.</p><h2 id=thrift-valuenode>Thrift Value/Node</h2><p>Used for the <strong>addition, deletion, modification, and lookup of a small number of fields in</strong> rpc data packets . For a given path (field id/field name/map key/list index), based on the data type carried by the encoding , <strong>skip unnecessary data nodes in ByteFlow</strong> , <strong>locate the required data in the start and end intervals of ByteFlow</strong> for processing. Specific usage scenarios include <strong>sensitive field erasure, data packet clipping, protocol conversion</strong> , etc. Dynamicgo provides <a href=https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-value>thrift/generic. Value </a>and <a href=https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-node>thrift/generic. Node </a>two encapsulations: the former can support lookup based on FieldName , but needs to bind dynamic type description TypeDescriptor ; the latter does not support lookup based on FieldName (but supports FieldID) , so it does not require dynamic type description .</p><h2 id=thrift-dom>Thrift DOM</h2><p>The <strong>document object tree model</strong> is used to <strong>describe the full deserialization of Thrift data</strong> . Since the Thrift protocol itself has self-description ability, we can deserialize it into a specific tree structure for more complex <strong>container traversal , field bit shifting</strong> and other operations. Specific business scenarios include <strong>DSL mapping, data packet merging</strong>, etc. in BFF services. Dynamicgo provides <a href=https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode>thrift/generic. PathNode </a>encapsulation, which can handle thrift data of arbitrary complexity without binding dynamic type descriptions.</p><h2 id=why-use-thrift-generics-instead-of-kitex-mapjson-generalization-calls->Why use Thrift generics instead of Kitex Map/JSON generalization calls ?</h2><p>In short: <strong>better performance</strong> .</p><p>Thrift generic requirements generally come from <strong>rpc generalization calls, http &lt; > rpc protocol conversion</strong> and other centralized API gateways\ BFF scenarios, often with high performance requirements. However, Kitex Map/JSON generalization calls are implemented in the current map + interface mode, which inevitably brings a large number of fragmented heap memory allocation , and its performance is far worse than that of kitex rpc services in normal code generation mode. In contrast, both the efficient skip algorithm of Thrift Value and the carefully designed memory structure of Thrift DOM can effectively avoid a large number of runtime memory allocation and intermediate codec conversion. See <a href=https://github.com/cloudwego/dynamicgo/blob/main/introduction.md>introduction</a> for detailed design and implementation.</p><p>For specific comparison results, please refer to the section &ldquo;Test Data&rdquo; below.</p><h2 id=usage-example>Usage example</h2><p>The following will demonstrate how to generalize calls based on <strong>kitex-binary generalization + dynamicgo</strong> . Note unfamiliar kitex-binary generalization colleagues can refer to <a href=/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic>generic-call documents </a>first.</p><p>See the complete example:</p><ul><li><a href=https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go>code</a></li><li><a href=https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift>IDL</a></li></ul><h2 id=server-thrift-value--dom>Server （Thrift Value + DOM）</h2><ol><li>First, implement a type of kitex /generic/Server interface, and internally unpack the thrift-binary message into methodName, seqID, request body</li></ol><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// ExampleValueServiceImpl ...</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#what-is-thrift-reflection->What is Thrift Reflection ?</a></li><li><a href=#thrift-valuenode>Thrift Value/Node</a></li><li><a href=#thrift-dom>Thrift DOM</a></li><li><a href=#why-use-thrift-generics-instead-of-kitex-mapjson-generalization-calls->Why use Thrift generics instead of Kitex Map/JSON generalization calls ?</a></li><li><a href=#usage-example>Usage example</a></li><li><a href=#server-thrift-value--dom>Server （Thrift Value + DOM）</a></li><li><a href=#client-thrift-node--dom>Client （Thrift Node + DOM）</a></li><li><a href=#performance-testing>Performance testing</a></li><li><a href=#tips>Tips:</a><ul><li><a href=#quickly-construct-dom-from-idl>Quickly construct DOM from IDL</a></li><li><a href=#quickly-construct-a-node-value-from-sample>Quickly Construct a Node /Value From Sample</a></li></ul></li><li><a href=#attention>Attention</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/>Advanced Feature</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/>Generic Call</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-reflection/>Use Thrift reflection to improve generic-call performance</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Use Thrift reflection to improve generic-call performance" data-url=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-reflection/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## What is Thrift Reflection ?
+
+In short, **similar to [pb reflect](https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect), it does not rely on static code to add, delete, modify, and write Thrift data** .
+
+Reflection uses specific generics to describe any data at runtime. Compared with static struct, it has the characteristics of **flexible addition, deletion, and modification, and does not depend on static code** . Currently [dynamicgo](https://github.com/cloudwego/dynamicgo) has implemented a set of reflection APIs for the thrift binary protocol, which can be roughly divided into Thrift Value/Node and Thrift DOM according to usage scenarios.
+
+## Thrift Value/Node
+
+Used for the **addition, deletion, modification, and lookup of a small number of fields in** rpc data packets . For a given path (field id/field name/map key/list index), based on the data type carried by the encoding , **skip unnecessary data nodes in ByteFlow** , **locate the required data in the start and end intervals of ByteFlow** for processing. Specific usage scenarios include **sensitive field erasure, data packet clipping, protocol conversion** , etc. Dynamicgo provides [thrift/generic. Value ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-value)and [thrift/generic. Node ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-node)two encapsulations: the former can support lookup based on FieldName , but needs to bind dynamic type description TypeDescriptor ; the latter does not support lookup based on FieldName (but supports FieldID) , so it does not require dynamic type description .
+
+## Thrift DOM
+
+The **document object tree model** is used to **describe the full deserialization of Thrift data** . Since the Thrift protocol itself has self-description ability, we can deserialize it into a specific tree structure for more complex **container traversal , field bit shifting** and other operations. Specific business scenarios include **DSL mapping, data packet merging**, etc. in BFF services. Dynamicgo provides [thrift/generic. PathNode ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode)encapsulation, which can handle thrift data of arbitrary complexity without binding dynamic type descriptions.
+
+## Why use Thrift generics instead of Kitex Map/JSON generalization calls ?
+
+In short: **better performance** .
+
+Thrift generic requirements generally come from **rpc generalization calls, http < > rpc protocol conversion** and other centralized API gateways\ BFF scenarios, often with high performance requirements. However, Kitex Map/JSON generalization calls are implemented in the current map + interface mode, which inevitably brings a large number of fragmented heap memory allocation , and its performance is far worse than that of kitex rpc services in normal code generation mode. In contrast, both the efficient skip algorithm of Thrift Value and the carefully designed memory structure of Thrift DOM can effectively avoid a large number of runtime memory allocation and intermediate codec conversion. See [introduction](https://github.com/cloudwego/dynamicgo/blob/main/introduction.md) for detailed design and implementation.
+
+For specific comparison results, please refer to the section "Test Data" below.
+
+## Usage example
+
+The following will demonstrate how to generalize calls based on **kitex-binary generalization + dynamicgo** . Note unfamiliar kitex-binary generalization colleagues can refer to [generic-call documents ](/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic)first.
+
+See the complete example:
+
+- [code](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
+- [IDL](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift)
+
+## Server （Thrift Value + DOM）
+
+1. First, implement a type of kitex /generic/Server interface, and internally unpack the thrift-binary message into methodName, seqID, request body
+
+```go
+// ExampleValueServiceImpl ...
+type ExampleValueServiceImpl struct{}
+
+// GenericCall ...
+func (g *ExampleValueServiceImpl) GenericCall(ctx context.Context, method string, request interface{}) (interface{}, error) {
+    // get and unwrap body with message
+    in := request.([]byte)
+
+    // unwarp thrift message and get request body
+    methodName, _, seqID, _, body, err := dt.UnwrapBinaryMessage(in)
+    if err != nil {
+        return nil, err
+    }
+
+    // biz logic
+    resp, err := ExampleServerHandler(body)
+    if err != nil {
+        return nil, err
+    }
+
+    // wrap response as thrift REPLY message
+    return dt.WrapBinaryBody(resp, methodName, dt.REPLY, 0, seqID)
+}
+```
+
+2. Because the use of Thrift Value here requires specific binding corresponding to the dynamic type description of the IDL , it can be loaded in the initialization stage (Note: Dynamic updates are not considered here , if necessary, you can implement an atomic update global variable)
+
+```go
+var (
+    ExampleReqDesc *dt.TypeDescriptor
+    ExampleRespDesc *dt.TypeDescriptor
+    StrDesc *dt.TypeDescriptor
+    BaseLogidPath []dg.Path
+    DynamicgoOptions = &dg.Options{}
+)
+
+func initDescriptor() {
+    sdesc, err := dt.NewDescriptorFromPath(context.Background(), "idl/example.thrift")
+    if err != nil {
+        panic(err)
+    }
+    ExampleReqDesc = sdesc.Functions()["ExampleMethod"].Request().Struct().FieldById(1).Type()
+    ExampleRespDesc = sdesc.Functions()["ExampleMethod"].Response().Struct().FieldById(0).Type()
+    StrDesc = ExampleReqDesc.Struct().FieldById(1).Type()
+    BaseLogidPath = []dg.Path{dg.NewPathFieldName("Base"), dg.NewPathFieldName("LogID")}
+}
+```
+
+3. Pass the request body to the business handler for processing logic. The specific operation is based on the encapsulation API of dynamicgo/thrift. Value. There are two ways to pass the path (assuming A is the Struct field name and B is the Map key):
+
+   1. One-time pass: `Value.GetByPath([]Path{NewPathFieldName(A), NewPathStrKey(B)})`
+   2. Chain call: `Value.FieldByName(A).GetByStr(B)`
+
+```go
+ // biz logic
+func ExampleValueServiceHandler(request []byte) (resp []byte, err error) {
+    // wrap body as Value
+    req := dg.NewValue(ExampleReqDesc, request)
+    if err != nil {
+        return nil, err
+    }
+
+    required_field := ""
+    logid := ""
+    // if B == true then get logid and required_field
+    if b, err := req.FieldByName("B").Bool(); err == nil && b {
+        if e := req.GetByPath(BaseLogidPath...); e.Error() != ""{
+            return nil, e
+        } else {
+            logid, _ = e.String()
+        }
+        if a := req.FieldByName("TestMap").GetByStr("a"); a.Error() != "" {
+            return nil, a
+        } else {
+            required_field, _ = a.FieldByName("Bar").String()
+        }
+    }
+
+    // make response with checked values
+    return MakeExampleRespBinary(RespMsg, required_field, logid)
+}
+
+```
+
+4. After processing the request, construct a response based on dynamicgo/thrift. PathNode for return
+
+```go
+
+// MakeExampleRespBinary make a Thrift-Binary-Encoding response using ExampleResp structured DOM
+// Except msg, required_field and logid, which are reset everytime
+func MakeExampleRespBinary(msg string, require_field string, logid string) ([]byte, error) {
+    dom := dg.PathNode{
+        Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+        Next: []dg.PathNode{
+            {
+                Path: dg.NewPathFieldId(1),
+                Node: dg.NewNodeString(msg),
+            },
+            {
+                Path: dg.NewPathFieldId(2),
+                Node: dg.NewNodeString(require_field),
+            },
+            {
+                Path: dg.NewPathFieldId(255),
+                Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+                Next: []dg.PathNode{
+                    {
+                        Path: dg.NewPathFieldId(1),
+                        Node: dg.NewNodeString(logid),
+                    },
+                },
+            },
+        },
+    }
+    return dom.Marshal(DynamicgoOptions)
+}
+```
+
+5. Finally, register and start the binary generalization server
+
+```go
+func initServer() {
+    // init special server
+    addr, _ := net.ResolveTCPAddr("tcp", ":9009")
+    g := generic.BinaryThriftGeneric()
+    svr := genericserver.NewServer(new(ExampleValueServiceImpl), g, server.WithServiceAddr(addr))
+    go func() {
+        err := svr.Run()
+        if err != nil {
+            panic(err)
+        }
+    }()
+    time.Sleep(500 * time.Millisecond)
+}
+```
+
+## Client （Thrift Node + DOM）
+
+1. Initialize binary generalization client
+
+```go
+var cli genericclient.Client
+
+func initClient() {
+    g := generic.BinaryThriftGeneric()
+    genericCli, _ := genericclient.NewClient("destServiceName", g, client.WithHostPorts("127.0.0.1:9009"))
+    cli = genericCli
+}
+```
+
+2. Construct business request based on dynamicgo/generic. PathNode
+
+```go
+// MakeExampleReqBinary make a Thrift-Binary-Encoding request using ExampleReq structured DOM
+// Except B, A and logid, which are reset everytime
+func MakeExampleReqBinary(B bool, A string, logid string) ([]byte, error) {
+    dom := dg.PathNode{
+        Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+        Next: []dg.PathNode{
+            {
+                Path: dg.NewPathFieldId(1),
+                Node: dg.NewNodeString("Hello"),
+            },
+            {
+                Path: dg.NewPathFieldId(2),
+                Node: dg.NewNodeInt32(1),
+            },
+            {
+                Path: dg.NewPathFieldId(3),
+                Node: dg.NewTypedNode(thrift.LIST, thrift.STRUCT, 0),
+                Next: []dg.PathNode{
+                    {
+                        Path: dg.NewPathIndex(0),
+                        Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+                        Next: []dg.PathNode{
+                            {
+                                Path: dg.NewPathFieldId(1),
+                                Node: dg.NewNodeString(A),
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                Path: dg.NewPathFieldId(4),
+                Node: dg.NewTypedNode(thrift.MAP, thrift.STRUCT, thrift.STRING),
+                Next: []dg.PathNode{
+                    {
+                        Path: dg.NewPathStrKey("a"),
+                        Node:  dg.NewTypedNode(thrift.STRUCT, 0, 0),
+                        Next: []dg.PathNode{
+                            {
+                                Path: dg.NewPathFieldId(1),
+                                Node: dg.NewNodeString(A),
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                Path: dg.NewPathFieldId(6),
+                Node: dg.NewTypedNode(thrift.LIST,  thrift.I64, 0),
+                Next: []dg.PathNode{
+                    {
+                        Path: dg.NewPathIndex(0),
+                        Node: dg.NewNodeInt64(1),
+                    },
+                    {
+                        Path: dg.NewPathIndex(1),
+                        Node: dg.NewNodeInt64(2),
+                    },
+                    {
+                        Path: dg.NewPathIndex(2),
+                        Node: dg.NewNodeInt64(3),
+                    },
+                },
+            },
+            {
+                Path: dg.NewPathFieldId(7),
+                Node: dg.NewNodeBool(B),
+            },
+            {
+                Path: dg.NewPathFieldId(255),
+                Node: dg.NewTypedNode(thrift.STRUCT, 0, 0),
+                Next: []dg.PathNode{
+                    {
+                        Path: dg.NewPathFieldId(1),
+                        Node: dg.NewNodeString(logid),
+                    },
+                    {
+                        Path: dg.NewPathFieldId(2),
+                        Node: dg.NewNodeString("a.b.c"),
+                    },
+                    {
+                        Path: dg.NewPathFieldId(3),
+                        Node: dg.NewNodeString("127.0.0.1"),
+                    },
+                    {
+                        Path: dg.NewPathFieldId(4),
+                        Node: dg.NewNodeString("dynamicgo"),
+                    },
+                },
+            },
+        },
+    }
+    return dom.Marshal(DynamicgoOptions)
+}
+```
+
+3. Encapsulates thrift binary message, initiates binary generalization call
+
+```go
+func TestThriftReflect(t *testing.T) {
+    log_id := strconv.Itoa(rand.Int())
+
+    // make a request body
+    req, err := MakeExampleReqBinary(true, ReqMsg, log_id)
+    test.Assert(t, err == nil, err)
+
+    // wrap request as thrift CALL message
+    buf, err := dt.WrapBinaryBody(req, Method, dt.CALL, 1, 0)
+    test.Assert(t, err == nil, err)
+
+    // generic call
+    out, err := cli.GenericCall(context.Background(), Method, buf, callopt.WithRPCTimeout(1*time.Second))
+    test.Assert(t, err == nil, err)
+
+    // unwrap REPLY message and get resp body
+    _, _, _, _, body, err := dt.UnwrapBinaryMessage(out.([]byte))
+    test.Assert(t, err == nil, err)
+
+    // biz logic...
+    ExampleClientHandler(t, body, log_id)
+}
+```
+
+4. ExampleClientHandler is specific business logic, here according to business needs first response body package dynamicgo/generic. Node **or** PathNode ( DOM ), and based on its API for business logic processing
+
+```go
+// biz logic...
+func ExampleClientHandler_Node(response []byte, log_id string) error {
+    // make dynamicgo/generic.Node with body
+    resp := dg.NewNode(dt.STRUCT, response)
+
+    // check node values by Node APIs
+    msg, err := resp.Field(1).String()
+    if err != nil {
+        return err
+    }
+    if msg != RespMsg {
+        return errors.New("msg does not match")
+    }
+    require_field, err := resp.Field(2).String()
+    if err != nil {
+        return err
+    }
+    if require_field != ReqMsg {
+        return errors.New("require_field does not match")
+    }
+
+    return nil
+}
+
+func ExampleClientHandler_DOM(response []byte, log_id string) error {
+    // get dom from memory pool
+    root := clientRespPool.Get().(*dg.PathNode)
+    root.Node = dg.NewNode(dt.STRUCT, response)
+
+    // load **first layer** children
+    err := root.Load(false, DynamicgoOptions)
+    if err != nil {
+        return err
+    }
+    // spew.Dump(root) // -- only root.Next is set
+    // check node values by PathNode APIs
+    require_field2, err := root.Field(2, DynamicgoOptions).Node.String()
+    if err != nil {
+        return err
+    }
+    if require_field2 != ReqMsg {
+        return errors.New("require_field2 does not match")
+    }
+
+    // load **all layers** children
+    err = root.Load(true, DynamicgoOptions)
+    if err != nil {
+        return err
+    }
+    // spew.Dump(root) // -- every PathNode.Next will be set if it is a nesting-typed (LIST/SET/MAP/STRUCT)
+    // check node values by PathNode APIs
+    logid, err := root.Field(255, DynamicgoOptions).Field(1, DynamicgoOptions).Node.String()
+    if logid != log_id {
+        return errors.New("logid not match")
+    }
+
+    // recycle DOM
+    root.ResetValue()
+    clientRespPool.Put(root)
+    return nil
+}
+```
+
+Note that **memory pooling is used for DOM access** , which can greatly improve Thrift 's deserialization performance.
+
+## Performance testing
+
+- Test [data](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift)
+- Test code
+
+  - Thrift [reflect](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go)
+  - [Map](https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/map_test.go)
+
+- Testing environment
+
+  - goos: darwin
+  - goarch: amd64
+  - cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
+
+- Test results
+
+Small Data (266B)
+
+```go
+BenchmarkThriftMapExample-16                    9633        109521 ns/op        7622 B/op        138 allocs/op
+BenchmarkThriftReflectExample_Node-16          14732         74397 ns/op        4416 B/op         76 allocs/op
+BenchmarkThriftReflectExample_DOM-16           14666         84119 ns/op        4435 B/op         76 allocs/op
+```
+
+Medium data (1766B)
+
+```go
+BenchmarkThriftMapExample-16                    3484        310349 ns/op      179561 B/op       2250 allocs/op
+BenchmarkThriftReflectExample_Node-16          10813        108230 ns/op       45291 B/op        478 allocs/op
+BenchmarkThriftReflectExample_DOM-16           10000        115363 ns/op       45412 B/op        478 allocs/op
+```
+
+Big data (150 KB )
+
+```go
+BenchmarkThriftMapExample-16                      57      18063936 ns/op    17491551 B/op     220247 allocs/op
+BenchmarkThriftReflectExample_Node-16            322       3671377 ns/op     4332477 B/op      50029 allocs/op
+BenchmarkThriftReflectExample_DOM-16             321       3719926 ns/op     4333837 B/op      50032 allocs/op
+```
+
+It can be seen that as the data level continues to increase, the performance advantage of Thrift reflection over map generalization is increasing (up to more than 3 times).
+
+## Tips:
+
+### Quickly construct DOM from IDL
+
+You can use [generic.DescriptorToPathNode ](https://github.com/cloudwego/dynamicgo/tree/main/thrift/generic#func-descriptortopathnode)to quickly construct the struct DOM ( **zero value**)
+
+```go
+svc, err := thrift.NewDescriptorFromPath(context.Background(), IDLPATH)
+desc := svc.Functions()[METHODNAME].Request().Struct().FieldById(1).Type() // ex: service.METHOD(1: req)
+
+var dom = new(PathNode)
+err := DescriptorToPathNode(desc, dom, &Options{})
+```
+
+Then traverse the DOM according to the business logic to modify specific fields
+
+```go
+for i, v := range dom.Next {
+    if v.Path.Type() == PathTypeFieldName && v.Path.Str() == "XXXX" {
+        dom.Next[i] = NewNodeString("YYYY")
+    }
+    ....
+}
+```
+
+### Quickly Construct a Node /Value From Sample
+
+Assuming that the business can obtain the thrift message binary data of a normal request to the downstream service in some way, it can be used as a global constant (or timed asynchronous update), and each time [NewNode ( ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#func-newnode)) + [Set ](https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#func-node-setbypath)() updates a specific business field to achieve rapid construction of Node
+
+```go
+var sampleRequestData []byte // get it by RPC requestX.Write() ...
+
+func GetNewRequest(idXX int, nameXX string) []byte {
+    n := NewNode(thrift.STRUCT, sampleRequestData)
+    n.SetMany([]PathNode{
+        {Path:NewPathFieldId(1), Node:NewNodeInt64(idXXX)},
+        {Path:NewPathFieldId(2), Node:NewNodeString(nameXX)},
+    }, opts)
+    data, err := n.Marshal(opts)
+    return data
+}
+```
+
+## Attention
+
+1. Currently dynamicgo only supports **thrift-binary** encoding mode
+2. Currently, binary generalization only supports the **thrift-framed** transport protocol
+</script><h1>Use Thrift reflection to improve generic-call performance</h1><div class=lead>Use Thrift reflection to improve generic-call performance</div><header class=article-meta></header><h2 id=what-is-thrift-reflection->What is Thrift Reflection ?</h2><p>In short, <strong>similar to <a href=https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect>pb reflect</a>, it does not rely on static code to add, delete, modify, and write Thrift data</strong> .</p><p>Reflection uses specific generics to describe any data at runtime. Compared with static struct, it has the characteristics of <strong>flexible addition, deletion, and modification, and does not depend on static code</strong> . Currently <a href=https://github.com/cloudwego/dynamicgo>dynamicgo</a> has implemented a set of reflection APIs for the thrift binary protocol, which can be roughly divided into Thrift Value/Node and Thrift DOM according to usage scenarios.</p><h2 id=thrift-valuenode>Thrift Value/Node</h2><p>Used for the <strong>addition, deletion, modification, and lookup of a small number of fields in</strong> rpc data packets . For a given path (field id/field name/map key/list index), based on the data type carried by the encoding , <strong>skip unnecessary data nodes in ByteFlow</strong> , <strong>locate the required data in the start and end intervals of ByteFlow</strong> for processing. Specific usage scenarios include <strong>sensitive field erasure, data packet clipping, protocol conversion</strong> , etc. Dynamicgo provides <a href=https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-value>thrift/generic. Value </a>and <a href=https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-node>thrift/generic. Node </a>two encapsulations: the former can support lookup based on FieldName , but needs to bind dynamic type description TypeDescriptor ; the latter does not support lookup based on FieldName (but supports FieldID) , so it does not require dynamic type description .</p><h2 id=thrift-dom>Thrift DOM</h2><p>The <strong>document object tree model</strong> is used to <strong>describe the full deserialization of Thrift data</strong> . Since the Thrift protocol itself has self-description ability, we can deserialize it into a specific tree structure for more complex <strong>container traversal , field bit shifting</strong> and other operations. Specific business scenarios include <strong>DSL mapping, data packet merging</strong>, etc. in BFF services. Dynamicgo provides <a href=https://github.com/cloudwego/dynamicgo/blob/main/thrift/generic/README.md#type-pathnode>thrift/generic. PathNode </a>encapsulation, which can handle thrift data of arbitrary complexity without binding dynamic type descriptions.</p><h2 id=why-use-thrift-generics-instead-of-kitex-mapjson-generalization-calls->Why use Thrift generics instead of Kitex Map/JSON generalization calls ?</h2><p>In short: <strong>better performance</strong> .</p><p>Thrift generic requirements generally come from <strong>rpc generalization calls, http &lt; > rpc protocol conversion</strong> and other centralized API gateways\ BFF scenarios, often with high performance requirements. However, Kitex Map/JSON generalization calls are implemented in the current map + interface mode, which inevitably brings a large number of fragmented heap memory allocation , and its performance is far worse than that of kitex rpc services in normal code generation mode. In contrast, both the efficient skip algorithm of Thrift Value and the carefully designed memory structure of Thrift DOM can effectively avoid a large number of runtime memory allocation and intermediate codec conversion. See <a href=https://github.com/cloudwego/dynamicgo/blob/main/introduction.md>introduction</a> for detailed design and implementation.</p><p>For specific comparison results, please refer to the section &ldquo;Test Data&rdquo; below.</p><h2 id=usage-example>Usage example</h2><p>The following will demonstrate how to generalize calls based on <strong>kitex-binary generalization + dynamicgo</strong> . Note unfamiliar kitex-binary generalization colleagues can refer to <a href=/docs/kitex/tutorials/advanced-feature/generic-call/#1-binary-generic>generic-call documents </a>first.</p><p>See the complete example:</p><ul><li><a href=https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/reflect_test.go>code</a></li><li><a href=https://github.com/cloudwego/kitex/blob/cc85ab10fbdc7519c90ed7b25e2533127a1ddd82/pkg/generic/reflect_test/idl/example.thrift>IDL</a></li></ul><h2 id=server-thrift-value--dom>Server （Thrift Value + DOM）</h2><ol><li>First, implement a type of kitex /generic/Server interface, and internally unpack the thrift-binary message into methodName, seqID, request body</li></ol><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// ExampleValueServiceImpl ...</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>ExampleValueServiceImpl</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#000;font-weight:700>{}</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#8f5902;font-style:italic>// GenericCall ...</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -473,4 +952,4 @@
 </span></span></span></code></pre></div><h2 id=attention>Attention</h2><ol><li>Currently dynamicgo only supports <strong>thrift-binary</strong> encoding mode</li><li>Currently, binary generalization only supports the <strong>thrift-framed</strong> transport protocol</li></ol><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified May 19, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/a7a343ca0ce434586b1814f3fddc70efb02b010a>chore: upgrade typos (#1332) (a7a343ca)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>hz 使用 (protobuf) | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage-protobuf/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="hz 使用 (protobuf)"><meta property="og:description" content='"hz 使用 (protobuf)。"'><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-02-21T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="hz 使用 (protobuf)"><meta itemprop=description content='"hz 使用 (protobuf)。"'><meta itemprop=datePublished content="2023-02-21T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="814"><meta itemprop=keywords content="hz 使用 (protobuf),protobuf,new,update"><meta name=twitter:card content="summary"><meta name=twitter:title content="hz 使用 (protobuf)"><meta name=twitter:description content='"hz 使用 (protobuf)。"'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>hz 使用 (protobuf) | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage-protobuf/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="hz 使用 (protobuf)"><meta property="og:description" content='"hz 使用 (protobuf)。"'><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-02-21T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="hz 使用 (protobuf)"><meta itemprop=description content='"hz 使用 (protobuf)。"'><meta itemprop=datePublished content="2023-02-21T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="814"><meta itemprop=keywords content="hz 使用 (protobuf),protobuf,new,update"><meta name=twitter:card content="summary"><meta name=twitter:title content="hz 使用 (protobuf)"><meta name=twitter:description content='"hz 使用 (protobuf)。"'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -110,7 +110,328 @@
 <label for=m-zhdocshertzreferenceversion-check><a href=/zh/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocshertzreferenceversion><span>版本说明</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/hertz/tutorials/toolkit/usage-protobuf.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/hertz/tutorials/toolkit?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=hz%20%e4%bd%bf%e7%94%a8%20%28protobuf%29" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#基于-protobuf-idl-创建项目>基于 protobuf IDL 创建项目</a><ul><li><a href=#new-创建一个新项目>new: 创建一个新项目</a></li><li><a href=#update-更新一个已有的项目>update: 更新一个已有的项目</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/>hz 代码生成</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage-protobuf/>hz 使用 (protobuf)</a></li></ol></nav><div class=td-content><h1>hz 使用 (protobuf)</h1><div class=lead>&ldquo;hz 使用 (protobuf)。&rdquo;</div><header class=article-meta></header><h2 id=基于-protobuf-idl-创建项目>基于 protobuf IDL 创建项目</h2><h3 id=new-创建一个新项目>new: 创建一个新项目</h3><ol><li><p>在当前目录下创建 protobuf idl 文件</p><ol><li><p>创建 api.proto</p><p>api.proto 是 hz 提供的注解文件，内容如下，请在使用了注解的 proto 文件中，import 该文件。</p><p>如果想自行拓展注解的使用，请不要以 &ldquo;5&rdquo; 作为序号的开头，避免出现冲突。例如 &ldquo;optional string xxx = 77777;"。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-protobuf data-lang=protobuf><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// idl/api.proto; 注解拓展
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#基于-protobuf-idl-创建项目>基于 protobuf IDL 创建项目</a><ul><li><a href=#new-创建一个新项目>new: 创建一个新项目</a></li><li><a href=#update-更新一个已有的项目>update: 更新一个已有的项目</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/>hz 代码生成</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage-protobuf/>hz 使用 (protobuf)</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="hz 使用 (protobuf)" data-url=https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/usage-protobuf/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 基于 protobuf IDL 创建项目
+
+### new: 创建一个新项目
+
+1. 在当前目录下创建 protobuf idl 文件
+
+   1. 创建 api.proto
+
+      api.proto 是 hz 提供的注解文件，内容如下，请在使用了注解的 proto 文件中，import 该文件。
+
+      如果想自行拓展注解的使用，请不要以 "5" 作为序号的开头，避免出现冲突。例如 "optional string xxx = 77777;"。
+
+      ```protobuf
+      // idl/api.proto; 注解拓展
+      syntax = "proto2";
+
+      package api;
+
+      import "google/protobuf/descriptor.proto";
+
+      option go_package = "/api";
+
+      extend google.protobuf.FieldOptions {
+          optional string raw_body = 50101;
+          optional string query = 50102;
+          optional string header = 50103;
+          optional string cookie = 50104;
+          optional string body = 50105;
+          optional string path = 50106;
+          optional string vd = 50107;
+          optional string form = 50108;
+          optional string js_conv = 50109;
+          optional string file_name = 50110;
+          optional string none = 50111;
+
+          // 50131~50160 used to extend field option by hz
+          optional string form_compatible = 50131;
+          optional string js_conv_compatible = 50132;
+          optional string file_name_compatible = 50133;
+          optional string none_compatible = 50134;
+          // 50135 is reserved to vt_compatible
+          // optional FieldRules vt_compatible = 50135;
+
+          optional string go_tag = 51001;
+      }
+
+      extend google.protobuf.MethodOptions {
+          optional string get = 50201;
+          optional string post = 50202;
+          optional string put = 50203;
+          optional string delete = 50204;
+          optional string patch = 50205;
+          optional string options = 50206;
+          optional string head = 50207;
+          optional string any = 50208;
+          optional string gen_path = 50301; // The path specified by the user when the client code is generated, with a higher priority than api_version
+          optional string api_version = 50302; // Specify the value of the :version variable in path when the client code is generated
+          optional string tag = 50303; // rpc tag, can be multiple, separated by commas
+          optional string name = 50304; // Name of rpc
+          optional string api_level = 50305; // Interface Level
+          optional string serializer = 50306; // Serialization method
+          optional string param = 50307; // Whether client requests take public parameters
+          optional string baseurl = 50308; // Baseurl used in ttnet routing
+          optional string handler_path = 50309; // handler_path specifies the path to generate the method
+
+          // 50331~50360 used to extend method option by hz
+          optional string handler_path_compatible = 50331; // handler_path specifies the path to generate the method
+      }
+
+      extend google.protobuf.EnumValueOptions {
+          optional int32 http_code = 50401;
+
+      // 50431~50460 used to extend enum option by hz
+      }
+
+      extend google.protobuf.ServiceOptions {
+          optional string base_domain = 50402;
+
+          // 50731~50760 used to extend service option by hz
+          optional string base_domain_compatible = 50731;
+      }
+
+      extend google.protobuf.MessageOptions {
+          // optional FieldRules msg_vt = 50111;
+
+          optional string reserve = 50830;
+          // 550831 is reserved to msg_vt_compatible
+          // optional FieldRules msg_vt_compatible = 50831;
+      }
+      ```
+
+   2. 创建主 IDL
+
+      ```protobuf
+      // idl/hello/hello.proto
+      syntax = "proto3";
+
+      package hello;
+
+      option go_package = "hertz/hello";
+
+      import "api.proto";
+
+      message HelloReq {
+         string Name = 1[(api.query)="name"];
+      }
+
+      message HelloResp {
+         string RespBody = 1;
+      }
+
+      service HelloService {
+         rpc Method1(HelloReq) returns(HelloResp) {
+            option (api.get) = "/hello";
+         }
+      }
+      ```
+
+2. 创建新项目
+
+   {{< tabs "在 GOPATH 外执行" "在 GOPATH 下执行" >}}
+
+   {{% codetab %}}
+
+   ```bash
+   # 在 GOPATH 外执行，需要指定 go mod 名，如果主 IDL 的依赖和主 IDL 不在同一路径下，需要加入 "-I" 选项，其含义为 IDL 搜索路径，等同于 protoc 的 "-I" 命令
+
+   hz new -module example.com/m -I idl -idl idl/hello/hello.proto
+
+   # 整理 & 拉取依赖
+   go mod tidy
+
+   ```
+
+   {{% /codetab %}}
+
+   {{% codetab %}}
+
+   ```bash
+   # GOPATH 下执行，如果主 IDL 的依赖和主 IDL 不在同一路径下，需要加入 "-I" 选项，其含义为 IDL 搜索路径，等同于 protoc 的 "-I" 命令
+   hz new -I idl -idl idl/hello/hello.proto
+
+   go mod init
+
+   # 整理 & 拉取依赖
+   go mod tidy
+   ```
+
+   {{% /codetab %}}
+   {{< /tabs >}}
+
+3. 修改 handler，添加自己的逻辑
+
+   ```go
+   // handler path: biz/handler/hello/hello_service.go
+   // 其中 "/hello" 是 protobuf idl 中 go_package 的最后一级
+   // "hello_service.go" 是 protobuf idl 中 service 的名字，所有 service 定义的方法都会生成在这个文件中
+
+   // Method1 .
+   // @router /hello [GET]
+   func Method1(ctx context.Context, c *app.RequestContext) {
+      var err error
+      var req hello.HelloReq
+      err = c.BindAndValidate(&req)
+      if err != nil {
+         c.String(400, err.Error())
+         return
+      }
+
+      resp := new(hello.HelloResp)
+
+      // 你可以修改整个函数的逻辑，而不仅仅局限于当前模板
+      resp.RespBody = "hello," + req.Name // 添加的逻辑
+
+      c.JSON(200, resp)
+   }
+   ```
+
+4. 编译项目
+
+   ```bash
+   go build
+   ```
+
+5. 运行项目并测试
+
+   运行项目：
+
+   ```bash
+   ./{{your binary}}
+   ```
+
+   测试：
+
+   ```bash
+   curl --location --request GET 'http://127.0.0.1:8888/hello?name=hertz'
+   ```
+
+   如果返回 `{"RespBody":"hello,hertz"}`，说明接口调通。
+
+### update: 更新一个已有的项目
+
+1. 如果你的 protobuf idl 有更新，例如：
+
+   ```protobuf
+   // idl/hello/hello.proto
+   syntax = "proto3";
+
+   package hello;
+
+   option go_package = "hertz/hello";
+
+   import "api.proto";
+
+   message HelloReq {
+      string Name = 1[(api.query)="name"];
+   }
+
+   message HelloResp {
+      string RespBody = 1;
+   }
+
+   message OtherReq {
+      string Other = 1[(api.body)="other"];
+   }
+
+   message OtherResp {
+      string Resp = 1;
+   }
+
+   service HelloService {
+      rpc Method1(HelloReq) returns(HelloResp) {
+         option (api.get) = "/hello";
+      }
+      rpc Method2(OtherReq) returns(OtherResp) {
+         option (api.post) = "/other";
+      }
+   }
+
+   service NewService {
+      rpc Method3(OtherReq) returns(OtherResp) {
+         option (api.get) = "/new";
+      }
+   }
+   ```
+
+2. 切换到执行 new 命令的目录，更新修改后的 protobuf idl
+
+```bash
+hz update -I idl -idl idl/hello/hello.proto
+```
+
+**注意**:
+
+- 如果主 IDL 的依赖和主 IDL 不在同一路径下，需要加入 `-I` 选项，其含义为 IDL 搜索路径，等同于 protoc 的 `-I` 命令。
+- 在编写 update 命令时，不仅需要指定定义 `service` 的 IDL 文件，还需要指定所有的依赖文件，因为 protobuf 的依赖文件不会自动更新。
+
+3. 可以看到
+   在 `biz/handler/hello/hello_service.go` 下新增了新的方法；
+   在 `biz/handler/hello` 下新增了文件 `new_service.go` 以及对应的 "Method3" 方法。
+
+   下面我们来开发 "Method2" 接口：
+
+   ```go
+   // Method2 .
+   // @router /other [POST]
+   func Method2(ctx context.Context, c *app.RequestContext) {
+      var err error
+      var req hello.OtherReq
+      err = c.BindAndValidate(&req)
+      if err != nil {
+         c.String(400, err.Error())
+         return
+      }
+
+      resp := new(hello.OtherResp)
+
+      // 增加的逻辑
+      resp.Resp = "Other method: " + req.Other
+
+      c.JSON(200, resp)
+   }
+   ```
+
+4. 编译项目
+
+   ```bash
+   go build
+   ```
+
+5. 运行项目并测试
+
+   运行项目：
+
+   ```bash
+   ./{{your binary}}
+   ```
+
+   测试：
+
+   ```bash
+   curl --location --request POST 'http://127.0.0.1:8888/other' \
+   --header 'Content-Type: application/json' \
+   --data-raw '{
+       "Other": "other method"
+   }'
+   ```
+
+   如果返回`{"Resp":"Other method: other method"}`，说明接口调通。
+
+更多示例代码请参考 [code](https://github.com/cloudwego/hertz-examples/tree/main/hz/protobuf)。
+</script><h1>hz 使用 (protobuf)</h1><div class=lead>&ldquo;hz 使用 (protobuf)。&rdquo;</div><header class=article-meta></header><h2 id=基于-protobuf-idl-创建项目>基于 protobuf IDL 创建项目</h2><h3 id=new-创建一个新项目>new: 创建一个新项目</h3><ol><li><p>在当前目录下创建 protobuf idl 文件</p><ol><li><p>创建 api.proto</p><p>api.proto 是 hz 提供的注解文件，内容如下，请在使用了注解的 proto 文件中，import 该文件。</p><p>如果想自行拓展注解的使用，请不要以 &ldquo;5&rdquo; 作为序号的开头，避免出现冲突。例如 &ldquo;optional string xxx = 77777;"。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-protobuf data-lang=protobuf><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// idl/api.proto; 注解拓展
 </span></span></span><span style=display:flex><span><span style=color:#8f5902;font-style:italic></span><span style=color:#000>syntax</span> <span style=color:#ce5c00;font-weight:700>=</span> <span style=color:#4e9a06>&#34;proto2&#34;</span><span style=color:#000;font-weight:700>;</span><span style=color:#a40000>
 </span></span></span><span style=display:flex><span><span style=color:#a40000>
 </span></span></span><span style=display:flex><span><span style=color:#a40000></span><span style=color:#204a87;font-weight:700>package</span> <span style=color:#000>api</span><span style=color:#000;font-weight:700>;</span><span style=color:#a40000>
@@ -316,4 +637,4 @@
 </span></span></code></pre></div><p>如果返回<code>{"Resp":"Other method: other method"}</code>，说明接口调通。</p></li></ol><p>更多示例代码请参考 <a href=https://github.com/cloudwego/hertz-examples/tree/main/hz/protobuf>code</a>。</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 May 8, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/dff8f175d96e832fb521f13246cce14399aefcdb>style: prettier lint fix (#1069) (dff8f175)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

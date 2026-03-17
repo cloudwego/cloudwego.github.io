@@ -4,7 +4,7 @@ type AgentInput struct { Messages []Message EnableStreaming bool } type Message 
 // github.com/cloudwego/eino/adk/interface.go type Agent interface { Name(ctx context.Context) string Description(ctx context.Context) string Run(ctx context.Context, input *AgentInput, opts ...AgentRunOption) *AsyncIterator[*AgentEvent] } Method 说明 NameAgent 的名称，作为 Agent 的标识 DescriptionAgent 的职能描述信息，主要用于让其他的 Agent 了解和判断该 Agent 的职责或功能 RunAgent 的核心执行方法，返回一个迭代器，调用者可以通过这个迭代器持续接收 Agent 产生的事件 AgentInput Run 方法接收 AgentInput 作为 Agent 的输入：
 type AgentInput struct { Messages []Message EnableStreaming bool } type Message = *schema.Message Agent 通常以 ChatModel 为核心，因此规定 Agent 的输入为 Messages， 与调用 Eino ChatModel 的类型相同。Messages 中可以包括用户指令、对话历史、背景知识、样例数据等任何你希望传递给 Agent 的数据。例如："><meta itemprop=datePublished content="2026-03-02T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-10T20:19:16+08:00"><meta itemprop=wordCount content="848"><meta name=twitter:card content="summary"><meta name=twitter:title content="Agent 抽象"><meta name=twitter:description content="Agent 定义 Eino 定义了 Agent 的基础接口，实现此接口的 Struct 可被视为一个 Agent：
 // github.com/cloudwego/eino/adk/interface.go type Agent interface { Name(ctx context.Context) string Description(ctx context.Context) string Run(ctx context.Context, input *AgentInput, opts ...AgentRunOption) *AsyncIterator[*AgentEvent] } Method 说明 NameAgent 的名称，作为 Agent 的标识 DescriptionAgent 的职能描述信息，主要用于让其他的 Agent 了解和判断该 Agent 的职责或功能 RunAgent 的核心执行方法，返回一个迭代器，调用者可以通过这个迭代器持续接收 Agent 产生的事件 AgentInput Run 方法接收 AgentInput 作为 Agent 的输入：
-type AgentInput struct { Messages []Message EnableStreaming bool } type Message = *schema.Message Agent 通常以 ChatModel 为核心，因此规定 Agent 的输入为 Messages， 与调用 Eino ChatModel 的类型相同。Messages 中可以包括用户指令、对话历史、背景知识、样例数据等任何你希望传递给 Agent 的数据。例如："><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+type AgentInput struct { Messages []Message EnableStreaming bool } type Message = *schema.Message Agent 通常以 ChatModel 为核心，因此规定 Agent 的输入为 Messages， 与调用 Eino ChatModel 的类型相同。Messages 中可以包括用户指令、对话历史、背景知识、样例数据等任何你希望传递给 Agent 的数据。例如："><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -113,7 +113,398 @@ type AgentInput struct { Messages []Message EnableStreaming bool } type Message 
 <label for=m-zhdocseinofaq-check><a href=/zh/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/eino/core_modules/eino_adk/agent_interface.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/eino/core_modules/eino_adk?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Agent%20%e6%8a%bd%e8%b1%a1" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#agentinput>AgentInput</a></li><li><a href=#agentrunoption>AgentRunOption</a></li><li><a href=#asynciterator>AsyncIterator</a></li><li><a href=#agentwithoptions>AgentWithOptions</a></li></ul><ul><li><a href=#agentname--runpath>AgentName & RunPath</a></li><li><a href=#agentoutput>AgentOutput</a></li><li><a href=#agentaction>AgentAction</a></li></ul><ul><li><a href=#api>API</a></li><li><a href=#使用示例>使用示例</a></li><li><a href=#影响范围>影响范围</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/>ADK - Agent Development Kit</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/agent_interface/>Agent 抽象</a></li></ol></nav><div class=td-content><h1>Agent 抽象</h1><header class=article-meta></header><h1 id=agent-定义>Agent 定义</h1><p>Eino 定义了 Agent 的基础接口，实现此接口的 Struct 可被视为一个 Agent：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// github.com/cloudwego/eino/adk/interface.go</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#agentinput>AgentInput</a></li><li><a href=#agentrunoption>AgentRunOption</a></li><li><a href=#asynciterator>AsyncIterator</a></li><li><a href=#agentwithoptions>AgentWithOptions</a></li></ul><ul><li><a href=#agentname--runpath>AgentName & RunPath</a></li><li><a href=#agentoutput>AgentOutput</a></li><li><a href=#agentaction>AgentAction</a></li></ul><ul><li><a href=#api>API</a></li><li><a href=#使用示例>使用示例</a></li><li><a href=#影响范围>影响范围</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/>ADK - Agent Development Kit</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/agent_interface/>Agent 抽象</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Agent 抽象" data-url=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/agent_interface/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+# Agent 定义
+
+Eino 定义了 Agent 的基础接口，实现此接口的 Struct 可被视为一个 Agent：
+
+```go
+// github.com/cloudwego/eino/adk/interface.go
+
+type Agent interface {
+    Name(ctx context.Context) string
+    Description(ctx context.Context) string
+    Run(ctx context.Context, input *AgentInput, opts ...AgentRunOption) *AsyncIterator[*AgentEvent]
+}
+```
+
+<table>
+<tr><td>Method</td><td> 说明</td></tr>
+<tr><td>Name</td><td>Agent 的名称，作为 Agent 的标识</td></tr>
+<tr><td>Description</td><td>Agent 的职能描述信息，主要用于让其他的 Agent 了解和判断该 Agent 的职责或功能</td></tr>
+<tr><td>Run</td><td>Agent 的核心执行方法，返回一个迭代器，调用者可以通过这个迭代器持续接收 Agent 产生的事件</td></tr>
+</table>
+
+## AgentInput
+
+Run 方法接收 AgentInput 作为 Agent 的输入：
+
+```go
+type AgentInput struct {
+    Messages        []Message
+    EnableStreaming bool
+}
+
+type Message = *schema.Message
+```
+
+Agent 通常以 ChatModel 为核心，因此规定 Agent 的输入为 `Messages`， 与调用 Eino ChatModel 的类型相同。`Messages` 中可以包括用户指令、对话历史、背景知识、样例数据等任何你希望传递给 Agent 的数据。例如：
+
+```go
+import (
+    "github.com/cloudwego/eino/adk"
+    "github.com/cloudwego/eino/schema"
+)
+
+input := &adk.AgentInput{
+    Messages: []adk.Message{
+       schema.UserMessage("What's the capital of France?"),
+       schema.AssistantMessage("The capital of France is Paris.", nil),
+       schema.UserMessage("How far is it from London? "),
+    },
+}
+```
+
+`EnableStreaming` 用于向 Agent **建议**其输出模式，但它并非一个强制性约束。它的核心思想是控制那些同时支持流式和非流式输出的组件的行为，例如 ChatModel，而仅支持一种输出方式的组件，`EnableStreaming` 不会影响他们的行为。另外在 `AgentOutput.IsStreaming` 字段会标明实际输出类型。运行表现为：
+
+- 当 `EnableStreaming=false` 时，对于那些既能流式也能非流式输出的组件，此时会使用一次性返回完整结果的非流式模式。
+- 当 `EnableStreaming=true` 时，对于 Agent 内部能够流式输出的组件（如 ChatModel 调用），应以流的形式逐步返回结果。如果某个组件天然不支持流式，它仍然可以按其原有的非流式方式工作。
+
+如下图所示，ChatModel 既可以输出非流也可以输出流，Tool 只能输出非流，即：
+
+- 当 `EnableStream=false` 时，二者均输出非流
+- 当 `EnableStream=true` 时，ChatModel 输出流，Tool 因为不具备输出流的能力，仍然输出非流。
+
+<a href="/img/eino/eino_adk_streaming.png" target="_blank"><img src="/img/eino/eino_adk_streaming.png" width="100%" /></a>
+
+## AgentRunOption
+
+`AgentRunOption` 由 Agent 实现定义，可以在请求维度修改 Agent 配置或者控制 Agent 行为。
+
+Eino ADK 提供了一些通用定义的 Option，供用户使用：
+
+- `WithSessionValues`：设置跨 Agent 读写数据
+- `WithSkipTransferMessages`：配置后，当 Event 为 Transfer SubAgent 时，Event 中的消息不会追加到 History 中
+
+Eino ADK 提供了 `WrapImplSpecificOptFn` 和 `GetImplSpecificOptions` 两个方法，供 Agent 包装与读取自定义的 `AgentRunOption`。
+
+当使用 `GetImplSpecificOptions` 方法读取 `AgentRunOptions` 时，与所需类型（如例子中的 options）不符的 AgentRunOption 会被忽略。
+
+例如可以定义 `WithModelName`，在请求维度要求 Agent 修改调用的模型：
+
+```go
+// github.com/cloudwego/eino/adk/call_option.go
+// func WrapImplSpecificOptFn[T any](optFn func(*T)) AgentRunOption
+// func GetImplSpecificOptions[T any](base *T, opts ...AgentRunOption) *T
+
+import "github.com/cloudwego/eino/adk"
+
+type options struct {
+    modelName string
+}
+
+func WithModelName(name string) adk.AgentRunOption {
+    return adk.WrapImplSpecificOptFn(func(t *options) {
+       t.modelName = name
+    })
+}
+
+func (m *MyAgent) Run(ctx context.Context, input *adk.AgentInput, opts ...adk.AgentRunOption) *adk.AsyncIterator[*adk.AgentEvent] {
+    o := &options{}
+    o = adk.GetImplSpecificOptions(o, opts...)
+    // run code...
+}
+```
+
+除此之外，AgentRunOption 具有一个 `DesignateAgent` 方法，调用该方法可以在调用多 Agent 系统时指定 Option 生效的 Agent：
+
+```go
+func genOpt() {
+    // 指定 option 仅对 agent_1 和 agent_2 生效
+    opt := adk.WithSessionValues(map[string]any{}).DesignateAgent("agent_1", "agent_2")
+}
+```
+
+## AsyncIterator
+
+`Agent.Run` 返回了一个迭代器 `AsyncIterator[*AgentEvent]`：
+
+```go
+// github.com/cloudwego/eino/adk/utils.go
+
+type AsyncIterator[T any] struct {
+    ...
+}
+
+func (ai *AsyncIterator[T]) Next() (T, bool) {
+    ...
+}
+```
+
+它代表一个异步迭代器（异步指生产与消费之间没有同步控制），允许调用者以一种有序、阻塞的方式消费 Agent 在运行过程中产生的一系列事件。
+
+- `AsyncIterator` 是一个泛型结构体，可以用于迭代任何类型的数据。当前在 Agent 接口中， Run 方法返回的迭代器类型被固定为 `AsyncIterator[*AgentEvent]` 。这意味着，你从这个迭代器中获取的每一个元素，都将是一个指向 `AgentEvent` 对象的指针。`AgentEvent` 会在后续章节中详细说明。
+- 迭代器的主要交互方式是通过调用其 `Next()` 方法。这个方法的行为是 阻塞式 的，每次调用 `Next()` ，程序会暂停执行，直到以下两种情况之一发生：
+  - Agent 产生了一个新的 `AgentEvent` : `Next()` 方法会返回这个事件，调用者可以立即对其进行处理。
+  - Agent 主动关闭了迭代器 : 当 Agent 不会再产生任何新的事件时（通常是 Agent 运行结束），它会关闭这个迭代器。此时 `Next()` 调用会结束阻塞并在第二个返回值返回 false，告知调用者迭代已经结束。
+
+通常情况下，你需要使用 for 循环处理 `AsyncIterator`:
+
+```go
+iter := myAgent.Run(xxx) // get AsyncIterator from Agent.Run
+
+for {
+    event, ok := iter.Next()
+    if !ok {
+        break
+    }
+    // handle event
+}
+```
+
+`AsyncIterator` 可以由 `NewAsyncIteratorPair` 创建，该函数返回的另一个参数 `AsyncGenerator` 用来生产数据：
+
+```go
+// github.com/cloudwego/eino/adk/utils.go
+
+func NewAsyncIteratorPair[T any]() (*AsyncIterator[T], *AsyncGenerator[T])
+```
+
+Agent.Run 返回 AsyncIterator 旨在让调用者实时地接收到 Agent 产生的一系列 AgentEvent，因此 Agent.Run 通常会在 Goroutine 中运行 Agent 从而立刻返回 AsyncIterator 供调用者监听：
+
+```go
+import "github.com/cloudwego/eino/adk"
+
+func (m *MyAgent) Run(ctx context.Context, input *adk.AgentInput, opts ...adk.AgentRunOption) *adk.AsyncIterator[*adk.AgentEvent] {
+    // handle input
+    iter, gen := adk.NewAsyncIteratorPair[*adk.AgentEvent]()
+    go func() {
+       defer func() {
+          // recover code
+          gen.Close()
+       }()
+       // agent run code
+       // gen.Send(event)
+    }()
+    return iter
+}
+```
+
+## AgentWithOptions
+
+使用 `AgentWithOptions` 方法可以在 Eino ADK Agent 中进行一些通用配置。
+
+与 `AgentRunOption` 不同的是，`AgentWithOptions` 在运行前生效，并且不支持自定义 option。
+
+```go
+// github.com/cloudwego/eino/adk/flow.go
+func AgentWithOptions(ctx context.Context, agent Agent, opts ...AgentOption) Agent
+```
+
+Eino ADK 当前内置支持的配置有：
+
+- `WithDisallowTransferToParent`：配置该 SubAgent 不允许 Transfer 到 ParentAgent，会触发该 SubAgent 的 `OnDisallowTransferToParent` 回调方法
+- `WithHistoryRewriter`：配置后该 Agent 在执行前会通过该方法重写接收到的上下文信息
+
+# AgentEvent
+
+AgentEvent 是 Agent 在其运行过程中产生的核心事件数据结构。其中包含了 Agent 的元信息、输出、行为和报错：
+
+```go
+// github.com/cloudwego/eino/adk/interface.go
+
+type AgentEvent struct {
+    AgentName string
+
+    RunPath []RunStep
+
+    Output *AgentOutput
+
+    Action *AgentAction
+
+    Err error
+}
+
+// EventFromMessage 构建普通 event
+func EventFromMessage(msg Message, msgStream MessageStream, role schema.RoleType, toolName string) *AgentEvent
+```
+
+## AgentName & RunPath
+
+`AgentName` 和 `RunPath` 字段是由框架自动进行填充，它们提供了关于事件来源的重要上下文信息，在复杂的、由多个 Agent 构成的系统中至关重要。
+
+```go
+type RunStep struct {
+    agentName string
+}
+```
+
+- `AgentName` 标明了是哪一个 Agent 实例产生了当前的 AgentEvent 。
+- `RunPath` 记录了到达当前 Agent 的完整调用链路。`RunPath` 是一个 `RunStep` 切片，它按顺序记录了从最初的入口 Agent 到当前产生事件的 Agent 的所有 `AgentName`。
+
+## AgentOutput
+
+`AgentOutput` 封装了 Agent 产生的输出。
+
+Message 输出设置在 MessageOutput 字段中，其他类型的自定义输出设置在 CustomizedOutput 字段中：
+
+```go
+// github.com/cloudwego/eino/adk/interface.go
+
+type AgentOutput struct {
+    MessageOutput *MessageVariant
+
+    CustomizedOutput any
+}
+
+type MessageVariant struct {
+    IsStreaming bool
+
+    Message       Message
+    MessageStream MessageStream
+    // message role: Assistant or Tool
+    Role schema.RoleType
+    // only used when Role is Tool
+    ToolName string
+}
+```
+
+`MessageOutput` 字段的类型 `MessageVariant` 是一个核心数据结构，主要功能为：
+
+1. 统一处理流式与非流式消息：`IsStreaming` 是一个标志位。值为 true 表示当前 `MessageVariant` 包含的是一个流式消息（从 MessageStream 读取），为 false 则表示包含的是一个非流式消息（从 Message 读取）：
+
+   - 流式 : 随着时间的推移，逐步返回一系列消息片段，最终构成一个完整的消息（MessageStream）。
+   - 非流式 : 一次性返回一个完整的消息（Message）。
+2. 提供便捷的元数据访问：Message 结构体内部包含了一些重要的元信息，如消息的 Role（Assistant 或 Tool），为了方便快速地识别消息类型和来源， MessageVariant 将这些常用的元数据提升到了顶层：
+
+   - `Role`：消息的角色，Assistant / Tool
+   - `ToolName`：如果消息角色是 Tool ，这个字段会直接提供工具的名称。
+
+这样做的好处是，代码在需要根据消息类型进行路由或决策时， 无需深入解析 Message 对象的具体内容 ，可以直接从 MessageVariant 的顶层字段获取所需信息，从而简化了逻辑，提高了代码的可读性和效率。
+
+## AgentAction
+
+Agent 产生包含 AgentAction 的 Event 可以控制多 Agent 协作，比如立刻退出、中断、跳转等：
+
+```go
+// github.com/cloudwego/eino/adk/interface.go
+
+type AgentAction struct {
+    Exit bool
+
+    Interrupted *InterruptInfo
+
+    TransferToAgent *TransferToAgentAction
+    
+    BreakLoop *BreakLoopAction
+
+    CustomizedAction any
+}
+
+type InterruptInfo struct {
+    Data any
+}
+
+type TransferToAgentAction struct {
+    DestAgentName string
+}
+```
+
+Eino ADK 当前预设 Action 有四种：
+
+1. 退出：当 Agent 产生 Exit Action 时，Multi-Agent 会立刻退出
+
+```go
+func NewExitAction() *AgentAction {
+    return &AgentAction{Exit: true}
+}
+```
+
+1. 跳转：当 Agent 产生 Transfer Action 时，会跳转到目标 Agent 运行
+
+```go
+func NewTransferToAgentAction(destAgentName string) *AgentAction {
+    return &AgentAction{TransferToAgent: &TransferToAgentAction{DestAgentName: destAgentName}}
+}
+```
+
+1. 中断：当 Agent 产生 Interrupt Action 时，会中断 Runner 的运行。由于中断可能发生在任何位置，同时中断时需要向外传递独特的信息，Action 中提供了 `Interrupted` 字段供 Agent 设置自定义数据，Runner 接收到 Interrupted 不为空的 Action 时则认为产生了中断。Interrupt & Resume 内部机制较为复杂，在 【Eino ADK: Agent Runner】-【Eino ADK: Interrupt & Resume】章节会展开详述。
+
+```go
+// 例如 ChatModelAgent 中断时，会发送如下的 AgentEvent：
+h.Send(&AgentEvent{AgentName: h.agentName, Action: &AgentAction{
+    Interrupted: &InterruptInfo{
+       Data: &ChatModelAgentInterruptInfo{Data: data, Info: info},
+    },
+}})
+```
+
+4. 中止循环：当 LoopAgent 的一个子 Agent 发出 BreakLoopAction 时，对应的 LoopAgent 会停止循环并正常退出。
+
+# 语言设置
+
+ADK 提供了 `SetLanguage` 函数用于设置内置提示词（prompt）的语言。这影响所有 ADK 内置组件和中间件生成的提示词语言。本能力在 [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13) 版本引入。
+
+## API
+
+```go
+// Language 表示 ADK 内置提示词的语言设置
+type Language uint8
+
+const (
+    // LanguageEnglish 表示英文（默认）
+    LanguageEnglish Language = iota
+    // LanguageChinese 表示中文
+    LanguageChinese
+)
+
+// SetLanguage 设置 ADK 内置提示词的语言
+// 默认语言是英文（如果未显式设置）
+func SetLanguage(lang Language) error
+```
+
+## 使用示例
+
+```go
+import "github.com/cloudwego/eino/adk"
+
+// 设置为中文
+err := adk.SetLanguage(adk.LanguageChinese)
+if err != nil {
+    // 处理错误
+}
+
+// 设置为英文（默认）
+err = adk.SetLanguage(adk.LanguageEnglish)
+```
+
+## 影响范围
+
+语言设置会影响以下组件的内置提示词：
+
+<table>
+<tr><td>组件/中间件</td><td>影响的提示词</td></tr>
+<tr><td>FileSystem Middleware</td><td>文件系统工具描述、系统提示词、执行工具提示词</td></tr>
+<tr><td>Reduction Middleware</td><td>工具结果截断/清理的提示文字</td></tr>
+<tr><td>Skill Middleware</td><td>技能系统提示词、技能工具描述</td></tr>
+<tr><td>ChatModelAgent</td><td>内置系统提示词</td></tr>
+</table>
+
+> 💡
+> 建议在程序初始化时设置语言，因为语言设置是全局生效的。在运行时更改语言可能导致同一会话中出现混合语言的提示词。
+
+> 💡
+> 语言设置仅影响 ADK 内置的提示词。你自定义的提示词（如 Agent 的 Instruction）需要自行处理国际化。
+</script><h1>Agent 抽象</h1><header class=article-meta></header><h1 id=agent-定义>Agent 定义</h1><p>Eino 定义了 Agent 的基础接口，实现此接口的 Struct 可被视为一个 Agent：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// github.com/cloudwego/eino/adk/interface.go</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Agent</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>Name</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>string</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -299,4 +690,4 @@ type AgentInput struct { Messages []Message EnableStreaming bool } type Message 
 语言设置仅影响 ADK 内置的提示词。你自定义的提示词（如 Agent 的 Instruction）需要自行处理国际化。</p></blockquote><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 March 10, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c2aa4096ad71b3ef0ce9941d864394f623fd7b74>docs(eino): sync docs from feishu 2026-03-09 (#1518) (c2aa4096)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

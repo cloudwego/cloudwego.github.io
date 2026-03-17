@@ -1,7 +1,7 @@
 <!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Eino ADK: Plan-Execute Agent | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_implementation/plan_execute/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Eino ADK: Plan-Execute Agent"><meta property="og:description" content="Plan-Execute Agent Overview Import Path import github.com/cloudwego/eino/adk/prebuilt/planexecute
 What is Plan-Execute Agent? Plan-Execute Agent is a multi-agent collaboration framework based on the “plan-execute-reflect” paradigm in Eino ADK, designed to solve the step-by-step decomposition, execution, and dynamic adjustment of complex tasks. Through the collaborative work of three core agents: Planner, Executor, and Replanner, it achieves structured task planning, tool call execution, progress evaluation, and dynamic replanning to ultimately accomplish user goals."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-02T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-02T21:50:06+08:00"><meta itemprop=name content="Eino ADK: Plan-Execute Agent"><meta itemprop=description content="Plan-Execute Agent Overview Import Path import github.com/cloudwego/eino/adk/prebuilt/planexecute
 What is Plan-Execute Agent? Plan-Execute Agent is a multi-agent collaboration framework based on the “plan-execute-reflect” paradigm in Eino ADK, designed to solve the step-by-step decomposition, execution, and dynamic adjustment of complex tasks. Through the collaborative work of three core agents: Planner, Executor, and Replanner, it achieves structured task planning, tool call execution, progress evaluation, and dynamic replanning to ultimately accomplish user goals."><meta itemprop=datePublished content="2026-03-02T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-02T21:50:06+08:00"><meta itemprop=wordCount content="1996"><meta name=twitter:card content="summary"><meta name=twitter:title content="Eino ADK: Plan-Execute Agent"><meta name=twitter:description content="Plan-Execute Agent Overview Import Path import github.com/cloudwego/eino/adk/prebuilt/planexecute
-What is Plan-Execute Agent? Plan-Execute Agent is a multi-agent collaboration framework based on the “plan-execute-reflect” paradigm in Eino ADK, designed to solve the step-by-step decomposition, execution, and dynamic adjustment of complex tasks. Through the collaborative work of three core agents: Planner, Executor, and Replanner, it achieves structured task planning, tool call execution, progress evaluation, and dynamic replanning to ultimately accomplish user goals."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+What is Plan-Execute Agent? Plan-Execute Agent is a multi-agent collaboration framework based on the “plan-execute-reflect” paradigm in Eino ADK, designed to solve the step-by-step decomposition, execution, and dynamic adjustment of complex tasks. Through the collaborative work of three core agents: Planner, Executor, and Replanner, it achieves structured task planning, tool call execution, progress evaluation, and dynamic replanning to ultimately accomplish user goals."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,391 @@ What is Plan-Execute Agent? Plan-Execute Agent is a multi-agent collaboration fr
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/eino_adk/agent_implementation/plan_execute.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/eino_adk/agent_implementation?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino%20ADK:%20Plan-Execute%20Agent" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#plan-execute-agent-overview>Plan-Execute Agent Overview</a><ul><li><a href=#import-path>Import Path</a></li><li><a href=#what-is-plan-execute-agent>What is Plan-Execute Agent?</a></li><li><a href=#plan-execute-agent-structure>Plan-Execute Agent Structure</a></li><li><a href=#plan-execute-agent-execution-flow>Plan-Execute Agent Execution Flow</a></li></ul></li><li><a href=#plan-execute-agent-usage-example>Plan-Execute Agent Usage Example</a><ul><li><a href=#scenario-description>Scenario Description</a></li><li><a href=#code-implementation>Code Implementation</a></li><li><a href=#execution-results>Execution Results</a></li></ul></li><li><a href=#summary>Summary</a></li><li><a href=#faq>FAQ</a><ul><li><a href=#error-noderunerror-no-tool-call>Error [NodeRunError] no tool call</a></li><li><a href=#error-noderunerror-unexpected-tool-call>Error [NodeRunError] unexpected tool call</a></li><li><a href=#error-noderunerror-unmarshal-plan-error>Error [NodeRunError] unmarshal plan error</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino: ADK - Agent Development Kit</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_implementation/>Eino ADK: Agent Implementations</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_implementation/plan_execute/>Eino ADK: Plan-Execute Agent</a></li></ol></nav><div class=td-content><h1>Eino ADK: Plan-Execute Agent</h1><header class=article-meta></header><h2 id=plan-execute-agent-overview>Plan-Execute Agent Overview</h2><h3 id=import-path>Import Path</h3><p><code>import github.com/cloudwego/eino/adk/prebuilt/planexecute</code></p><h3 id=what-is-plan-execute-agent>What is Plan-Execute Agent?</h3><p>Plan-Execute Agent is a multi-agent collaboration framework based on the &ldquo;plan-execute-reflect&rdquo; paradigm in Eino ADK, designed to solve the step-by-step decomposition, execution, and dynamic adjustment of complex tasks. Through the collaborative work of three core agents: <strong>Planner</strong>, <strong>Executor</strong>, and <strong>Replanner</strong>, it achieves structured task planning, tool call execution, progress evaluation, and dynamic replanning to ultimately accomplish user goals.</p><p><a href=/img/eino/eino_adk_plan_execute_steps.png target=_blank><img src=/img/eino/eino_adk_plan_execute_steps.png width=100%></a></p><p>Plan-Execute Agent is suitable for scenarios requiring multi-step reasoning, tool integration, or dynamic strategy adjustment (such as research analysis, complex problem solving, automated workflows, etc.). Its core advantages are:</p><ul><li><strong>Structured Planning</strong>: Decomposes complex tasks into clear, executable step sequences</li><li><strong>Iterative Execution</strong>: Completes single-step tasks based on tool calls, accumulating execution results</li><li><strong>Dynamic Adjustment</strong>: Evaluates in real-time based on execution progress whether the plan needs adjustment or task termination</li><li><strong>Model and Tool Agnostic</strong>: Compatible with any model supporting tool calls, flexible integration with external tools</li></ul><h3 id=plan-execute-agent-structure>Plan-Execute Agent Structure</h3><p>Plan-Execute Agent consists of three core agents and a coordinator, built together using ChatModelAgent and WorkflowAgents capabilities provided in ADK:</p><p><a href=/img/eino/eino_adk_plan_execute_replan_architecture_overview.png target=_blank><img src=/img/eino/eino_adk_plan_execute_replan_architecture_overview.png width=100%></a></p><h4 id=1-planner>1. Planner</h4><ul><li><strong>Core Function</strong>: Generates initial task plan (structured step sequence) based on user goals</li><li><strong>Implementation</strong>:<ul><li>Uses a model supporting tool calls (e.g., GPT-4) to generate a step list conforming to JSON Schema via <code>PlanTool</code></li><li>Or directly uses a model supporting structured output to generate <code>Plan</code> format results</li></ul></li><li><strong>Output</strong>: <code>Plan</code> object (containing ordered step list), stored in Session for subsequent process use</li></ul><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// PlannerConfig provides configuration options for creating a planner agent.</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#plan-execute-agent-overview>Plan-Execute Agent Overview</a><ul><li><a href=#import-path>Import Path</a></li><li><a href=#what-is-plan-execute-agent>What is Plan-Execute Agent?</a></li><li><a href=#plan-execute-agent-structure>Plan-Execute Agent Structure</a></li><li><a href=#plan-execute-agent-execution-flow>Plan-Execute Agent Execution Flow</a></li></ul></li><li><a href=#plan-execute-agent-usage-example>Plan-Execute Agent Usage Example</a><ul><li><a href=#scenario-description>Scenario Description</a></li><li><a href=#code-implementation>Code Implementation</a></li><li><a href=#execution-results>Execution Results</a></li></ul></li><li><a href=#summary>Summary</a></li><li><a href=#faq>FAQ</a><ul><li><a href=#error-noderunerror-no-tool-call>Error [NodeRunError] no tool call</a></li><li><a href=#error-noderunerror-unexpected-tool-call>Error [NodeRunError] unexpected tool call</a></li><li><a href=#error-noderunerror-unmarshal-plan-error>Error [NodeRunError] unmarshal plan error</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino: ADK - Agent Development Kit</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_implementation/>Eino ADK: Agent Implementations</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_implementation/plan_execute/>Eino ADK: Plan-Execute Agent</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino ADK: Plan-Execute Agent" data-url=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_implementation/plan_execute/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Plan-Execute Agent Overview
+
+### Import Path
+
+`import github.com/cloudwego/eino/adk/prebuilt/planexecute`
+
+### What is Plan-Execute Agent?
+
+Plan-Execute Agent is a multi-agent collaboration framework based on the "plan-execute-reflect" paradigm in Eino ADK, designed to solve the step-by-step decomposition, execution, and dynamic adjustment of complex tasks. Through the collaborative work of three core agents: **Planner**, **Executor**, and **Replanner**, it achieves structured task planning, tool call execution, progress evaluation, and dynamic replanning to ultimately accomplish user goals.
+
+<a href="/img/eino/eino_adk_plan_execute_steps.png" target="_blank"><img src="/img/eino/eino_adk_plan_execute_steps.png" width="100%" /></a>
+
+Plan-Execute Agent is suitable for scenarios requiring multi-step reasoning, tool integration, or dynamic strategy adjustment (such as research analysis, complex problem solving, automated workflows, etc.). Its core advantages are:
+
+- **Structured Planning**: Decomposes complex tasks into clear, executable step sequences
+- **Iterative Execution**: Completes single-step tasks based on tool calls, accumulating execution results
+- **Dynamic Adjustment**: Evaluates in real-time based on execution progress whether the plan needs adjustment or task termination
+- **Model and Tool Agnostic**: Compatible with any model supporting tool calls, flexible integration with external tools
+
+### Plan-Execute Agent Structure
+
+Plan-Execute Agent consists of three core agents and a coordinator, built together using ChatModelAgent and WorkflowAgents capabilities provided in ADK:
+
+<a href="/img/eino/eino_adk_plan_execute_replan_architecture_overview.png" target="_blank"><img src="/img/eino/eino_adk_plan_execute_replan_architecture_overview.png" width="100%" /></a>
+
+#### 1. Planner
+
+- **Core Function**: Generates initial task plan (structured step sequence) based on user goals
+- **Implementation**:
+  - Uses a model supporting tool calls (e.g., GPT-4) to generate a step list conforming to JSON Schema via `PlanTool`
+  - Or directly uses a model supporting structured output to generate `Plan` format results
+- **Output**: `Plan` object (containing ordered step list), stored in Session for subsequent process use
+
+```go
+// PlannerConfig provides configuration options for creating a planner agent.
+// There are two ways to configure the planner to generate structured Plan output:
+//  1. Use ChatModelWithFormattedOutput: A model already configured to output in the Plan format
+//  2. Use ToolCallingChatModel + ToolInfo: A model that will be configured to use tool calling
+//     to generate the Plan structure
+type PlannerConfig struct {
+    // ChatModelWithFormattedOutput is a model pre-configured to output in the Plan format.
+    // This can be created by configuring a model to output structured data directly.
+    // Can refer to https://github.com/cloudwego/eino-ext/blob/main/components/model/openai/examples/structured/structured.go.
+    ChatModelWithFormattedOutput model.BaseChatModel
+
+    // ToolCallingChatModel is a model that supports tool calling capabilities.
+    // When provided along with ToolInfo, the model will be configured to use tool calling
+    // to generate the Plan structure.
+    ToolCallingChatModel model.ToolCallingChatModel
+    // ToolInfo defines the schema for the Plan structure when using tool calling.
+    // If not provided, PlanToolInfo will be used as the default.
+    ToolInfo *schema.ToolInfo
+
+    // GenInputFn is a function that generates the input messages for the planner.
+    // If not provided, defaultGenPlannerInputFn will be used as the default.
+    GenInputFn GenPlannerInputFn
+
+    // NewPlan creates a new Plan instance for JSON.
+    // The returned Plan will be used to unmarshal the model-generated JSON output.
+    // If not provided, defaultNewPlan will be used as the default.
+    NewPlan NewPlan
+}
+```
+
+#### 2. Executor
+
+- **Core Function**: Executes the first step in the plan, calling external tools to complete specific tasks
+- **Implementation**: Based on `ChatModelAgent`, configured with tool sets (such as search, calculation, database access, etc.)
+- **Workflow**:
+  - Gets current `Plan` and executed steps from Session
+  - Extracts the first unexecuted step from the plan as the goal
+  - Calls tools to execute the step, stores results in Session
+- **Key Capability**: Supports multi-round tool calls (controlled via `MaxIterations`) to ensure single-step task completion
+
+```go
+// ExecutorConfig provides configuration options for creating a executor agent.
+type ExecutorConfig struct {
+    // Model is the chat model used by the executor.
+    Model model.ToolCallingChatModel
+
+    // ToolsConfig is the tools configuration used by the executor.
+    ToolsConfig adk.ToolsConfig
+
+    // MaxIterations defines the upper limit of ChatModel generation cycles.
+    // The agent will terminate with an error if this limit is exceeded.
+    // Optional. Defaults to 20.
+    MaxIterations int
+
+    // GenInputFn is the function that generates the input messages for the Executor.
+    // Optional. If not provided, defaultGenExecutorInputFn will be used.
+    GenInputFn GenPlanExecuteInputFn
+}
+```
+
+#### 3. Replanner
+
+- **Core Function**: Evaluates execution progress, decides to continue execution (generate new plan) or terminate task (return result)
+- **Implementation**: Based on tool calling model, outputs decisions via `PlanTool` (generate new plan) or `RespondTool` (return result)
+- **Decision Logic**:
+  - **Continue Execution**: If goal not achieved, generates new plan containing remaining steps, updates `Plan` in Session
+  - **Terminate Task**: If goal achieved, calls `RespondTool` to generate final user response
+
+```go
+type ReplannerConfig struct {
+
+    // ChatModel is the model that supports tool calling capabilities.
+    // It will be configured with PlanTool and RespondTool to generate updated plans or responses.
+    ChatModel model.ToolCallingChatModel
+
+    // PlanTool defines the schema for the Plan tool that can be used with ToolCallingChatModel.
+    // If not provided, the default PlanToolInfo will be used.
+    PlanTool *schema.ToolInfo
+
+    // RespondTool defines the schema for the response tool that can be used with ToolCallingChatModel.
+    // If not provided, the default RespondToolInfo will be used.
+    RespondTool *schema.ToolInfo
+
+    // GenInputFn is the function that generates the input messages for the Replanner.
+    // if not provided, buildDefaultReplannerInputFn will be used.
+    GenInputFn GenPlanExecuteInputFn
+
+    // NewPlan creates a new Plan instance.
+    // The returned Plan will be used to unmarshal the model-generated JSON output from PlanTool.
+    // If not provided, defaultNewPlan will be used as the default.
+    NewPlan NewPlan
+}
+```
+
+#### 4. PlanExecuteAgent
+
+- **Core Function**: Combines the above three agents to form a "plan → execute → replan" loop workflow
+- **Implementation**: Combined via `SequentialAgent` and `LoopAgent`:
+  - Outer `SequentialAgent`: First executes `Planner` to generate initial plan, then enters execute-replan loop
+  - Inner `LoopAgent`: Loops execution of `Executor` and `Replanner` until task completion or maximum iterations reached
+
+```go
+// New creates a new plan execute agent with the given configuration.
+func New(ctx context.Context, cfg *PlanExecuteConfig) (adk.Agent, error)
+
+// Config provides configuration options for creating a plan execute agent.
+type Config struct {
+    Planner       adk.Agent
+    Executor      adk.Agent
+    Replanner     adk.Agent
+    MaxIterations int
+}
+```
+
+### Plan-Execute Agent Execution Flow
+
+The complete workflow of Plan-Execute Agent is as follows:
+
+1. **Initialization**: User inputs target task, starts `PlanExecuteAgent`
+2. **Planning Phase**:
+   - `Planner` receives user goal, generates initial `Plan` (step list)
+   - `Plan` stored in Session (`PlanSessionKey`)
+3. **Execute-Replan Loop** (controlled by `LoopAgent`):
+   - **Execution Step**: `Executor` extracts first step from `Plan`, calls tools to execute, result stored in Session (`ExecutedStepsSessionKey`)
+   - **Reflection Step**: `Replanner` evaluates executed steps and results:
+     - If goal achieved: Calls `RespondTool` to generate final response, exits loop
+     - If needs to continue: Generates new `Plan` and updates Session, enters next loop iteration
+4. **Termination Condition**: Task completed (`Replanner` returns result) or maximum iterations reached (`MaxIterations`)
+
+## Plan-Execute Agent Usage Example
+
+### Scenario Description
+
+Implement a "research" Agent:
+
+1. **Planner**: Plans detailed steps for research goals
+2. **Executor**: Executes the first step in the plan, uses search tool (duckduckgo) when necessary
+3. **Replanner**: Evaluates execution results, adjusts plan if information is insufficient, otherwise generates final summary
+
+### Code Implementation
+
+#### 1. Initialize Model and Tools
+
+```go
+// Initialize OpenAI model supporting tool calls
+func newToolCallingModel(ctx context.Context) model.ToolCallingChatModel {
+    cm, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+        APIKey: os.Getenv("OPENAI_API_KEY"),
+        Model:  "gpt-4o", // Must support tool calls
+    })
+    if err != nil {
+        log.Fatalf("Failed to initialize model: %v", err)
+    }
+    return cm
+}
+
+// Initialize search tool (for Executor to call)
+func newSearchTool(ctx context.Context) tool.BaseTool {
+    config := &duckduckgo.Config{
+       MaxResults: 20, // Limit to return 20 results
+       Region:     duckduckgo._RegionWT_,
+       Timeout:    10 * time._Second_,
+    }
+    tool, err := duckduckgo.NewTextSearchTool(ctx, config)
+    if err != nil {
+       log.Fatalf("Failed to initialize search tool: %v", err)
+    }
+    return tool
+}
+```
+
+#### 2. Create Planner
+
+```go
+func newPlanner(ctx context.Context, model model.ToolCallingChatModel) adk.Agent {
+    planner, err := planexecute.NewPlanner(ctx, &planexecute.PlannerConfig{
+        ToolCallingChatModel: model,                  // Use tool calling model to generate plan
+        ToolInfo:             &planexecute.PlanToolInfo, // Default Plan tool schema
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Planner: %v", err)
+    }
+    return planner
+}
+```
+
+#### 3. Create Executor
+
+```go
+func newExecutor(ctx context.Context, model model.ToolCallingChatModel) adk.Agent {
+    // Configure Executor tool set (only includes search tool)
+    toolsConfig := adk.ToolsConfig{
+       ToolsNodeConfig: compose.ToolsNodeConfig{
+          Tools: []tool.BaseTool{newSearchTool(ctx)},
+       },
+    }
+    executor, err := planexecute.NewExecutor(ctx, &planexecute.ExecutorConfig{
+       Model:       model,
+       ToolsConfig: toolsConfig,
+       MaxIterations:     5, // ChatModel runs at most 5 times
+    })
+    if err != nil {
+       log.Fatalf("Failed to create Executor: %v", err)
+    }
+    return executor
+}
+```
+
+#### 4. Create Replanner
+
+```go
+func newReplanner(ctx context.Context, model model.ToolCallingChatModel) adk.Agent {
+    replanner, err := planexecute.NewReplanner(ctx, &planexecute.ReplannerConfig{
+       ChatModel: model, // Use tool calling model to evaluate progress
+    })
+    if err != nil {
+       log.Fatalf("Failed to create Replanner: %v", err)
+    }
+    return replanner
+}
+```
+
+#### 5. Combine into PlanExecuteAgent
+
+```go
+func newPlanExecuteAgent(ctx context.Context) adk.Agent {
+    model := newToolCallingModel(ctx)
+
+    // Instantiate three core agents
+    planner := newPlanner(ctx, model)
+    executor := newExecutor(ctx, model)
+    replanner := newReplanner(ctx, model)
+
+    // Combine into PlanExecuteAgent (fixed execute-replan max iterations 10)
+    planExecuteAgent, err := planexecute.NewPlanExecuteAgent(ctx, &planexecute.PlanExecuteConfig{
+       Planner:       planner,
+       Executor:      executor,
+       Replanner:     replanner,
+       MaxIterations: 10,
+    })
+    if err != nil {
+       log.Fatalf("Failed to combine PlanExecuteAgent: %v", err)
+    }
+    return planExecuteAgent
+}
+```
+
+#### 6. Run and Output
+
+```go
+import (
+    "context"
+    "log"
+    "os"
+    "time"
+
+    "github.com/cloudwego/eino-ext/components/model/openai"
+    "github.com/cloudwego/eino-ext/components/tool/duckduckgo/v2"
+    "github.com/cloudwego/eino/adk"
+    "github.com/cloudwego/eino/adk/prebuilt/planexecute"
+    "github.com/cloudwego/eino/components/model"
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+)
+
+func main() {
+    ctx := context.Background()
+    agent := newPlanExecuteAgent(ctx)
+
+    // Create Runner to execute agent
+    runner := adk.NewRunner(ctx, adk.RunnerConfig{Agent: agent, EnableStreaming: true})
+
+    // User inputs target task
+    userInput := []adk.Message{
+       schema.UserMessage("Research and summarize the latest developments in AI for healthcare in 2024, including key technologies, applications, and industry trends."),
+    }
+
+    // Execute and print results
+    events := runner.Run(ctx, userInput)
+    for {
+       event, ok := events.Next()
+       if !ok {
+          break
+       }
+       if event.Err != nil {
+          log.Printf("Execution error: %v", event.Err)
+          break
+       }
+       // Print agent output (plan, execution results, final response, etc.)
+       if msg, err := event.Output.MessageOutput.GetMessage(); err == nil && msg.Content != "" {
+          log.Printf("\n=== Agent Output ===\n%s\n", msg.Content)
+       }
+    }
+}
+```
+
+### Execution Results
+
+```markdown
+2025/09/08 11:47:42 
+=== Agent:Planner Output ===
+{"steps":["Identify the most recent and credible sources for AI developments in healthcare in 2024, such as scientific journals, industry reports, news articles, and expert analyses.","Extract and compile the key technologies emerging or advancing in AI for healthcare in 2024, including machine learning models, diagnostic tools, robotic surgery, personalized medicine, and data management solutions.","Analyze the main applications of AI in healthcare during 2024, focusing on areas such as diagnostics, patient care, drug discovery, medical imaging, and healthcare administration.","Investigate current industry trends related to AI in healthcare for 2024, including adoption rates, regulatory changes, ethical considerations, funding landscape, and market forecasts.","Synthesize the gathered information into a comprehensive summary covering the latest developments in AI for healthcare in 2024, highlighting key technologies, applications, and industry trends with examples and implications."]}
+2025/09/08 11:47:47 
+=== Agent:Executor Output ===
+{"message":"Found 10 results successfully.","results":[{"title":"Artificial Intelligence in Healthcare: 2024 Year in Review","url":"https://www.researchgate.net/publication/389402322_Artificial_Intelligence_in_Healthcare_2024_Year_in_Review","summary":"The adoption of LLMs and text data types amongst various healthcare specialties, especially for education and administrative tasks, is unlocking new potential for AI applications in..."},{"title":"AI in Healthcare - Nature","url":"https://www.nature.com/collections/hacjaaeafj","summary":"\"AI in Healthcare\" encompasses the use of AI technologies to enhance various aspects of healthcare delivery, from diagnostics to treatment personalization, ultimately aiming to improve..."},...]}
+...
+```
+
+## Summary
+
+Plan-Execute Agent effectively improves task completion reliability and efficiency through the "plan-execute-reflect" closed-loop workflow, decomposing complex tasks into executable steps, combining tool calls with dynamic adjustment. Its core advantages are:
+
+- **Structured Task Decomposition**: Reduces cognitive load of complex problems
+- **Tool Integration Capability**: Seamlessly interfaces with external tools (search, calculation, database, etc.)
+- **Dynamic Adaptability**: Adjusts strategies in real-time based on execution feedback to handle uncertainty
+
+Through the `PlanExecuteAgent` provided by Eino ADK, developers can quickly build agent systems capable of handling complex tasks, suitable for various scenarios such as research analysis, office automation, intelligent customer service, etc.
+
+## FAQ
+
+### Error [NodeRunError] no tool call
+
+Planner / Replanner must generate plans through tool calls. When this error occurs, please check:
+
+1. Whether the model used supports forced tool calls (e.g., openai tool_choice="required")
+2. Whether the model's eino-ext wrapper has been upgraded to the latest version (e.g., old version ark sdk does not support forced tool calls)
+
+### Error [NodeRunError] unexpected tool call
+
+The ChatModel registered with Replanner should not carry additional tools via the WithTools method. If this is the case, please clear the tools.
+
+### Error [NodeRunError] unmarshal plan error
+
+In Planner / Replanner config, plans are generated based on two fields: PlanTool and NewPlan:
+
+- PlanTool serves as the Plan description provided to the model
+- NewPlan method serves as the framework's plan builder, used to unmarshal the Plan returned by the model to this struct for subsequent step execution
+
+When this error occurs, please check whether the field descriptions provided in PlanTool match the struct fields returned in the NewPlan method, align them and re-run.
+</script><h1>Eino ADK: Plan-Execute Agent</h1><header class=article-meta></header><h2 id=plan-execute-agent-overview>Plan-Execute Agent Overview</h2><h3 id=import-path>Import Path</h3><p><code>import github.com/cloudwego/eino/adk/prebuilt/planexecute</code></p><h3 id=what-is-plan-execute-agent>What is Plan-Execute Agent?</h3><p>Plan-Execute Agent is a multi-agent collaboration framework based on the &ldquo;plan-execute-reflect&rdquo; paradigm in Eino ADK, designed to solve the step-by-step decomposition, execution, and dynamic adjustment of complex tasks. Through the collaborative work of three core agents: <strong>Planner</strong>, <strong>Executor</strong>, and <strong>Replanner</strong>, it achieves structured task planning, tool call execution, progress evaluation, and dynamic replanning to ultimately accomplish user goals.</p><p><a href=/img/eino/eino_adk_plan_execute_steps.png target=_blank><img src=/img/eino/eino_adk_plan_execute_steps.png width=100%></a></p><p>Plan-Execute Agent is suitable for scenarios requiring multi-step reasoning, tool integration, or dynamic strategy adjustment (such as research analysis, complex problem solving, automated workflows, etc.). Its core advantages are:</p><ul><li><strong>Structured Planning</strong>: Decomposes complex tasks into clear, executable step sequences</li><li><strong>Iterative Execution</strong>: Completes single-step tasks based on tool calls, accumulating execution results</li><li><strong>Dynamic Adjustment</strong>: Evaluates in real-time based on execution progress whether the plan needs adjustment or task termination</li><li><strong>Model and Tool Agnostic</strong>: Compatible with any model supporting tool calls, flexible integration with external tools</li></ul><h3 id=plan-execute-agent-structure>Plan-Execute Agent Structure</h3><p>Plan-Execute Agent consists of three core agents and a coordinator, built together using ChatModelAgent and WorkflowAgents capabilities provided in ADK:</p><p><a href=/img/eino/eino_adk_plan_execute_replan_architecture_overview.png target=_blank><img src=/img/eino/eino_adk_plan_execute_replan_architecture_overview.png width=100%></a></p><h4 id=1-planner>1. Planner</h4><ul><li><strong>Core Function</strong>: Generates initial task plan (structured step sequence) based on user goals</li><li><strong>Implementation</strong>:<ul><li>Uses a model supporting tool calls (e.g., GPT-4) to generate a step list conforming to JSON Schema via <code>PlanTool</code></li><li>Or directly uses a model supporting structured output to generate <code>Plan</code> format results</li></ul></li><li><strong>Output</strong>: <code>Plan</code> object (containing ordered step list), stored in Session for subsequent process use</li></ul><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// PlannerConfig provides configuration options for creating a planner agent.</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#8f5902;font-style:italic>// There are two ways to configure the planner to generate structured Plan output:</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#8f5902;font-style:italic>//  1. Use ChatModelWithFormattedOutput: A model already configured to output in the Plan format</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#8f5902;font-style:italic>//  2. Use ToolCallingChatModel + ToolInfo: A model that will be configured to use tool calling</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -321,4 +705,4 @@ What is Plan-Execute Agent? Plan-Execute Agent is a multi-agent collaboration fr
 </span></span></code></pre></div><h2 id=summary>Summary</h2><p>Plan-Execute Agent effectively improves task completion reliability and efficiency through the &ldquo;plan-execute-reflect&rdquo; closed-loop workflow, decomposing complex tasks into executable steps, combining tool calls with dynamic adjustment. Its core advantages are:</p><ul><li><strong>Structured Task Decomposition</strong>: Reduces cognitive load of complex problems</li><li><strong>Tool Integration Capability</strong>: Seamlessly interfaces with external tools (search, calculation, database, etc.)</li><li><strong>Dynamic Adaptability</strong>: Adjusts strategies in real-time based on execution feedback to handle uncertainty</li></ul><p>Through the <code>PlanExecuteAgent</code> provided by Eino ADK, developers can quickly build agent systems capable of handling complex tasks, suitable for various scenarios such as research analysis, office automation, intelligent customer service, etc.</p><h2 id=faq>FAQ</h2><h3 id=error-noderunerror-no-tool-call>Error [NodeRunError] no tool call</h3><p>Planner / Replanner must generate plans through tool calls. When this error occurs, please check:</p><ol><li>Whether the model used supports forced tool calls (e.g., openai tool_choice=&ldquo;required&rdquo;)</li><li>Whether the model&rsquo;s eino-ext wrapper has been upgraded to the latest version (e.g., old version ark sdk does not support forced tool calls)</li></ol><h3 id=error-noderunerror-unexpected-tool-call>Error [NodeRunError] unexpected tool call</h3><p>The ChatModel registered with Replanner should not carry additional tools via the WithTools method. If this is the case, please clear the tools.</p><h3 id=error-noderunerror-unmarshal-plan-error>Error [NodeRunError] unmarshal plan error</h3><p>In Planner / Replanner config, plans are generated based on two fields: PlanTool and NewPlan:</p><ul><li>PlanTool serves as the Plan description provided to the model</li><li>NewPlan method serves as the framework&rsquo;s plan builder, used to unmarshal the Plan returned by the model to this struct for subsequent step execution</li></ul><p>When this error occurs, please check whether the field descriptions provided in PlanTool match the struct fields returned in the NewPlan method, align them and re-run.</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 2, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/96139d4140c93a677eec194c2d34dffa3e2673dd>feat: sync eino docs (#1512) (96139d41)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

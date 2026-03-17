@@ -10,7 +10,7 @@ TaskCreate: 创建任务 TaskGet: 查看任务详情 TaskUpdate: 更新任务 Ta
 💡 本中间件在 v0.8.0 版本引入。
 概述 plantask 是一个任务管理中间件，让 Agent 可以创建和管理任务列表。中间件通过 BeforeAgent 钩子注入四个工具：
 TaskCreate: 创建任务 TaskGet: 查看任务详情 TaskUpdate: 更新任务 TaskList: 列出所有任务 主要用途：
-跟踪复杂任务的进度 把大任务拆成小步骤 管理任务间的依赖关系 架构 ┌─────────────────────────────────────────────────────────────────────────┐ │ Agent │ │ │ │ ┌───────────────────────────────────────────────────────────────────┐ │ │ │ BeforeAgent: 注入任务工具 │ │ │ │ - TaskCreate │ │ │ │ - TaskGet │ │ │ │ - TaskUpdate │ │ │ │ - TaskList │ │ │ └───────────────────────────────────────────────────────────────────┘ │ │ │ └─────────────────────────────────────────────────────────────────────────┘ │ ▼ ┌─────────────────────────────────────────────────────────────────────────┐ │ Backend │ │ │ │ 存储结构: │ │ baseDir/ │ │ ├── .highwatermark # ID 计数器 │ │ ├── 1.json # 任务 #1 │ │ ├── 2.json # 任务 #2 │ │ └── ... │ │ │ └─────────────────────────────────────────────────────────────────────────┘ 配置 type Config struct { Backend Backend // 存储后端，必填 BaseDir string // 任务文件目录，必填 } 注意这个 Backend 的实现，应该是 session 维度隔离的，不同的 session 对应不同的 Backend（任务列表） Backend 接口 type Backend interface { LsInfo(ctx context.Context, req *LsInfoRequest) ([]FileInfo, error) Read(ctx context.Context, req *ReadRequest) (string, error) Write(ctx context.Context, req *WriteRequest) error Delete(ctx context.Context, req *DeleteRequest) error } 任务结构 type task struct { ID string `json:"id"` // 任务 ID Subject string `json:"subject"` // 标题 Description string `json:"description"` // 描述 Status string `json:"status"` // 状态 Blocks []string `json:"blocks"` // 阻塞哪些任务 BlockedBy []string `json:"blockedBy"` // 被哪些任务阻塞 ActiveForm string `json:"activeForm"` // 进行时文案 Owner string `json:"owner"` // 负责 agent Metadata map[string]any `json:"metadata"` // 自定义数据 } 状态 状态说明 pending待处理（默认） in_progress进行中 completed已完成 deleted删除（会删掉文件） 状态流转：pending → in_progress → completed，任何状态都可以直接 deleted。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+跟踪复杂任务的进度 把大任务拆成小步骤 管理任务间的依赖关系 架构 ┌─────────────────────────────────────────────────────────────────────────┐ │ Agent │ │ │ │ ┌───────────────────────────────────────────────────────────────────┐ │ │ │ BeforeAgent: 注入任务工具 │ │ │ │ - TaskCreate │ │ │ │ - TaskGet │ │ │ │ - TaskUpdate │ │ │ │ - TaskList │ │ │ └───────────────────────────────────────────────────────────────────┘ │ │ │ └─────────────────────────────────────────────────────────────────────────┘ │ ▼ ┌─────────────────────────────────────────────────────────────────────────┐ │ Backend │ │ │ │ 存储结构: │ │ baseDir/ │ │ ├── .highwatermark # ID 计数器 │ │ ├── 1.json # 任务 #1 │ │ ├── 2.json # 任务 #2 │ │ └── ... │ │ │ └─────────────────────────────────────────────────────────────────────────┘ 配置 type Config struct { Backend Backend // 存储后端，必填 BaseDir string // 任务文件目录，必填 } 注意这个 Backend 的实现，应该是 session 维度隔离的，不同的 session 对应不同的 Backend（任务列表） Backend 接口 type Backend interface { LsInfo(ctx context.Context, req *LsInfoRequest) ([]FileInfo, error) Read(ctx context.Context, req *ReadRequest) (string, error) Write(ctx context.Context, req *WriteRequest) error Delete(ctx context.Context, req *DeleteRequest) error } 任务结构 type task struct { ID string `json:"id"` // 任务 ID Subject string `json:"subject"` // 标题 Description string `json:"description"` // 描述 Status string `json:"status"` // 状态 Blocks []string `json:"blocks"` // 阻塞哪些任务 BlockedBy []string `json:"blockedBy"` // 被哪些任务阻塞 ActiveForm string `json:"activeForm"` // 进行时文案 Owner string `json:"owner"` // 负责 agent Metadata map[string]any `json:"metadata"` // 自定义数据 } 状态 状态说明 pending待处理（默认） in_progress进行中 completed已完成 deleted删除（会删掉文件） 状态流转：pending → in_progress → completed，任何状态都可以直接 deleted。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -119,7 +119,300 @@ TaskCreate: 创建任务 TaskGet: 查看任务详情 TaskUpdate: 更新任务 Ta
 <label for=m-zhdocseinofaq-check><a href=/zh/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_PlanTask.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=PlanTask" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#概述>概述</a></li><li><a href=#架构>架构</a></li><li><a href=#配置>配置</a></li><li><a href=#backend-接口>Backend 接口</a></li><li><a href=#任务结构>任务结构</a><ul><li><a href=#状态>状态</a></li></ul></li><li><a href=#工具>工具</a><ul><li><a href=#taskcreate>TaskCreate</a></li><li><a href=#taskget>TaskGet</a></li><li><a href=#taskupdate>TaskUpdate</a></li><li><a href=#tasklist>TaskList</a></li></ul></li><li><a href=#使用示例>使用示例</a><ul><li><a href=#典型流程>典型流程</a></li></ul></li><li><a href=#依赖管理>依赖管理</a></li><li><a href=#自动清理>自动清理</a></li><li><a href=#注意事项>注意事项</a></li><li><a href=#多语言支持>多语言支持</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/>ADK - Agent Development Kit</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/>ChatModelAgentMiddleware</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_plantask/>PlanTask</a></li></ol></nav><div class=td-content><h1>PlanTask</h1><header class=article-meta></header><h1 id=plantask-中间件>PlanTask 中间件</h1><p>adk/middlewares/plantask</p><blockquote><p>💡
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#概述>概述</a></li><li><a href=#架构>架构</a></li><li><a href=#配置>配置</a></li><li><a href=#backend-接口>Backend 接口</a></li><li><a href=#任务结构>任务结构</a><ul><li><a href=#状态>状态</a></li></ul></li><li><a href=#工具>工具</a><ul><li><a href=#taskcreate>TaskCreate</a></li><li><a href=#taskget>TaskGet</a></li><li><a href=#taskupdate>TaskUpdate</a></li><li><a href=#tasklist>TaskList</a></li></ul></li><li><a href=#使用示例>使用示例</a><ul><li><a href=#典型流程>典型流程</a></li></ul></li><li><a href=#依赖管理>依赖管理</a></li><li><a href=#自动清理>自动清理</a></li><li><a href=#注意事项>注意事项</a></li><li><a href=#多语言支持>多语言支持</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/>ADK - Agent Development Kit</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/>ChatModelAgentMiddleware</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_plantask/>PlanTask</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=PlanTask data-url=https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_plantask/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+# PlanTask 中间件
+
+adk/middlewares/plantask
+
+> 💡
+> 本中间件在 v0.8.0 版本引入。
+
+## 概述
+
+`plantask` 是一个任务管理中间件，让 Agent 可以创建和管理任务列表。中间件通过 `BeforeAgent` 钩子注入四个工具：
+
+- **TaskCreate**: 创建任务
+- **TaskGet**: 查看任务详情
+- **TaskUpdate**: 更新任务
+- **TaskList**: 列出所有任务
+
+主要用途：
+
+- 跟踪复杂任务的进度
+- 把大任务拆成小步骤
+- 管理任务间的依赖关系
+
+---
+
+## 架构
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                              Agent                                      │
+│                                                                         │
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │  BeforeAgent: 注入任务工具                                         │  │
+│  │    - TaskCreate                                                    │  │
+│  │    - TaskGet                                                       │  │
+│  │    - TaskUpdate                                                    │  │
+│  │    - TaskList                                                      │  │
+│  └───────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                             Backend                                     │
+│                                                                         │
+│  存储结构:                                                               │
+│    baseDir/                                                             │
+│    ├── .highwatermark    # ID 计数器                                    │
+│    ├── 1.json            # 任务 #1                                      │
+│    ├── 2.json            # 任务 #2                                      │
+│    └── ...                                                              │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 配置
+
+```go
+type Config struct {
+    Backend Backend  // 存储后端，必填
+    BaseDir string   // 任务文件目录，必填
+}
+```
+
+- 注意这个 Backend 的实现，应该是 session 维度隔离的，不同的 session 对应不同的 Backend（任务列表）
+
+---
+
+## Backend 接口
+
+```go
+type Backend interface {
+    LsInfo(ctx context.Context, req *LsInfoRequest) ([]FileInfo, error)
+    Read(ctx context.Context, req *ReadRequest) (string, error)
+    Write(ctx context.Context, req *WriteRequest) error
+    Delete(ctx context.Context, req *DeleteRequest) error
+}
+```
+
+---
+
+## 任务结构
+
+```go
+type task struct {
+    ID          string         `json:"id"`          // 任务 ID
+    Subject     string         `json:"subject"`     // 标题
+    Description string         `json:"description"` // 描述
+    Status      string         `json:"status"`      // 状态
+    Blocks      []string       `json:"blocks"`      // 阻塞哪些任务
+    BlockedBy   []string       `json:"blockedBy"`   // 被哪些任务阻塞
+    ActiveForm  string         `json:"activeForm"`  // 进行时文案
+    Owner       string         `json:"owner"`       // 负责 agent
+    Metadata    map[string]any `json:"metadata"`    // 自定义数据
+}
+```
+
+### 状态
+
+<table>
+<tr><td>状态</td><td>说明</td></tr>
+<tr><td><pre>pending</pre></td><td>待处理（默认）</td></tr>
+<tr><td><pre>in_progress</pre></td><td>进行中</td></tr>
+<tr><td><pre>completed</pre></td><td>已完成</td></tr>
+<tr><td><pre>deleted</pre></td><td>删除（会删掉文件）</td></tr>
+</table>
+
+状态流转：`pending` → `in_progress` → `completed`，任何状态都可以直接 `deleted`。
+
+---
+
+## 工具
+
+### TaskCreate
+
+创建任务。
+
+<table>
+<tr><td>参数</td><td>类型</td><td>必填</td><td>说明</td></tr>
+<tr><td><pre>subject</pre></td><td>string</td><td>是</td><td>标题</td></tr>
+<tr><td><pre>description</pre></td><td>string</td><td>是</td><td>描述</td></tr>
+<tr><td><pre>activeForm</pre></td><td>string</td><td>否</td><td>进行时文案，比如"正在运行测试"</td></tr>
+<tr><td><pre>metadata</pre></td><td>object</td><td>否</td><td>自定义数据</td></tr>
+</table>
+
+什么时候用：
+
+- 任务比较复杂，有 3 步以上
+- 用户给了一堆事情要做
+- 需要让用户看到进度
+
+什么时候不用：
+
+- 就一个简单任务
+- 三两下就能搞定的事
+
+### TaskGet
+
+查看任务详情。
+
+<table>
+<tr><td>参数</td><td>类型</td><td>必填</td><td>说明</td></tr>
+<tr><td><pre>taskId</pre></td><td>string</td><td>是</td><td>任务 ID</td></tr>
+</table>
+
+返回任务的完整信息：标题、描述、状态、依赖关系等。
+
+### TaskUpdate
+
+更新任务。
+
+<table>
+<tr><td>参数</td><td>类型</td><td>必填</td><td>说明</td></tr>
+<tr><td><pre>taskId</pre></td><td>string</td><td>是</td><td>任务 ID</td></tr>
+<tr><td><pre>subject</pre></td><td>string</td><td>否</td><td>新标题</td></tr>
+<tr><td><pre>description</pre></td><td>string</td><td>否</td><td>新描述</td></tr>
+<tr><td><pre>activeForm</pre></td><td>string</td><td>否</td><td>新的进行时文案</td></tr>
+<tr><td><pre>status</pre></td><td>string</td><td>否</td><td>新状态</td></tr>
+<tr><td><pre>addBlocks</pre></td><td>[]string</td><td>否</td><td>添加被阻塞的任务</td></tr>
+<tr><td><pre>addBlockedBy</pre></td><td>[]string</td><td>否</td><td>添加阻塞自己的任务</td></tr>
+<tr><td><pre>owner</pre></td><td>string</td><td>否</td><td>负责 agent</td></tr>
+<tr><td><pre>metadata</pre></td><td>object</td><td>否</td><td>自定义数据（设 null 删除）</td></tr>
+</table>
+
+注意：
+
+- `status: "deleted"` 会直接删掉任务文件
+- 加依赖时会检查循环依赖
+- 所有任务都完成后会自动清理
+
+### TaskList
+
+列出所有任务，不需要参数。
+
+返回每个任务的摘要：ID、状态、标题、负责 agent、依赖关系。
+
+---
+
+## 使用示例
+
+```go
+ctx := context.Background()
+
+// plantask middleware 正常情况下应该 session 维度的
+// 不同的 session 对应不同的任务列表
+middleware, err := plantask.New(ctx, &plantask.Config{
+    Backend: myBackend,
+    BaseDir: "/tasks",
+})
+if err != nil {
+    return err
+}
+
+agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    Model:    myModel,
+    Handlers: []adk.ChatModelAgentMiddleware{middleware},
+})
+```
+
+### 典型流程
+
+```
+1. 收到复杂任务
+       │
+       ▼
+2. TaskCreate 创建任务
+   - #1: 分析需求
+   - #2: 写代码
+       │
+       ▼
+3. TaskUpdate 设置依赖
+   - #2 依赖 #1
+   - #3 依赖 #2
+       │
+       ▼
+4. TaskList 看看有啥任务
+       │
+       ▼
+5. TaskUpdate 开始干活
+   - #1 改成 in_progress
+       │
+       ▼
+6. 干完了 TaskUpdate
+   - #1 改成 completed
+       │
+       ▼
+7. 循环 4-6 直到全部完成
+       │
+       ▼
+8. 自动清理
+```
+
+---
+
+## 依赖管理
+
+- **blocks**: 我完成了，这些任务才能开始
+- **blockedBy**: 这些任务完成了，我才能开始
+
+```
+Task #1 (blocks: ["2"])  ────►  Task #2 (blockedBy: ["1"])
+
+#1 完成后 #2 才能开始
+```
+
+循环依赖会报错：
+
+```
+#1 blocks #2
+#2 blocks #1  ← 不行，循环了
+```
+
+---
+
+## 自动清理
+
+所有任务都 `completed` 后，会自动把任务文件都删掉。
+
+---
+
+## 注意事项
+
+- 任务文件以 JSON 格式存储在 `BaseDir` 目录下，文件名为 `{id}.json`
+- `.highwatermark` 文件用于记录已分配的最大任务 ID，确保 ID 不重复
+- 所有工具操作都有互斥锁保护，并发安全
+- 工具的 description 里已经包含了详细的使用指南，Agent 会根据这些指南来使用工具
+
+---
+
+## 多语言支持
+
+工具的 description 支持中英文切换，通过 `adk.SetLanguage()` 设置：
+
+```go
+// 使用中文 description
+adk.SetLanguage(adk.LanguageChinese)
+
+// 使用英文 description（默认）
+adk.SetLanguage(adk.LanguageEnglish)
+```
+
+这个设置是全局的，会影响所有 ADK 内置的 prompt 和工具 description。
+</script><h1>PlanTask</h1><header class=article-meta></header><h1 id=plantask-中间件>PlanTask 中间件</h1><p>adk/middlewares/plantask</p><blockquote><p>💡
 本中间件在 v0.8.0 版本引入。</p></blockquote><h2 id=概述>概述</h2><p><code>plantask</code> 是一个任务管理中间件，让 Agent 可以创建和管理任务列表。中间件通过 <code>BeforeAgent</code> 钩子注入四个工具：</p><ul><li><strong>TaskCreate</strong>: 创建任务</li><li><strong>TaskGet</strong>: 查看任务详情</li><li><strong>TaskUpdate</strong>: 更新任务</li><li><strong>TaskList</strong>: 列出所有任务</li></ul><p>主要用途：</p><ul><li>跟踪复杂任务的进度</li><li>把大任务拆成小步骤</li><li>管理任务间的依赖关系</li></ul><hr><h2 id=架构>架构</h2><pre tabindex=0><code>┌─────────────────────────────────────────────────────────────────────────┐
 │                              Agent                                      │
 │                                                                         │
@@ -223,4 +516,4 @@ TaskCreate: 创建任务 TaskGet: 查看任务详情 TaskUpdate: 更新任务 Ta
 </span></span></span></code></pre></div><p>这个设置是全局的，会影响所有 ADK 内置的 prompt 和工具 description。</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 March 10, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c2aa4096ad71b3ef0ce9941d864394f623fd7b74>docs(eino): sync docs from feishu 2026-03-09 (#1518) (c2aa4096)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

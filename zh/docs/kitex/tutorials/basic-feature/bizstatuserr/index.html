@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>业务异常 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="业务异常"><meta property="og:description" content="Kitex 自 v0.4.3 版本提供了业务自定义异常功能，本文涵盖了相关接口定义、用户使用和框架实现介绍。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2022-11-04T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="业务异常"><meta itemprop=description content="Kitex 自 v0.4.3 版本提供了业务自定义异常功能，本文涵盖了相关接口定义、用户使用和框架实现介绍。"><meta itemprop=datePublished content="2022-11-04T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="347"><meta itemprop=keywords content="Kitex,自定义异常"><meta name=twitter:card content="summary"><meta name=twitter:title content="业务异常"><meta name=twitter:description content="Kitex 自 v0.4.3 版本提供了业务自定义异常功能，本文涵盖了相关接口定义、用户使用和框架实现介绍。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>业务异常 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="业务异常"><meta property="og:description" content="Kitex 自 v0.4.3 版本提供了业务自定义异常功能，本文涵盖了相关接口定义、用户使用和框架实现介绍。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2022-11-04T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="业务异常"><meta itemprop=description content="Kitex 自 v0.4.3 版本提供了业务自定义异常功能，本文涵盖了相关接口定义、用户使用和框架实现介绍。"><meta itemprop=datePublished content="2022-11-04T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="347"><meta itemprop=keywords content="Kitex,自定义异常"><meta name=twitter:card content="summary"><meta name=twitter:title content="业务异常"><meta name=twitter:description content="Kitex 自 v0.4.3 版本提供了业务自定义异常功能，本文涵盖了相关接口定义、用户使用和框架实现介绍。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -149,7 +149,140 @@
 <label for=m-zhdocskitexfaq-check><a href=/zh/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/kitex/Tutorials/basic-feature/bizstatuserr.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/kitex/Tutorials/basic-feature?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e4%b8%9a%e5%8a%a1%e5%bc%82%e5%b8%b8" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#bizstatuserror-接口定义>BizStatusError 接口定义</a></li><li><a href=#用户使用>用户使用</a><ul><li><a href=#用法示例>用法示例</a></li><li><a href=#在中间件中获取返回-bizstatuserror>在中间件中获取/返回 BizStatusError</a></li></ul></li><li><a href=#框架实现>框架实现</a><ul><li><a href=#框架处理>框架处理</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/>基本特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/>业务异常</a></li></ol></nav><div class=td-content><h1>业务异常</h1><div class=lead>Kitex 自 v0.4.3 版本提供了业务自定义异常功能，本文涵盖了相关接口定义、用户使用和框架实现介绍。</div><header class=article-meta></header><p>业务自定义异常方便用户使用实现了特定接口的 err 来传递业务异常，以便与 RPC 链路异常做区分。RPC 异常通常表示一次 RPC 请求失败，比如超时、熔断、限流，从 RPC 层面是失败的请求，
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#bizstatuserror-接口定义>BizStatusError 接口定义</a></li><li><a href=#用户使用>用户使用</a><ul><li><a href=#用法示例>用法示例</a></li><li><a href=#在中间件中获取返回-bizstatuserror>在中间件中获取/返回 BizStatusError</a></li></ul></li><li><a href=#框架实现>框架实现</a><ul><li><a href=#框架处理>框架处理</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/>基本特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/>业务异常</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=业务异常 data-url=https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/bizstatuserr/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+业务自定义异常方便用户使用实现了特定接口的 err 来传递业务异常，以便与 RPC 链路异常做区分。RPC 异常通常表示一次 RPC 请求失败，比如超时、熔断、限流，从 RPC 层面是失败的请求，
+但业务错误属于业务逻辑层面，在 RPC 层面其实是请求成功。服务监控建议对于 RPC 错误上报为请求失败，而业务层面错误，上报为请求成功，而使用额外的 biz_status_code 字段上报业务异常状态码。该能力对于工程实践具有一定的价值。
+
+## BizStatusError 接口定义
+
+内置 `BizStatusErrorIface` 提供自定义异常接口，框架同时提供默认实现，用户也可以自定义实现。gRPC 用户自定义的 Error 可同时实现 `GRPCStatusIface` ，以便复用 Status 的 Detail 用于透传更丰富的业务信息。
+
+```go
+type BizStatusErrorIface interface {
+    BizStatusCode() int32
+    BizMessage() string
+    BizExtra() map[string]string
+    Error() string
+}
+
+type GRPCStatusIface interface {
+    GRPCStatus() *status.Status
+    SetGRPCStatus(status *status.Status)
+}
+```
+
+## 用户使用
+
+你可以在 server handler 使用 `NewBizStatusError` 或 `NewBizStatusErrorWithExtra` 函数构造业务异常并作为err返回。之后在 client 端通过 `FromBizStatusError` 函数将err转换回 `BizStatusErrorIface` 来获取需要的异常信息。
+
+### 用法示例
+
+使用 TTHeader 作为传输协议：
+
+```go
+// Server side
+func (*MyServiceHandler) TestError(ctx context.Context, req *myservice.Request) (r *myservice.Response, err error) {
+     // ...
+     err = kerrors.NewBizStatusError(404, "not found")
+     return nil, err
+}
+svr := myservice.NewServer(&MyServiceHandler{}, server.WithMetaHandler(transmeta.ServerTTHeaderHandler))
+
+
+// Client side
+cli := myservice.MustNewClient("client", client.WithTransportProtocol(transport.TTHeader),
+        client.WithMetaHandler(transmeta.ClientTTHeaderHandler))
+resp, err := cli.TestError(ctx, req)
+bizErr, isBizErr := kerrors.FromBizStatusError(err)
+```
+
+如需额外传递 gRPC Detail，可以使用 `NewGRPCBizStatusError` 或 `NewGRPCBizStatusErrorWithExtra` 来构造异常：
+
+> 注：如无需传递 gRPC Detail，gRPC 用户仍可以使用 `NewBizStatusError` 或 `NewBizStatusErrorWithExtra`.
+
+```go
+// Server side
+func (*Handler) Serve(ctx, Request) (Response, error) {
+    bizErr := kerrors.NewGRPCBizStatusError(404, "not found")
+    grpcStatusErr := bizErr.(kerrors.GRPCStatusIface)
+    st, _ := grpcStatusErr.GRPCStatus().WithDetails(&echo.Echo{Str: "hello world"})
+    grpcStatusErr.SetGRPCStatus(st)
+    return nil, bizErr
+}
+// ...
+svr := myservice.NewServer(&Handler{})
+
+
+// Client side
+cli := myservice.MustNewClient("client", client.WithTransportProtocol(transport.GRPC))
+resp, err := cli.Serve(ctx, req)
+if err != nil {
+    if bizErr, ok := kerrors.FromBizStatusError(err); ok {
+        println(bizErr.BizStatusCode())
+        println(bizErr.BizMessage())
+        println(bizErr.(status.Iface).GRPCStatus().Details()[0].(*echo.Echo).Str)
+        // ...
+    }
+}
+```
+
+### 在中间件中获取/返回 BizStatusError
+
+业务异常不属于 RPC 异常，因此中间件中不能直接读取或返回 BizStatusError。
+
+Kitex 会将 handler 返回的 BizStatusError 放入 rpcinfo，并返回 nil error 给上层。因此，对于 handler 返回的 BizStatusError，在中间件中，调用 `next(ctx, req, resp)` 得到的 error 是 nil。
+
+如果要在中间件中获取 BizStatusError，可以用如下方式：
+
+```go
+bizErr := rpcinfo.GetRPCInfo(ctx).Invocation().BizStatusErr()
+```
+
+如果要在中间件中返回 BizStatusError，可以用如下方式：
+
+```go
+ri := rpcinfo.GetRPCInfo(ctx)
+if setter, ok := ri.Invocation().(rpcinfo.InvocationSetter); ok {
+   setter.SetBizStatusErr(bizErr)
+   return nil
+}
+```
+
+## 框架实现
+
+依赖传输协议透传自定义异常的错误码和错误信息，Thrift 和 Kitex Protobuf 依赖 TTHeader，Kitex gRPC 依赖 HTTP2。
+
+- Thrift：使用 TTHeader
+- Kitex Protobuf：使用 TTHeader
+- gRPC：使用 HTTP2 Header
+
+### 框架处理
+
+#### TTHeader
+
+新增了三个 string key，分别是 biz-status 、 biz-message 和 biz-extra。
+
+对于服务端，如果用户通过 `NewBizStatusError` 构造了 error，将 errorCode、message 和 extra 信息分别装填到 biz-status、biz-message 和 biz-extra；
+
+对于调用端，如果 TTHeader 中 biz-status != 0，则构造 `BizStatusErrorIface` 返回给用户。
+
+#### Streaming - gRPC
+
+gRPC 的 RPC 异常是通过 HTTP2 Header 传递的，statusCode 和 statusMessage 分别对应 header 中的 grpc-status 和 grpc-message。
+
+为尽量做到前向兼容，同时区分 gRPC 的 RPC 异常，在其现有基础上额外增加 biz-status 和 biz-extra 字段，分别对应于 `BizStatusErrorIface` 的 errorCode 和 extra，而 message 则复用 grpc-message。
+
+在 server 返回自定义异常时，将 grpc-status 编码为业务异常实现的 `GRPCStatusIface` 接口中的 statusCode 或 `codes.Internal`，同时编码 biz-status。这样，上游收到响应后，发现设置了 biz-status header, 即可将错误转换为 `BizStatusErrorIface` 返回给 client handler。即使上游不支持自定义异常，也能相对正确地处理 server 返回的 error，只不过丢失了识别业务异常的能力。
+</script><h1>业务异常</h1><div class=lead>Kitex 自 v0.4.3 版本提供了业务自定义异常功能，本文涵盖了相关接口定义、用户使用和框架实现介绍。</div><header class=article-meta></header><p>业务自定义异常方便用户使用实现了特定接口的 err 来传递业务异常，以便与 RPC 链路异常做区分。RPC 异常通常表示一次 RPC 请求失败，比如超时、熔断、限流，从 RPC 层面是失败的请求，
 但业务错误属于业务逻辑层面，在 RPC 层面其实是请求成功。服务监控建议对于 RPC 错误上报为请求失败，而业务层面错误，上报为请求成功，而使用额外的 biz_status_code 字段上报业务异常状态码。该能力对于工程实践具有一定的价值。</p><h2 id=bizstatuserror-接口定义>BizStatusError 接口定义</h2><p>内置 <code>BizStatusErrorIface</code> 提供自定义异常接口，框架同时提供默认实现，用户也可以自定义实现。gRPC 用户自定义的 Error 可同时实现 <code>GRPCStatusIface</code> ，以便复用 Status 的 Detail 用于透传更丰富的业务信息。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>BizStatusErrorIface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>BizStatusCode</span><span style=color:#000;font-weight:700>()</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>int32</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>BizMessage</span><span style=color:#000;font-weight:700>()</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>string</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -207,4 +340,4 @@
 </span></span></span></code></pre></div><h2 id=框架实现>框架实现</h2><p>依赖传输协议透传自定义异常的错误码和错误信息，Thrift 和 Kitex Protobuf 依赖 TTHeader，Kitex gRPC 依赖 HTTP2。</p><ul><li>Thrift：使用 TTHeader</li><li>Kitex Protobuf：使用 TTHeader</li><li>gRPC：使用 HTTP2 Header</li></ul><h3 id=框架处理>框架处理</h3><h4 id=ttheader>TTHeader</h4><p>新增了三个 string key，分别是 biz-status 、 biz-message 和 biz-extra。</p><p>对于服务端，如果用户通过 <code>NewBizStatusError</code> 构造了 error，将 errorCode、message 和 extra 信息分别装填到 biz-status、biz-message 和 biz-extra；</p><p>对于调用端，如果 TTHeader 中 biz-status != 0，则构造 <code>BizStatusErrorIface</code> 返回给用户。</p><h4 id=streaming---grpc>Streaming - gRPC</h4><p>gRPC 的 RPC 异常是通过 HTTP2 Header 传递的，statusCode 和 statusMessage 分别对应 header 中的 grpc-status 和 grpc-message。</p><p>为尽量做到前向兼容，同时区分 gRPC 的 RPC 异常，在其现有基础上额外增加 biz-status 和 biz-extra 字段，分别对应于 <code>BizStatusErrorIface</code> 的 errorCode 和 extra，而 message 则复用 grpc-message。</p><p>在 server 返回自定义异常时，将 grpc-status 编码为业务异常实现的 <code>GRPCStatusIface</code> 接口中的 statusCode 或 <code>codes.Internal</code>，同时编码 biz-status。这样，上游收到响应后，发现设置了 biz-status header, 即可将错误转换为 <code>BizStatusErrorIface</code> 返回给 client handler。即使上游不支持自定义异常，也能相对正确地处理 server 返回的 error，只不过丢失了识别业务异常的能力。</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 May 8, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/dff8f175d96e832fb521f13246cce14399aefcdb>style: prettier lint fix (#1069) (dff8f175)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

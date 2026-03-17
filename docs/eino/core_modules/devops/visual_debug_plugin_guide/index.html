@@ -7,7 +7,7 @@ git clone https://github.com/cloudwego/eino-examples.git # or git clone git@gith
 go get github.com/cloudwego/eino-ext/devops@latest go mod tidy Run the Demo Open eino-examples/devops/debug/main.go and run main.go. The plugin launches a local HTTP service to connect to your process; allow network access if prompted."><meta itemprop=datePublished content="2025-11-20T00:00:00+00:00"><meta itemprop=dateModified content="2025-12-11T17:02:18+08:00"><meta itemprop=wordCount content="1009"><meta name=twitter:card content="summary"><meta name=twitter:title content="Eino Dev Visual Debugging Guide"><meta name=twitter:description content="Overview 💡 Use this plugin to visually debug orchestration artifacts built with Eino (Graph, Chain):
 Visual rendering of orchestration Start from any operable node and debug with mock input Quick Start Download eino-examples Repo: https://github.com/cloudwego/eino-examples
 git clone https://github.com/cloudwego/eino-examples.git # or git clone git@github.com:cloudwego/eino-examples.git Install Dependencies In the project directory, run the following in order:
-go get github.com/cloudwego/eino-ext/devops@latest go mod tidy Run the Demo Open eino-examples/devops/debug/main.go and run main.go. The plugin launches a local HTTP service to connect to your process; allow network access if prompted."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+go get github.com/cloudwego/eino-ext/devops@latest go mod tidy Run the Demo Open eino-examples/devops/debug/main.go and run main.go. The plugin launches a local HTTP service to connect to your process; allow network access if prompted."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -113,7 +113,365 @@ go get github.com/cloudwego/eino-ext/devops@latest go mod tidy Run the Demo Open
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/devops/visual_debug_plugin_guide.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/devops?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino%20Dev%20Visual%20Debugging%20Guide" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#overview>Overview</a></li><li><a href=#quick-start>Quick Start</a><ul><li><a href=#download-eino-examples>Download eino-examples</a></li><li><a href=#install-dependencies>Install Dependencies</a></li><li><a href=#run-the-demo>Run the Demo</a></li><li><a href=#configure-debug-address>Configure Debug Address</a></li><li><a href=#start-debugging>Start Debugging</a></li></ul></li><li><a href=#feature-overview>Feature Overview</a><ul><li><a href=#local-or-remote-debugging>Local or Remote Debugging</a></li><li><a href=#orchestration-visualization>Orchestration Visualization</a></li><li><a href=#start-from-any-node>Start from Any Node</a></li><li><a href=#inspect-node-results>Inspect Node Results</a></li></ul></li><li><a href=#debugging-from-scratch>Debugging from Scratch</a><ul><li><a href=#orchestrate-with-eino>Orchestrate with Eino</a></li><li><a href=#install-dependencies-1>Install Dependencies</a></li><li><a href=#initialize-debugging>Initialize Debugging</a></li><li><a href=#run-your-process>Run Your Process</a></li><li><a href=#configure-address>Configure Address</a></li><li><a href=#select-an-artifact>Select an Artifact</a></li><li><a href=#start-debugging-1>Start Debugging</a></li></ul></li><li><a href=#advanced>Advanced</a><ul><li><a href=#specify-implementation-type-for-interface-fields>Specify Implementation Type for Interface Fields</a></li><li><a href=#debugging-mapstringany>Debugging <code>map[string]any</code></a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/devops/>Eino Dev: Application Tooling</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/devops/visual_debug_plugin_guide/>Eino Dev Visual Debugging Guide</a></li></ol></nav><div class=td-content><h1>Eino Dev Visual Debugging Guide</h1><header class=article-meta></header><h2 id=overview>Overview</h2><blockquote><p>💡
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#overview>Overview</a></li><li><a href=#quick-start>Quick Start</a><ul><li><a href=#download-eino-examples>Download eino-examples</a></li><li><a href=#install-dependencies>Install Dependencies</a></li><li><a href=#run-the-demo>Run the Demo</a></li><li><a href=#configure-debug-address>Configure Debug Address</a></li><li><a href=#start-debugging>Start Debugging</a></li></ul></li><li><a href=#feature-overview>Feature Overview</a><ul><li><a href=#local-or-remote-debugging>Local or Remote Debugging</a></li><li><a href=#orchestration-visualization>Orchestration Visualization</a></li><li><a href=#start-from-any-node>Start from Any Node</a></li><li><a href=#inspect-node-results>Inspect Node Results</a></li></ul></li><li><a href=#debugging-from-scratch>Debugging from Scratch</a><ul><li><a href=#orchestrate-with-eino>Orchestrate with Eino</a></li><li><a href=#install-dependencies-1>Install Dependencies</a></li><li><a href=#initialize-debugging>Initialize Debugging</a></li><li><a href=#run-your-process>Run Your Process</a></li><li><a href=#configure-address>Configure Address</a></li><li><a href=#select-an-artifact>Select an Artifact</a></li><li><a href=#start-debugging-1>Start Debugging</a></li></ul></li><li><a href=#advanced>Advanced</a><ul><li><a href=#specify-implementation-type-for-interface-fields>Specify Implementation Type for Interface Fields</a></li><li><a href=#debugging-mapstringany>Debugging <code>map[string]any</code></a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/devops/>Eino Dev: Application Tooling</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/devops/visual_debug_plugin_guide/>Eino Dev Visual Debugging Guide</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino Dev Visual Debugging Guide" data-url=https://www.cloudwego.io/docs/eino/core_modules/devops/visual_debug_plugin_guide/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Overview
+
+> 💡
+> Use this plugin to visually debug orchestration artifacts built with Eino (Graph, Chain):
+>
+> 1. Visual rendering of orchestration
+> 2. Start from any operable node and debug with mock input
+
+## Quick Start
+
+### Download eino-examples
+
+Repo: [https://github.com/cloudwego/eino-examples](https://github.com/cloudwego/eino-examples)
+
+```bash
+git clone https://github.com/cloudwego/eino-examples.git
+# or
+git clone git@github.com:cloudwego/eino-examples.git
+```
+
+### Install Dependencies
+
+In the project directory, run the following in order:
+
+```bash
+go get github.com/cloudwego/eino-ext/devops@latest
+go mod tidy
+```
+
+### Run the Demo
+
+Open `eino-examples/devops/debug/main.go` and run `main.go`. The plugin launches a local HTTP service to connect to your process; allow network access if prompted.
+
+<a href="/img/eino/eino_debug_enter_config_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_config_page.png" width="100%" /></a>
+
+### Configure Debug Address
+
+<table><tbody><tr>
+<td>
+1) Click the debug feature entry on the left or center to open configuration
+<a href="/img/eino/eino_debug_enter_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_page.png" width="100%" /></a>
+</td><td>
+2) Click “Configure Address”
+<a href="/img/eino/eino_debug_config_3_page.png" target="_blank"><img src="/img/eino/eino_debug_config_3_page.png" width="100%" /></a>
+</td></tr></tbody></table>
+
+<table><tbody><tr>
+<td>
+3) Enter 127.0.0.1:52538
+<a href="/img/eino/eino_debug_config_2_page.png" target="_blank"><img src="/img/eino/eino_debug_config_2_page.png" width="100%" /></a>
+</td><td>
+4) Confirm to enter the debug view, then select the Graph to debug
+<a href="/img/eino/eino_orchestration_index_2_page.png" target="_blank"><img src="/img/eino/eino_orchestration_index_2_page.png" width="100%" /></a>
+</td></tr></tbody></table>
+
+### Start Debugging
+
+<table><tbody><tr>
+<td>
+1) Click “Test Run” to start from START
+<a href="/img/eino/eino_debug_enter_test_run_2_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_test_run_2_page.png" width="100%" /></a>
+</td><td>
+2) Enter "hello eino" and confirm
+<a href="/img/eino/eino_debug_run_input_mock_data_page.png" target="_blank"><img src="/img/eino/eino_debug_run_input_mock_data_page.png" width="100%" /></a>
+
+</td></tr></tbody></table>
+
+<table><tbody><tr>
+<td>3) Inspect per-node inputs/outputs</td><td>4) Switch Input/Output views</td>
+</tr>
+<tr>
+<td><a href="/img/eino/eino_debug_test_run_detail_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_detail_page.png" width="100%" /></a></td>
+<td><a href="/img/eino/eino_debug_index_page.png" target="_blank"><img src="/img/eino/eino_debug_index_page.png" width="100%" /></a></td>
+</tr></tbody></table>
+
+## Feature Overview
+
+### Local or Remote Debugging
+
+Configure `IP:Port` to connect to the target process, whether local or remote.
+
+<a href="/img/eino/eino_debug_run_config_page.png" target="_blank"><img src="/img/eino/eino_debug_run_config_page.png" width="100%" /></a>
+
+### Orchestration Visualization
+
+Supports Graph and Chain topology visualization.
+
+<a href="/img/eino/eino_debug_list_nodes_page.png" target="_blank"><img src="/img/eino/eino_debug_list_nodes_page.png" width="100%" /></a>
+
+### Start from Any Node
+
+<a href="/img/eino/eino_debug_test_run_of_one_node_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_of_one_node_page.png" width="100%" /></a>
+
+### Inspect Node Results
+
+Each node’s input, output, and execution time are shown in order.
+
+<a href="/img/eino/eino_debug_run_detail_v2_page.png" target="_blank"><img src="/img/eino/eino_debug_run_detail_v2_page.png" width="100%" /></a>
+
+## Debugging from Scratch
+
+### Orchestrate with Eino
+
+The plugin supports debugging Graph and Chain artifacts. Example registration:
+
+```go
+func RegisterSimpleGraph(ctx context.Context) {
+    g := compose.NewGraph[string, string]()
+    _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+       return input + " process by node_1,", nil
+    }))
+    _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+       return input + " process by node_2,", nil
+    }))
+    _ = g.AddLambdaNode("node_3", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+       return input + " process by node_3,", nil
+    }))
+
+    _ = g.AddEdge(compose.START, "node_1")
+    _ = g.AddEdge("node_1", "node_2")
+    _ = g.AddEdge("node_2", "node_3")
+    _ = g.AddEdge("node_3", compose.END)
+
+    _, err := g.Compile(ctx)
+    if err != nil {
+       logs.Errorf("compile graph failed, err=%v", err)
+       return
+    }
+}
+```
+
+### Install Dependencies
+
+```bash
+go get github.com/cloudwego/eino-ext/devops@latest
+go mod tidy
+```
+
+### Initialize Debugging
+
+Because debugging starts an HTTP service in your main process to interact with the local plugin, you must call `Init()` from `github.com/cloudwego/eino-ext/devops` to start the debug service.
+
+> 💡
+> Notes
+>
+> 1. Ensure the target orchestration has run `Compile()` at least once.
+> 2. `devops.Init()` must run before calling `Compile()`.
+> 3. Make sure the main process stays alive after `devops.Init()`.
+
+```go
+// 1. Initialize debug service
+err := devops.Init(ctx)
+if err != nil {
+    logs.Errorf("[eino dev] init failed, err=%v", err)
+    return
+}
+
+// 2. Compile the target orchestration artifact to debug
+RegisterSimpleGraph(ctx)
+```
+
+### Run Your Process
+
+Run your process locally or remotely, and ensure the main process does not exit.
+
+In `github.com/cloudwego/eino-examples/devops/debug/main.go`, `main()` looks like:
+
+```go
+func main() {
+    ctx := context.Background()
+    // Init eino devops server
+    err := devops.Init(ctx)
+    if err != nil {
+       logs.Errorf("[eino dev] init failed, err=%v", err)
+       return
+    }
+
+    // Register chain, graph and state_graph for demo use
+    chain.RegisterSimpleChain(ctx)
+    graph.RegisterSimpleGraph(ctx)
+    graph.RegisterSimpleStateGraph(ctx)
+
+    // Blocking process exits
+    sigs := make(chan os.Signal, 1)
+    signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+    <-sigs
+
+    // Exit
+    logs.Infof("[eino dev] shutting down\n")
+}
+```
+
+### Configure Address
+
+- IP: `127.0.0.1` for local; remote server IP for remote (IPv4/IPv6).
+- Port: default `52538`, configurable via `WithDevServerPort`.
+
+Allow network prompts locally; ensure remote ports are reachable. Once connected, the status indicator turns green.
+
+<a href="/img/eino/eino_debug_ip_port_show_page.png" target="_blank"><img src="/img/eino/eino_debug_ip_port_show_page.png" width="100%" /></a>
+
+### Select an Artifact
+
+Ensure your target orchestration has been compiled at least once. Multiple `Compile()` runs register multiple artifacts; you’ll see them in the selection list.
+
+<a href="/img/eino/eino_debug_panel_3.png" target="_blank"><img src="/img/eino/eino_debug_panel_3.png" width="100%" /></a>
+
+### Start Debugging
+
+- From START: click “Test Run”, enter mock input (complex types are inferred), and confirm.
+
+<a href="/img/eino/eino_debug_run_code_2.png" target="_blank"><img src="/img/eino/eino_debug_run_code_2.png" width="100%" /></a>
+
+<a href="/img/eino/eino_debug_run_input_mock_data_2_page.png" target="_blank"><img src="/img/eino/eino_debug_run_input_mock_data_2_page.png" width="100%" /></a>
+
+- From a specific node: click the run button on that node.
+
+<a href="/img/eino/eino_debug_button_run_code.png" target="_blank"><img src="/img/eino/eino_debug_button_run_code.png" width="100%" /></a>
+
+## Advanced
+
+### Specify Implementation Type for Interface Fields
+
+Interface-typed fields render as `{}` by default. Type a space inside `{}` to select an implementation type. The plugin uses a special JSON structure:
+
+```json
+{
+  "_value": {},           // JSON value of the concrete type
+  "_eino_go_type": "*model.MyConcreteType" // Go type name
+}
+```
+
+> 💡
+> Common interface types like `string`, `schema.Message` are built-in. To register custom types, use `devops.AppendType` during `Init()`.
+
+1) Suppose you have orchestration code where the graph input is `any`, and `node_1` takes `*NodeInfo`:
+
+```go
+type NodeInfo struct {
+    Message string
+}
+
+func RegisterGraphOfInterfaceType(ctx context.Context) {
+    // Define a graph that input parameter is any.
+    g := compose.NewGraph[any, string]()
+
+    _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input *NodeInfo) (output string, err error) {
+       if input == nil {
+          return "", nil
+       }
+       return input.Message + " process by node_1,", nil
+    }))
+
+    _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+       return input + " process by node_2,", nil
+    }))
+
+    _ = g.AddLambdaNode("node_3", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+       return input + " process by node_3,", nil
+    }))
+
+    _ = g.AddEdge(compose._START_, "node_1")
+
+    _ = g.AddEdge("node_1", "node_2")
+
+    _ = g.AddEdge("node_2", "node_3")
+
+    _ = g.AddEdge("node_3", compose._END_)
+
+    r, err := g.Compile(ctx)
+    if err != nil {
+       logs.Errorf("compile graph failed, err=%v", err)
+       return
+    }
+}
+```
+
+2) Before debugging, register the custom `*NodeInfo` type with `AppendType` at `Init()`:
+
+```go
+err := devops.Init(ctx, devops.AppendType(&graph.NodeInfo{}))
+```
+
+3) During Test Run, interface fields show `{}` by default. Type a space inside `{}` to view all built-in and custom types, select the concrete implementation, then fill `_value`.
+
+### Debugging `map[string]any`
+
+If a node input is `map[string]any`:
+
+```go
+func RegisterAnyInputGraph(ctx context.Context) {
+        g := compose.NewGraph[map[string]any, string]()
+
+        _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input map[string]any) (output string, err error) {
+                for k, v := range input {
+                        switch v.(type) {
+                        case string:
+                                output += k + ":" + v.(string) + ","
+                        case int:
+                                output += k + ":" + fmt.Sprintf("%d", v.(int))
+                        default:
+                                return "", fmt.Errorf("unsupported type: %T", v)
+                        }
+                }
+
+                return output, nil
+        }))
+
+        _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+                return input + " process by node_2,", nil
+        }))
+
+        _ = g.AddEdge(compose.START, "node_1")
+
+        _ = g.AddEdge("node_1", "node_2")
+
+        _ = g.AddEdge("node_2", compose.END)
+
+        r, err := g.Compile(ctx)
+        if err != nil {
+                logs.Errorf("compile graph failed, err=%v", err)
+                return
+        }
+
+        message, err := r.Invoke(ctx, map[string]any{"name": "bob", "score": 100})
+        if err != nil {
+                logs.Errorf("invoke graph failed, err=%v", err)
+                return
+        }
+
+        logs.Infof("eino any input graph output is: %v", message)
+}
+```
+
+During debugging, in the Test Run JSON input box, use the following format to specify concrete types for values:
+
+```json
+{
+  "name": {
+    "_value": "alice",
+    "_eino_go_type": "string"
+  },
+  "score": {
+    "_value": "99",
+    "_eino_go_type": "int"
+  }
+}
+```
+</script><h1>Eino Dev Visual Debugging Guide</h1><header class=article-meta></header><h2 id=overview>Overview</h2><blockquote><p>💡
 Use this plugin to visually debug orchestration artifacts built with Eino (Graph, Chain):</p><ol><li>Visual rendering of orchestration</li><li>Start from any operable node and debug with mock input</li></ol></blockquote><h2 id=quick-start>Quick Start</h2><h3 id=download-eino-examples>Download eino-examples</h3><p>Repo: <a href=https://github.com/cloudwego/eino-examples>https://github.com/cloudwego/eino-examples</a></p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git clone https://github.com/cloudwego/eino-examples.git
 </span></span><span style=display:flex><span><span style=color:#8f5902;font-style:italic># or</span>
 </span></span><span style=display:flex><span>git clone git@github.com:cloudwego/eino-examples.git
@@ -280,4 +638,4 @@ Common interface types like <code>string</code>, <code>schema.Message</code> are
 </span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified December 11, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/958594401a6023a6af82d318726092853de4225c>feat(eino): sync zh documents (#1474) (95859440)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

@@ -1,7 +1,7 @@
 <!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Eino ADK: Agent Collaboration | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_collaboration/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Eino ADK: Agent Collaboration"><meta property="og:description" content="Agent Collaboration The overview document has provided basic explanations of Agent collaboration. Below we will introduce the design and implementation of collaboration and composition primitives in combination with code:
 Collaboration Primitives Inter-Agent Collaboration Methods Collaboration MethodDescription TransferDirectly transfers the task to another Agent. The current Agent exits after execution completes, without concern for the task execution status of the transferred Agent ToolCall (AgentAsTool)Invokes the Agent as a ToolCall, waits for the Agent's response, and can obtain the output result of the called Agent for the next round of processing AgentInput Context Strategies Context StrategyDescription Upstream Agent Full ConversationGets the complete conversation history of the current Agent's upstream Agent Fresh Task DescriptionIgnores the complete conversation history of the upstream Agent and provides a completely new task summary as the AgentInput for the sub-Agent Decision Autonomy Decision AutonomyDescription Autonomous DecisionWithin the Agent, based on its available downstream Agents, when assistance is needed, it autonomously selects a downstream Agent for assistance. Generally, the Agent makes decisions based on LLM internally, but even if selection is based on preset logic, it is still considered autonomous decision from the Agent's external perspective Preset DecisionThe next Agent after an Agent executes a task is predetermined. The execution order of Agents is predetermined and predictable Composition Primitives TypeDescriptionRunning ModeCollaboration MethodContext StrategyDecision Autonomy SubAgentsCombines the user-provided agent as the parent Agent and the user-provided subAgents list as child Agents to form an Agent capable of autonomous decision-making. The Name and Description serve as the Agent's name identifier and description.Currently, an Agent can only have one parent AgentUse the SetSubAgents function to build a &#34;multi-tree&#34; form of Multi-AgentWithin this &#34;multi-tree&#34;, AgentName must remain uniqueTransferUpstream Agent Full ConversationAutonomous Decision SequentialCombines the user-provided SubAgents list into a Sequential Agent that executes in order. The Name and Description serve as the Sequential Agent's name identifier and description. When the Sequential Agent executes, it runs the SubAgents list in order until all Agents have been executed.TransferUpstream Agent Full ConversationPreset Decision ParallelCombines the user-provided SubAgents list into a Parallel Agent that executes concurrently based on the same context. The Name and Description serve as the Parallel Agent's name identifier and description. When the Parallel Agent executes, it runs the SubAgents list concurrently and finishes when all Agents have completed.TransferUpstream Agent Full ConversationPreset Decision LoopExecutes the user-provided SubAgents list in array order sequentially and repeatedly, forming a Loop Agent. The Name and Description serve as the Loop Agent's name identifier and description. When the Loop Agent executes, it runs the SubAgents list in order and finishes when all Agents have completed.TransferUpstream Agent Full ConversationPreset Decision AgentAsToolConverts an Agent into a Tool to be used by other Agents as a regular Tool. Whether an Agent can call other Agents as Tools depends on its own implementation. The ChatModelAgent provided in ADK supports the AgentAsTool functionalityToolCallFresh Task DescriptionAutonomous Decision Context Passing When building multi-Agent systems, efficient and accurate sharing of information between different Agents is crucial. Eino ADK provides two core context passing mechanisms to meet different collaboration needs: History and SessionValues."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-02T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-02T21:50:06+08:00"><meta itemprop=name content="Eino ADK: Agent Collaboration"><meta itemprop=description content="Agent Collaboration The overview document has provided basic explanations of Agent collaboration. Below we will introduce the design and implementation of collaboration and composition primitives in combination with code:
 Collaboration Primitives Inter-Agent Collaboration Methods Collaboration MethodDescription TransferDirectly transfers the task to another Agent. The current Agent exits after execution completes, without concern for the task execution status of the transferred Agent ToolCall (AgentAsTool)Invokes the Agent as a ToolCall, waits for the Agent's response, and can obtain the output result of the called Agent for the next round of processing AgentInput Context Strategies Context StrategyDescription Upstream Agent Full ConversationGets the complete conversation history of the current Agent's upstream Agent Fresh Task DescriptionIgnores the complete conversation history of the upstream Agent and provides a completely new task summary as the AgentInput for the sub-Agent Decision Autonomy Decision AutonomyDescription Autonomous DecisionWithin the Agent, based on its available downstream Agents, when assistance is needed, it autonomously selects a downstream Agent for assistance. Generally, the Agent makes decisions based on LLM internally, but even if selection is based on preset logic, it is still considered autonomous decision from the Agent's external perspective Preset DecisionThe next Agent after an Agent executes a task is predetermined. The execution order of Agents is predetermined and predictable Composition Primitives TypeDescriptionRunning ModeCollaboration MethodContext StrategyDecision Autonomy SubAgentsCombines the user-provided agent as the parent Agent and the user-provided subAgents list as child Agents to form an Agent capable of autonomous decision-making. The Name and Description serve as the Agent's name identifier and description.Currently, an Agent can only have one parent AgentUse the SetSubAgents function to build a &#34;multi-tree&#34; form of Multi-AgentWithin this &#34;multi-tree&#34;, AgentName must remain uniqueTransferUpstream Agent Full ConversationAutonomous Decision SequentialCombines the user-provided SubAgents list into a Sequential Agent that executes in order. The Name and Description serve as the Sequential Agent's name identifier and description. When the Sequential Agent executes, it runs the SubAgents list in order until all Agents have been executed.TransferUpstream Agent Full ConversationPreset Decision ParallelCombines the user-provided SubAgents list into a Parallel Agent that executes concurrently based on the same context. The Name and Description serve as the Parallel Agent's name identifier and description. When the Parallel Agent executes, it runs the SubAgents list concurrently and finishes when all Agents have completed.TransferUpstream Agent Full ConversationPreset Decision LoopExecutes the user-provided SubAgents list in array order sequentially and repeatedly, forming a Loop Agent. The Name and Description serve as the Loop Agent's name identifier and description. When the Loop Agent executes, it runs the SubAgents list in order and finishes when all Agents have completed.TransferUpstream Agent Full ConversationPreset Decision AgentAsToolConverts an Agent into a Tool to be used by other Agents as a regular Tool. Whether an Agent can call other Agents as Tools depends on its own implementation. The ChatModelAgent provided in ADK supports the AgentAsTool functionalityToolCallFresh Task DescriptionAutonomous Decision Context Passing When building multi-Agent systems, efficient and accurate sharing of information between different Agents is crucial. Eino ADK provides two core context passing mechanisms to meet different collaboration needs: History and SessionValues."><meta itemprop=datePublished content="2026-03-02T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-02T21:50:06+08:00"><meta itemprop=wordCount content="2470"><meta name=twitter:card content="summary"><meta name=twitter:title content="Eino ADK: Agent Collaboration"><meta name=twitter:description content="Agent Collaboration The overview document has provided basic explanations of Agent collaboration. Below we will introduce the design and implementation of collaboration and composition primitives in combination with code:
-Collaboration Primitives Inter-Agent Collaboration Methods Collaboration MethodDescription TransferDirectly transfers the task to another Agent. The current Agent exits after execution completes, without concern for the task execution status of the transferred Agent ToolCall (AgentAsTool)Invokes the Agent as a ToolCall, waits for the Agent's response, and can obtain the output result of the called Agent for the next round of processing AgentInput Context Strategies Context StrategyDescription Upstream Agent Full ConversationGets the complete conversation history of the current Agent's upstream Agent Fresh Task DescriptionIgnores the complete conversation history of the upstream Agent and provides a completely new task summary as the AgentInput for the sub-Agent Decision Autonomy Decision AutonomyDescription Autonomous DecisionWithin the Agent, based on its available downstream Agents, when assistance is needed, it autonomously selects a downstream Agent for assistance. Generally, the Agent makes decisions based on LLM internally, but even if selection is based on preset logic, it is still considered autonomous decision from the Agent's external perspective Preset DecisionThe next Agent after an Agent executes a task is predetermined. The execution order of Agents is predetermined and predictable Composition Primitives TypeDescriptionRunning ModeCollaboration MethodContext StrategyDecision Autonomy SubAgentsCombines the user-provided agent as the parent Agent and the user-provided subAgents list as child Agents to form an Agent capable of autonomous decision-making. The Name and Description serve as the Agent's name identifier and description.Currently, an Agent can only have one parent AgentUse the SetSubAgents function to build a &#34;multi-tree&#34; form of Multi-AgentWithin this &#34;multi-tree&#34;, AgentName must remain uniqueTransferUpstream Agent Full ConversationAutonomous Decision SequentialCombines the user-provided SubAgents list into a Sequential Agent that executes in order. The Name and Description serve as the Sequential Agent's name identifier and description. When the Sequential Agent executes, it runs the SubAgents list in order until all Agents have been executed.TransferUpstream Agent Full ConversationPreset Decision ParallelCombines the user-provided SubAgents list into a Parallel Agent that executes concurrently based on the same context. The Name and Description serve as the Parallel Agent's name identifier and description. When the Parallel Agent executes, it runs the SubAgents list concurrently and finishes when all Agents have completed.TransferUpstream Agent Full ConversationPreset Decision LoopExecutes the user-provided SubAgents list in array order sequentially and repeatedly, forming a Loop Agent. The Name and Description serve as the Loop Agent's name identifier and description. When the Loop Agent executes, it runs the SubAgents list in order and finishes when all Agents have completed.TransferUpstream Agent Full ConversationPreset Decision AgentAsToolConverts an Agent into a Tool to be used by other Agents as a regular Tool. Whether an Agent can call other Agents as Tools depends on its own implementation. The ChatModelAgent provided in ADK supports the AgentAsTool functionalityToolCallFresh Task DescriptionAutonomous Decision Context Passing When building multi-Agent systems, efficient and accurate sharing of information between different Agents is crucial. Eino ADK provides two core context passing mechanisms to meet different collaboration needs: History and SessionValues."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+Collaboration Primitives Inter-Agent Collaboration Methods Collaboration MethodDescription TransferDirectly transfers the task to another Agent. The current Agent exits after execution completes, without concern for the task execution status of the transferred Agent ToolCall (AgentAsTool)Invokes the Agent as a ToolCall, waits for the Agent's response, and can obtain the output result of the called Agent for the next round of processing AgentInput Context Strategies Context StrategyDescription Upstream Agent Full ConversationGets the complete conversation history of the current Agent's upstream Agent Fresh Task DescriptionIgnores the complete conversation history of the upstream Agent and provides a completely new task summary as the AgentInput for the sub-Agent Decision Autonomy Decision AutonomyDescription Autonomous DecisionWithin the Agent, based on its available downstream Agents, when assistance is needed, it autonomously selects a downstream Agent for assistance. Generally, the Agent makes decisions based on LLM internally, but even if selection is based on preset logic, it is still considered autonomous decision from the Agent's external perspective Preset DecisionThe next Agent after an Agent executes a task is predetermined. The execution order of Agents is predetermined and predictable Composition Primitives TypeDescriptionRunning ModeCollaboration MethodContext StrategyDecision Autonomy SubAgentsCombines the user-provided agent as the parent Agent and the user-provided subAgents list as child Agents to form an Agent capable of autonomous decision-making. The Name and Description serve as the Agent's name identifier and description.Currently, an Agent can only have one parent AgentUse the SetSubAgents function to build a &#34;multi-tree&#34; form of Multi-AgentWithin this &#34;multi-tree&#34;, AgentName must remain uniqueTransferUpstream Agent Full ConversationAutonomous Decision SequentialCombines the user-provided SubAgents list into a Sequential Agent that executes in order. The Name and Description serve as the Sequential Agent's name identifier and description. When the Sequential Agent executes, it runs the SubAgents list in order until all Agents have been executed.TransferUpstream Agent Full ConversationPreset Decision ParallelCombines the user-provided SubAgents list into a Parallel Agent that executes concurrently based on the same context. The Name and Description serve as the Parallel Agent's name identifier and description. When the Parallel Agent executes, it runs the SubAgents list concurrently and finishes when all Agents have completed.TransferUpstream Agent Full ConversationPreset Decision LoopExecutes the user-provided SubAgents list in array order sequentially and repeatedly, forming a Loop Agent. The Name and Description serve as the Loop Agent's name identifier and description. When the Loop Agent executes, it runs the SubAgents list in order and finishes when all Agents have completed.TransferUpstream Agent Full ConversationPreset Decision AgentAsToolConverts an Agent into a Tool to be used by other Agents as a regular Tool. Whether an Agent can call other Agents as Tools depends on its own implementation. The ChatModelAgent provided in ADK supports the AgentAsTool functionalityToolCallFresh Task DescriptionAutonomous Decision Context Passing When building multi-Agent systems, efficient and accurate sharing of information between different Agents is crucial. Eino ADK provides two core context passing mechanisms to meet different collaboration needs: History and SessionValues."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,529 @@ Collaboration Primitives Inter-Agent Collaboration Methods Collaboration MethodD
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/eino_adk/agent_collaboration.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/eino_adk?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino%20ADK:%20Agent%20Collaboration" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#collaboration-primitives>Collaboration Primitives</a><ul><li><a href=#inter-agent-collaboration-methods>Inter-Agent Collaboration Methods</a></li><li><a href=#agentinput-context-strategies>AgentInput Context Strategies</a></li><li><a href=#decision-autonomy>Decision Autonomy</a></li><li><a href=#composition-primitives>Composition Primitives</a></li></ul></li><li><a href=#context-passing>Context Passing</a><ul><li><a href=#history>History</a></li><li><a href=#sessionvalues>SessionValues</a></li></ul></li><li><a href=#transfer-subagents>Transfer SubAgents</a><ul><li><a href=#concept-2>Concept</a></li><li><a href=#example>Example</a></li><li><a href=#static-transfer-configuration>Static Transfer Configuration</a></li></ul></li><li><a href=#workflow-agents>Workflow Agents</a><ul><li><a href=#sequentialagent>SequentialAgent</a></li><li><a href=#loopagent>LoopAgent</a></li><li><a href=#parallelagent>ParallelAgent</a></li></ul></li><li><a href=#agentastool>AgentAsTool</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino: ADK - Agent Development Kit</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_collaboration/>Eino ADK: Agent Collaboration</a></li></ol></nav><div class=td-content><h1>Eino ADK: Agent Collaboration</h1><header class=article-meta></header><h1 id=agent-collaboration>Agent Collaboration</h1><p>The overview document has provided basic explanations of Agent collaboration. Below we will introduce the design and implementation of collaboration and composition primitives in combination with code:</p><h2 id=collaboration-primitives>Collaboration Primitives</h2><h3 id=inter-agent-collaboration-methods>Inter-Agent Collaboration Methods</h3><table><tr><td>Collaboration Method</td><td>Description</td></tr><tr><td>Transfer</td><td>Directly transfers the task to another Agent. The current Agent exits after execution completes, without concern for the task execution status of the transferred Agent</td></tr><tr><td>ToolCall (AgentAsTool)</td><td>Invokes the Agent as a ToolCall, waits for the Agent's response, and can obtain the output result of the called Agent for the next round of processing</td></tr></table><h3 id=agentinput-context-strategies>AgentInput Context Strategies</h3><table><tr><td>Context Strategy</td><td>Description</td></tr><tr><td>Upstream Agent Full Conversation</td><td>Gets the complete conversation history of the current Agent's upstream Agent</td></tr><tr><td>Fresh Task Description</td><td>Ignores the complete conversation history of the upstream Agent and provides a completely new task summary as the AgentInput for the sub-Agent</td></tr></table><h3 id=decision-autonomy>Decision Autonomy</h3><table><tr><td>Decision Autonomy</td><td>Description</td></tr><tr><td>Autonomous Decision</td><td>Within the Agent, based on its available downstream Agents, when assistance is needed, it autonomously selects a downstream Agent for assistance. Generally, the Agent makes decisions based on LLM internally, but even if selection is based on preset logic, it is still considered autonomous decision from the Agent's external perspective</td></tr><tr><td>Preset Decision</td><td>The next Agent after an Agent executes a task is predetermined. The execution order of Agents is predetermined and predictable</td></tr></table><h3 id=composition-primitives>Composition Primitives</h3><table><tr><td>Type</td><td>Description</td><td>Running Mode</td><td>Collaboration Method</td><td>Context Strategy</td><td>Decision Autonomy</td></tr><tr><td><strong>SubAgents</strong></td><td>Combines the user-provided agent as the parent Agent and the user-provided subAgents list as child Agents to form an Agent capable of autonomous decision-making. The Name and Description serve as the Agent's name identifier and description.<li>Currently, an Agent can only have one parent Agent</li><li>Use the SetSubAgents function to build a "multi-tree" form of Multi-Agent</li><li>Within this "multi-tree", AgentName must remain unique</li></td><td><a href=/img/eino/eino_adk_self_driving.png target=_blank><img src=/img/eino/eino_adk_self_driving.png width=100%></a></td><td>Transfer</td><td>Upstream Agent Full Conversation</td><td>Autonomous Decision</td></tr><tr><td><strong>Sequential</strong></td><td>Combines the user-provided SubAgents list into a Sequential Agent that executes in order. The Name and Description serve as the Sequential Agent's name identifier and description. When the Sequential Agent executes, it runs the SubAgents list in order until all Agents have been executed.</td><td><a href=/img/eino/eino_adk_sequential_controller.png target=_blank><img src=/img/eino/eino_adk_sequential_controller.png width=100%></a></td><td>Transfer</td><td>Upstream Agent Full Conversation</td><td>Preset Decision</td></tr><tr><td><strong>Parallel</strong></td><td>Combines the user-provided SubAgents list into a Parallel Agent that executes concurrently based on the same context. The Name and Description serve as the Parallel Agent's name identifier and description. When the Parallel Agent executes, it runs the SubAgents list concurrently and finishes when all Agents have completed.</td><td><a href=/img/eino/eino_adk_parallel_yet_another_2.png target=_blank><img src=/img/eino/eino_adk_parallel_yet_another_2.png width=100%></a></td><td>Transfer</td><td>Upstream Agent Full Conversation</td><td>Preset Decision</td></tr><tr><td><strong>Loop</strong></td><td>Executes the user-provided SubAgents list in array order sequentially and repeatedly, forming a Loop Agent. The Name and Description serve as the Loop Agent's name identifier and description. When the Loop Agent executes, it runs the SubAgents list in order and finishes when all Agents have completed.</td><td><a href=/img/eino/eino_adk_loop_exit.png target=_blank><img src=/img/eino/eino_adk_loop_exit.png width=100%></a></td><td>Transfer</td><td>Upstream Agent Full Conversation</td><td>Preset Decision</td></tr><tr><td><strong>AgentAsTool</strong></td><td>Converts an Agent into a Tool to be used by other Agents as a regular Tool. Whether an Agent can call other Agents as Tools depends on its own implementation. The ChatModelAgent provided in ADK supports the AgentAsTool functionality</td><td><a href=/img/eino/eino_collaboration_agent_as_tool_thumbnail.png target=_blank><img src=/img/eino/eino_collaboration_agent_as_tool_thumbnail.png width=100%></a></td><td>ToolCall</td><td>Fresh Task Description</td><td>Autonomous Decision</td></tr></table><h2 id=context-passing>Context Passing</h2><p>When building multi-Agent systems, efficient and accurate sharing of information between different Agents is crucial. Eino ADK provides two core context passing mechanisms to meet different collaboration needs: History and SessionValues.</p><h3 id=history>History</h3><h4 id=concept>Concept</h4><p>History corresponds to the [Upstream Agent Full Conversation context strategy]. Every AgentEvent produced by each Agent in a multi-Agent system is saved to History. When calling a new Agent (Workflow/Transfer), the AgentEvents in History are converted and concatenated into the AgentInput.</p><p>By default, Assistant or Tool Messages from other Agents are converted to User Messages. This is equivalent to telling the current LLM: &ldquo;Just now, Agent_A called some_tool and returned some_result. Now it&rsquo;s your turn to make a decision.&rdquo;</p><p>Through this approach, other Agents&rsquo; behaviors are treated as &ldquo;external information&rdquo; or &ldquo;factual statements&rdquo; provided to the current Agent, rather than its own behaviors, thus avoiding LLM context confusion.</p><p><a href=/img/eino/eino_adk_message_event.png target=_blank><img src=/img/eino/eino_adk_message_event.png width=100%></a></p><p>In Eino ADK, when building AgentInput for an Agent, the History it can see is &ldquo;all AgentEvents produced before me&rdquo;.</p><p>Worth mentioning is ParallelWorkflowAgent: two parallel sub-Agents (A, B) cannot see each other&rsquo;s AgentEvents during parallel execution because neither A nor B precedes the other.</p><h4 id=runpath>RunPath</h4><p>Each AgentEvent in History is &ldquo;produced by a specific Agent in a specific execution sequence&rdquo;, meaning AgentEvent has its own RunPath. The purpose of RunPath is to convey this information; it doesn&rsquo;t carry other functions in the eino framework.</p><p>The table below shows the specific RunPath when Agents execute under various orchestration modes:</p><table><tr><td>Example</td><td>RunPath</td></tr><tr><td><a href=/img/eino/eino_adk_run_path_sub_agent.png target=_blank><img src=/img/eino/eino_adk_run_path_sub_agent.png width=100%></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li></td></tr><tr><td><a href=/img/eino/eino_adk_run_path.png target=_blank><img src=/img/eino/eino_adk_run_path.png width=100%></a></td><td><li>Agent: [Agent]</li><li>Agent (after function call): [Agent]</li></td></tr><tr><td><a href=/img/eino/eino_adk_collaboration_run_path_sequential.png target=_blank><img src=/img/eino/eino_adk_collaboration_run_path_sequential.png width=100%></a></td><td><li>Agent1: [SequentialAgent, LoopAgent, Agent1]</li><li>Agent2: [SequentialAgent, LoopAgent, Agent1, Agent2]</li><li>Agent1: [SequentialAgent, LoopAgent, Agent1, Agent2, Agent1]</li><li>Agent2: [SequentialAgent, LoopAgent, Agent1, Agent2, Agent1, Agent2]</li><li>Agent3: [SequentialAgent, LoopAgent, Agent3]</li><li>Agent4: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent4]</li><li>Agent5: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent5]</li><li>Agent6: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent6]</li></td></tr><tr><td><a href=/img/eino/eino_adk_run_path_deterministic.png target=_blank><img src=/img/eino/eino_adk_run_path_deterministic.png width=100%></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li><li>Agent: [Agent, SubAgent, Agent]</li></td></tr></table><h4 id=customization>Customization</h4><p>In some cases, the History content needs to be adjusted before the Agent runs. At this point, you can customize how the Agent generates AgentInput from History using AgentWithOptions:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// github.com/cloudwego/eino/adk/flow.go</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#collaboration-primitives>Collaboration Primitives</a><ul><li><a href=#inter-agent-collaboration-methods>Inter-Agent Collaboration Methods</a></li><li><a href=#agentinput-context-strategies>AgentInput Context Strategies</a></li><li><a href=#decision-autonomy>Decision Autonomy</a></li><li><a href=#composition-primitives>Composition Primitives</a></li></ul></li><li><a href=#context-passing>Context Passing</a><ul><li><a href=#history>History</a></li><li><a href=#sessionvalues>SessionValues</a></li></ul></li><li><a href=#transfer-subagents>Transfer SubAgents</a><ul><li><a href=#concept-2>Concept</a></li><li><a href=#example>Example</a></li><li><a href=#static-transfer-configuration>Static Transfer Configuration</a></li></ul></li><li><a href=#workflow-agents>Workflow Agents</a><ul><li><a href=#sequentialagent>SequentialAgent</a></li><li><a href=#loopagent>LoopAgent</a></li><li><a href=#parallelagent>ParallelAgent</a></li></ul></li><li><a href=#agentastool>AgentAsTool</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino: ADK - Agent Development Kit</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_collaboration/>Eino ADK: Agent Collaboration</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino ADK: Agent Collaboration" data-url=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_collaboration/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+# Agent Collaboration
+
+The overview document has provided basic explanations of Agent collaboration. Below we will introduce the design and implementation of collaboration and composition primitives in combination with code:
+
+## Collaboration Primitives
+
+### Inter-Agent Collaboration Methods
+
+<table>
+<tr><td>Collaboration Method</td><td>Description</td></tr>
+<tr><td>Transfer</td><td>Directly transfers the task to another Agent. The current Agent exits after execution completes, without concern for the task execution status of the transferred Agent</td></tr>
+<tr><td>ToolCall (AgentAsTool)</td><td>Invokes the Agent as a ToolCall, waits for the Agent's response, and can obtain the output result of the called Agent for the next round of processing</td></tr>
+</table>
+
+### AgentInput Context Strategies
+
+<table>
+<tr><td>Context Strategy</td><td>Description</td></tr>
+<tr><td>Upstream Agent Full Conversation</td><td>Gets the complete conversation history of the current Agent's upstream Agent</td></tr>
+<tr><td>Fresh Task Description</td><td>Ignores the complete conversation history of the upstream Agent and provides a completely new task summary as the AgentInput for the sub-Agent</td></tr>
+</table>
+
+### Decision Autonomy
+
+<table>
+<tr><td>Decision Autonomy</td><td>Description</td></tr>
+<tr><td>Autonomous Decision</td><td>Within the Agent, based on its available downstream Agents, when assistance is needed, it autonomously selects a downstream Agent for assistance. Generally, the Agent makes decisions based on LLM internally, but even if selection is based on preset logic, it is still considered autonomous decision from the Agent's external perspective</td></tr>
+<tr><td>Preset Decision</td><td>The next Agent after an Agent executes a task is predetermined. The execution order of Agents is predetermined and predictable</td></tr>
+</table>
+
+### Composition Primitives
+
+<table>
+<tr><td>Type</td><td>Description</td><td>Running Mode</td><td>Collaboration Method</td><td>Context Strategy</td><td>Decision Autonomy</td></tr>
+<tr><td><strong>SubAgents</strong></td><td>Combines the user-provided agent as the parent Agent and the user-provided subAgents list as child Agents to form an Agent capable of autonomous decision-making. The Name and Description serve as the Agent's name identifier and description.<li>Currently, an Agent can only have one parent Agent</li><li>Use the SetSubAgents function to build a "multi-tree" form of Multi-Agent</li><li>Within this "multi-tree", AgentName must remain unique</li></td><td><a href="/img/eino/eino_adk_self_driving.png" target="_blank"><img src="/img/eino/eino_adk_self_driving.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Conversation</td><td>Autonomous Decision</td></tr>
+<tr><td><strong>Sequential</strong></td><td>Combines the user-provided SubAgents list into a Sequential Agent that executes in order. The Name and Description serve as the Sequential Agent's name identifier and description. When the Sequential Agent executes, it runs the SubAgents list in order until all Agents have been executed.</td><td><a href="/img/eino/eino_adk_sequential_controller.png" target="_blank"><img src="/img/eino/eino_adk_sequential_controller.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Conversation</td><td>Preset Decision</td></tr>
+<tr><td><strong>Parallel</strong></td><td>Combines the user-provided SubAgents list into a Parallel Agent that executes concurrently based on the same context. The Name and Description serve as the Parallel Agent's name identifier and description. When the Parallel Agent executes, it runs the SubAgents list concurrently and finishes when all Agents have completed.</td><td><a href="/img/eino/eino_adk_parallel_yet_another_2.png" target="_blank"><img src="/img/eino/eino_adk_parallel_yet_another_2.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Conversation</td><td>Preset Decision</td></tr>
+<tr><td><strong>Loop</strong></td><td>Executes the user-provided SubAgents list in array order sequentially and repeatedly, forming a Loop Agent. The Name and Description serve as the Loop Agent's name identifier and description. When the Loop Agent executes, it runs the SubAgents list in order and finishes when all Agents have completed.</td><td><a href="/img/eino/eino_adk_loop_exit.png" target="_blank"><img src="/img/eino/eino_adk_loop_exit.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Conversation</td><td>Preset Decision</td></tr>
+<tr><td><strong>AgentAsTool</strong></td><td>Converts an Agent into a Tool to be used by other Agents as a regular Tool. Whether an Agent can call other Agents as Tools depends on its own implementation. The ChatModelAgent provided in ADK supports the AgentAsTool functionality</td><td><a href="/img/eino/eino_collaboration_agent_as_tool_thumbnail.png" target="_blank"><img src="/img/eino/eino_collaboration_agent_as_tool_thumbnail.png" width="100%" /></a></td><td>ToolCall</td><td>Fresh Task Description</td><td>Autonomous Decision</td></tr>
+</table>
+
+## Context Passing
+
+When building multi-Agent systems, efficient and accurate sharing of information between different Agents is crucial. Eino ADK provides two core context passing mechanisms to meet different collaboration needs: History and SessionValues.
+
+### History
+
+#### Concept
+
+History corresponds to the [Upstream Agent Full Conversation context strategy]. Every AgentEvent produced by each Agent in a multi-Agent system is saved to History. When calling a new Agent (Workflow/Transfer), the AgentEvents in History are converted and concatenated into the AgentInput.
+
+By default, Assistant or Tool Messages from other Agents are converted to User Messages. This is equivalent to telling the current LLM: "Just now, Agent_A called some_tool and returned some_result. Now it's your turn to make a decision."
+
+Through this approach, other Agents' behaviors are treated as "external information" or "factual statements" provided to the current Agent, rather than its own behaviors, thus avoiding LLM context confusion.
+
+<a href="/img/eino/eino_adk_message_event.png" target="_blank"><img src="/img/eino/eino_adk_message_event.png" width="100%" /></a>
+
+In Eino ADK, when building AgentInput for an Agent, the History it can see is "all AgentEvents produced before me".
+
+Worth mentioning is ParallelWorkflowAgent: two parallel sub-Agents (A, B) cannot see each other's AgentEvents during parallel execution because neither A nor B precedes the other.
+
+#### RunPath
+
+Each AgentEvent in History is "produced by a specific Agent in a specific execution sequence", meaning AgentEvent has its own RunPath. The purpose of RunPath is to convey this information; it doesn't carry other functions in the eino framework.
+
+The table below shows the specific RunPath when Agents execute under various orchestration modes:
+
+<table>
+<tr><td>Example</td><td>RunPath</td></tr>
+<tr><td><a href="/img/eino/eino_adk_run_path_sub_agent.png" target="_blank"><img src="/img/eino/eino_adk_run_path_sub_agent.png" width="100%" /></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li></td></tr>
+<tr><td><a href="/img/eino/eino_adk_run_path.png" target="_blank"><img src="/img/eino/eino_adk_run_path.png" width="100%" /></a></td><td><li>Agent: [Agent]</li><li>Agent (after function call): [Agent]</li></td></tr>
+<tr><td><a href="/img/eino/eino_adk_collaboration_run_path_sequential.png" target="_blank"><img src="/img/eino/eino_adk_collaboration_run_path_sequential.png" width="100%" /></a></td><td><li>Agent1: [SequentialAgent, LoopAgent, Agent1]</li><li>Agent2: [SequentialAgent, LoopAgent, Agent1, Agent2]</li><li>Agent1: [SequentialAgent, LoopAgent, Agent1, Agent2, Agent1]</li><li>Agent2: [SequentialAgent, LoopAgent, Agent1, Agent2, Agent1, Agent2]</li><li>Agent3: [SequentialAgent, LoopAgent, Agent3]</li><li>Agent4: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent4]</li><li>Agent5: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent5]</li><li>Agent6: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent6]</li></td></tr>
+<tr><td><a href="/img/eino/eino_adk_run_path_deterministic.png" target="_blank"><img src="/img/eino/eino_adk_run_path_deterministic.png" width="100%" /></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li><li>Agent: [Agent, SubAgent, Agent]</li></td></tr>
+</table>
+
+#### Customization
+
+In some cases, the History content needs to be adjusted before the Agent runs. At this point, you can customize how the Agent generates AgentInput from History using AgentWithOptions:
+
+```go
+// github.com/cloudwego/eino/adk/flow.go
+
+type HistoryRewriter func(ctx context.Context, entries []*HistoryEntry) ([]Message, error)
+
+func WithHistoryRewriter(h HistoryRewriter) AgentOption
+```
+
+### SessionValues
+
+#### Concept
+
+SessionValues is a global temporary KV store that persists throughout a single run, used to support cross-Agent state management and data sharing. Any Agent in a single run can read and write SessionValues at any time.
+
+Eino ADK provides multiple methods for Agents to read and write Session Values in a concurrency-safe manner at runtime:
+
+```go
+// github.com/cloudwego/eino/adk/runctx.go
+
+// Get all SessionValues
+func GetSessionValues(ctx context.Context) map[string]any
+// Batch set SessionValues
+func AddSessionValues(ctx context.Context, kvs map[string]any) 
+// Get a value from SessionValues by specified key. Returns false as the second value if key doesn't exist, otherwise true
+func GetSessionValue(ctx context.Context, key string) (any, bool)
+// Set a single SessionValue
+func AddSessionValue(ctx context.Context, key string, value any)
+```
+
+Note that since the SessionValues mechanism is implemented based on Context, and Runner reinitializes the Context when running, injecting SessionValues via `AddSessionValues` or `AddSessionValue` outside of the Run method will not take effect.
+
+If you need to inject data into SessionValues before the Agent runs, you need to use a dedicated Option to assist with this. Usage is as follows:
+
+```go
+// github.com/cloudwego/eino/adk/call_option.go
+// WithSessionValues injects SessionValues before Agent runs
+func WithSessionValues(v map[string]any) AgentRunOption
+
+// Usage:
+runner := adk.NewRunner(ctx, adk.RunnerConfig{Agent: agent})
+iterator := runner.Run(ctx, []adk.Message{schema.UserMessage("xxx")},
+    adk.WithSessionValues(map[string]any{
+       PlanSessionKey:      123,
+       UserInputSessionKey: []adk.Message{schema.UserMessage("yyy")},
+    }),
+)
+```
+
+## Transfer SubAgents
+
+### Concept
+
+Transfer corresponds to the [Transfer collaboration method]. When an Agent produces an AgentEvent containing TransferAction during runtime, Eino ADK calls the Agent specified by the Action. The called Agent is called a SubAgent.
+
+TransferAction can be quickly created using `NewTransferToAgentAction`:
+
+```go
+import "github.com/cloudwego/eino/adk"
+
+event := adk.NewTransferToAgentAction("dest agent name")
+```
+
+For Eino ADK to find and run the SubAgent instance upon receiving TransferAction, you need to first call `SetSubAgents` to register possible SubAgents with Eino ADK before running:
+
+```go
+// github.com/cloudwego/eino/adk/flow.go
+func SetSubAgents(ctx context.Context, agent Agent, subAgents []Agent) (Agent, error)
+```
+
+> 💡
+> The meaning of Transfer is to **hand over** the task to the SubAgent, not delegate or assign. Therefore:
+>
+> 1. Unlike ToolCall, when calling a SubAgent through Transfer, after the SubAgent finishes running, the parent Agent will not be called again to summarize content or perform the next operation.
+> 2. When calling a SubAgent, the SubAgent's input is still the original input, and the parent Agent's output serves as context for the SubAgent's reference.
+
+When triggering SetSubAgents, both parent and child Agents need to process to complete initialization. Eino ADK defines the `OnSubAgents` interface to support this functionality:
+
+```go
+// github.com/cloudwego/eino/adk/interface.go
+type OnSubAgents interface {
+    OnSetSubAgents(ctx context.Context, subAgents []Agent) error
+    OnSetAsSubAgent(ctx context.Context, parent Agent) error
+    OnDisallowTransferToParent(ctx context.Context) error
+}
+```
+
+If an Agent implements the `OnSubAgents` interface, `SetSubAgents` will call the corresponding methods to register with the Agent. For example, `ChatModelAgent`'s implementation.
+
+### Example
+
+Below we demonstrate the Transfer capability with a multi-functional conversation Agent. The goal is to build an Agent that can query weather or chat with users. The Agent structure is as follows:
+
+<a href="/img/eino/eino_adk_collaboration_example.png" target="_blank"><img src="/img/eino/eino_adk_collaboration_example.png" width="100%" /></a>
+
+All three Agents are implemented using ChatModelAgent:
+
+```go
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/cloudwego/eino-ext/components/model/openai"
+    "github.com/cloudwego/eino/adk"
+    "github.com/cloudwego/eino/components/model"
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/components/tool/utils"
+    "github.com/cloudwego/eino/compose"
+)
+
+func newChatModel() model.ToolCallingChatModel {
+    cm, err := openai.NewChatModel(context.Background(), &openai.ChatModelConfig{
+       APIKey: os.Getenv("OPENAI_API_KEY"),
+       Model:  os.Getenv("OPENAI_MODEL"),
+    })
+    if err != nil {
+       log.Fatal(err)
+    }
+    return cm
+}
+
+type GetWeatherInput struct {
+    City string `json:"city"`
+}
+
+func NewWeatherAgent() adk.Agent {
+    weatherTool, err := utils.InferTool(
+       "get_weather",
+       "Gets the current weather for a specific city.",
+       func(ctx context.Context, input *GetWeatherInput) (string, error) {
+          return fmt.Sprintf(`the temperature in %s is 25°C`, input.City), nil
+       },
+    )
+    if err != nil {
+       log.Fatal(err)
+    }
+
+    a, err := adk.NewChatModelAgent(context.Background(), &adk.ChatModelAgentConfig{
+       Name:        "WeatherAgent",
+       Description: "This agent can get the current weather for a given city.",
+       Instruction: "Your sole purpose is to get the current weather for a given city by using the 'get_weather' tool. After calling the tool, report the result directly to the user.",
+       Model:       newChatModel(),
+       ToolsConfig: adk.ToolsConfig{
+          ToolsNodeConfig: compose.ToolsNodeConfig{
+             Tools: []tool.BaseTool{weatherTool},
+          },
+       },
+    })
+    if err != nil {
+       log.Fatal(err)
+    }
+    return a
+}
+
+func NewChatAgent() adk.Agent {
+    a, err := adk.NewChatModelAgent(context.Background(), &adk.ChatModelAgentConfig{
+       Name:        "ChatAgent",
+       Description: "A general-purpose agent for handling conversational chat.",
+       Instruction: "You are a friendly conversational assistant. Your role is to handle general chit-chat and answer questions that are not related to any specific tool-based tasks.",
+       Model:       newChatModel(),
+    })
+    if err != nil {
+       log.Fatal(err)
+    }
+    return a
+}
+
+func NewRouterAgent() adk.Agent {
+    a, err := adk.NewChatModelAgent(context.Background(), &adk.ChatModelAgentConfig{
+       Name:        "RouterAgent",
+       Description: "A manual router that transfers tasks to other expert agents.",
+       Instruction: `You are an intelligent task router. Your responsibility is to analyze the user's request and delegate it to the most appropriate expert agent.If no Agent can handle the task, simply inform the user it cannot be processed.`,
+       Model:       newChatModel(),
+    })
+    if err != nil {
+       log.Fatal(err)
+    }
+    return a
+}
+```
+
+Then use Eino ADK's Transfer capability to build a Multi-Agent and run it. ChatModelAgent implements the OnSubAgent interface. In the adk.SetSubAgents method, this interface is used to register parent/child Agents with ChatModelAgent, without requiring users to handle TransferAction generation:
+
+```go
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/cloudwego/eino/adk"
+)
+
+func main() {
+    weatherAgent := NewWeatherAgent()
+    chatAgent := NewChatAgent()
+    routerAgent := NewRouterAgent()
+
+    ctx := context.Background()
+    a, err := adk.SetSubAgents(ctx, routerAgent, []adk.Agent{chatAgent, weatherAgent})
+    if err != nil {
+       log.Fatal(err)
+    }
+
+    runner := adk.NewRunner(ctx, adk.RunnerConfig{
+       Agent: a,
+    })
+
+    // query weather
+    println("\n\n>>>>>>>>>query weather<<<<<<<<<")
+    iter := runner.Query(ctx, "What's the weather in Beijing?")
+    for {
+       event, ok := iter.Next()
+       if !ok {
+          break
+       }
+       if event.Err != nil {
+          log.Fatal(event.Err)
+       }
+       if event.Action != nil {
+          fmt.Printf("\nAgent[%s]: transfer to %+v\n\n======\n", event.AgentName, event.Action.TransferToAgent.DestAgentName)
+       } else {
+          fmt.Printf("\nAgent[%s]:\n%+v\n\n======\n", event.AgentName, event.Output.MessageOutput.Message)
+       }
+    }
+
+    // failed to route
+    println("\n\n>>>>>>>>>failed to route<<<<<<<<<")
+    iter = runner.Query(ctx, "Book me a flight from New York to London tomorrow.")
+    for {
+       event, ok := iter.Next()
+       if !ok {
+          break
+       }
+       if event.Err != nil {
+          log.Fatal(event.Err)
+       }
+       if event.Action != nil {
+          fmt.Printf("\nAgent[%s]: transfer to %+v\n\n======\n", event.AgentName, event.Action.TransferToAgent.DestAgentName)
+       } else {
+          fmt.Printf("\nAgent[%s]:\n%+v\n\n======\n", event.AgentName, event.Output.MessageOutput.Message)
+       }
+    }
+}
+```
+
+Running result:
+
+```yaml
+>>>>>>>>>query weather<<<<<<<<<
+Agent[RouterAgent]:
+assistant: 
+tool_calls:
+{Index:<nil> ID:call_SKNsPwKCTdp1oHxSlAFt8sO6 Type:function Function:{Name:transfer_to_agent Arguments:{"agent_name":"WeatherAgent"}} Extra:map[]}
+
+finish_reason: tool_calls
+usage: &{201 17 218}
+======
+Agent[RouterAgent]: transfer to WeatherAgent
+======
+Agent[WeatherAgent]:
+assistant: 
+tool_calls:
+{Index:<nil> ID:call_QMBdUwKj84hKDAwMMX1gOiES Type:function Function:{Name:get_weather Arguments:{"city":"Beijing"}} Extra:map[]}
+
+finish_reason: tool_calls
+usage: &{255 15 270}
+======
+Agent[WeatherAgent]:
+tool: the temperature in Beijing is 25°C
+tool_call_id: call_QMBdUwKj84hKDAwMMX1gOiES
+tool_call_name: get_weather
+======
+Agent[WeatherAgent]:
+assistant: The current temperature in Beijing is 25°C.
+finish_reason: stop
+usage: &{286 11 297}
+======
+
+>>>>>>>>>failed to route<<<<<<<<<
+Agent[RouterAgent]:
+assistant: I'm unable to assist with booking flights. Please use a relevant travel service or booking platform to make your reservation.
+finish_reason: stop
+usage: &{206 23 229}
+======
+```
+
+The other two methods of OnSubAgents are called when an Agent acts as a SubAgent in SetSubAgents:
+
+- OnSetAsSubAgent is used to register parent Agent information with the Agent
+- OnDisallowTransferToParent is called when the Agent sets the WithDisallowTransferToParent option, to inform the Agent not to produce TransferAction to the parent Agent.
+
+```go
+adk.SetSubAgents(
+    ctx,
+    Agent1,
+    []adk.Agent{
+       adk.AgentWithOptions(ctx, Agent2, adk.WithDisallowTransferToParent()),
+    },
+)
+```
+
+### Static Transfer Configuration
+
+AgentWithDeterministicTransferTo is an Agent Wrapper that generates a preset TransferAction after the original Agent executes, enabling static configuration of Agent jumping:
+
+```go
+// github.com/cloudwego/eino/adk/flow.go
+
+type DeterministicTransferConfig struct {
+        Agent        Agent
+        ToAgentNames []string
+}
+
+func AgentWithDeterministicTransferTo(_ context.Context, config *DeterministicTransferConfig) Agent
+```
+
+In Supervisor mode, after a SubAgent finishes execution, it always returns to the Supervisor, which generates the next task objective. AgentWithDeterministicTransferTo can be used here:
+
+<a href="/img/eino/eino_adk_deterministic_transfer.png" target="_blank"><img src="/img/eino/eino_adk_deterministic_transfer.png" width="100%" /></a>
+
+```go
+// github.com/cloudwego/eino/adk/prebuilt/supervisor.go
+
+type SupervisorConfig struct {
+        Supervisor adk.Agent
+        SubAgents  []adk.Agent
+}
+
+func NewSupervisor(ctx context.Context, conf *SupervisorConfig) (adk.Agent, error) {
+        subAgents := make([]adk.Agent, 0, len(conf.SubAgents))
+        supervisorName := conf.Supervisor.Name(ctx)
+        for _, subAgent := range conf.SubAgents {
+                subAgents = append(subAgents, adk.AgentWithDeterministicTransferTo(ctx, &adk.DeterministicTransferConfig{
+                        Agent:        subAgent,
+                        ToAgentNames: []string{supervisorName},
+                }))
+        }
+
+        return adk.SetSubAgents(ctx, conf.Supervisor, subAgents)
+}
+```
+
+## Workflow Agents
+
+WorkflowAgent supports running Agents according to workflows preset in code. Eino ADK provides three basic Workflow Agents: Sequential, Parallel, and Loop. They can be nested within each other to complete more complex tasks.
+
+By default, the input for each Agent in a Workflow is generated using the method described in the History section. You can customize the AgentInput generation method using WithHistoryRewriter.
+
+When an Agent produces an ExitAction Event, the Workflow Agent will immediately exit, regardless of whether there are other Agents that need to run afterward.
+
+For detailed explanations and use case references, see: [Eino ADK: Workflow Agents](/docs/eino/core_modules/eino_adk/agent_implementation/workflow)
+
+### SequentialAgent
+
+SequentialAgent executes a series of Agents in the order you provide:
+
+<a href="/img/eino/eino_adk_sequential_agent.png" target="_blank"><img src="/img/eino/eino_adk_sequential_agent.png" width="100%" /></a>
+
+```go
+type SequentialAgentConfig struct {
+    Name        string
+    Description string
+    SubAgents   []Agent
+}
+
+func NewSequentialAgent(ctx context.Context, config *SequentialAgentConfig) (Agent, error)
+```
+
+### LoopAgent
+
+LoopAgent is implemented based on SequentialAgent. After SequentialAgent completes, it runs from the beginning again:
+
+<a href="/img/eino/eino_adk_loop_definition.png" target="_blank"><img src="/img/eino/eino_adk_loop_definition.png" width="100%" /></a>
+
+```go
+type LoopAgentConfig struct {
+    Name        string
+    Description string
+    SubAgents   []Agent
+
+    MaxIterations int // Maximum number of loop iterations
+}
+
+func NewLoopAgent(ctx context.Context, config *LoopAgentConfig) (Agent, error)
+```
+
+### ParallelAgent
+
+ParallelAgent runs multiple Agents concurrently:
+
+<a href="/img/eino/eino_adk_parallel_agent.png" target="_blank"><img src="/img/eino/eino_adk_parallel_agent.png" width="100%" /></a>
+
+```go
+type ParallelAgentConfig struct {
+    Name        string
+    Description string
+    SubAgents   []Agent
+}
+
+func NewParallelAgent(ctx context.Context, config *ParallelAgentConfig) (Agent, error)
+```
+
+## AgentAsTool
+
+When running an Agent requires only clear and explicit instructions rather than a complete running context (History), the Agent can be converted to a Tool for invocation:
+
+```go
+func NewAgentTool(_ context.Context, agent Agent, options ...AgentToolOption) tool.BaseTool
+```
+
+After converting to a Tool, the Agent can be called by ChatModels that support function calling, and can also be called by all LLM-driven Agents. The calling method depends on the Agent implementation.
+
+Message history isolation: An Agent as a Tool does not inherit the message history (History) of the parent Agent.
+
+SessionValues sharing: However, it shares the SessionValues of the parent Agent, i.e., reads and writes the same KV map.
+
+Internal event exposure: An Agent as a Tool is still an Agent and produces AgentEvents. By default, these internal AgentEvents are not exposed through the `AsyncIterator` returned by `Runner`. In some business scenarios, if you need to expose the internal AgentTool's AgentEvents to users, you need to add configuration in the parent `ChatModelAgent`'s `ToolsConfig` to enable internal event exposure:
+
+```go
+// from adk/chatmodel.go
+
+type ToolsConfig struct {
+    // other configurations...
+
+    // EmitInternalEvents indicates whether internal events from agentTool should be emitted
+    // to the parent generator via a tool option injection at run-time.
+    EmitInternalEvents bool
+}
+```
+
+These internal events will not enter the parent agent's context (except for the last message which would enter anyway), and various AgentActions will not take effect (except InterruptAction).
+</script><h1>Eino ADK: Agent Collaboration</h1><header class=article-meta></header><h1 id=agent-collaboration>Agent Collaboration</h1><p>The overview document has provided basic explanations of Agent collaboration. Below we will introduce the design and implementation of collaboration and composition primitives in combination with code:</p><h2 id=collaboration-primitives>Collaboration Primitives</h2><h3 id=inter-agent-collaboration-methods>Inter-Agent Collaboration Methods</h3><table><tr><td>Collaboration Method</td><td>Description</td></tr><tr><td>Transfer</td><td>Directly transfers the task to another Agent. The current Agent exits after execution completes, without concern for the task execution status of the transferred Agent</td></tr><tr><td>ToolCall (AgentAsTool)</td><td>Invokes the Agent as a ToolCall, waits for the Agent's response, and can obtain the output result of the called Agent for the next round of processing</td></tr></table><h3 id=agentinput-context-strategies>AgentInput Context Strategies</h3><table><tr><td>Context Strategy</td><td>Description</td></tr><tr><td>Upstream Agent Full Conversation</td><td>Gets the complete conversation history of the current Agent's upstream Agent</td></tr><tr><td>Fresh Task Description</td><td>Ignores the complete conversation history of the upstream Agent and provides a completely new task summary as the AgentInput for the sub-Agent</td></tr></table><h3 id=decision-autonomy>Decision Autonomy</h3><table><tr><td>Decision Autonomy</td><td>Description</td></tr><tr><td>Autonomous Decision</td><td>Within the Agent, based on its available downstream Agents, when assistance is needed, it autonomously selects a downstream Agent for assistance. Generally, the Agent makes decisions based on LLM internally, but even if selection is based on preset logic, it is still considered autonomous decision from the Agent's external perspective</td></tr><tr><td>Preset Decision</td><td>The next Agent after an Agent executes a task is predetermined. The execution order of Agents is predetermined and predictable</td></tr></table><h3 id=composition-primitives>Composition Primitives</h3><table><tr><td>Type</td><td>Description</td><td>Running Mode</td><td>Collaboration Method</td><td>Context Strategy</td><td>Decision Autonomy</td></tr><tr><td><strong>SubAgents</strong></td><td>Combines the user-provided agent as the parent Agent and the user-provided subAgents list as child Agents to form an Agent capable of autonomous decision-making. The Name and Description serve as the Agent's name identifier and description.<li>Currently, an Agent can only have one parent Agent</li><li>Use the SetSubAgents function to build a "multi-tree" form of Multi-Agent</li><li>Within this "multi-tree", AgentName must remain unique</li></td><td><a href=/img/eino/eino_adk_self_driving.png target=_blank><img src=/img/eino/eino_adk_self_driving.png width=100%></a></td><td>Transfer</td><td>Upstream Agent Full Conversation</td><td>Autonomous Decision</td></tr><tr><td><strong>Sequential</strong></td><td>Combines the user-provided SubAgents list into a Sequential Agent that executes in order. The Name and Description serve as the Sequential Agent's name identifier and description. When the Sequential Agent executes, it runs the SubAgents list in order until all Agents have been executed.</td><td><a href=/img/eino/eino_adk_sequential_controller.png target=_blank><img src=/img/eino/eino_adk_sequential_controller.png width=100%></a></td><td>Transfer</td><td>Upstream Agent Full Conversation</td><td>Preset Decision</td></tr><tr><td><strong>Parallel</strong></td><td>Combines the user-provided SubAgents list into a Parallel Agent that executes concurrently based on the same context. The Name and Description serve as the Parallel Agent's name identifier and description. When the Parallel Agent executes, it runs the SubAgents list concurrently and finishes when all Agents have completed.</td><td><a href=/img/eino/eino_adk_parallel_yet_another_2.png target=_blank><img src=/img/eino/eino_adk_parallel_yet_another_2.png width=100%></a></td><td>Transfer</td><td>Upstream Agent Full Conversation</td><td>Preset Decision</td></tr><tr><td><strong>Loop</strong></td><td>Executes the user-provided SubAgents list in array order sequentially and repeatedly, forming a Loop Agent. The Name and Description serve as the Loop Agent's name identifier and description. When the Loop Agent executes, it runs the SubAgents list in order and finishes when all Agents have completed.</td><td><a href=/img/eino/eino_adk_loop_exit.png target=_blank><img src=/img/eino/eino_adk_loop_exit.png width=100%></a></td><td>Transfer</td><td>Upstream Agent Full Conversation</td><td>Preset Decision</td></tr><tr><td><strong>AgentAsTool</strong></td><td>Converts an Agent into a Tool to be used by other Agents as a regular Tool. Whether an Agent can call other Agents as Tools depends on its own implementation. The ChatModelAgent provided in ADK supports the AgentAsTool functionality</td><td><a href=/img/eino/eino_collaboration_agent_as_tool_thumbnail.png target=_blank><img src=/img/eino/eino_collaboration_agent_as_tool_thumbnail.png width=100%></a></td><td>ToolCall</td><td>Fresh Task Description</td><td>Autonomous Decision</td></tr></table><h2 id=context-passing>Context Passing</h2><p>When building multi-Agent systems, efficient and accurate sharing of information between different Agents is crucial. Eino ADK provides two core context passing mechanisms to meet different collaboration needs: History and SessionValues.</p><h3 id=history>History</h3><h4 id=concept>Concept</h4><p>History corresponds to the [Upstream Agent Full Conversation context strategy]. Every AgentEvent produced by each Agent in a multi-Agent system is saved to History. When calling a new Agent (Workflow/Transfer), the AgentEvents in History are converted and concatenated into the AgentInput.</p><p>By default, Assistant or Tool Messages from other Agents are converted to User Messages. This is equivalent to telling the current LLM: &ldquo;Just now, Agent_A called some_tool and returned some_result. Now it&rsquo;s your turn to make a decision.&rdquo;</p><p>Through this approach, other Agents&rsquo; behaviors are treated as &ldquo;external information&rdquo; or &ldquo;factual statements&rdquo; provided to the current Agent, rather than its own behaviors, thus avoiding LLM context confusion.</p><p><a href=/img/eino/eino_adk_message_event.png target=_blank><img src=/img/eino/eino_adk_message_event.png width=100%></a></p><p>In Eino ADK, when building AgentInput for an Agent, the History it can see is &ldquo;all AgentEvents produced before me&rdquo;.</p><p>Worth mentioning is ParallelWorkflowAgent: two parallel sub-Agents (A, B) cannot see each other&rsquo;s AgentEvents during parallel execution because neither A nor B precedes the other.</p><h4 id=runpath>RunPath</h4><p>Each AgentEvent in History is &ldquo;produced by a specific Agent in a specific execution sequence&rdquo;, meaning AgentEvent has its own RunPath. The purpose of RunPath is to convey this information; it doesn&rsquo;t carry other functions in the eino framework.</p><p>The table below shows the specific RunPath when Agents execute under various orchestration modes:</p><table><tr><td>Example</td><td>RunPath</td></tr><tr><td><a href=/img/eino/eino_adk_run_path_sub_agent.png target=_blank><img src=/img/eino/eino_adk_run_path_sub_agent.png width=100%></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li></td></tr><tr><td><a href=/img/eino/eino_adk_run_path.png target=_blank><img src=/img/eino/eino_adk_run_path.png width=100%></a></td><td><li>Agent: [Agent]</li><li>Agent (after function call): [Agent]</li></td></tr><tr><td><a href=/img/eino/eino_adk_collaboration_run_path_sequential.png target=_blank><img src=/img/eino/eino_adk_collaboration_run_path_sequential.png width=100%></a></td><td><li>Agent1: [SequentialAgent, LoopAgent, Agent1]</li><li>Agent2: [SequentialAgent, LoopAgent, Agent1, Agent2]</li><li>Agent1: [SequentialAgent, LoopAgent, Agent1, Agent2, Agent1]</li><li>Agent2: [SequentialAgent, LoopAgent, Agent1, Agent2, Agent1, Agent2]</li><li>Agent3: [SequentialAgent, LoopAgent, Agent3]</li><li>Agent4: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent4]</li><li>Agent5: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent5]</li><li>Agent6: [SequentialAgent, LoopAgent, Agent3, ParallelAgent, Agent6]</li></td></tr><tr><td><a href=/img/eino/eino_adk_run_path_deterministic.png target=_blank><img src=/img/eino/eino_adk_run_path_deterministic.png width=100%></a></td><td><li>Agent: [Agent]</li><li>SubAgent: [Agent, SubAgent]</li><li>Agent: [Agent, SubAgent, Agent]</li></td></tr></table><h4 id=customization>Customization</h4><p>In some cases, the History content needs to be adjusted before the Agent runs. At this point, you can customize how the Agent generates AgentInput from History using AgentWithOptions:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// github.com/cloudwego/eino/adk/flow.go</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>HistoryRewriter</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>func</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>entries</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>[]</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>HistoryEntry</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>([]</span><span style=color:#000>Message</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
@@ -395,4 +917,4 @@ The meaning of Transfer is to <strong>hand over</strong> the task to the SubAgen
 </span></span></span></code></pre></div><p>These internal events will not enter the parent agent&rsquo;s context (except for the last message which would enter anyway), and various AgentActions will not take effect (except InterruptAction).</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 2, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/96139d4140c93a677eec194c2d34dffa3e2673dd>feat: sync eino docs (#1512) (96139d41)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

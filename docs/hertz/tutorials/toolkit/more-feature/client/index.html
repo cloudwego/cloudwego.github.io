@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>hz client code generation | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/client/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="hz client code generation"><meta property="og:description" content="hz client code generation."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-02-20T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="hz client code generation"><meta itemprop=description content="hz client code generation."><meta itemprop=datePublished content="2023-02-20T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="617"><meta itemprop=keywords content="hz client,Advanced Settings"><meta name=twitter:card content="summary"><meta name=twitter:title content="hz client code generation"><meta name=twitter:description content="hz client code generation."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>hz client code generation | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/client/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="hz client code generation"><meta property="og:description" content="hz client code generation."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-02-20T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="hz client code generation"><meta itemprop=description content="hz client code generation."><meta itemprop=datePublished content="2023-02-20T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="617"><meta itemprop=keywords content="hz client,Advanced Settings"><meta name=twitter:card content="summary"><meta name=twitter:title content="hz client code generation"><meta name=twitter:description content="hz client code generation."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,174 @@
 <label for=m-docshertzreferenceversion-check><a href=/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshertzreferenceversion><span>Version Descriptions</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/hertz/tutorials/toolkit/more-feature/client.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/hertz/tutorials/toolkit/more-feature?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=hz%20client%20code%20generation" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#example>Example</a><ul><li><a href=#define-idl>Define IDL</a></li><li><a href=#generate-client-code>Generate client code</a></li></ul></li><li><a href=#advanced-settings>Advanced Settings</a><ul><li><a href=#client-option>Client Option</a></li><li><a href=#request-level-configuration>Request-level configuration</a></li><li><a href=#set-client-middleware>Set client middleware</a></li><li><a href=#set-global-header>Set global header</a></li><li><a href=#configure-tls>Configure TLS</a></li><li><a href=#custom-hertz-client>Custom hertz client</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/toolkit/>hz Code Generation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/>more features</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/client/>hz client code generation</a></li></ol></nav><div class=td-content><h1>hz client code generation</h1><div class=lead>hz client code generation.</div><header class=article-meta></header><h2 id=introduction>Introduction</h2><p>Based on IDL, it generates RPC-like http requests code with a single click, which can block the tedious operation of creating and initializing hertz client and interoperate directly with the server code generated by hz.</p><p><strong>This command needs to specify idl, otherwise no content will be generated.</strong></p><p>The hz client command can be summarized by referring to <a href=/docs/hertz/tutorials/toolkit/command/#client>hz client</a>。</p><p>The code structure generated by the hz client can refer to <a href=/docs/hertz/tutorials/toolkit/layout/#hz-client>hz client</a>。</p><p>Generating code examples can refer to <a href=https://github.com/cloudwego/hertz-examples/tree/main/hz/hz_client>code</a> 。</p><h2 id=example>Example</h2><p>This example is based on thrift, and protoc is similar to it.</p><h3 id=define-idl>Define IDL</h3><blockquote><p>The definition and semantics of the IDL are exactly the same as the current definition, so it is basically possible to generate client code without modifying the original IDL.</p></blockquote><blockquote><p>But for the client scenario, one annotation has been added,
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#example>Example</a><ul><li><a href=#define-idl>Define IDL</a></li><li><a href=#generate-client-code>Generate client code</a></li></ul></li><li><a href=#advanced-settings>Advanced Settings</a><ul><li><a href=#client-option>Client Option</a></li><li><a href=#request-level-configuration>Request-level configuration</a></li><li><a href=#set-client-middleware>Set client middleware</a></li><li><a href=#set-global-header>Set global header</a></li><li><a href=#configure-tls>Configure TLS</a></li><li><a href=#custom-hertz-client>Custom hertz client</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/toolkit/>hz Code Generation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/>more features</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/client/>hz client code generation</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="hz client code generation" data-url=https://www.cloudwego.io/docs/hertz/tutorials/toolkit/more-feature/client/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Introduction
+
+Based on IDL, it generates RPC-like http requests code with a single click, which can block the tedious operation of creating and initializing hertz client and interoperate directly with the server code generated by hz.
+
+**This command needs to specify idl, otherwise no content will be generated.**
+
+The hz client command can be summarized by referring to [hz client](/docs/hertz/tutorials/toolkit/command/#client)。
+
+The code structure generated by the hz client can refer to [hz client](/docs/hertz/tutorials/toolkit/layout/#hz-client)。
+
+Generating code examples can refer to [code](https://github.com/cloudwego/hertz-examples/tree/main/hz/hz_client) 。
+
+## Example
+
+This example is based on thrift, and protoc is similar to it.
+
+### Define IDL
+
+> The definition and semantics of the IDL are exactly the same as the current definition, so it is basically possible to generate client code without modifying the original IDL.
+
+> But for the client scenario, one annotation has been added,
+> api.base_domain: specifies the default request domain to access.
+
+**Warn**: When the `api.any` annotation is used, the client automatically generates client code for the `post` method to replace `any`.
+
+```thrift
+namespace go toutiao.middleware.hertz_client
+
+struct FormReq {
+    1: string FormValue (api.form="form1"); // form annotation is used to declare the form parameter ("multipart/form-data")
+}
+
+struct QueryReq {
+    1: string QueryValue (api.query="query1"); // query annotation is used to declare the query parameters of the request
+}
+
+struct PathReq {
+    1: string PathValue (api.path="path1"); // path annotation is used to declare the routing parameters in the url
+}
+
+struct BodyReq {
+    1: string BodyValue (api.body="body"); //  body annotation sets the entire structure to the body as a json, regardless of whether it is declared or not.
+    2: string QueryValue (api.query="query2");
+}
+
+struct Resp {
+    1: string Resp;
+}
+
+service HelloService {
+    // api.post is used to declare the route of the request
+    Resp FormMethod(1: FormReq request) (api.post="/form", api.handler_path="post");
+    Resp QueryMethod(1: QueryReq request) (api.get="/query", api.handler_path="get");
+    Resp PathMethod(1: PathReq request) (api.post="/path:path1", api.handler_path="post");
+    Resp BodyMethod(1: BodyReq request) (api.post="/body", api.handler_path="post");
+}(
+    // api.base_domain is used to specify the default domain for client requests
+    api.base_domain="http://127.0.0.1:8888";
+)
+```
+
+### Generate client code
+
+```shell
+hz client --mod=a/b/c --idl=../idl/psm.thrift --model_dir=model --client_dir=hertz_client -t=template=slim
+```
+
+## Advanced Settings
+
+### Client Option
+
+> Take the code generated by thrift IDL as an example
+
+```go
+func main() {
+	generatedClient, err := hello_service.NewHelloServiceClient("https://www.example.com"),
+	hello_service.WithHertzClientOption() // Specify client configuration
+}
+```
+
+### Request-level configuration
+
+> Take the code generated by thrift IDL as an example
+
+```go
+func main() {
+	generatedClient, err := hello_service.NewHelloServiceClient(
+		"http://toutiao.hertz.testa",
+		)
+    // The request level configuration can be specified when the call is initiated
+    resp, rawResp, err := generatedClient.QueryMethod(
+        context.Background(),
+        QueryReq,
+        config.WithSD(true), // Specify the request level setting to enable service discovery
+        config.WithReadTimeout(), // Specify the request read timeout
+        )
+    if err != nil {
+       fmt.Println(err)
+       return
+    }
+}
+```
+
+### Set client middleware
+
+> Take the code generated by thrift IDL as an example
+
+```go
+func main() {
+	generatedClient, err := hello_service.NewHelloServiceClient(
+		"http://toutiao.hertz.testa",
+		hello_service.WithHertzClientMiddleware(), // Specify the client's middleware
+		)
+}
+```
+
+### Set global header
+
+> Take the code generated by thrift IDL as an example
+
+There are some generic header that may need to be carried in every request, or some header that cannot be defined in IDL, then we can inject these header with "WithHeader" so that every request sent will carry these header.
+
+```go
+func main() {
+	generatedClient, err := hello_service.NewHelloServiceClient(
+		"http://toutiao.hertz.testa",
+		hello_service.WithHeader(), // Specify the header that needs to be carried for each request sent
+	)
+}
+```
+
+### Configure TLS
+
+> Take the code generated by thrift IDL as an example
+
+Hertz client's TLS goes through the standard network library, so you need to configure it for the standard network library when using the generated one-click calls.
+
+```go
+func main() {
+	generatedClient, err := hello_service.NewHelloServiceClient("https://www.example.com"),
+	hello_service.WithHertzClientOption(
+		client.WithDialer(standard.NewDialer()), // Use of standard libraries
+		client.WithTLSConfig(clientCfg), // TLS Configuration
+	)
+}
+```
+
+### Custom hertz client
+
+> Take the code generated by thrift IDL as an example
+
+```go
+func main() {
+	generatedClient, err := hello_service.NewHelloServiceClient("https://www.example.com"),
+	hello_service.WithHertzClient() // Specify custom hertz client
+}
+```
+</script><h1>hz client code generation</h1><div class=lead>hz client code generation.</div><header class=article-meta></header><h2 id=introduction>Introduction</h2><p>Based on IDL, it generates RPC-like http requests code with a single click, which can block the tedious operation of creating and initializing hertz client and interoperate directly with the server code generated by hz.</p><p><strong>This command needs to specify idl, otherwise no content will be generated.</strong></p><p>The hz client command can be summarized by referring to <a href=/docs/hertz/tutorials/toolkit/command/#client>hz client</a>。</p><p>The code structure generated by the hz client can refer to <a href=/docs/hertz/tutorials/toolkit/layout/#hz-client>hz client</a>。</p><p>Generating code examples can refer to <a href=https://github.com/cloudwego/hertz-examples/tree/main/hz/hz_client>code</a> 。</p><h2 id=example>Example</h2><p>This example is based on thrift, and protoc is similar to it.</p><h3 id=define-idl>Define IDL</h3><blockquote><p>The definition and semantics of the IDL are exactly the same as the current definition, so it is basically possible to generate client code without modifying the original IDL.</p></blockquote><blockquote><p>But for the client scenario, one annotation has been added,
 api.base_domain: specifies the default request domain to access.</p></blockquote><p><strong>Warn</strong>: When the <code>api.any</code> annotation is used, the client automatically generates client code for the <code>post</code> method to replace <code>any</code>.</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-thrift data-lang=thrift><span style=display:flex><span><span style=color:#204a87;font-weight:700>namespace</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>go</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>toutiao.middleware.hertz_client</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>FormReq</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -188,4 +355,4 @@ api.base_domain: specifies the default request domain to access.</p></blockquote
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified May 8, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/dff8f175d96e832fb521f13246cce14399aefcdb>style: prettier lint fix (#1069) (dff8f175)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

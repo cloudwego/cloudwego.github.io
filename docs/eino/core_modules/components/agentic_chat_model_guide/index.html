@@ -1,7 +1,7 @@
 <!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Eino: AgenticModel User Guide [Beta] | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/core_modules/components/agentic_chat_model_guide/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Eino: AgenticModel User Guide [Beta]"><meta property="og:description" content="💡 This feature is available starting from v0.9.
 Introduction AgenticModel is an abstraction of model capabilities centered on “goal-driven autonomous execution”. As capabilities like caching and built-in tools become natively supported in APIs from advanced providers like OpenAI Responses API and Claude API, models are evolving from “one-shot Q&amp;A engines” to “user goal-oriented autonomous agents”: capable of closed-loop planning around objectives, invoking tools, and iterative execution to accomplish more complex tasks."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-03T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-03T12:09:36+08:00"><meta itemprop=name content="Eino: AgenticModel User Guide [Beta]"><meta itemprop=description content="💡 This feature is available starting from v0.9.
 Introduction AgenticModel is an abstraction of model capabilities centered on “goal-driven autonomous execution”. As capabilities like caching and built-in tools become natively supported in APIs from advanced providers like OpenAI Responses API and Claude API, models are evolving from “one-shot Q&amp;A engines” to “user goal-oriented autonomous agents”: capable of closed-loop planning around objectives, invoking tools, and iterative execution to accomplish more complex tasks."><meta itemprop=datePublished content="2026-03-03T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-03T12:09:36+08:00"><meta itemprop=wordCount content="3706"><meta name=twitter:card content="summary"><meta name=twitter:title content="Eino: AgenticModel User Guide [Beta]"><meta name=twitter:description content="💡 This feature is available starting from v0.9.
-Introduction AgenticModel is an abstraction of model capabilities centered on “goal-driven autonomous execution”. As capabilities like caching and built-in tools become natively supported in APIs from advanced providers like OpenAI Responses API and Claude API, models are evolving from “one-shot Q&amp;A engines” to “user goal-oriented autonomous agents”: capable of closed-loop planning around objectives, invoking tools, and iterative execution to accomplish more complex tasks."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+Introduction AgenticModel is an abstraction of model capabilities centered on “goal-driven autonomous execution”. As capabilities like caching and built-in tools become natively supported in APIs from advanced providers like OpenAI Responses API and Claude API, models are evolving from “one-shot Q&amp;A engines” to “user goal-oriented autonomous agents”: capable of closed-loop planning around objectives, invoking tools, and iterative execution to accomplish more complex tasks."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,1199 @@ Introduction AgenticModel is an abstraction of model capabilities centered on �
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/components/agentic_chat_model_guide.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/components?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino:%20AgenticModel%20User%20Guide%20[Beta]" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a><ul><li><a href=#differences-from-chatmodel>Differences from ChatModel</a></li></ul></li><li><a href=#component-definition>Component Definition</a><ul><li><a href=#interface-definition>Interface Definition</a></li><li><a href=#agenticmessage-struct>AgenticMessage Struct</a></li><li><a href=#common-options>Common Options</a></li></ul></li><li><a href=#usage>Usage</a><ul><li><a href=#standalone-usage>Standalone Usage</a></li><li><a href=#usage-in-orchestration>Usage in Orchestration</a></li></ul></li><li><a href=#option-and-callback-usage>Option and Callback Usage</a><ul><li><a href=#option-usage>Option Usage</a></li><li><a href=#callback-usage>Callback Usage</a></li></ul></li><li><a href=#official-implementations>Official Implementations</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/components/>Eino: Components</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/components/agentic_chat_model_guide/>Eino: AgenticModel User Guide [Beta]</a></li></ol></nav><div class=td-content><h1>Eino: AgenticModel User Guide [Beta]</h1><header class=article-meta></header><blockquote><p>💡
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a><ul><li><a href=#differences-from-chatmodel>Differences from ChatModel</a></li></ul></li><li><a href=#component-definition>Component Definition</a><ul><li><a href=#interface-definition>Interface Definition</a></li><li><a href=#agenticmessage-struct>AgenticMessage Struct</a></li><li><a href=#common-options>Common Options</a></li></ul></li><li><a href=#usage>Usage</a><ul><li><a href=#standalone-usage>Standalone Usage</a></li><li><a href=#usage-in-orchestration>Usage in Orchestration</a></li></ul></li><li><a href=#option-and-callback-usage>Option and Callback Usage</a><ul><li><a href=#option-usage>Option Usage</a></li><li><a href=#callback-usage>Callback Usage</a></li></ul></li><li><a href=#official-implementations>Official Implementations</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/components/>Eino: Components</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/components/agentic_chat_model_guide/>Eino: AgenticModel User Guide [Beta]</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino: AgenticModel User Guide [Beta]" data-url=https://www.cloudwego.io/docs/eino/core_modules/components/agentic_chat_model_guide/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+> 💡
+> This feature is available starting from [v0.9](https://github.com/cloudwego/eino/releases/tag/v0.9.0-alpha.2).
+
+## Introduction
+
+AgenticModel is an abstraction of model capabilities centered on "goal-driven autonomous execution". As capabilities like caching and built-in tools become natively supported in APIs from advanced providers like OpenAI Responses API and Claude API, models are evolving from "one-shot Q&A engines" to "user goal-oriented autonomous agents": capable of closed-loop planning around objectives, invoking tools, and iterative execution to accomplish more complex tasks.
+
+### Differences from ChatModel
+
+<table>
+<tr><td></td><td>AgenticModel</td><td>ChatModel</td></tr>
+<tr><td>Positioning</td><td>Model component abstraction based on AgenticMessage</td><td>Model component abstraction based on Message</td></tr>
+<tr><td>Core Entities</td><td><li>AgenticMessage</li><li>ContentBlock</li></td><td>Message</td></tr>
+<tr><td>Capabilities</td><td><li>Multi-turn model conversation generation</li><li>Session caching</li><li>Support for various built-in tools</li><li>Support for MCP tools</li><li>Better model adaptability</li></td><td><li>Single-turn model conversation generation</li><li>Session caching</li><li>Support for simple built-in tools</li></td></tr>
+<tr><td>Related Components</td><td><li>AgenticTemplate</li><li>AgenticToolsNode</li></td><td><li>ChatTemplate</li><li>ToolsNode</li></td></tr>
+</table>
+
+Server-side tools (like web_search) and MCP tools are natively supported by model providers, meaning a single API request/response may contain results from multiple reasoning-action cycles. Taking web search capability as an example:
+
+- Implemented with ChatModel: requires pre-defining a custom web search tool. One reasoning-action process is as follows:
+  1. Model generates tool call parameters
+  2. User-side executes the tool
+  3. Returns tool result to the model
+- Implemented with AgenticModel: can directly configure native web search tools provided by the model provider. One API request process is as follows:
+  1. The model autonomously calls the web search tool based on the user's question and completes multiple tool calls on the model server side, generating multiple reasoning-action results until the user's task is completed.
+  2. The user side only needs to receive the results.
+
+## Component Definition
+
+### Interface Definition
+
+> Code location: [https://github.com/cloudwego/eino/tree/main/components/model/interface.go](https://github.com/cloudwego/eino/tree/main/components/model/interface.go)
+
+```go
+type AgenticModel interface {
+    Generate(ctx context.Context, input []*schema.AgenticMessage, opts ...Option) (*schema.AgenticMessage, error)
+    Stream(ctx context.Context, input []*schema.AgenticMessage, opts ...Option) (*schema.StreamReader[*schema.AgenticMessage], error)
+
+    // WithTools returns a new Model instance with the specified tools bound.
+    // This method does not modify the current instance, making it safer for concurrent use.
+    WithTools(tools []*schema.ToolInfo) (AgenticModel, error)
+}
+```
+
+#### Generate Method
+
+- Function: Generate a complete model response
+- Parameters:
+  - ctx: Context object for passing request-level information and Callback Manager
+  - input: Input message list
+  - opts: Optional parameters for configuring model behavior
+- Return values:
+  - `*schema.AgenticMessage`: The response message generated by the model
+  - error: Error information during generation
+
+#### Stream Method
+
+- Function: Generate model response in streaming mode
+- Parameters: Same as Generate method
+- Return values:
+  - `*schema.StreamReader[*schema.AgenticMessage]`: Stream reader for model response
+  - error: Error information during generation
+
+#### WithTools Method
+
+- Function: Bind available tools to the model
+- Parameters:
+  - tools: List of tool information
+- Return values:
+  - Model: A new AgenticModel instance with tools bound
+  - error: Error information during binding
+
+### AgenticMessage Struct
+
+> Code location: [https://github.com/cloudwego/eino/tree/main/schema/agentic_message.go](https://github.com/cloudwego/eino/tree/main/schema/agentic_message.go)
+
+`AgenticMessage` is the basic unit for interacting with the model. A complete response from the model is encapsulated as an `AgenticMessage`, which carries complex composite content through an ordered set of `ContentBlock`s. The biggest difference between `AgenticMessage` and `Message` is the introduction of the `ContentBlock` array concept, which can carry multiple reasoning-action outputs from the `AgenticModel`. Definition:
+
+```go
+type AgenticMessage struct {
+    // Role is the message role.
+    Role AgenticRoleType
+
+    // ContentBlocks is the list of content blocks.
+    ContentBlocks []*ContentBlock
+    
+    // ResponseMeta is the response metadata.
+    ResponseMeta *AgenticResponseMeta
+
+    // Extra is the additional information.
+    Extra map[string]any
+}
+```
+
+`ContentBlock` is the basic building unit of `AgenticMessage`, used to carry the specific content of a message. It's designed as a polymorphic structure that identifies what type of data the current block contains through the `Type` field and holds the corresponding non-null pointer field. `ContentBlock` allows a message to contain mixed rich media content or structured data, such as "text + image" or "reasoning process + tool call". Definition:
+
+```go
+type ContentBlockType string
+
+const (
+    ContentBlockTypeReasoning               ContentBlockType = "reasoning"
+    ContentBlockTypeUserInputText           ContentBlockType = "user_input_text"
+    ContentBlockTypeUserInputImage          ContentBlockType = "user_input_image"
+    ContentBlockTypeUserInputAudio          ContentBlockType = "user_input_audio"
+    ContentBlockTypeUserInputVideo          ContentBlockType = "user_input_video"
+    ContentBlockTypeUserInputFile           ContentBlockType = "user_input_file"
+    ContentBlockTypeAssistantGenText        ContentBlockType = "assistant_gen_text"
+    ContentBlockTypeAssistantGenImage       ContentBlockType = "assistant_gen_image"
+    ContentBlockTypeAssistantGenAudio       ContentBlockType = "assistant_gen_audio"
+    ContentBlockTypeAssistantGenVideo       ContentBlockType = "assistant_gen_video"
+    ContentBlockTypeFunctionToolCall        ContentBlockType = "function_tool_call"
+    ContentBlockTypeFunctionToolResult      ContentBlockType = "function_tool_result"
+    ContentBlockTypeServerToolCall          ContentBlockType = "server_tool_call"
+    ContentBlockTypeServerToolResult        ContentBlockType = "server_tool_result"
+    ContentBlockTypeMCPToolCall             ContentBlockType = "mcp_tool_call"
+    ContentBlockTypeMCPToolResult           ContentBlockType = "mcp_tool_result"
+    ContentBlockTypeMCPListToolsResult      ContentBlockType = "mcp_list_tools_result"
+    ContentBlockTypeMCPToolApprovalRequest  ContentBlockType = "mcp_tool_approval_request"
+    ContentBlockTypeMCPToolApprovalResponse ContentBlockType = "mcp_tool_approval_response"
+)
+
+type ContentBlock struct {
+    Type ContentBlockType
+
+    // Reasoning contains the reasoning content generated by the model.
+    Reasoning *Reasoning
+
+    // UserInputText contains the text content provided by the user.
+    UserInputText *UserInputText
+
+    // UserInputImage contains the image content provided by the user.
+    UserInputImage *UserInputImage
+
+    // UserInputAudio contains the audio content provided by the user.
+    UserInputAudio *UserInputAudio
+
+    // UserInputVideo contains the video content provided by the user.
+    UserInputVideo *UserInputVideo
+
+    // UserInputFile contains the file content provided by the user.
+    UserInputFile *UserInputFile
+
+    // AssistantGenText contains the text content generated by the model.
+    AssistantGenText *AssistantGenText
+
+    // AssistantGenImage contains the image content generated by the model.
+    AssistantGenImage *AssistantGenImage
+
+    // AssistantGenAudio contains the audio content generated by the model.
+    AssistantGenAudio *AssistantGenAudio
+
+    // AssistantGenVideo contains the video content generated by the model.
+    AssistantGenVideo *AssistantGenVideo
+
+    // FunctionToolCall contains the invocation details for a user-defined tool.
+    FunctionToolCall *FunctionToolCall
+
+    // FunctionToolResult contains the result returned from a user-defined tool call.
+    FunctionToolResult *FunctionToolResult
+
+    // ServerToolCall contains the invocation details for a provider built-in tool executed on the model server.
+    ServerToolCall *ServerToolCall
+
+    // ServerToolResult contains the result returned from a provider built-in tool executed on the model server.
+    ServerToolResult *ServerToolResult
+
+    // MCPToolCall contains the invocation details for an MCP tool managed by the model server.
+    MCPToolCall *MCPToolCall
+
+    // MCPToolResult contains the result returned from an MCP tool managed by the model server.
+    MCPToolResult *MCPToolResult
+
+    // MCPListToolsResult contains the list of available MCP tools reported by the model server.
+    MCPListToolsResult *MCPListToolsResult
+
+    // MCPToolApprovalRequest contains the user approval request for an MCP tool call when required.
+    MCPToolApprovalRequest *MCPToolApprovalRequest
+
+    // MCPToolApprovalResponse contains the user's approval decision for an MCP tool call.
+    MCPToolApprovalResponse *MCPToolApprovalResponse
+
+    // StreamingMeta contains metadata for streaming responses.
+    StreamingMeta *StreamingMeta
+
+    // Extra contains additional information for the content block.
+    Extra map[string]any
+}
+```
+
+`AgenticResponseMeta` is the metadata returned in model responses, where `TokenUsage` is common metadata returned by all model providers. `OpenAIExtension`, `GeminiExtension`, and `ClaudeExtension` are extension field definitions specific to OpenAI, Gemini, and Claude models respectively; extension information from other model providers is placed in `Extension`, with specific definitions provided by the corresponding component implementations in **eino-ext**.
+
+```go
+type AgenticResponseMeta struct {
+    // TokenUsage is the token usage.
+    TokenUsage *TokenUsage
+
+    // OpenAIExtension is the extension for OpenAI.
+    OpenAIExtension *openai.ResponseMetaExtension
+
+    // GeminiExtension is the extension for Gemini.
+    GeminiExtension *gemini.ResponseMetaExtension
+
+    // ClaudeExtension is the extension for Claude.
+    ClaudeExtension *claude.ResponseMetaExtension
+
+    // Extension is the extension for other models, supplied by the component implementer.
+    Extension any
+}
+```
+
+#### Reasoning
+
+The Reasoning type represents the model's reasoning process and thinking content. Some advanced models can perform internal reasoning before generating the final answer, and this reasoning content can be conveyed through this type.
+
+- Definition
+
+```go
+type Reasoning struct {
+    // Text is either the thought summary or the raw reasoning text itself.
+    Text string
+
+    // Signature contains encrypted reasoning tokens.
+    // Required by some models when passing reasoning text back.
+    Signature string
+}
+```
+
+- Example
+
+```go
+reasoning := &schema.Reasoning{
+    Text: "The user now needs me to solve...",
+    Signature: "asjkhvipausdgy23oadlfdsf"
+}
+```
+
+#### UserInputText
+
+UserInputText is the most basic content type for conveying plain text input. It's the primary way users interact with models, suitable for natural language dialogue, instruction delivery, and question asking.
+
+- Definition
+
+```go
+type UserInputText struct {
+    // Text is the text content.
+    Text string
+}
+```
+
+- Example
+
+```go
+textInput := &schema.UserInputText{
+    Text: "Please help me analyze the performance bottleneck of this code",
+}
+
+// Or use convenience functions to create messages
+textInput := schema.UserAgenticMessage("Please help me analyze the performance bottleneck of this code")
+textInput := schema.SystemAgenticMessage("You are an intelligent assistant")
+textInput := schema.DeveloperAgenticMessage("You are an intelligent assistant")
+```
+
+#### UserInputImage
+
+UserInputImage is used to provide image content to the model. It supports passing image data via URL reference or Base64 encoding, suitable for visual understanding, image analysis, and multimodal dialogue scenarios.
+
+- Definition
+
+```go
+type UserInputImage struct {
+    // URL is the HTTP/HTTPS link.
+    URL string
+
+    // Base64Data is the binary data in Base64 encoded string format.
+    Base64Data string
+
+    // MIMEType is the mime type, e.g. "image/png".
+    MIMEType string
+
+    // Detail is the quality of the image url.
+    Detail ImageURLDetail
+}
+```
+
+- Example
+
+```go
+// Using URL method
+imageInput := &schema.UserInputImage{
+    URL:      "https://example.com/chart.png",
+    MIMEType: "image/png",
+    Detail:   schema.ImageURLDetailHigh,
+}
+
+// Using Base64 encoding method
+imageInput := &schema.UserInputImage{
+    Base64Data: "iVBORw0KGgoAAAANSUhEUgAAAAUA...",
+    MIMEType:   "image/png",
+}
+```
+
+#### UserInputAudio
+
+UserInputAudio is used to provide audio content to the model. It's suitable for speech recognition, audio analysis, and multimodal understanding scenarios.
+
+- Definition
+
+```go
+type UserInputAudio struct {
+    // URL is the HTTP/HTTPS link.
+    URL string
+
+    // Base64Data is the binary data in Base64 encoded string format.
+    Base64Data string
+
+    // MIMEType is the mime type, e.g. "audio/wav".
+    MIMEType string
+}
+```
+
+- Example
+
+```go
+audioInput := &schema.UserInputAudio{
+    URL:      "https://example.com/voice.wav",
+    MIMEType: "audio/wav",
+}
+```
+
+#### UserInputVideo
+
+UserInputVideo is used to provide video content to the model. It's suitable for video understanding, scene analysis, and action recognition advanced visual tasks.
+
+- Definition
+
+```go
+type UserInputVideo struct {
+    // URL is the HTTP/HTTPS link.
+    URL string
+
+    // Base64Data is the binary data in Base64 encoded string format.
+    Base64Data string
+
+    // MIMEType is the mime type, e.g. "video/mp4".
+    MIMEType string
+}
+```
+
+- Example
+
+```go
+videoInput := &schema.UserInputVideo{
+    URL:      "https://example.com/demo.mp4",
+    MIMEType: "video/mp4",
+}
+```
+
+#### UserInputFile
+
+UserInputFile is used to provide file content to the model. It's suitable for document analysis, data extraction, and knowledge understanding scenarios.
+
+- Definition
+
+```go
+type UserInputFile struct {
+    // URL is the HTTP/HTTPS link.
+    URL string
+
+    // Name is the filename.
+    Name string
+
+    // Base64Data is the binary data in Base64 encoded string format.
+    Base64Data string
+
+    // MIMEType is the mime type, e.g. "application/pdf".
+    MIMEType string
+}
+```
+
+- Example
+
+```go
+fileInput := &schema.UserInputFile{
+    URL:      "https://example.com/report.pdf",
+    Name:     "report.pdf",
+    MIMEType: "application/pdf",
+}
+```
+
+#### AssistantGenText
+
+AssistantGenText is the text content generated by the model, the most common form of model output. Extension field definitions differ for different model providers: OpenAI models use `OpenAIExtension`, Claude models use `ClaudeExtension`; extension information from other model providers is placed in `Extension`, with specific definitions provided by corresponding component implementations in **eino-ext**.
+
+- Definition
+
+```go
+import (
+    "github.com/cloudwego/eino/schema/claude"
+    "github.com/cloudwego/eino/schema/openai"
+)
+
+type AssistantGenText struct {
+    // Text is the generated text.
+    Text string
+
+    // OpenAIExtension is the extension for OpenAI.
+    OpenAIExtension *openai.AssistantGenTextExtension
+
+    // ClaudeExtension is the extension for Claude.
+    ClaudeExtension *claude.AssistantGenTextExtension
+
+    // Extension is the extension for other models.
+    Extension any
+}
+```
+
+- Example
+
+  - Creating a response
+
+  ```go
+  textGen := &schema.AssistantGenText{
+      Text: "Based on your requirements, I suggest the following approach...",
+      Extension: &AssistantGenTextExtension{
+          Annotations: []*TextAnnotation{annotation},
+      },
+  }
+  ```
+
+  - Parsing a response
+
+  ```go
+  import (
+      "github.com/cloudwego/eino-ext/components/model/agenticark"
+  )
+
+  // Assert to concrete implementation definition
+  ext := textGen.Extension.(*agenticark.AssistantGenTextExtension)
+  ```
+
+#### AssistantGenImage
+
+AssistantGenImage is the image content generated by the model. Some models have image generation capabilities and can create images based on text descriptions, with output results conveyed through this type.
+
+- Definition
+
+```go
+type AssistantGenImage struct {
+    // URL is the HTTP/HTTPS link.
+    URL string
+
+    // Base64Data is the binary data in Base64 encoded string format.
+    Base64Data string
+
+    // MIMEType is the mime type, e.g. "image/png".
+    MIMEType string
+}
+```
+
+- Example
+
+```go
+imageGen := &schema.AssistantGenImage{
+    URL:      "https://api.example.com/generated/image123.png",
+    MIMEType: "image/png",
+}
+```
+
+#### AssistantGenAudio
+
+AssistantGenAudio is the audio content generated by the model. Some models have audio generation capabilities, with output audio data conveyed through this type.
+
+- Definition
+
+```go
+type AssistantGenAudio struct {
+    // URL is the HTTP/HTTPS link.
+    URL string
+
+    // Base64Data is the binary data in Base64 encoded string format.
+    Base64Data string
+
+    // MIMEType is the mime type, e.g. "audio/wav".
+    MIMEType string
+}
+```
+
+- Example
+
+```go
+audioGen := &schema.AssistantGenAudio{
+    URL:      "https://api.example.com/generated/audio123.wav",
+    MIMEType: "audio/wav",
+}
+```
+
+#### AssistantGenVideo
+
+AssistantGenVideo is the video content generated by the model. Some models have video generation capabilities, with output video data conveyed through this type.
+
+- Definition
+
+```go
+type AssistantGenVideo struct {
+    // URL is the HTTP/HTTPS link.
+    URL string
+
+    // Base64Data is the binary data in Base64 encoded string format.
+    Base64Data string
+
+    // MIMEType is the mime type, e.g. "video/mp4".
+    MIMEType string
+}
+```
+
+- Example
+
+```go
+audioGen := &schema.AssistantGenAudio{
+    URL:      "https://api.example.com/generated/audio123.wav",
+    MIMEType: "audio/wav",
+}
+```
+
+#### FunctionToolCall
+
+FunctionToolCall represents a user-defined function tool call initiated by the model. When the model needs to execute a specific function, it generates a tool call request containing the tool name and parameters, with actual execution handled by the user side.
+
+- Definition
+
+```go
+type FunctionToolCall struct {
+    // CallID is the unique identifier for the tool call.
+    CallID string
+
+    // Name specifies the function tool invoked.
+    Name string
+
+    // Arguments is the JSON string arguments for the function tool call.
+    Arguments string
+}
+```
+
+- Example
+
+```go
+toolCall := &schema.FunctionToolCall{
+    CallID:    "call_abc123",
+    Name:      "get_weather",
+    Arguments: `{"location": "Beijing", "unit": "celsius"}`,
+}
+```
+
+#### FunctionToolResult
+
+FunctionToolResult represents the execution result of a user-defined function tool. After the user side executes a tool call, the result is returned to the model through this type, allowing the model to continue generating responses.
+
+- Definition
+
+```go
+type FunctionToolResult struct {
+    // CallID is the unique identifier for the tool call.
+    CallID string
+
+    // Name specifies the function tool invoked.
+    Name string
+
+    // Result is the function tool result returned by the user
+    Result string
+}
+```
+
+- Example
+
+```go
+toolResult := &schema.FunctionToolResult{
+    CallID: "call_abc123",
+    Name:   "get_weather",
+    Result: `{"temperature": 15, "condition": "sunny"}`,
+}
+
+// Or use convenience function to create message
+msg := schema.FunctionToolResultAgenticMessage(
+    "call_abc123",
+    "get_weather",
+    `{"temperature": 15, "condition": "sunny"}`,
+)
+```
+
+#### ServerToolCall
+
+ServerToolCall represents the invocation of a model server-side built-in tool. Some model providers integrate specific tools (like web search, code executor) on the server side, and the model can autonomously call these tools without user intervention. `Arguments` are the parameters for the model to call the server-side built-in tool, with specific definitions provided by corresponding component implementations in **eino-ext**.
+
+- Definition
+
+```go
+type ServerToolCall struct {
+    // Name specifies the server-side tool invoked.
+    // Supplied by the model server (e.g., `web_search` for OpenAI, `googleSearch` for Gemini).
+    Name string
+
+    // CallID is the unique identifier for the tool call.
+    // Empty if not provided by the model server.
+    CallID string
+
+    // Arguments are the raw inputs to the server-side tool,
+    // supplied by the component implementer.
+    Arguments any
+}
+```
+
+- Example
+
+  - Creating a response
+
+  ```go
+  serverCall := &schema.ServerToolCall{
+      Name:      "web_search",
+      CallID:    "search_123",
+      Arguments: &ServerToolCallArguments{
+          WebSearch: &WebSearchArguments{
+              ActionType: WebSearchActionSearch,
+              Search: &WebSearchQuery{
+                 Query: "Beijing weather today",
+              },
+          },
+      },
+  }
+  ```
+
+  - Parsing a response
+
+  ```go
+  import (
+      "github.com/cloudwego/eino-ext/components/model/agenticopenai"
+  )
+
+  // Assert to concrete implementation definition
+  args := serverCall.Arguments.(*agenticopenai.ServerToolCallArguments)
+  ```
+
+#### ServerToolResult
+
+ServerToolResult represents the execution result of a server-side built-in tool. After the model server executes a tool call, the result is returned through this type. `Result` is the result of the model calling the server-side built-in tool, with specific definitions provided by corresponding component implementations in **eino-ext**.
+
+- Definition
+
+```go
+type ServerToolResult struct {
+    // Name specifies the server-side tool invoked.
+    // Supplied by the model server (e.g., `web_search` for OpenAI, `googleSearch` for Gemini).
+    Name string
+
+    // CallID is the unique identifier for the tool call.
+    // Empty if not provided by the model server.
+    CallID string
+
+    // Result refers to the raw output generated by the server-side tool,
+    // supplied by the component implementer.
+    Result any
+}
+```
+
+- Example
+
+  - Creating a response
+
+  ```go
+  serverResult := &schema.ServerToolResult{
+      Name:   "web_search",
+      CallID: "search_123",
+      Result: &ServerToolResult{
+          WebSearch: &WebSearchResult{
+             ActionType: WebSearchActionSearch,
+             Search: &WebSearchQueryResult{
+                Sources: sources,
+             },
+          },
+      },
+  }
+  ```
+
+  - Parsing a response
+
+  ```go
+  import (
+      "github.com/cloudwego/eino-ext/components/model/agenticopenai"
+  )
+
+  // Assert to concrete implementation definition
+  args := serverResult.Result.(*agenticopenai.ServerToolResult)
+  ```
+
+#### MCPToolCall
+
+MCPToolCall represents an MCP (Model Context Protocol) tool call initiated by the model. Some models allow configuring MCP tools and calling them autonomously without user intervention.
+
+- Definition
+
+```go
+type MCPToolCall struct {
+    // ServerLabel is the MCP server label used to identify it in tool calls
+    ServerLabel string
+
+    // ApprovalRequestID is the approval request ID.
+    ApprovalRequestID string
+
+    // CallID is the unique ID of the tool call.
+    CallID string
+
+    // Name is the name of the tool to run.
+    Name string
+
+    // Arguments is the JSON string arguments for the tool call.
+    Arguments string
+}
+```
+
+- Example
+
+```go
+mcpCall := &schema.MCPToolCall{
+    ServerLabel: "database-server",
+    CallID:      "mcp_call_456",
+    Name:        "execute_query",
+    Arguments:   `{"sql": "SELECT * FROM users LIMIT 10"}`,
+}
+```
+
+#### MCPToolResult
+
+MCPToolResult represents the MCP tool execution result returned by the model. After the model autonomously completes an MCP tool call, the result or error information is returned through this type.
+
+- Definition
+
+```go
+type MCPToolResult struct {
+    // ServerLabel is the MCP server label used to identify it in tool calls
+    ServerLabel string
+
+    // CallID is the unique ID of the tool call.
+    CallID string
+
+    // Name is the name of the tool to run.
+    Name string
+
+    // Result is the JSON string with the tool result.
+    Result string
+
+    // Error returned when the server fails to run the tool.
+    Error *MCPToolCallError
+}
+
+type MCPToolCallError struct {
+    // Code is the error code.
+    Code *int64
+    
+    // Message is the error message.
+    Message string
+}
+```
+
+- Example
+
+```go
+// MCP tool call succeeded
+mcpResult := &schema.MCPToolResult{
+    ServerLabel: "database-server",
+    CallID:      "mcp_call_456",
+    Name:        "execute_query",
+    Result:      `{"rows": [...], "count": 10}`,
+}
+
+// MCP tool call failed
+errorCode := int64(500)
+mcpError := &schema.MCPToolResult{
+    ServerLabel: "database-server",
+    CallID:      "mcp_call_456",
+    Name:        "execute_query",
+    Error: &schema.MCPToolCallError{
+        Code:    &errorCode,
+        Message: "Database connection failed",
+    },
+}
+```
+
+#### MCPListToolsResult
+
+MCPListToolsResult represents the query result for available tools from an MCP server returned by the model. Models that support configuring MCP tools can autonomously query the MCP server for available tools, with the query result returned through this type.
+
+- Definition
+
+```go
+type MCPListToolsResult struct {
+    // ServerLabel is the MCP server label used to identify it in tool calls.
+    ServerLabel string
+
+    // Tools is the list of tools available on the server.
+    Tools []*MCPListToolsItem
+
+    // Error returned when the server fails to list tools.
+    Error string
+}
+
+type MCPListToolsItem struct {
+    // Name is the name of the tool.
+    Name string
+
+    // Description is the description of the tool.
+    Description string
+
+    // InputSchema is the JSON schema that describes the tool input parameters.
+    InputSchema *jsonschema.Schema
+}
+```
+
+- Example
+
+```go
+toolsList := &schema.MCPListToolsResult{
+    ServerLabel: "database-server",
+    Tools: []*schema.MCPListToolsItem{
+        {
+            Name:        "execute_query",
+            Description: "Execute SQL query",
+            InputSchema: &jsonschema.Schema{...},
+        },
+        {
+            Name:        "create_table",
+            Description: "Create database table",
+            InputSchema: &jsonschema.Schema{...},
+        },
+    },
+}
+```
+
+#### MCPToolApprovalRequest
+
+MCPToolApprovalRequest represents an MCP tool call request that requires user approval. In the model's autonomous MCP tool calling process, certain sensitive or high-risk operations (like data deletion, external payments) require explicit user authorization before execution. Some models support configuring MCP tool call approval policies, and before each high-risk MCP tool call, the model returns an authorization request through this type.
+
+- Definition
+
+```go
+type MCPToolApprovalRequest struct {
+    // ID is the approval request ID.
+    ID string
+
+    // Name is the name of the tool to run.
+    Name string
+
+    // Arguments is the JSON string arguments for the tool call.
+    Arguments string
+
+    // ServerLabel is the MCP server label used to identify it in tool calls.
+    ServerLabel string
+}
+```
+
+- Example
+
+```go
+approvalReq := &schema.MCPToolApprovalRequest{
+    ID:          "approval_20260112_001",
+    Name:        "delete_records",
+    Arguments:   `{"table": "users", "condition": "inactive=true", "estimated_count": 150}`,
+    ServerLabel: "database-server",
+}
+```
+
+#### MCPToolApprovalResponse
+
+MCPToolApprovalResponse represents the user's approval decision for an MCP tool call. After receiving an MCPToolApprovalRequest, the user needs to review the operation details and make a decision, choosing to approve or reject the operation, with an optional reason for the decision.
+
+- Definition
+
+```go
+type MCPToolApprovalResponse struct {
+    // ApprovalRequestID is the approval request ID being responded to.
+    ApprovalRequestID string
+
+    // Approve indicates whether the request is approved.
+    Approve bool
+
+    // Reason is the rationale for the decision.
+    // Optional.
+    Reason string
+}
+```
+
+- Example
+
+```go
+approvalResp := &schema.MCPToolApprovalResponse{
+    ApprovalRequestID: "approval_789",
+    Approve:           true,
+    Reason:            "Confirmed deletion of inactive users",
+}
+```
+
+#### StreamingMeta
+
+StreamingMeta is used in streaming response scenarios to identify the position of a content block in the final response. During streaming generation, content may be returned in multiple chunks, and the index allows for correctly assembling the complete response.
+
+- Definition
+
+```go
+type StreamingMeta struct {
+    // Index specifies the index position of this block in the final response.
+    Index int
+}
+```
+
+- Example
+
+```go
+textGen := &schema.AssistantGenText{Text: "This is the first part"}
+meta := &schema.StreamingMeta{Index: 0}
+block := schema.NewContentBlockChunk(textGen, meta)
+```
+
+### Common Options
+
+AgenticModel and ChatModel share a common set of Options for configuring model behavior. Additionally, AgenticModel provides some exclusive configuration options.
+
+> Code location: [https://github.com/cloudwego/eino/tree/main/components/model/option.go](https://github.com/cloudwego/eino/tree/main/components/model/option.go)
+
+<table>
+<tr><td></td><td>AgenticModel</td><td>ChatModel</td></tr>
+<tr><td>Temperature</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>Model</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>TopP</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>Tools</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>ToolChoice</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>MaxTokens</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>AllowedToolNames</td><td>Not Supported</td><td>Supported</td></tr>
+<tr><td>Stop</td><td>Supported by some implementations</td><td>Supported</td></tr>
+<tr><td>AllowedTools</td><td>Supported</td><td>Not Supported</td></tr>
+</table>
+
+Correspondingly, AgenticModel has added the following method for setting Options:
+
+```go
+// WithAgenticToolChoice is the option to set tool choice for the agentic model.
+func WithAgenticToolChoice(toolChoice schema.ToolChoice, allowedTools ...*schema.AllowedTool) Option {}
+```
+
+#### Implementation-Specific Custom Options
+
+The WrapImplSpecificOptFn method provides component implementations the ability to inject custom Options. Developers need to define implementation-specific Option types and provide corresponding Option configuration methods.
+
+```go
+type openaiOptions struct {
+    maxToolCalls      *int
+    maxOutputTokens   *int64
+}
+
+func WithMaxToolCalls(maxToolCalls int) model.Option {
+    return model.WrapImplSpecificOptFn(func(o *openaiOptions) {
+       o.maxToolCalls = &maxToolCalls
+    })
+}
+
+func WithMaxOutputTokens(maxOutputTokens int64) model.Option {
+    return model.WrapImplSpecificOptFn(func(o *openaiOptions) {
+       o.maxOutputTokens = &maxOutputTokens
+    })
+}
+```
+
+## Usage
+
+### Standalone Usage
+
+- Non-streaming call
+
+```go
+import (
+    "context"
+
+    "github.com/cloudwego/eino-ext/components/model/agenticopenai"
+    "github.com/cloudwego/eino/schema"
+    openaischema "github.com/cloudwego/eino/schema/openai"
+    "github.com/eino-contrib/jsonschema"
+    "github.com/openai/openai-go/v3/responses"
+    "github.com/wk8/go-ordered-map/v2"
+)
+
+func main() {
+    ctx := context.Background()
+
+    am, _ := agenticopenai.New(ctx, &agenticopenai.Config{})
+
+    input := []*schema.AgenticMessage{
+       schema.UserAgenticMessage("what is the weather like in Beijing"),
+    }
+
+    am_, _ := am.WithTools([]*schema.ToolInfo{
+       {
+          Name: "get_weather",
+          Desc: "get the weather in a city",
+          ParamsOneOf: schema.NewParamsOneOfByJSONSchema(&jsonschema.Schema{
+             Type: "object",
+             Properties: orderedmap.New[string, *jsonschema.Schema](
+                orderedmap.WithInitialData(
+                   orderedmap.Pair[string, *jsonschema.Schema]{
+                      Key: "city",
+                      Value: &jsonschema.Schema{
+                         Type:        "string",
+                         Description: "the city to get the weather",
+                      },
+                   },
+                ),
+             ),
+             Required: []string{"city"},
+          }),
+       },
+    })
+    
+    msg, _ := am_.Generate(ctx, input)
+}
+```
+
+- Streaming call
+
+```go
+import (
+    "context"
+    "errors"
+    "io"
+
+    "github.com/cloudwego/eino-ext/components/model/agenticopenai"
+    "github.com/cloudwego/eino/components/model"
+    "github.com/cloudwego/eino/schema"
+    "github.com/openai/openai-go/v3/responses"
+)
+
+func main() {
+    ctx := context.Background()
+
+    am, _ := agenticopenai.New(ctx, &agenticopenai.Config{})
+
+    serverTools := []*agenticopenai.ServerToolConfig{
+       {
+          WebSearch: &responses.WebSearchToolParam{
+             Type: responses.WebSearchToolTypeWebSearch,
+          },
+       },
+    }
+
+    allowedTools := []*schema.AllowedTool{
+       {
+          ServerTool: &schema.AllowedServerTool{
+             Name: string(agenticopenai.ServerToolNameWebSearch),
+          },
+       },
+    }
+
+    opts := []model.Option{
+       model.WithToolChoice(schema.ToolChoiceForced, allowedTools...),
+       agenticopenai.WithServerTools(serverTools),
+    }
+
+    input := []*schema.AgenticMessage{
+       schema.UserAgenticMessage("what's cloudwego/eino"),
+    }
+
+    resp, _ := am.Stream(ctx, input, opts...)
+
+    var msgs []*schema.AgenticMessage
+    for {
+       msg, err := resp.Recv()
+       if err != nil {
+          if errors.Is(err, io.EOF) {
+             break
+          }
+       }
+       msgs = append(msgs, msg)
+    }
+
+    concatenated, _ := schema.ConcatAgenticMessages(msgs)
+}
+```
+
+### Usage in Orchestration
+
+```go
+import (
+    "github.com/cloudwego/eino/schema"
+    "github.com/cloudwego/eino/compose"
+)
+
+func main() {
+    /* Initialize AgenticModel
+    * am, err := xxx
+    */
+    
+    // Use in Chain
+    c := compose.NewChain[[]*schema.AgenticMessage, *schema.AgenticMessage]()
+    c.AppendAgenticModel(am)
+    
+    
+    // Use in Graph
+    g := compose.NewGraph[[]*schema.AgenticMessage, *schema.AgenticMessage]()
+    g.AddAgenticModelNode("model_node", cm)
+}
+```
+
+## Option and Callback Usage
+
+### Option Usage
+
+```go
+import "github.com/cloudwego/eino/components/model"
+
+response, err := am.Generate(ctx, messages,
+    model.WithTemperature(0.7),
+    model.WithModel("gpt-5"),
+)
+```
+
+### Callback Usage
+
+```go
+import (
+    "context"
+
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/components/model"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+    callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
+)
+
+// Create callback handler
+handler := &callbacksHelper.AgenticModelCallbackHandler{
+    OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *model.AgenticCallbackInput) context.Context {
+       return ctx
+    },
+    OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *model.AgenticCallbackOutput) context.Context {
+       return ctx
+    },
+    OnError: func(ctx context.Context, info *callbacks.RunInfo, err error) context.Context {
+       return ctx
+    },
+    OnEndWithStreamOutput: func(ctx context.Context, info *callbacks.RunInfo, output *schema.StreamReader[*model.AgenticCallbackOutput]) context.Context {
+        defer output.Close()
+    
+        for {
+            chunk, err := output.Recv()
+            if errors.Is(err, io.EOF) {
+                break
+            }
+            ...
+        }
+    
+        return ctx
+    },
+}
+
+// Use callback handler
+helper := callbacksHelper.NewHandlerHelper().
+    AgenticModel(handler).
+    Handler()
+
+/*** compose a chain
+* chain := NewChain
+* chain.Appendxxx().
+*       Appendxxx().
+*       ...
+*/
+
+// Use at runtime
+runnable, err := chain.Compile()
+if err != nil {
+    return err
+}
+result, err := runnable.Invoke(ctx, messages, compose.WithCallbacks(helper))
+```
+
+## Official Implementations
+
+To be added
+</script><h1>Eino: AgenticModel User Guide [Beta]</h1><header class=article-meta></header><blockquote><p>💡
 This feature is available starting from <a href=https://github.com/cloudwego/eino/releases/tag/v0.9.0-alpha.2>v0.9</a>.</p></blockquote><h2 id=introduction>Introduction</h2><p>AgenticModel is an abstraction of model capabilities centered on &ldquo;goal-driven autonomous execution&rdquo;. As capabilities like caching and built-in tools become natively supported in APIs from advanced providers like OpenAI Responses API and Claude API, models are evolving from &ldquo;one-shot Q&amp;A engines&rdquo; to &ldquo;user goal-oriented autonomous agents&rdquo;: capable of closed-loop planning around objectives, invoking tools, and iterative execution to accomplish more complex tasks.</p><h3 id=differences-from-chatmodel>Differences from ChatModel</h3><table><tr><td></td><td>AgenticModel</td><td>ChatModel</td></tr><tr><td>Positioning</td><td>Model component abstraction based on AgenticMessage</td><td>Model component abstraction based on Message</td></tr><tr><td>Core Entities</td><td><li>AgenticMessage</li><li>ContentBlock</li></td><td>Message</td></tr><tr><td>Capabilities</td><td><li>Multi-turn model conversation generation</li><li>Session caching</li><li>Support for various built-in tools</li><li>Support for MCP tools</li><li>Better model adaptability</li></td><td><li>Single-turn model conversation generation</li><li>Session caching</li><li>Support for simple built-in tools</li></td></tr><tr><td>Related Components</td><td><li>AgenticTemplate</li><li>AgenticToolsNode</li></td><td><li>ChatTemplate</li><li>ToolsNode</li></td></tr></table><p>Server-side tools (like web_search) and MCP tools are natively supported by model providers, meaning a single API request/response may contain results from multiple reasoning-action cycles. Taking web search capability as an example:</p><ul><li>Implemented with ChatModel: requires pre-defining a custom web search tool. One reasoning-action process is as follows:<ol><li>Model generates tool call parameters</li><li>User-side executes the tool</li><li>Returns tool result to the model</li></ol></li><li>Implemented with AgenticModel: can directly configure native web search tools provided by the model provider. One API request process is as follows:<ol><li>The model autonomously calls the web search tool based on the user&rsquo;s question and completes multiple tool calls on the model server side, generating multiple reasoning-action results until the user&rsquo;s task is completed.</li><li>The user side only needs to receive the results.</li></ol></li></ul><h2 id=component-definition>Component Definition</h2><h3 id=interface-definition>Interface Definition</h3><blockquote><p>Code location: <a href=https://github.com/cloudwego/eino/tree/main/components/model/interface.go>https://github.com/cloudwego/eino/tree/main/components/model/interface.go</a></p></blockquote><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>AgenticModel</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>Generate</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>input</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>[]</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>AgenticMessage</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>opts</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000>Option</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>AgenticMessage</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>Stream</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>input</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>[]</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>AgenticMessage</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>opts</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000>Option</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>StreamReader</span><span style=color:#000;font-weight:700>[</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>AgenticMessage</span><span style=color:#000;font-weight:700>],</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -844,4 +2036,4 @@ This feature is available starting from <a href=https://github.com/cloudwego/ein
 </span></span></span></code></pre></div><h2 id=official-implementations>Official Implementations</h2><p>To be added</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 3, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/8788f90c35c1a1e1c0c3a0644a2b725b1bed1fa9>fix: eino docs (#1515) (8788f90c)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

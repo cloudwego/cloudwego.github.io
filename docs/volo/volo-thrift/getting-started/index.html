@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Getting Started | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/volo/volo-thrift/getting-started/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Getting Started"><meta property="og:description" content="This document covers the preparation of the development environment, quick start and basic tutorials of Volo-Thrift."><meta property="og:locale" content="en"><meta property="og:type" content="website"><meta itemprop=name content="Getting Started"><meta itemprop=description content="This document covers the preparation of the development environment, quick start and basic tutorials of Volo-Thrift."><meta itemprop=dateModified content="2025-06-23T13:05:53+08:00"><meta itemprop=wordCount content="1096"><meta itemprop=keywords content="Volo,Thrift,Tutorial,Install"><meta name=twitter:card content="summary"><meta name=twitter:title content="Getting Started"><meta name=twitter:description content="This document covers the preparation of the development environment, quick start and basic tutorials of Volo-Thrift."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Getting Started | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/volo/volo-thrift/getting-started/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Getting Started"><meta property="og:description" content="This document covers the preparation of the development environment, quick start and basic tutorials of Volo-Thrift."><meta property="og:locale" content="en"><meta property="og:type" content="website"><meta itemprop=name content="Getting Started"><meta itemprop=description content="This document covers the preparation of the development environment, quick start and basic tutorials of Volo-Thrift."><meta itemprop=dateModified content="2025-06-23T13:05:53+08:00"><meta itemprop=wordCount content="1096"><meta itemprop=keywords content="Volo,Thrift,Tutorial,Install"><meta name=twitter:card content="summary"><meta name=twitter:title content="Getting Started"><meta name=twitter:description content="This document covers the preparation of the development environment, quick start and basic tutorials of Volo-Thrift."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -38,7 +38,329 @@
 <label for=m-docsvolofaq-check><a href=/docs/volo/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-docsvolofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/volo/volo-thrift/getting-started/_index.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/volo/volo-thrift/getting-started?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Getting%20Started" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/volo/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#part-1-create-a-thrift-server>Part 1. Create a Thrift Server</a><ul><li><a href=#11-why-idl>1.1 Why IDL</a></li><li><a href=#12-write-idl>1.2 Write IDL</a></li></ul></li><li><a href=#part-2-create-a-client>Part 2. Create a Client</a></li><li><a href=#part-3-add-a-middleware>Part 3. Add a Middleware</a></li><li><a href=#part-4-whats-next>Part 4. What&rsquo;s Next?</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/>Volo</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/volo-thrift/>Volo-Thrift</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/volo/volo-thrift/getting-started/>Getting Started</a></li></ol></nav><div class=td-content><h1>Getting Started</h1><div class=lead>This document covers the preparation of the development environment, quick start and basic tutorials of Volo-Thrift.</div><header class=article-meta></header><h2 id=part-1-create-a-thrift-server>Part 1. Create a Thrift Server</h2><p>Volo-Thrift is an RPC framework so that the bottom layer requires two major functions: Serialization and Transport.</p><p>IDL is short for <code>Interface Definition Language</code>.</p><h3 id=11-why-idl>1.1 Why IDL</h3><p>If we want to do RPC, we need to know what interface is for the server, what parameters to pass, and what the return value is,
+<a href=https://github.com/cloudwego/volo/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#part-1-create-a-thrift-server>Part 1. Create a Thrift Server</a><ul><li><a href=#11-why-idl>1.1 Why IDL</a></li><li><a href=#12-write-idl>1.2 Write IDL</a></li></ul></li><li><a href=#part-2-create-a-client>Part 2. Create a Client</a></li><li><a href=#part-3-add-a-middleware>Part 3. Add a Middleware</a></li><li><a href=#part-4-whats-next>Part 4. What&rsquo;s Next?</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/>Volo</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/volo-thrift/>Volo-Thrift</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/volo/volo-thrift/getting-started/>Getting Started</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Getting Started" data-url=https://www.cloudwego.io/docs/volo/volo-thrift/getting-started/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Part 1. Create a Thrift Server
+
+Volo-Thrift is an RPC framework so that the bottom layer requires two major functions: Serialization and Transport.
+
+IDL is short for `Interface Definition Language`.
+
+### 1.1 Why IDL
+
+If we want to do RPC, we need to know what interface is for the server, what parameters to pass, and what the return value is,
+just like two people talking to each other, we need to make sure we are speaking the same language and doing the same thing.
+
+At this time, we need to use IDL to specify the protocol for both sides, just like when writing code, we need to know the function signature while calling a function.
+
+Thrift IDL is a full-stack RPC solution for cross-language. You can see the syntax of Thrift IDL in [thrift-missing-guide](https://diwakergupta.github.io/thrift-missing-guide/) or [Thrift interface description language](http://thrift.apache.org/docs/idl).
+
+### 1.2 Write IDL
+
+To create a Thrift project, we need to write a Thrift IDL first.
+
+In your working directory, execute the following command:
+
+```bash
+mkdir volo-example && cd volo-example
+```
+
+```bash
+mkdir idl && touch idl/volo_example.thrift
+```
+
+Subsequently, use your favorite text editor to enter the following content:
+
+```thrift
+namespace rs volo.example
+
+struct Item {
+    1: required i64 id,
+    2: required string title,
+    3: required string content,
+
+    10: optional map<string, string> extra,
+}
+
+struct GetItemRequest {
+    1: required i64 id,
+}
+
+struct GetItemResponse {
+    1: required Item item,
+}
+
+service ItemService {
+    GetItemResponse GetItem (1: GetItemRequest req),
+}
+```
+
+After saving and exiting, we execute the following command:
+
+```bash
+volo init volo-example idl/volo_example.thrift
+```
+
+**Here we use the `init` command, followed by the name of our project, which means we need to generate template code. At the end, you need to specify an IDL used by the server.**
+
+If you only need to add an IDL (such as the client IDL) without generating a template, do as follows:
+
+```bash
+volo idl add idl/volo_example.thrift
+```
+
+| What's more, the volo tool also supports downloading IDL from git and then generating code, such as:
+
+```bash
+volo idl add -g git@github.com:org/repo.git -r main /path/to/your/idl.thrift
+```
+
+| You may directly enter volo to see the detailed usage ~ next back to the topic ~
+
+At this point, our entire directory structure looks like this:
+
+```bash
+.
+├── Cargo.toml
+├── idl
+│   └── volo_example.thrift
+├── rust-toolchain.toml
+├── src
+│   ├── bin
+│   │   └── server.rs
+│   └── lib.rs
+└── volo-gen
+    ├── Cargo.toml
+    ├── build.rs
+    ├── src
+    │   └── lib.rs
+    └── volo.yml
+```
+
+Then we open `src/lib.rs` and add the method implementation to the `impl` block. The resulting code should look like this:
+
+```rust
+pub struct S;
+
+impl volo_gen::volo::example::ItemService for S {
+    // This is the part of the code we need to add
+    async fn get_item(
+        &self,
+        _req: volo_gen::volo::example::GetItemRequest,
+    ) -> core::result::Result<volo_gen::volo::example::GetItemResponse, volo_thrift::AnyhowError>
+    {
+        Ok(Default::default())
+    }
+}
+```
+
+Then execute:
+
+```bash
+cargo update && cargo build
+```
+
+At this point, you will find `volo_gen.rs` file under [OUT_DIR Directory](https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts).
+
+Then execute the following command to get our server running:
+
+```bash
+cargo run --bin server
+```
+
+At this point, we have our server running!
+
+## Part 2. Create a Client
+
+In the previous section, we wrote a server, now let's write a client and call the server.
+
+First, create a file called `src/bin/client.rs` and type the following:
+
+```rust
+use lazy_static::lazy_static;
+use std::net::SocketAddr;
+
+lazy_static! {
+    static ref CLIENT: volo_gen::volo::example::ItemServiceClient = {
+        let addr: SocketAddr = "[::1]:8080".parse().unwrap();
+        volo_gen::volo::example::ItemServiceClientBuilder::new("volo-example")
+            .address(addr)
+            .build()
+    };
+}
+
+#[volo::main]
+async fn main() {
+    tracing_subscriber::fmt::init();
+    let req = volo_gen::volo::example::GetItemRequest { id: 1024 };
+    let resp = CLIENT.get_item(req).await;
+    match resp {
+        Ok(info) => tracing::info!("{:?}", info),
+        Err(e) => tracing::error!("{:?}", e),
+    }
+}
+```
+
+Then add the required dependencies to the `Cargo.toml` file, which looks like this:
+
+```toml {hl_lines=["17-19"]}
+[package]
+name = "volo_example"
+version = "0.1.0"
+edition.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+volo-gen = { path = "./volo-gen" }
+
+volo.workspace = true
+volo-thrift.workspace = true
+pilota.workspace = true
+
+anyhow.workspace = true
+tokio = { workspace = true, features = ["full"] }
+tracing-subscriber = "0.3.19"
+lazy_static = "1.5.0"
+tracing = "0.1.41"
+
+[profile.release]
+opt-level = 3
+debug = true
+debug-assertions = false
+overflow-checks = false
+lto = true
+panic = 'unwind'
+incremental = false
+codegen-units = 1
+rpath = false
+
+[workspace]
+members = ["volo-gen"]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+
+[workspace.dependencies]
+# we recommend to use the latest framework version for new features and bug fixes
+volo = "*"
+volo-build = "*"
+volo-thrift = "*"
+pilota = "*"
+
+anyhow = "1"
+tokio = "1"
+```
+
+Then, **create a new terminal** and run the following command to start our server:
+
+```bash
+cargo run --bin server
+```
+
+Finally, we go back to the current directory and execute the following command, and we can see that the execution is successful:
+
+```bash
+cargo run --bin client
+```
+
+## Part 3. Add a Middleware
+
+Next, let's look at how to add middleware to Volo.
+
+For example, if we need a middleware that prints out the received requests, the returned responses and the elapsed time, we could write a Service in `lib.rs`:
+
+```rust
+#[derive(Clone)]
+pub struct LogService<S>(S);
+
+#[volo::service]
+impl<Cx, Req, S> volo::Service<Cx, Req> for LogService<S>
+where
+    Req: std::fmt::Debug + Send + 'static,
+    S: Send + 'static + volo::Service<Cx, Req> + Sync,
+    S::Response: std::fmt::Debug,
+    S::Error: std::fmt::Debug,
+    Cx: Send + 'static,
+{
+    async fn call(&self, cx: &mut Cx, req: Req) -> Result<S::Response, S::Error> {
+        let now = std::time::Instant::now();
+        tracing::debug!("Received request {:?}", &req);
+        let resp = self.0.call(cx, req).await;
+        tracing::debug!("Sent response {:?}", &resp);
+        tracing::info!("Request took {}ms", now.elapsed().as_millis());
+        resp
+    }
+}
+```
+
+Then we wrap a Layer around the Service:
+
+```rust
+pub struct LogLayer;
+
+impl<S> volo::Layer<S> for LogLayer {
+    type Service = LogService<S>;
+
+    fn layer(self, inner: S) -> Self::Service {
+        LogService(inner)
+    }
+}
+```
+
+Finally, we add this Layer to client and server:
+
+```rust
+use volo_example::LogLayer;
+
+// client.rs
+static ref CLIENT: volo_gen::volo::example::ItemServiceClient = {
+    let addr: SocketAddr = "[::1]:8080".parse().unwrap();
+    volo_gen::volo::example::ItemServiceClientBuilder::new("volo-example")
+        .layer_outer(LogLayer)
+        .address(addr)
+        .build()
+};
+
+// server.rs
+volo_gen::volo::example::ItemServiceServer::new(S)
+    .layer_front(LogLayer)
+    .run(addr)
+    .await
+    .unwrap();
+```
+
+At this point, at the INFO log level, it prints out how long the request took;
+At the DEBUG logging level, it also types the details of the request and response.
+
+## Part 4. What's Next?
+
+Congratulations, you've read this far! At this point, we've basically learned how to use Volo, and we're ready to use Volo to kick off our Rust journey
+
+Next, you may need to select the right components, put them together, and interface with your system.
+
+The related ecosystem maintained by Volo will be located in: https://github.com/volo-rs, we are working to build our ecosystem, and welcome everyone to join us ~
+
+If there is a dire lack of components, you are welcomed to raise an issue in: https://github.com/cloudwego/volo, we will support it as soon as possible.
+
+In the meantime, welcome to join our Lark user group and share your experience with us about Volo.
+
+<div  align="center">
+<img src="/img/docs/feishu_group_volo.png" width="400" alt="Volo_feishu" />
+</div>
+<br/><br/>
+
+Looking forward to your unique work created with Volo.
+</script><h1>Getting Started</h1><div class=lead>This document covers the preparation of the development environment, quick start and basic tutorials of Volo-Thrift.</div><header class=article-meta></header><h2 id=part-1-create-a-thrift-server>Part 1. Create a Thrift Server</h2><p>Volo-Thrift is an RPC framework so that the bottom layer requires two major functions: Serialization and Transport.</p><p>IDL is short for <code>Interface Definition Language</code>.</p><h3 id=11-why-idl>1.1 Why IDL</h3><p>If we want to do RPC, we need to know what interface is for the server, what parameters to pass, and what the return value is,
 just like two people talking to each other, we need to make sure we are speaking the same language and doing the same thing.</p><p>At this time, we need to use IDL to specify the protocol for both sides, just like when writing code, we need to know the function signature while calling a function.</p><p>Thrift IDL is a full-stack RPC solution for cross-language. You can see the syntax of Thrift IDL in <a href=https://diwakergupta.github.io/thrift-missing-guide/>thrift-missing-guide</a> or <a href=http://thrift.apache.org/docs/idl>Thrift interface description language</a>.</p><h3 id=12-write-idl>1.2 Write IDL</h3><p>To create a Thrift project, we need to write a Thrift IDL first.</p><p>In your working directory, execute the following command:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>mkdir volo-example <span style=color:#ce5c00;font-weight:700>&amp;&amp;</span> <span style=color:#204a87>cd</span> volo-example
 </span></span></code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>mkdir idl <span style=color:#ce5c00;font-weight:700>&amp;&amp;</span> touch idl/volo_example.thrift
 </span></span></code></pre></div><p>Subsequently, use your favorite text editor to enter the following content:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-thrift data-lang=thrift><span style=display:flex><span><span style=color:#204a87;font-weight:700>namespace</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>rs</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>volo.example</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -216,4 +538,4 @@ just like two people talking to each other, we need to make sure we are speaking
 At the DEBUG logging level, it also types the details of the request and response.</p><h2 id=part-4-whats-next>Part 4. What&rsquo;s Next?</h2><p>Congratulations, you&rsquo;ve read this far! At this point, we&rsquo;ve basically learned how to use Volo, and we&rsquo;re ready to use Volo to kick off our Rust journey</p><p>Next, you may need to select the right components, put them together, and interface with your system.</p><p>The related ecosystem maintained by Volo will be located in: <a href=https://github.com/volo-rs>https://github.com/volo-rs</a>, we are working to build our ecosystem, and welcome everyone to join us ~</p><p>If there is a dire lack of components, you are welcomed to raise an issue in: <a href=https://github.com/cloudwego/volo>https://github.com/cloudwego/volo</a>, we will support it as soon as possible.</p><p>In the meantime, welcome to join our Lark user group and share your experience with us about Volo.</p><div align=center><img src=/img/docs/feishu_group_volo.png width=400 alt=Volo_feishu></div><br><br><p>Looking forward to your unique work created with Volo.</p><div class=section-index></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified June 23, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/9c7fb3a7cdc7674fcb44dccf3d556b366c8ab310>fix: 同步 Volo-gRPC Volo-Thrift 教程的 Cargo.toml 示例到官方volo init命令生成的 Cargo.toml (#1359) (9c7fb3a7)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

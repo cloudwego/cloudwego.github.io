@@ -10,7 +10,7 @@
 编排产物可视化渲染； 从可操作的任意节点开始，mock 输入进行调试。 快速开始 下载 eino-example github 仓库：https://github.com/cloudwego/eino-examples
 # HTTPS git clone https://github.com/cloudwego/eino-examples.git # SSH git clone git@github.com:cloudwego/eino-examples.git 安装依赖 在项目目录下依次执行以下指令
 # 1. Pull latest devops repository go get github.com/cloudwego/eino-ext/devops@latest # 2. Cleans and updates go.mod and go.sum go mod tidy 运行 Demo 进入 eino-examples/devops/debug/main.go，运行 main.go。因为插件会同时在本地启动一个 HTTP 服务用于连接用户服务进程，所以会弹出接入网络警告，点击允许。
-配置调试地址 1.点击左侧或正中间调试功能进入调试配置 2.点击配置调试地址 3.填入 127.0.0.1:52538 4.点击确认进入调试界面，选择要调试的Graph 开始调试 1.点击「Test Run」从 start 节点开始执行 2.输入 "hello eino"，点击确认 3.在调试区域展示有各个节点的输入和输出 4.点击 Input 和 Output 切换查看节点信息 功能一览 本地或远程调试 目标调试编排产物无论是运行在本地电脑还是在远程服务器，都可以通过配置 IP:Port ，主动连接到目标调试对象所在的服务器。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+配置调试地址 1.点击左侧或正中间调试功能进入调试配置 2.点击配置调试地址 3.填入 127.0.0.1:52538 4.点击确认进入调试界面，选择要调试的Graph 开始调试 1.点击「Test Run」从 start 节点开始执行 2.输入 "hello eino"，点击确认 3.在调试区域展示有各个节点的输入和输出 4.点击 Input 和 Output 切换查看节点信息 功能一览 本地或远程调试 目标调试编排产物无论是运行在本地电脑还是在远程服务器，都可以通过配置 IP:Port ，主动连接到目标调试对象所在的服务器。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -119,7 +119,408 @@
 <label for=m-zhdocseinofaq-check><a href=/zh/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/eino/core_modules/devops/visual_debug_plugin_guide.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/eino/core_modules/devops?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino%20Dev%20%e5%8f%af%e8%a7%86%e5%8c%96%e8%b0%83%e8%af%95%e6%8f%92%e4%bb%b6%e5%8a%9f%e8%83%bd%e6%8c%87%e5%8d%97" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#简介>简介</a></li><li><a href=#快速开始>快速开始</a><ul><li><a href=#下载-eino-example>下载 eino-example</a></li><li><a href=#安装依赖>安装依赖</a></li><li><a href=#运行-demo>运行 Demo</a></li><li><a href=#配置调试地址>配置调试地址</a></li><li><a href=#开始调试>开始调试</a></li></ul></li><li><a href=#功能一览>功能一览</a><ul><li><a href=#本地或远程调试>本地或远程调试</a></li><li><a href=#编排拓扑可视化>编排拓扑可视化</a></li><li><a href=#从任意节点开始调试>从任意节点开始调试</a></li><li><a href=#查看节点执行结果>查看节点执行结果</a></li></ul></li><li><a href=#从零开始调试>从零开始调试</a><ul><li><a href=#使用-eino-进行编排>使用 Eino 进行编排</a></li><li><a href=#安装依赖-1>安装依赖</a></li><li><a href=#调用调试初始化函数>调用调试初始化函数</a></li><li><a href=#运行用户进程>运行用户进程</a></li><li><a href=#配置调试地址-1>配置调试地址</a></li><li><a href=#选择目标调试编排产物>选择目标调试编排产物</a></li><li><a href=#开始调试-1>开始调试</a></li><li><a href=#查看执行结果>查看执行结果</a></li></ul></li><li><a href=#高阶功能>高阶功能</a><ul><li><a href=#指定-interface-字段的实现类型>指定 interface 字段的实现类型</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/devops/>应用开发工具链</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/devops/visual_debug_plugin_guide/>Eino Dev 可视化调试插件功能指南</a></li></ol></nav><div class=td-content><h1>Eino Dev 可视化调试插件功能指南</h1><header class=article-meta></header><h2 id=简介>简介</h2><blockquote><p>💡
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#简介>简介</a></li><li><a href=#快速开始>快速开始</a><ul><li><a href=#下载-eino-example>下载 eino-example</a></li><li><a href=#安装依赖>安装依赖</a></li><li><a href=#运行-demo>运行 Demo</a></li><li><a href=#配置调试地址>配置调试地址</a></li><li><a href=#开始调试>开始调试</a></li></ul></li><li><a href=#功能一览>功能一览</a><ul><li><a href=#本地或远程调试>本地或远程调试</a></li><li><a href=#编排拓扑可视化>编排拓扑可视化</a></li><li><a href=#从任意节点开始调试>从任意节点开始调试</a></li><li><a href=#查看节点执行结果>查看节点执行结果</a></li></ul></li><li><a href=#从零开始调试>从零开始调试</a><ul><li><a href=#使用-eino-进行编排>使用 Eino 进行编排</a></li><li><a href=#安装依赖-1>安装依赖</a></li><li><a href=#调用调试初始化函数>调用调试初始化函数</a></li><li><a href=#运行用户进程>运行用户进程</a></li><li><a href=#配置调试地址-1>配置调试地址</a></li><li><a href=#选择目标调试编排产物>选择目标调试编排产物</a></li><li><a href=#开始调试-1>开始调试</a></li><li><a href=#查看执行结果>查看执行结果</a></li></ul></li><li><a href=#高阶功能>高阶功能</a><ul><li><a href=#指定-interface-字段的实现类型>指定 interface 字段的实现类型</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/devops/>应用开发工具链</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/devops/visual_debug_plugin_guide/>Eino Dev 可视化调试插件功能指南</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino Dev 可视化调试插件功能指南" data-url=https://www.cloudwego.io/zh/docs/eino/core_modules/devops/visual_debug_plugin_guide/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 简介
+
+> 💡
+> 使用该插件可以对使用 Eino 框架编写的编排产物（Graph，Chain）进行可视化调试，包括：
+>
+> 1. 编排产物可视化渲染；
+> 2. 从可操作的任意节点开始，mock 输入进行调试。
+
+## 快速开始
+
+### 下载 eino-example
+
+> github 仓库：_[https://github.com/cloudwego/eino-examples](https://github.com/cloudwego/eino-examples)_
+
+```bash
+# HTTPS
+git clone https://github.com/cloudwego/eino-examples.git 
+
+# SSH
+git clone git@github.com:cloudwego/eino-examples.git
+```
+
+### 安装依赖
+
+在项目目录下依次执行以下指令
+
+```bash
+# 1. Pull latest devops repository 
+go get github.com/cloudwego/eino-ext/devops@latest
+
+# 2. Cleans and updates go.mod and go.sum
+go mod tidy
+```
+
+### 运行 Demo
+
+进入 `eino-examples/devops/debug/main.go`，运行 `main.go`。因为插件会同时在本地启动一个 HTTP 服务用于连接用户服务进程，所以会弹出接入网络警告，点击允许。
+
+<a href="/img/eino/eino_debug_enter_config_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_config_page.png" width="100%" /></a>
+
+### 配置调试地址
+
+<table><tbody><tr>
+<td>
+1.点击左侧或正中间调试功能进入调试配置
+<a href="/img/eino/eino_debug_enter_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_page.png" width="100%" /></a>
+</td><td>
+2.点击配置调试地址
+<a href="/img/eino/eino_debug_config_3_page.png" target="_blank"><img src="/img/eino/eino_debug_config_3_page.png" width="100%" /></a>
+</td></tr></tbody></table>
+
+<table><tbody><tr>
+<td>
+3.填入 127.0.0.1:52538
+<a href="/img/eino/eino_debug_config_2_page.png" target="_blank"><img src="/img/eino/eino_debug_config_2_page.png" width="100%" /></a>
+</td><td>
+4.点击确认进入调试界面，选择要调试的Graph
+<a href="/img/eino/eino_orchestration_index_2_page.png" target="_blank"><img src="/img/eino/eino_orchestration_index_2_page.png" width="100%" /></a>
+</td></tr></tbody></table>
+
+### 开始调试
+
+<table><tbody><tr>
+<td>
+1.点击「Test Run」从 start 节点开始执行
+<a href="/img/eino/eino_debug_enter_test_run_2_page.png" target="_blank"><img src="/img/eino/eino_debug_enter_test_run_2_page.png" width="100%" /></a>
+</td><td>
+2.输入 "hello eino"，点击确认
+<a href="/img/eino/eino_debug_run_input_mock_data_page.png" target="_blank"><img src="/img/eino/eino_debug_run_input_mock_data_page.png" width="100%" /></a>
+
+</td></tr></tbody></table>
+
+<table><tbody><tr>
+<td>
+3.在调试区域展示有各个节点的输入和输出
+<a href="/img/eino/eino_debug_test_run_detail_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_detail_page.png" width="100%" /></a>
+</td><td>
+4.点击 Input 和 Output 切换查看节点信息
+<a href="/img/eino/eino_debug_index_page.png" target="_blank"><img src="/img/eino/eino_debug_index_page.png" width="100%" /></a>
+</td></tr></tbody></table>
+
+## 功能一览
+
+### 本地或远程调试
+
+目标调试编排产物无论是运行在本地电脑还是在远程服务器，都可以通过配置 IP:Port ，主动连接到目标调试对象所在的服务器。
+
+<a href="/img/eino/eino_debug_run_config_page.png" target="_blank"><img src="/img/eino/eino_debug_run_config_page.png" width="100%" /></a>
+
+### 编排拓扑可视化
+
+支持 Graph 和 Chain 编排拓扑可视化。
+
+<a href="/img/eino/eino_debug_list_nodes_page.png" target="_blank"><img src="/img/eino/eino_debug_list_nodes_page.png" width="100%" /></a>
+
+### 从任意节点开始调试
+
+<a href="/img/eino/eino_debug_test_run_of_one_node_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_of_one_node_page.png" width="100%" /></a>
+
+### 查看节点执行结果
+
+每个节点执行结果都会按执行顺序展示在调试区域，包括：输入、输出、执行耗时
+
+<a href="/img/eino/eino_debug_run_detail_v2_page.png" target="_blank"><img src="/img/eino/eino_debug_run_detail_v2_page.png" width="100%" /></a>
+
+## 从零开始调试
+
+### 使用 Eino 进行编排
+
+插件支持对 Graph 和 Chain 的编排产物进行调试，假设你已经有编排代码如下
+
+```go
+func RegisterSimpleGraph(ctx context.Context) {
+    g := compose.NewGraph[string, string]()
+    _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+       return input + " process by node_1,", nil
+    }))
+    _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+       return input + " process by node_2,", nil
+    }))
+    _ = g.AddLambdaNode("node_3", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+       return input + " process by node_3,", nil
+    }))
+
+    _ = g.AddEdge(compose.START, "node_1")
+    _ = g.AddEdge("node_1", "node_2")
+    _ = g.AddEdge("node_2", "node_3")
+    _ = g.AddEdge("node_3", compose.END)
+
+    _, err := g.Compile(ctx)
+    if err != nil {
+       logs.Errorf("compile graph failed, err=%v", err)
+       return
+    }
+}
+```
+
+### 安装依赖
+
+在项目目录下依次执行以下指令
+
+```bash
+# 1. Pull latest devops repository 
+go get github.com/cloudwego/eino-ext/devops@latest
+
+# 2. Cleans and updates go.mod and go.sum
+go mod tidy
+```
+
+### 调用调试初始化函数
+
+因为调试需要在用户主进程中启动一个 HTTP 服务，以用作与本地调试插件交互，所以用户需要主动调用一次 _github.com/cloudwego/eino-ext/devops_ 中的 `Init()` 来启动调试服务。
+
+> 💡
+> 注意事项
+>
+> 1. 确保目标调试的编排产物至少执行过一次 `Compile()`。
+> 2. `devops.Init()` 的执行必须要在调用 `Compile()` 之前。
+> 3. 用户需要保证 `devops.Init()` 执行后主进程不能退出。
+
+如在 `main()` 函数中增加调试服务启动代码
+
+```go
+// 1.调用调试服务初始化函数
+err := devops.Init(ctx)
+if err != nil {
+    logs.Errorf("[eino dev] init failed, err=%v", err)
+    return
+}
+
+// 2.编译目标调试的编排产物
+RegisterSimpleGraph(ctx)
+```
+
+### 运行用户进程
+
+在本地电脑或者远程环境中运行你的进程，并保证主进程不会退出。
+
+在 github.com/cloudwego/eino-examples/devops/debug/main.go 中，`main()` 代码如下
+
+```go
+func main() {
+    ctx := context.Background()
+    // Init eino devops server
+    err := devops.Init(ctx)
+    if err != nil {
+       logs.Errorf("[eino dev] init failed, err=%v", err)
+       return
+    }
+
+    // Register chain, graph and state_graph for demo use
+    chain.RegisterSimpleChain(ctx)
+    graph.RegisterSimpleGraph(ctx)
+    graph.RegisterSimpleStateGraph(ctx)
+
+    // Blocking process exits
+    sigs := make(chan os.Signal, 1)
+    signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+    <-sigs
+
+    // Exit
+    logs.Infof("[eino dev] shutting down\n")
+}
+```
+
+### 配置调试地址
+
+- **IP**：用户进程所在服务器的 IP 地址。
+  - 用户进程运行在本地电脑，则填写 `127.0.0.1`；
+  - 用户进程运行在远程服务器上，则填写远程服务器的 IP 地址，兼容 IPv4 和 IPv6 。
+- **Port**：调试服务监听的端口，默认是 `52538`，可通过 「WithDevServerPort」 这一 option 方法进行修改
+
+> 💡
+> 注意事项
+>
+> - 本地电脑调试：系统可能会弹出网络接入警告，允许接入即可。
+> - 远程服务器调试：需要你保证端口可访问。
+
+IP 和 Port 配置完成后，点击确认，调试插件会自动连接到目标调试服务器。如果成功连接，连接状态指示器会变成绿色。
+
+<a href="/img/eino/eino_debug_ip_port_show_page.png" target="_blank"><img src="/img/eino/eino_debug_ip_port_show_page.png" width="100%" /></a>
+
+### 选择目标调试编排产物
+
+确保你目标调试的编排产物至少执行过一次 `Compile()`。因为调试设计是面向编排产物实例，所以如果多次执行 `Compile()`，会在调试服务中注册多个编排产物，继而在选择列表中看到多个可调试目标。
+
+<a href="/img/eino/eino_debug_panel_3.png" target="_blank"><img src="/img/eino/eino_debug_panel_3.png" width="100%" /></a>
+
+### 开始调试
+
+调试支持从任意节点开始调试，包括 start 节点和其他中间节点。
+
+- 从 START 节点开始调试：直接点击 「Test Run」，然后输入 mock 的 input（如果 input 是复杂结构的话，会自动对 input 的结构进行推断）然后点击确定，开始执行你的 graph，每个 node 的结果会在下方显示。
+
+<a href="/img/eino/eino_debug_run_code_2.png" target="_blank"><img src="/img/eino/eino_debug_run_code_2.png" width="100%" /></a>
+
+<a href="/img/eino/eino_debug_run_input_mock_data_2_page.png" target="_blank"><img src="/img/eino/eino_debug_run_input_mock_data_2_page.png" width="100%" /></a>
+
+- 从任意的可操作节点开始调试：比如，从第二个节点开始执行。
+
+<a href="/img/eino/eino_debug_button_run_code.png" target="_blank"><img src="/img/eino/eino_debug_button_run_code.png" width="100%" /></a>
+
+<a href="/img/eino/eino_debug_run_of_mock_input_of_page.png" target="_blank"><img src="/img/eino/eino_debug_run_of_mock_input_of_page.png" width="100%" /></a>
+
+### 查看执行结果
+
+从 START 节点开始调试，点击 Test Run 后，在插件下方查看调试结果。
+
+<a href="/img/eino/eino_debug_test_run_result_page.png" target="_blank"><img src="/img/eino/eino_debug_test_run_result_page.png" width="100%" /></a>
+
+从任意的可操作节点进行调试，在插件下方查看调试结果。
+
+<a href="/img/eino/eino_debug_results.png" target="_blank"><img src="/img/eino/eino_debug_results.png" width="100%" /></a>
+
+## 高阶功能
+
+### 指定 interface 字段的实现类型
+
+对于 interface 类型的字段，会被默认渲染为 `{}` 。在 `{}` 中输入空格可唤出 interface 实现类型的列表，选中某个类型后，系统会生成一个特殊的结构体以表达 interface 的信息；该特殊结构体定义如下：
+
+```go
+{
+    "_value": {} // 按具体类型生成的 json value
+    "_eino_go_type": "*model.MyConcreteType" // Go 类型名
+}
+```
+
+> 💡
+> 系统内已经内置了一些常见的 interface 类型，如 `string`、`schema.Message` 等，可直接选择使用。如果需要自定义 interface 实现类型，可通过 `devops` 提供的 `AppendType` 方法进行注册。
+
+1. 假设你已经有编排代码如下，其中，graph 的输入定义为 `any`，`node_1` 的输入定义为 `*NodeInfo`;
+
+   ```go
+   type NodeInfo struct {
+       Message string
+   }
+
+   func RegisterGraphOfInterfaceType(ctx context.Context) {
+       // Define a graph that input parameter is any.
+       g := compose.NewGraph[any, string]()
+
+       _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input *NodeInfo) (output string, err error) {
+          if input == nil {
+             return "", nil
+          }
+          return input.Message + " process by node_1,", nil
+       }))
+
+       _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+          return input + " process by node_2,", nil
+       }))
+
+       _ = g.AddLambdaNode("node_3", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+          return input + " process by node_3,", nil
+       }))
+
+       _ = g.AddEdge(compose._START_, "node_1")
+
+       _ = g.AddEdge("node_1", "node_2")
+
+       _ = g.AddEdge("node_2", "node_3")
+
+       _ = g.AddEdge("node_3", compose._END_)
+
+       r, err := g.Compile(ctx)
+       if err != nil {
+          logs.Errorf("compile graph failed, err=%v", err)
+          return
+       }
+   }
+   ```
+2. 调试前，通过 `AppendType` 方法在 `Init()` 时注册自定义的 `*NodeInfo` 类型：
+
+   ```go
+   err := devops.Init(ctx, devops.AppendType(&graph.NodeInfo{}))
+   ```
+3. 调试过程中，在 Test Run 的 Json 输入框中，对于 interface 类型的字段，默认会呈现为 `{}`。可以通过在 `{}` 中键入一个空格，来查看所有内置的以及自定义注册的数据类型，并选择该 interface 的具体实现类型。
+
+<a href="/img/eino/eino_debug_run_code.png" target="_blank"><img src="/img/eino/eino_debug_run_code.png" width="100%" /></a>
+
+1. 在 `_value` 字段中补全调试节点输入。
+
+<a href="/img/eino/eino_debug_run_code_3.png" target="_blank"><img src="/img/eino/eino_debug_run_code_3.png" width="100%" /></a>
+
+1. 点击确认，查看调试结果。
+
+<a href="/img/eino/eino_debug_panel_2.png" target="_blank"><img src="/img/eino/eino_debug_panel_2.png" width="100%" /></a>
+
+#### map[string]any 调试
+
+这里再解释下输入类型为 map[string]any 时如何调试；如果某个节点的输入类型为 map[string]any，如下所示：
+
+```go
+func RegisterAnyInputGraph(ctx context.Context) {
+        g := compose.NewGraph[map[string]any, string]()
+
+        _ = g.AddLambdaNode("node_1", compose.InvokableLambda(func(ctx context.Context, input map[string]any) (output string, err error) {
+                for k, v := range input {
+                        switch v.(type) {
+                        case string:
+                                output += k + ":" + v.(string) + ","
+                        case int:
+                                output += k + ":" + fmt.Sprintf("%d", v.(int))
+                        default:
+                                return "", fmt.Errorf("unsupported type: %T", v)
+                        }
+                }
+
+                return output, nil
+        }))
+
+        _ = g.AddLambdaNode("node_2", compose.InvokableLambda(func(ctx context.Context, input string) (output string, err error) {
+                return input + " process by node_2,", nil
+        }))
+
+        _ = g.AddEdge(compose.START, "node_1")
+
+        _ = g.AddEdge("node_1", "node_2")
+
+        _ = g.AddEdge("node_2", compose.END)
+
+        r, err := g.Compile(ctx)
+        if err != nil {
+                logs.Errorf("compile graph failed, err=%v", err)
+                return
+        }
+
+        message, err := r.Invoke(ctx, map[string]any{"name": "bob", "score": 100})
+        if err != nil {
+                logs.Errorf("invoke graph failed, err=%v", err)
+                return
+        }
+
+        logs.Infof("eino any input graph output is: %v", message)
+}
+```
+
+调试过程中，在 Test Run 的 Json 输入框中，你需要输入以下格式的内容：
+
+```json
+{
+    "name": {
+       "_value": "alice",
+       "_eino_go_type": "string"
+    },
+    "score": {
+       "_value": "99",
+       "_eino_go_type": "int"
+    }
+}
+```
+</script><h1>Eino Dev 可视化调试插件功能指南</h1><header class=article-meta></header><h2 id=简介>简介</h2><blockquote><p>💡
 使用该插件可以对使用 Eino 框架编写的编排产物（Graph，Chain）进行可视化调试，包括：</p><ol><li>编排产物可视化渲染；</li><li>从可操作的任意节点开始，mock 输入进行调试。</li></ol></blockquote><h2 id=快速开始>快速开始</h2><h3 id=下载-eino-example>下载 eino-example</h3><blockquote><p>github 仓库：<em><a href=https://github.com/cloudwego/eino-examples>https://github.com/cloudwego/eino-examples</a></em></p></blockquote><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#8f5902;font-style:italic># HTTPS</span>
 </span></span><span style=display:flex><span>git clone https://github.com/cloudwego/eino-examples.git 
 </span></span><span style=display:flex><span>
@@ -297,4 +698,4 @@
 </span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 December 11, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/958594401a6023a6af82d318726092853de4225c>feat(eino): sync zh documents (#1474) (95859440)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

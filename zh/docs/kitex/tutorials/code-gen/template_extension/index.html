@@ -22,7 +22,7 @@ extensions.yaml 文件提供的内容将会被应用到所有 service 定义对�
 企业用户对框架有统一的定制，即有一套固定的 option 配置，我们建议这些 option 封装在 suite 中，这样初始化时只需要配置一个 option。但对于内部的业务开发者来说依然需要配置这个 suite option，实际业务开发者并不需要关注这个配置，因为业务开发者不需要关注基础设施的能力。
 字节内部会在生成代码中注入 bytedSuite，为了方便外部框架定制者也能这么使用，所以提供了这个配置化定制能力。当然，如果要进一步对业务开发者屏蔽这个细节，也可以对 Kitex 代码生成工具做一个封装，内置这个统一的配置。
 示例 有这么一个 extensions.yaml 文件：
---- dependencies: example.com/my/pkg: pkg extend_client: import_paths: - example.com/my/pkg extend_option: options = append(options, client.WithSuite(pkg.MyClientSuite())) extend_file: |- func Hello() { println("hello world") } extend_server: import_paths: - example.com/my/pkg extend_option: options = append(options, server.WithSuite(pkg.MyServerSuite())) extend_file: |- func Hello() { println("hello world") } dependencies：字段定义了在模板里可能会被使用到的包的列表，以及它们被引用的名字。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+--- dependencies: example.com/my/pkg: pkg extend_client: import_paths: - example.com/my/pkg extend_option: options = append(options, client.WithSuite(pkg.MyClientSuite())) extend_file: |- func Hello() { println("hello world") } extend_server: import_paths: - example.com/my/pkg extend_option: options = append(options, server.WithSuite(pkg.MyServerSuite())) extend_file: |- func Hello() { println("hello world") } dependencies：字段定义了在模板里可能会被使用到的包的列表，以及它们被引用的名字。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -173,7 +173,134 @@ extensions.yaml 文件提供的内容将会被应用到所有 service 定义对�
 <label for=m-zhdocskitexfaq-check><a href=/zh/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/kitex/Tutorials/code-gen/template_extension.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/kitex/Tutorials/code-gen?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e6%89%a9%e5%b1%95%20Service%20%e4%bb%a3%e7%a0%81%e7%94%9f%e6%88%90%e6%a8%a1%e6%9d%bf" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#介绍>介绍</a><ul><li><a href=#应用场景>应用场景</a></li></ul></li><li><a href=#示例>示例</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/>代码生成</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/template_extension/>扩展 Service 代码生成模板</a></li></ol></nav><div class=td-content><h1>扩展 Service 代码生成模板</h1><header class=article-meta></header><h2 id=介绍>介绍</h2><p>从 v0.4.3 版本开始，Kitex 代码生成工具新增一个名为 <code>-template-extension</code> 的参数，支持了对 Service 生成模板进行一定程度的扩展。</p><ul><li><strong>用法</strong>：<code>kitex -template-extension extensions.yaml YOUR_IDL</code>。</li></ul><p>其中 <strong>extensions.yaml</strong> 是一个 YAML 文件，其内容必须是一个 <a href=https://pkg.go.dev/github.com/cloudwego/kitex/tool/internal_pkg/generator#TemplateExtension>TemplateExtension</a> 对象的序列化结果。这个对象的各个字段将被注入到 Kitex 的代码生成器后端，以在特定位置插入指定的代码。</p><p>Kitex 会在 kitex_gen 目录下面为 IDL 里出现的每一个 service 定义生成一个对应的 package，在其中包含了 <code>NewClient</code>、<code>NewServer</code> 等 API。</p><p>extensions.yaml 文件提供的内容将会被应用到所有 service 定义对应的 package，其中 <code>extend_client</code>、<code>extend_server</code>、<code>extend_invoker</code> 字段分别对应 client.go 、 server.go 、invoker.go 的扩展。</p><h3 id=应用场景>应用场景</h3><p>适用于统一定制 suite 场景。</p><p>企业用户对框架有统一的定制，即有一套固定的 option 配置，我们建议这些 option 封装在 suite 中，这样初始化时只需要配置一个 option。但对于内部的业务开发者来说依然需要配置这个 suite option，实际业务开发者并不需要关注这个配置，因为业务开发者不需要关注基础设施的能力。</p><p>字节内部会在生成代码中注入 bytedSuite，为了方便外部框架定制者也能这么使用，所以提供了这个配置化定制能力。当然，如果要进一步对业务开发者屏蔽这个细节，也可以对 Kitex 代码生成工具做一个封装，内置这个统一的配置。</p><h2 id=示例>示例</h2><p>有这么一个 extensions.yaml 文件：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#000>---</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#介绍>介绍</a><ul><li><a href=#应用场景>应用场景</a></li></ul></li><li><a href=#示例>示例</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/>代码生成</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/template_extension/>扩展 Service 代码生成模板</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="扩展 Service 代码生成模板" data-url=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/template_extension/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 介绍
+
+从 v0.4.3 版本开始，Kitex 代码生成工具新增一个名为 `-template-extension` 的参数，支持了对 Service 生成模板进行一定程度的扩展。
+
+- **用法**：`kitex -template-extension extensions.yaml YOUR_IDL`。
+
+其中 **extensions.yaml** 是一个 YAML 文件，其内容必须是一个 [TemplateExtension](https://pkg.go.dev/github.com/cloudwego/kitex/tool/internal_pkg/generator#TemplateExtension) 对象的序列化结果。这个对象的各个字段将被注入到 Kitex 的代码生成器后端，以在特定位置插入指定的代码。
+
+Kitex 会在 kitex_gen 目录下面为 IDL 里出现的每一个 service 定义生成一个对应的 package，在其中包含了 `NewClient`、`NewServer` 等 API。
+
+extensions.yaml 文件提供的内容将会被应用到所有 service 定义对应的 package，其中 `extend_client`、`extend_server`、`extend_invoker` 字段分别对应 client.go 、 server.go 、invoker.go 的扩展。
+
+### 应用场景
+
+适用于统一定制 suite 场景。
+
+企业用户对框架有统一的定制，即有一套固定的 option 配置，我们建议这些 option 封装在 suite 中，这样初始化时只需要配置一个 option。但对于内部的业务开发者来说依然需要配置这个 suite option，实际业务开发者并不需要关注这个配置，因为业务开发者不需要关注基础设施的能力。
+
+字节内部会在生成代码中注入 bytedSuite，为了方便外部框架定制者也能这么使用，所以提供了这个配置化定制能力。当然，如果要进一步对业务开发者屏蔽这个细节，也可以对 Kitex 代码生成工具做一个封装，内置这个统一的配置。
+
+## 示例
+
+有这么一个 extensions.yaml 文件：
+
+```yaml
+---
+dependencies:
+  example.com/my/pkg: pkg
+extend_client:
+  import_paths:
+    - example.com/my/pkg
+  extend_option: options = append(options, client.WithSuite(pkg.MyClientSuite()))
+  extend_file: |-
+    func Hello() {
+      println("hello world")
+    }
+extend_server:
+  import_paths:
+    - example.com/my/pkg
+  extend_option: options = append(options, server.WithSuite(pkg.MyServerSuite()))
+  extend_file: |-
+    func Hello() {
+      println("hello world")
+    }
+```
+
+- **dependencies**：字段定义了在模板里可能会被使用到的包的列表，以及它们被引用的名字。
+
+- **extend_client**：对 client.go 的扩展定制
+
+  - **import_paths**：声明了对 client.go 文件注入的代码需要导入的包的列表，其内容必须是 **dependencies** 字段里声明过的。
+
+  - **extend_option**：提供的代码片段会被注入到 `NewClient` 函数里，构造默认的选项的位置，可以在这个地方注入你自己定义的 suite 之类的选项。
+
+  - **extend_file**：提供的代码片段将会被直接添加到 client.go 文件的末尾，因此可以在这里提供额外的函数、常量定义等。
+
+- **extend_server** 的作用和 **extend_client** 是类似的，这里不再赘述。
+
+一个应用了 extensions.yaml 的 IDL，生成的 client.go 可能是这样的（高亮的就是插入的部分）：
+
+```go {linenos=table,hl_lines=[8,22,"53-55"]}
+// Code generated by Kitex v0.4.2. DO NOT EDIT.
+
+package demoservice
+
+import (
+	"context"
+	demo "example.com/demo/kitex_gen/demo"
+	pkg "example.com/my/pkg"
+	client "github.com/cloudwego/kitex/client"
+	callopt "github.com/cloudwego/kitex/client/callopt"
+)
+
+// Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
+type Client interface {
+	Test(ctx context.Context, request *demo.DemoTestRequest, callOptions ...callopt.Option) (r *demo.DemoTestResponse, err error)
+}
+
+// NewClient creates a client for the service defined in IDL.
+func NewClient(destService string, opts ...client.Option) (Client, error) {
+	var options []client.Option
+	options = append(options, client.WithDestService(destService))
+	options = append(options, client.WithSuite(pkg.MyClientSuite()))
+
+	options = append(options, opts...)
+
+	kc, err := client.NewClient(serviceInfo(), options...)
+	if err != nil {
+		return nil, err
+	}
+	return &kDemoServiceClient{
+		kClient: newServiceClient(kc),
+	}, nil
+}
+
+// MustNewClient creates a client for the service defined in IDL. It panics if any error occurs.
+func MustNewClient(destService string, opts ...client.Option) Client {
+	kc, err := NewClient(destService, opts...)
+	if err != nil {
+		panic(err)
+	}
+	return kc
+}
+
+type kDemoServiceClient struct {
+	*kClient
+}
+
+func (p *kDemoServiceClient) Test(ctx context.Context, request *demo.DemoTestRequest, callOptions ...callopt.Option) (r *demo.DemoTestResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.Test(ctx, request)
+}
+
+func Hello() {
+	println("hello world")
+}
+```
+</script><h1>扩展 Service 代码生成模板</h1><header class=article-meta></header><h2 id=介绍>介绍</h2><p>从 v0.4.3 版本开始，Kitex 代码生成工具新增一个名为 <code>-template-extension</code> 的参数，支持了对 Service 生成模板进行一定程度的扩展。</p><ul><li><strong>用法</strong>：<code>kitex -template-extension extensions.yaml YOUR_IDL</code>。</li></ul><p>其中 <strong>extensions.yaml</strong> 是一个 YAML 文件，其内容必须是一个 <a href=https://pkg.go.dev/github.com/cloudwego/kitex/tool/internal_pkg/generator#TemplateExtension>TemplateExtension</a> 对象的序列化结果。这个对象的各个字段将被注入到 Kitex 的代码生成器后端，以在特定位置插入指定的代码。</p><p>Kitex 会在 kitex_gen 目录下面为 IDL 里出现的每一个 service 定义生成一个对应的 package，在其中包含了 <code>NewClient</code>、<code>NewServer</code> 等 API。</p><p>extensions.yaml 文件提供的内容将会被应用到所有 service 定义对应的 package，其中 <code>extend_client</code>、<code>extend_server</code>、<code>extend_invoker</code> 字段分别对应 client.go 、 server.go 、invoker.go 的扩展。</p><h3 id=应用场景>应用场景</h3><p>适用于统一定制 suite 场景。</p><p>企业用户对框架有统一的定制，即有一套固定的 option 配置，我们建议这些 option 封装在 suite 中，这样初始化时只需要配置一个 option。但对于内部的业务开发者来说依然需要配置这个 suite option，实际业务开发者并不需要关注这个配置，因为业务开发者不需要关注基础设施的能力。</p><p>字节内部会在生成代码中注入 bytedSuite，为了方便外部框架定制者也能这么使用，所以提供了这个配置化定制能力。当然，如果要进一步对业务开发者屏蔽这个细节，也可以对 Kitex 代码生成工具做一个封装，内置这个统一的配置。</p><h2 id=示例>示例</h2><p>有这么一个 extensions.yaml 文件：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#000>---</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>dependencies</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>  </span><span style=color:#204a87;font-weight:700>example.com/my/pkg</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>pkg</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>extend_client</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -305,4 +432,4 @@ extensions.yaml 文件提供的内容将会被应用到所有 service 定义对�
 </span></span></span></code></pre></td></tr></table></div></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 May 8, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/dff8f175d96e832fb521f13246cce14399aefcdb>style: prettier lint fix (#1069) (dff8f175)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

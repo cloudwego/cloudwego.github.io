@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Swagger | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/hertz/tutorials/third-party/middleware/swagger/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Swagger"><meta property="og:description" content="使用官方 Swagger 工具链和 HTTP Adaptor 生成 RESTful API 文档"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2025-12-04T00:00:00+00:00"><meta property="article:modified_time" content="2025-12-16T15:46:24+08:00"><meta itemprop=name content="Swagger"><meta itemprop=description content="使用官方 Swagger 工具链和 HTTP Adaptor 生成 RESTful API 文档"><meta itemprop=datePublished content="2025-12-04T00:00:00+00:00"><meta itemprop=dateModified content="2025-12-16T15:46:24+08:00"><meta itemprop=wordCount content="1064"><meta itemprop=keywords content="Swagger,RESTful API"><meta name=twitter:card content="summary"><meta name=twitter:title content="Swagger"><meta name=twitter:description content="使用官方 Swagger 工具链和 HTTP Adaptor 生成 RESTful API 文档"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Swagger | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/hertz/tutorials/third-party/middleware/swagger/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Swagger"><meta property="og:description" content="使用官方 Swagger 工具链和 HTTP Adaptor 生成 RESTful API 文档"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2025-12-04T00:00:00+00:00"><meta property="article:modified_time" content="2025-12-16T15:46:24+08:00"><meta itemprop=name content="Swagger"><meta itemprop=description content="使用官方 Swagger 工具链和 HTTP Adaptor 生成 RESTful API 文档"><meta itemprop=datePublished content="2025-12-04T00:00:00+00:00"><meta itemprop=dateModified content="2025-12-16T15:46:24+08:00"><meta itemprop=wordCount content="1064"><meta itemprop=keywords content="Swagger,RESTful API"><meta name=twitter:card content="summary"><meta name=twitter:title content="Swagger"><meta name=twitter:description content="使用官方 Swagger 工具链和 HTTP Adaptor 生成 RESTful API 文档"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -110,7 +110,400 @@
 <label for=m-zhdocshertzreferenceversion-check><a href=/zh/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocshertzreferenceversion><span>版本说明</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/hertz/tutorials/third-party/middleware/swagger.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/hertz/tutorials/third-party/middleware?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Swagger" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#迁移指南>迁移指南</a></li><li><a href=#示例用法>示例用法</a><ul><li><a href=#自定义-swagger-ui>自定义 Swagger UI</a></li></ul></li><li><a href=#旧版文档已废弃>旧版文档（已废弃）</a><ul><li><a href=#使用用法>使用用法</a></li><li><a href=#示例代码>示例代码</a></li><li><a href=#支持多个-api>支持多个 API</a></li><li><a href=#配置>配置</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/third-party/>三方扩展</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/third-party/middleware/>中间件</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/third-party/middleware/swagger/>Swagger</a></li></ol></nav><div class=td-content><h1>Swagger</h1><div class=lead>使用官方 Swagger 工具链和 HTTP Adaptor 生成 RESTful API 文档</div><header class=article-meta></header><blockquote><p><strong>⚠️ 已废弃</strong></p><p><code>hertz-contrib/swagger</code> 中间件已被废弃。
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#迁移指南>迁移指南</a></li><li><a href=#示例用法>示例用法</a><ul><li><a href=#自定义-swagger-ui>自定义 Swagger UI</a></li></ul></li><li><a href=#旧版文档已废弃>旧版文档（已废弃）</a><ul><li><a href=#使用用法>使用用法</a></li><li><a href=#示例代码>示例代码</a></li><li><a href=#支持多个-api>支持多个 API</a></li><li><a href=#配置>配置</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/third-party/>三方扩展</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/third-party/middleware/>中间件</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/third-party/middleware/swagger/>Swagger</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=Swagger data-url=https://www.cloudwego.io/zh/docs/hertz/tutorials/third-party/middleware/swagger/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+> **⚠️ 已废弃**
+>
+> `hertz-contrib/swagger` 中间件已被废弃。
+> Hertz 推荐所有用户迁移到官方 `swaggo/swag` 工具链，使用 [Hertz HTTP Adaptor](../../basic-feature/http-adaptor/)。
+>
+> 迁移指南如下。
+
+## 迁移指南
+
+1. 移除已废弃的依赖项
+
+```sh
+github.com/hertz-contrib/swagger
+github.com/swaggo/files
+```
+
+2. 安装官方 Swag 生成器
+
+```sh
+go install github.com/swaggo/swag/cmd/swag@latest
+```
+
+3. 利用 hertz adaptor
+
+```go
+// 旧版本（已废弃：hertz-contrib/swagger）
+import "github.com/hertz-contrib/swagger"
+import swaggerFiles "github.com/swaggo/files"
+
+url := swagger.URL("http://localhost:8888/swagger/doc.json")
+h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url))
+```
+
+```go
+// 新版本（推荐：adaptor）
+import "github.com/cloudwego/hertz/pkg/common/adaptor"
+import httpSwagger "github.com/swaggo/http-swagger"
+
+h.GET("/swagger/*any", adaptor.HertzHandler(httpSwagger.WrapHandler))
+```
+
+## 示例用法
+
+本示例演示了如何使用 HTTP Adaptor 在 Hertz 应用中集成 Swagger UI。
+
+```go
+package main
+
+import (
+    "context"
+
+    // 生成的 docs 路径
+    _ "project/docs"
+
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/adaptor"
+    httpSwagger "github.com/swaggo/http-swagger"
+)
+
+// PingHandler
+// @Summary Summary
+// @Description Description
+// @Accept application/json
+// @Produce application/json
+// @Router /ping [get]
+func PingHandler(c context.Context, ctx *app.RequestContext) {
+    ctx.JSON(200, map[string]string{
+        "ping": "pong",
+    })
+}
+
+// @title HertzTest
+// @version 1.0
+// @description This is a demo using Hertz
+
+// @contact.name hertz
+// @contact.url https://github.com/cloudwego/hertz
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8888
+// @BasePath /
+// @schemes http
+func main() {
+    h := server.Default()
+
+    h.GET("/ping", PingHandler)
+
+    // Swagger endpoint
+    h.GET("/swagger/*any",
+        adaptor.HertzHandler(
+            httpSwagger.WrapHandler,
+        ),
+    )
+
+    h.Spin()
+}
+```
+
+1. 更新 Swagger 注释
+
+```sh
+swag init
+```
+
+2. 运行程序
+
+启动 Hertz 服务器。
+
+```sh
+go run main.go
+```
+
+在浏览器中访问 http://localhost:8888/swagger/index.html 或配置的地址，即可查看 Swagger UI。
+
+### 自定义 Swagger UI
+
+对于想要创建自己的自定义 UI 的用户，他们需要下载 Swagger UI 分发文件，并将 UI 文件作为静态资源提供。
+
+1. 从 [swagger-ui/dist](https://github.com/swagger-api/swagger-ui/tree/master/dist) 中复制以下文件到 `swagger-ui/`
+
+- https://github.com/swagger-api/swagger-ui/blob/master/dist/favicon-16x16.png
+- https://github.com/swagger-api/swagger-ui/blob/master/dist/favicon-32x32.png
+- https://github.com/swagger-api/swagger-ui/blob/master/dist/swagger-ui.css
+- https://github.com/swagger-api/swagger-ui/blob/master/dist/swagger-ui-bundle.js
+- https://github.com/swagger-api/swagger-ui/blob/master/dist/swagger-ui-standalone-preset.js
+
+2. 在同一目录下创建一个 `index.html` 文件，示例模板如下。旧版 hertz-contrib/swagger 中的配置项都可以直接在 HTML 文件里设置。
+
+**注意：以下 HTML 文件仅为示例，应根据用户需求进行修改。**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Custom Swagger UI</title> <!-- Title -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="swagger-ui.css">
+  <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+  <style>
+    html { box-sizing: border-box; overflow: -moz-scrollbars-vertical; overflow-y: scroll; }
+    *, *:before, *:after { box-sizing: inherit; }
+
+    body { 
+      margin: 0; 
+      background: #fff4d6; 
+    }
+
+    .custom-banner {
+      padding: 20px;
+      background: #4f46e5;
+      color: white;
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      border-bottom: 4px solid #312e81;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="custom-banner">
+  My Custom Swagger UI
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position:absolute;width:0;height:0">
+  <defs>
+    <symbol viewBox="0 0 20 20" id="unlocked">
+          <path d="M15.8 8H14V5.6C14 2.703 12.665 1 10 1 7.334 1 6 2.703 6 5.6V6h2v-.801C8 3.754 8.797 3 10 3c1.203 0 2 .754 2 2.199V8H4c-.553 0-1 .646-1 1.199V17c0 .549.428 1.139.951 1.307l1.197.387C5.672 18.861 6.55 19 7.1 19h5.8c.549 0 1.428-.139 1.951-.307l1.196-.387c.524-.167.953-.757.953-1.306V9.199C17 8.646 16.352 8 15.8 8z"></path>
+    </symbol>
+
+    <symbol viewBox="0 0 20 20" id="locked">
+      <path d="M15.8 8H14V5.6C14 2.703 12.665 1 10 1 7.334 1 6 2.703 6 5.6V8H4c-.553 0-1 .646-1 1.199V17c0 .549.428 1.139.951 1.307l1.197.387C5.672 18.861 6.55 19 7.1 19h5.8c.549 0 1.428-.139 1.951-.307l1.196-.387c.524-.167.953-.757.953-1.306V9.199C17 8.646 16.352 8 15.8 8zM12 8H8V5.199C8 3.754 8.797 3 10 3c1.203 0 2 .754 2 2.199V8z"/>
+    </symbol>
+
+    <symbol viewBox="0 0 20 20" id="close">
+      <path d="M14.348 14.849c-.469.469-1.229.469-1.697 0L10 11.819l-2.651 3.029c-.469.469-1.229.469-1.697 0-.469-.469-.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-.469-.469-.469-1.228 0-1.697.469-.469 1.228-.469 1.697 0L10 8.183l2.651-3.031c.469-.469 1.228-.469 1.697 0 .469.469.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c.469.469.469 1.229 0 1.698z"/>
+    </symbol>
+
+    <symbol viewBox="0 0 20 20" id="large-arrow">
+      <path d="M13.25 10L6.109 2.58c-.268-.27-.268-.707 0-.979.268-.27.701-.27.969 0l7.83 7.908c.268.271.268.709 0 .979l-7.83 7.908c-.268.271-.701.27-.969 0-.268-.269-.268-.707 0-.979L13.25 10z"/>
+    </symbol>
+
+    <symbol viewBox="0 0 20 20" id="large-arrow-down">
+      <path d="M17.418 6.109c.272-.268.709-.268.979 0s.271.701 0 .969l-7.908 7.83c-.27.268-.707.268-.979 0l-7.908-7.83c-.27-.268-.27-.701 0-.969.271-.268.709-.268.979 0L10 13.25l7.418-7.141z"/>
+    </symbol>
+
+    <symbol viewBox="0 0 24 24" id="jump-to">
+      <path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7z"/>
+    </symbol>
+
+    <symbol viewBox="0 0 24 24" id="expand">
+      <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
+    </symbol>
+
+  </defs>
+</svg>
+
+<div id="swagger-ui"></div>
+
+<script src="swagger-ui-bundle.js"></script><script src=swagger-ui-standalone-preset.js></script><script>window.onload=function(){const e=SwaggerUIBundle({url:"swagger/doc.json",syntaxHighlight:!0,dom_id:"#swagger-ui",validatorUrl:null,oauth2RedirectUrl:"",persistAuthorization:!1,presets:[SwaggerUIBundle.presets.apis,SwaggerUIStandalonePreset],plugins:[SwaggerUIBundle.plugins.DownloadUrl],layout:"StandaloneLayout",docExpansion:"none",deepLinking:!0,defaultModelsExpandDepth:1}),t="";t&&e.initOAuth({clientId:t}),window.ui=e}</script></body></html>```
+最终项目结构应如下：
+```sh
+project/
+├── main.go
+├── docs/ # generated by swag init
+│ ├── docs.go
+│ ├── swagger.json
+│ └── swagger.yaml
+├── swagger-ui/ # custom UI (copied from Swagger UI dist)
+│ ├── favicon-16x16.png
+│ ├── favicon-32x32.png
+│ ├── index.html
+│ ├── swagger-ui-bundle.js
+│ ├── swagger-ui-standalone-preset.js
+│ ├── swagger-ui.css
+│ └── ...other swagger ui dist files as needed...
+├── go.mod
+└── go.sum
+```
+3. 提供静态资源服务
+在 `main.go` 中加入
+```go
+h.GET("/swagger/*any", adaptor.HertzHandler(httpSwagger.WrapHandler))
+// 加这一行
+h.Static("/", "./swagger-ui")
+h.Spin()
+// 其他代码
+```
+4. 运行程序
+```sh
+go run main.go
+```
+浏览器访问：http://localhost:8888/index.html 即可查看自定义的 Swagger UI。
+## 旧版文档（已废弃）
+这是一个用 Swagger 2.0 来自动生成 RESTful API 文档的 Hertz 中间件。
+参考了 gin 的 [实现](https://github.com/swaggo/gin-swagger)，对 Hertz 进行了适配。
+### 使用用法
+1. 在你的 API 源代码中添加注释，参考 [Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format)。
+2. 可以通过运行以下命令下载 Go 对应的 [Swag][Swag] 可执行文件:
+但是需要**注意**的是，`go get` 安装可执行文件需要配合 `GOPATH` 模式工作。
+```sh
+go get github.com/swaggo/swag/cmd/swag
+```
+因为从 Go 1.17 开始，在 `go mod` 模式下通过 `go get` 下载对应库文件将无法自动编译并安装到 `$GOPATH/bin` 的路径，
+所以不再推荐用 `go get` 来安装可执行文件的方式。可以使用 `go install`来代替。
+```sh
+go install github.com/swaggo/swag/cmd/swag@latest
+```
+3. 在你的 Go 项目的根目录下运行 [Swag][Swag] (例如 `~/root/go-project-name`)，[Swag][Swag] 会解析注释并在 `~/root/go-project-name/docs` 目录下生成必要的文件 (`docs` 文件夹和 `docs/doc.go`)。
+```sh
+swag init
+```
+使用参数运行 [Swag][Swag] (全部参数可以通过运行 `swag init -h` 查看)。
+```bash
+swag init --parseDependency --parseInternal --parseDepth 5 --instanceName "swagger"
+```
+| 选项 | 默认值 | 描述 |
+| --------------- | --------- | -------------------------------------------------------------------------------------------------------------- |
+| parseInternal | false | 解析内部依赖包。 |
+| parseDependency | false | 解析外部依赖包。 |
+| parseDepth | 100 | 解析依赖包深度，如果你知道解析结构的深度，推荐使用这个参数，swag 命令的执行时间会显著减少。 |
+| instanceName | "swagger" | swagger 文档的实例名称。如果要在一个 Hertz 路由上部署多个不同的 swagger 实例，请确保每个实例有一个唯一的名字。 |
+4. 通过运行以下命令在工程中下载 [hertz-swagger](https://github.com/hertz-contrib/swagger) :
+```sh
+go get github.com/hertz-contrib/swagger
+go get github.com/swaggo/files
+```
+并在你的代码中引用如下代码:
+```go
+import "github.com/hertz-contrib/swagger" // hertz-swagger middleware
+import "github.com/swaggo/files" // swagger embed files
+```
+### 示例代码
+现在假设你已经实现了一个简单的 api，如下所示：
+```go
+func PingHandler(ctx context.Context, c *app.RequestContext) {
+c.JSON(200, map[string]string{
+"ping": "pong",
+})
+}
+```
+那么如何在 api 上面使用 hertz-swagger？只要按照下面的步骤即可。
+1. 使用 hertz-swagger 规则为 api 和主函数添加注释，如下所示：
+```go
+// PingHandler 测试 handler
+// @Summary 测试 Summary
+// @Description 测试 Description
+// @Accept application/json
+// @Produce application/json
+// @Router /ping [get]
+func PingHandler(ctx context.Context, c *app.RequestContext) {
+c.JSON(200, map[string]string{
+"ping": "pong",
+})
+}
+```
+2. 使用 `swag init` 命令来生成文档，生成的文档将被存储在 `docs/` 目录下。
+3. 将生成的 docs 包导入当前项目中:
+假设你的项目名为 `github.com/go-project-name/docs`。
+```go
+import (
+docs "github.com/go-project-name/docs"
+)
+```
+4. 编译运行你的应用程序，之后在 http://localhost:8888/swagger/index.html，可以看到 Swagger UI 界面。
+5. 完整的代码和文件依赖关系，如下所示:
+```go
+package main
+import (
+"context"
+"github.com/cloudwego/hertz/pkg/app"
+"github.com/cloudwego/hertz/pkg/app/server"
+"github.com/hertz-contrib/swagger"
+_ "github.com/hertz-contrib/swagger/example/basic/docs"
+swaggerFiles "github.com/swaggo/files"
+)
+// PingHandler 测试 handler
+// @Summary 测试 Summary
+// @Description 测试 Description
+// @Accept application/json
+// @Produce application/json
+// @Router /ping [get]
+func PingHandler(ctx context.Context, c *app.RequestContext) {
+c.JSON(200, map[string]string{
+"ping": "pong",
+})
+}
+// @title HertzTest
+// @version 1.0
+// @description This is a demo using Hertz.
+// @contact.name hertz-contrib
+// @contact.url https://github.com/hertz-contrib
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @host localhost:8888
+// @BasePath /
+// @schemes http
+func main() {
+h := server.Default()
+h.GET("/ping", PingHandler)
+url := swagger.URL("http://localhost:8888/swagger/doc.json") // The url pointing to API definition
+h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url))
+h.Spin()
+}
+```
+样例的项目目录结构树如下，`swag init` 运行在相对的目录 `.` 下。
+```
+.
+├── docs
+│ ├── docs.go
+│ ├── swagger.json
+│ └── swagger.yaml
+├── go.mod
+├── go.sum
+└── main.go
+```
+### 支持多个 API
+这个功能是在 swag v1.7.9 中引入的。
+### 配置
+你可以使用不同的配置选项来配置 Swagger。
+```go
+func main() {
+h := server.Default()
+h.GET("/ping", PingHandler)
+url := swagger.URL("http://localhost:8888/swagger/doc.json") // The url pointing to API definition
+h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url, swagger.DefaultModelsExpandDepth(-1)))
+h.Spin()
+}
+```
+| 选项 | 类型 | 默认值 | 描述 |
+| ------------------------ | ------ | ---------- | ---------------------------------------------------------------------------------------------------------- |
+| URL | string | "doc.json" | 指向 API 定义的 URL |
+| DocExpansion | string | "list" | 控制操作和标签的默认扩展设置。它可以是 `list`（只展开标签）、`full`（展开标签和操作）或 `none`（不展开）。 |
+| DeepLinking | bool | true | 如果设置为 `true`，可以启用标签和操作的深度链接。更多信息请参见深度链接文档。 |
+| DefaultModelsExpandDepth | int | 1 | 模型的默认扩展深度（设置为 -1 完全隐藏模型）。 |
+| PersistAuthorization | bool | false | 如果设置为 `true`，则会持久化保存授权数据，在浏览器关闭/刷新时不会丢失。 |
+| Oauth2DefaultClientID | string | "" | 如果设置了这个字段，它将用于预填 OAuth2 授权对话框的 _client_id_ 字段。 |
+[Swag]: https://github.com/swaggo/swag</script><h1>Swagger</h1><div class=lead>使用官方 Swagger 工具链和 HTTP Adaptor 生成 RESTful API 文档</div><header class=article-meta></header><blockquote><p><strong>⚠️ 已废弃</strong></p><p><code>hertz-contrib/swagger</code> 中间件已被废弃。
 Hertz 推荐所有用户迁移到官方 <code>swaggo/swag</code> 工具链，使用 <a href=/zh/docs/hertz/tutorials/basic-feature/http-adaptor/>Hertz HTTP Adaptor</a>。</p><p>迁移指南如下。</p></blockquote><h2 id=迁移指南>迁移指南</h2><ol><li>移除已废弃的依赖项</li></ol><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>github.com/hertz-contrib/swagger
 </span></span><span style=display:flex><span>github.com/swaggo/files
 </span></span></code></pre></div><ol start=2><li>安装官方 Swag 生成器</li></ol><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>go install github.com/swaggo/swag/cmd/swag@latest
@@ -399,4 +792,4 @@ Hertz 推荐所有用户迁移到官方 <code>swaggo/swag</code> 工具链，使
 </span></span></span></code></pre></div><table><thead><tr><th>选项</th><th>类型</th><th>默认值</th><th>描述</th></tr></thead><tbody><tr><td>URL</td><td>string</td><td>&ldquo;doc.json&rdquo;</td><td>指向 API 定义的 URL</td></tr><tr><td>DocExpansion</td><td>string</td><td>&ldquo;list&rdquo;</td><td>控制操作和标签的默认扩展设置。它可以是 <code>list</code>（只展开标签）、<code>full</code>（展开标签和操作）或 <code>none</code>（不展开）。</td></tr><tr><td>DeepLinking</td><td>bool</td><td>true</td><td>如果设置为 <code>true</code>，可以启用标签和操作的深度链接。更多信息请参见深度链接文档。</td></tr><tr><td>DefaultModelsExpandDepth</td><td>int</td><td>1</td><td>模型的默认扩展深度（设置为 -1 完全隐藏模型）。</td></tr><tr><td>PersistAuthorization</td><td>bool</td><td>false</td><td>如果设置为 <code>true</code>，则会持久化保存授权数据，在浏览器关闭/刷新时不会丢失。</td></tr><tr><td>Oauth2DefaultClientID</td><td>string</td><td>""</td><td>如果设置了这个字段，它将用于预填 OAuth2 授权对话框的 <em>client_id</em> 字段。</td></tr></tbody></table><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 December 16, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/f63ff556663060183592062596d4f247e794efa8>fix: improve readability of websocket and swagger docs (#1480) (f63ff556)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

@@ -19,7 +19,7 @@ Created new session: 083d16da-6b13-4fe6-afb0-c45d8f490ce1 Session title: New Ses
 代码位置 入口代码：cmd/ch03/main.go Memory 实现：mem/store.go 前置条件 与第一章一致：需要配置一个可用的 ChatModel（OpenAI 或 Ark）。
 运行 在 examples/quickstart/chatwitheino 目录下执行：
 # 创建新会话 go run ./cmd/ch03 # 恢复已有会话 go run ./cmd/ch03 --session <session-id> 输出示例：
-Created new session: 083d16da-6b13-4fe6-afb0-c45d8f490ce1 Session title: New Session Enter your message (empty line to exit): you> 你好，我是张三 [assistant] 你好张三！很高兴认识你... you> 我叫什么名字？ [assistant] 你叫张三... Session saved: 083d16da-6b13-4fe6-afb0-c45d8f490ce1 Resume with: go run ./cmd/ch03 --session 083d16da-6b13-4fe6-afb0-c45d8f490ce1 从内存到持久化：为什么需要 Memory 第二章我们实现了多轮对话，但有一个问题：对话历史只存在于内存中。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+Created new session: 083d16da-6b13-4fe6-afb0-c45d8f490ce1 Session title: New Session Enter your message (empty line to exit): you> 你好，我是张三 [assistant] 你好张三！很高兴认识你... you> 我叫什么名字？ [assistant] 你叫张三... Session saved: 083d16da-6b13-4fe6-afb0-c45d8f490ce1 Resume with: go run ./cmd/ch03 --session 083d16da-6b13-4fe6-afb0-c45d8f490ce1 从内存到持久化：为什么需要 Memory 第二章我们实现了多轮对话，但有一个问题：对话历史只存在于内存中。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -128,7 +128,325 @@ Created new session: 083d16da-6b13-4fe6-afb0-c45d8f490ce1 Session title: New Ses
 <label for=m-zhdocseinofaq-check><a href=/zh/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/eino/quick_start/chapter_03_memory_and_session.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/eino/quick_start?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e7%ac%ac%e4%b8%89%e7%ab%a0%ef%bc%9aMemory%20%e4%b8%8e%20Session%ef%bc%88%e6%8c%81%e4%b9%85%e5%8c%96%e5%af%b9%e8%af%9d%ef%bc%89" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#代码位置>代码位置</a></li><li><a href=#前置条件>前置条件</a></li><li><a href=#运行>运行</a></li><li><a href=#从内存到持久化为什么需要-memory>从内存到持久化：为什么需要 Memory</a></li><li><a href=#关键概念>关键概念</a><ul><li><a href=#session业务层概念>Session（业务层概念）</a></li><li><a href=#store业务层概念>Store（业务层概念）</a></li><li><a href=#jsonl-文件格式>JSONL 文件格式</a></li></ul></li><li><a href=#memory-的实现业务层示例>Memory 的实现（业务层示例）</a><ul><li><a href=#1-创建-store>1. 创建 Store</a></li><li><a href=#2-获取或创建-session>2. 获取或创建 Session</a></li><li><a href=#3-追加用户消息>3. 追加用户消息</a></li><li><a href=#4-获取历史并调用-agent>4. 获取历史并调用 Agent</a></li><li><a href=#5-追加助手消息>5. 追加助手消息</a></li></ul></li><li><a href=#session-与-agent-的关系业务层与框架层的协作>Session 与 Agent 的关系：业务层与框架层的协作</a></li><li><a href=#本章小结>本章小结</a></li><li><a href=#扩展思考业务层存储方案的选择>扩展思考：业务层存储方案的选择</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/quick_start/>快速开始</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/quick_start/chapter_03_memory_and_session/>第三章：Memory 与 Session（持久化对话）</a></li></ol></nav><div class=td-content><h1>第三章：Memory 与 Session（持久化对话）</h1><header class=article-meta></header><p>本章目标：实现对话历史的持久化存储，支持跨进程恢复会话。</p><blockquote><p><strong>⚠️ 重要说明：业务层概念 vs 框架概念</strong></p></blockquote><blockquote><p>本章介绍的 <strong>Memory、Session、Store 是业务层概念</strong>，<strong>不是 Eino 框架的核心组件</strong>。</p></blockquote><blockquote></blockquote><blockquote><p>换句话说，Eino 框架只负责"如何处理消息"，而"如何存储消息"完全由业务层决定。本章提供的实现只是一个简单的参考示例，你可以根据自己的业务需求选择完全不同的存储方案（数据库、Redis、云存储等）。</p></blockquote><h2 id=代码位置>代码位置</h2><ul><li>入口代码：<a href=https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch03/main.go>cmd/ch03/main.go</a></li><li>Memory 实现：<a href=https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/mem/store.go>mem/store.go</a></li></ul><h2 id=前置条件>前置条件</h2><p>与第一章一致：需要配置一个可用的 ChatModel（OpenAI 或 Ark）。</p><h2 id=运行>运行</h2><p>在 <code>examples/quickstart/chatwitheino</code> 目录下执行：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#8f5902;font-style:italic># 创建新会话</span>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#代码位置>代码位置</a></li><li><a href=#前置条件>前置条件</a></li><li><a href=#运行>运行</a></li><li><a href=#从内存到持久化为什么需要-memory>从内存到持久化：为什么需要 Memory</a></li><li><a href=#关键概念>关键概念</a><ul><li><a href=#session业务层概念>Session（业务层概念）</a></li><li><a href=#store业务层概念>Store（业务层概念）</a></li><li><a href=#jsonl-文件格式>JSONL 文件格式</a></li></ul></li><li><a href=#memory-的实现业务层示例>Memory 的实现（业务层示例）</a><ul><li><a href=#1-创建-store>1. 创建 Store</a></li><li><a href=#2-获取或创建-session>2. 获取或创建 Session</a></li><li><a href=#3-追加用户消息>3. 追加用户消息</a></li><li><a href=#4-获取历史并调用-agent>4. 获取历史并调用 Agent</a></li><li><a href=#5-追加助手消息>5. 追加助手消息</a></li></ul></li><li><a href=#session-与-agent-的关系业务层与框架层的协作>Session 与 Agent 的关系：业务层与框架层的协作</a></li><li><a href=#本章小结>本章小结</a></li><li><a href=#扩展思考业务层存储方案的选择>扩展思考：业务层存储方案的选择</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/quick_start/>快速开始</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/quick_start/chapter_03_memory_and_session/>第三章：Memory 与 Session（持久化对话）</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="第三章：Memory 与 Session（持久化对话）" data-url=https://www.cloudwego.io/zh/docs/eino/quick_start/chapter_03_memory_and_session/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+本章目标：实现对话历史的持久化存储，支持跨进程恢复会话。
+
+> **⚠️ 重要说明：业务层概念 vs 框架概念**
+
+> 本章介绍的 **Memory、Session、Store 是业务层概念**，**不是 Eino 框架的核心组件**。
+
+>
+
+> 换句话说，Eino 框架只负责"如何处理消息"，而"如何存储消息"完全由业务层决定。本章提供的实现只是一个简单的参考示例，你可以根据自己的业务需求选择完全不同的存储方案（数据库、Redis、云存储等）。
+
+## 代码位置
+
+- 入口代码：[cmd/ch03/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch03/main.go)
+- Memory 实现：[mem/store.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/mem/store.go)
+
+## 前置条件
+
+与第一章一致：需要配置一个可用的 ChatModel（OpenAI 或 Ark）。
+
+## 运行
+
+在 `examples/quickstart/chatwitheino` 目录下执行：
+
+```bash
+# 创建新会话
+go run ./cmd/ch03
+
+# 恢复已有会话
+go run ./cmd/ch03 --session <session-id>
+```
+
+输出示例：
+
+```
+Created new session: 083d16da-6b13-4fe6-afb0-c45d8f490ce1
+Session title: New Session
+Enter your message (empty line to exit):
+you> 你好，我是张三
+[assistant] 你好张三！很高兴认识你...
+you> 我叫什么名字？
+[assistant] 你叫张三...
+
+Session saved: 083d16da-6b13-4fe6-afb0-c45d8f490ce1
+Resume with: go run ./cmd/ch03 --session 083d16da-6b13-4fe6-afb0-c45d8f490ce1
+```
+
+## 从内存到持久化：为什么需要 Memory
+
+第二章我们实现了多轮对话，但有一个问题：**对话历史只存在于内存中**。
+
+**内存存储的局限：**
+
+- 进程退出后，对话历史丢失
+- 无法跨设备、跨进程恢复会话
+- 无法实现会话管理（列表、删除、搜索等）
+
+**Memory 的定位：**
+
+- **Memory 是对话历史的持久化存储**：将对话保存到磁盘或数据库
+- **Memory 支持 Session 管理**：每个 Session 代表一次完整的对话
+- **Memory 与 Agent 解耦**：Agent 不关心存储细节，只关心消息列表
+
+**简单类比：**
+
+- **内存存储** = "草稿纸"（进程退出就没了）
+- **Memory** = "笔记本"（永久保存，随时翻阅）
+
+## 关键概念
+
+> **再次强调**：以下 Session、Store 等概念都是**业务层实现**，用于管理对话历史的存储。Eino 框架本身不提供这些组件，而是由业务层负责管理消息列表，然后将消息传递给 `adk.Runner` 进行处理。
+
+### Session（业务层概念）
+
+`Session` 代表一次完整的对话会话：
+
+```go
+type Session struct {
+    ID        string
+    CreatedAt time.Time
+
+    messages []*schema.Message  // 对话历史
+    // ...
+}
+```
+
+**核心方法：**
+
+- `Append(msg)`：追加消息到会话，并持久化
+- `GetMessages()`：获取所有消息
+- `Title()`：从第一条用户消息生成会话标题
+
+### Store（业务层概念）
+
+`Store` 管理多个 Session 的持久化存储：
+
+```go
+type Store struct {
+    dir   string              // 存储目录
+    cache map[string]*Session // 内存缓存
+}
+```
+
+**核心方法：**
+
+- `GetOrCreate(id)`：获取或创建 Session
+- `List()`：列出所有 Session
+- `Delete(id)`：删除 Session
+
+### JSONL 文件格式
+
+每个 Session 存储为一个 `.jsonl` 文件：
+
+```
+{"type":"session","id":"083d16da-...","created_at":"2026-03-11T10:00:00Z"}
+{"role":"user","content":"你好，我是谁？"}
+{"role":"assistant","content":"你好！我暂时不知道你是谁..."}
+{"role":"user","content":"我叫张三"}
+{"role":"assistant","content":"好的，张三，很高兴认识你！"}
+```
+
+**为什么用 JSONL？**
+
+- **简单**：每行一个 JSON 对象，易于读写
+- **可扩展**：可以追加新消息，无需重写整个文件
+- **可读性好**：可以用文本编辑器直接查看
+- **容错性强**：单行损坏不影响其他行
+
+## Memory 的实现（业务层示例）
+
+以下是一个简单的业务层实现示例，使用 JSONL 文件存储对话历史。这只是众多可能实现中的一种，你可以根据实际需求选择数据库、Redis 等其他存储方案。
+
+### 1. 创建 Store
+
+```go
+sessionDir := "./data/sessions"
+store, err := mem.NewStore(sessionDir)
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+### 2. 获取或创建 Session
+
+```go
+sessionID := "083d16da-6b13-4fe6-afb0-c45d8f490ce1"
+session, err := store.GetOrCreate(sessionID)
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+### 3. 追加用户消息
+
+```go
+userMsg := schema.UserMessage("你好")
+if err := session.Append(userMsg); err != nil {
+    log.Fatal(err)
+}
+```
+
+### 4. 获取历史并调用 Agent
+
+```go
+history := session.GetMessages()
+events := runner.Run(ctx, history)
+content := collectAssistantFromEvents(events)
+```
+
+### 5. 追加助手消息
+
+```go
+assistantMsg := schema.AssistantMessage(content, nil)
+if err := session.Append(assistantMsg); err != nil {
+    log.Fatal(err)
+}
+```
+
+**关键代码片段（**注意：这是简化后的代码片段，不能直接运行，完整代码请参考** [cmd/ch03/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch03/main.go)）：
+
+```go
+// 创建或恢复 Session
+session, err := store.GetOrCreate(sessionID)
+if err != nil {
+    log.Fatal(err)
+}
+
+// 用户输入
+userMsg := schema.UserMessage(line)
+if err := session.Append(userMsg); err != nil {
+    log.Fatal(err)
+}
+
+// 调用 Agent
+history := session.GetMessages()
+events := runner.Run(ctx, history)
+content := collectAssistantFromEvents(events)
+
+// 保存助手回复
+assistantMsg := schema.AssistantMessage(content, nil)
+if err := session.Append(assistantMsg); err != nil {
+    log.Fatal(err)
+}
+```
+
+## Session 与 Agent 的关系：业务层与框架层的协作
+
+**关键理解：**
+
+- **Session 是业务层概念**：由业务代码实现和管理，负责存储和加载对话历史
+- **Agent（Runner）是框架层概念**：由 Eino 框架提供，负责处理消息并生成回复
+- **两者的交互点**：业务层通过 `session.GetMessages()` 获取消息列表，传递给 `runner.Run(ctx, history)` 进行处理
+
+**架构分层：**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     业务层（你的代码）                          │
+│  ┌─────────────┐    ┌──────────────┐    ┌───────────────┐  │
+│  │   Session   │───→│ GetMessages() │───→│ runner.Run()  │  │
+│  │   (存储)    │    │  (消息列表)    │    │  (框架调用)    │  │
+│  └─────────────┘    └──────────────┘    └───────────────┘  │
+│         ↑                                      │            │
+│         │                                      ↓            │
+│  ┌─────────────┐                      ┌───────────────┐    │
+│  │   Append()  │←─────────────────────│  助手回复      │    │
+│  │  (保存消息)  │                      └───────────────┘    │
+│  └─────────────┘                                           │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│                   框架层（Eino 框架）                          │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │  adk.Runner：接收消息列表，调用 ChatModel，返回回复     │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**流程图：**
+
+```
+┌─────────────────────────────────────────┐
+│  用户输入                                 │
+└─────────────────────────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  session.Append()    │
+        │  保存用户消息         │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  session.GetMessages()│
+        │  获取完整历史         │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  runner.Run(history) │
+        │  Agent 处理消息       │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  收集助手回复         │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  session.Append()    │
+        │  保存助手消息         │
+        └──────────────────────┘
+```
+
+## 本章小结
+
+**框架层 vs 业务层：**
+
+- **Eino 框架层**：提供 `adk.Runner`、`schema.Message` 等基础抽象，不关心消息如何存储
+- **业务层（本章实现）**：Memory/Session/Store 是业务层概念，用于管理对话历史的存储
+
+**业务层概念：**
+
+- **Memory**：对话历史的持久化存储，支持跨进程恢复
+- **Session**：一次完整的对话会话，包含 ID、创建时间、消息列表
+- **Store**：管理多个 Session 的存储，支持创建、获取、列表、删除
+- **JSONL 格式**：简单的文件格式，易于读写和扩展
+
+**业务层与框架层的交互：**
+
+- 业务层负责存储消息，通过 `session.GetMessages()` 获取消息列表
+- 将消息列表传递给框架层的 `runner.Run(ctx, history)` 进行处理
+- 收集框架层返回的回复，再由业务层保存到存储中
+
+> **💡 提示**：本章的实现只是众多存储方案中的一种简单示例。在实际项目中，你可以根据业务需求选择数据库、Redis、云存储等方案，甚至可以实现更复杂的功能如会话过期清理、搜索、分享等。
+
+## 扩展思考：业务层存储方案的选择
+
+本章提供的 JSONL 文件存储方案适合简单的单机应用。在实际业务中，你可能需要考虑其他存储方案：
+
+**其他存储实现：**
+
+- 数据库存储（MySQL、PostgreSQL、MongoDB）
+- Redis 存储（支持分布式）
+- 云存储（S3、OSS）
+
+**高级功能：**
+
+- 会话过期清理
+- 会话搜索
+- 会话导出/导入
+- 会话分享
+</script><h1>第三章：Memory 与 Session（持久化对话）</h1><header class=article-meta></header><p>本章目标：实现对话历史的持久化存储，支持跨进程恢复会话。</p><blockquote><p><strong>⚠️ 重要说明：业务层概念 vs 框架概念</strong></p></blockquote><blockquote><p>本章介绍的 <strong>Memory、Session、Store 是业务层概念</strong>，<strong>不是 Eino 框架的核心组件</strong>。</p></blockquote><blockquote></blockquote><blockquote><p>换句话说，Eino 框架只负责"如何处理消息"，而"如何存储消息"完全由业务层决定。本章提供的实现只是一个简单的参考示例，你可以根据自己的业务需求选择完全不同的存储方案（数据库、Redis、云存储等）。</p></blockquote><h2 id=代码位置>代码位置</h2><ul><li>入口代码：<a href=https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch03/main.go>cmd/ch03/main.go</a></li><li>Memory 实现：<a href=https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/mem/store.go>mem/store.go</a></li></ul><h2 id=前置条件>前置条件</h2><p>与第一章一致：需要配置一个可用的 ChatModel（OpenAI 或 Ark）。</p><h2 id=运行>运行</h2><p>在 <code>examples/quickstart/chatwitheino</code> 目录下执行：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#8f5902;font-style:italic># 创建新会话</span>
 </span></span><span style=display:flex><span>go run ./cmd/ch03
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#8f5902;font-style:italic># 恢复已有会话</span>
@@ -253,4 +571,4 @@ Resume with: go run ./cmd/ch03 --session 083d16da-6b13-4fe6-afb0-c45d8f490ce1
 </code></pre><h2 id=本章小结>本章小结</h2><p><strong>框架层 vs 业务层：</strong></p><ul><li><strong>Eino 框架层</strong>：提供 <code>adk.Runner</code>、<code>schema.Message</code> 等基础抽象，不关心消息如何存储</li><li><strong>业务层（本章实现）</strong>：Memory/Session/Store 是业务层概念，用于管理对话历史的存储</li></ul><p><strong>业务层概念：</strong></p><ul><li><strong>Memory</strong>：对话历史的持久化存储，支持跨进程恢复</li><li><strong>Session</strong>：一次完整的对话会话，包含 ID、创建时间、消息列表</li><li><strong>Store</strong>：管理多个 Session 的存储，支持创建、获取、列表、删除</li><li><strong>JSONL 格式</strong>：简单的文件格式，易于读写和扩展</li></ul><p><strong>业务层与框架层的交互：</strong></p><ul><li>业务层负责存储消息，通过 <code>session.GetMessages()</code> 获取消息列表</li><li>将消息列表传递给框架层的 <code>runner.Run(ctx, history)</code> 进行处理</li><li>收集框架层返回的回复，再由业务层保存到存储中</li></ul><blockquote><p><strong>💡 提示</strong>：本章的实现只是众多存储方案中的一种简单示例。在实际项目中，你可以根据业务需求选择数据库、Redis、云存储等方案，甚至可以实现更复杂的功能如会话过期清理、搜索、分享等。</p></blockquote><h2 id=扩展思考业务层存储方案的选择>扩展思考：业务层存储方案的选择</h2><p>本章提供的 JSONL 文件存储方案适合简单的单机应用。在实际业务中，你可能需要考虑其他存储方案：</p><p><strong>其他存储实现：</strong></p><ul><li>数据库存储（MySQL、PostgreSQL、MongoDB）</li><li>Redis 存储（支持分布式）</li><li>云存储（S3、OSS）</li></ul><p><strong>高级功能：</strong></p><ul><li>会话过期清理</li><li>会话搜索</li><li>会话导出/导入</li><li>会话分享</li></ul><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 March 16, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c29dac9efde882c20ad259db6f9616def269fa0d>docs(eino): sync docs from feishu (2026-03-16) (#1522) (c29dac9e)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

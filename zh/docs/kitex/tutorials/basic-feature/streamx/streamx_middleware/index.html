@@ -7,7 +7,7 @@ stream 为单次 RPC 创建的流对象 Client middleware 内 next 函数执行�
 类型定义 // client: github.com/cloudwego/kitex/pkg/endpoint/cep type StreamRecvEndpoint func(ctx context.Context, stream streaming.ClientStream, message interface{}) (err error) type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint // server: github.com/cloudwego/kitex/pkg/endpoint/sep type StreamRecvEndpoint func(ctx context.Context, stream streaming.ServerStream, message interface{}) (err error) type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint // Send middleware 和 Recv middleware 定义类似... 参数说明："><meta itemprop=datePublished content="2025-01-10T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-06T10:11:02+08:00"><meta itemprop=wordCount content="364"><meta itemprop=keywords content="流中间件最佳实践"><meta name=twitter:card content="summary"><meta name=twitter:title content="StreamX 流中间件最佳实践"><meta name=twitter:description content="中间件类型 Stream 中间件 触发时机：每次创建流时
 类型定义 // client: github.com/cloudwego/kitex/pkg/endpoint/cep type StreamEndpoint func(ctx context.Context) (stream streaming.ClientStream, err error) type StreamMiddleware func(next StreamEndpoint) StreamEndpoint // server: github.com/cloudwego/kitex/pkg/endpoint/sep type StreamEndpoint func(ctx context.Context, stream streaming.ServerStream) (err error) type StreamMiddleware func(next StreamEndpoint) StreamEndpoint 参数说明：
 stream 为单次 RPC 创建的流对象 Client middleware 内 next 函数执行后，stream 即完成创建 Server middleware 内 next 函数执行后，server handler 即完成处理 Stream Recv/Send 中间件 触发时机：流收发消息时调用
-类型定义 // client: github.com/cloudwego/kitex/pkg/endpoint/cep type StreamRecvEndpoint func(ctx context.Context, stream streaming.ClientStream, message interface{}) (err error) type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint // server: github.com/cloudwego/kitex/pkg/endpoint/sep type StreamRecvEndpoint func(ctx context.Context, stream streaming.ServerStream, message interface{}) (err error) type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint // Send middleware 和 Recv middleware 定义类似... 参数说明："><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+类型定义 // client: github.com/cloudwego/kitex/pkg/endpoint/cep type StreamRecvEndpoint func(ctx context.Context, stream streaming.ClientStream, message interface{}) (err error) type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint // server: github.com/cloudwego/kitex/pkg/endpoint/sep type StreamRecvEndpoint func(ctx context.Context, stream streaming.ServerStream, message interface{}) (err error) type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint // Send middleware 和 Recv middleware 定义类似... 参数说明："><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -158,7 +158,147 @@ stream 为单次 RPC 创建的流对象 Client middleware 内 next 函数执行�
 <label for=m-zhdocskitexfaq-check><a href=/zh/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/kitex/Tutorials/basic-feature/streamx/StreamX_Middleware.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/kitex/Tutorials/basic-feature/streamx?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=StreamX%20%e6%b5%81%e4%b8%ad%e9%97%b4%e4%bb%b6%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#中间件类型>中间件类型</a><ul><li><a href=#stream-中间件>Stream 中间件</a></li><li><a href=#stream-recvsend-中间件>Stream Recv/Send 中间件</a></li><li><a href=#unary-中间件>Unary 中间件</a></li></ul></li><li><a href=#注入中间件>注入中间件</a><ul><li><a href=#注入-client-侧的中间件>注入 client 侧的中间件</a></li><li><a href=#注入-server-侧的中间件>注入 server 侧的中间件</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/>基本特性</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/streamx/>StreamX</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/streamx/streamx_middleware/>StreamX 流中间件最佳实践</a></li></ol></nav><div class=td-content><h1>StreamX 流中间件最佳实践</h1><header class=article-meta></header><h2 id=中间件类型>中间件类型</h2><h3 id=stream-中间件>Stream 中间件</h3><p><strong>触发时机</strong>：每次创建流时</p><h4 id=类型定义>类型定义</h4><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// client: github.com/cloudwego/kitex/pkg/endpoint/cep</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#中间件类型>中间件类型</a><ul><li><a href=#stream-中间件>Stream 中间件</a></li><li><a href=#stream-recvsend-中间件>Stream Recv/Send 中间件</a></li><li><a href=#unary-中间件>Unary 中间件</a></li></ul></li><li><a href=#注入中间件>注入中间件</a><ul><li><a href=#注入-client-侧的中间件>注入 client 侧的中间件</a></li><li><a href=#注入-server-侧的中间件>注入 server 侧的中间件</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/>基本特性</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/streamx/>StreamX</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/streamx/streamx_middleware/>StreamX 流中间件最佳实践</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="StreamX 流中间件最佳实践" data-url=https://www.cloudwego.io/zh/docs/kitex/tutorials/basic-feature/streamx/streamx_middleware/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 中间件类型
+
+### Stream 中间件
+
+**触发时机**：每次创建流时
+
+#### 类型定义
+```go
+// client: github.com/cloudwego/kitex/pkg/endpoint/cep
+type StreamEndpoint func(ctx context.Context) (stream streaming.ClientStream, err error)
+type StreamMiddleware func(next StreamEndpoint) StreamEndpoint
+
+// server: github.com/cloudwego/kitex/pkg/endpoint/sep
+type StreamEndpoint func(ctx context.Context, stream streaming.ServerStream) (err error)
+type StreamMiddleware func(next StreamEndpoint) StreamEndpoint
+```
+
+**参数说明**：
+
+- ```stream``` 为单次 RPC 创建的流对象
+- Client middleware 内 ```next``` 函数执行后，stream 即完成创建
+- Server middleware 内 ```next``` 函数执行后，server handler 即完成处理
+
+### Stream Recv/Send 中间件
+
+**触发时机**：流收发消息时调用
+
+#### 类型定义
+
+```go
+// client: github.com/cloudwego/kitex/pkg/endpoint/cep
+type StreamRecvEndpoint func(ctx context.Context, stream streaming.ClientStream, message interface{}) (err error)
+type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint
+
+// server: github.com/cloudwego/kitex/pkg/endpoint/sep
+type StreamRecvEndpoint func(ctx context.Context, stream streaming.ServerStream, message interface{}) (err error)
+type StreamRecvMiddleware func(next StreamRecvEndpoint) StreamRecvEndpoint
+
+// Send middleware 和 Recv middleware 定义类似...
+```
+
+**参数说明**：
+
+- stream 直接获取当前的流对象
+- res/req 均代表真实请求和响应。
+- Next 函数调用前后的行为：
+
+| 中间件类型           | Next 调用前                                                             | Next 调用后                                          |
+| -------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------- |
+| StreamRecvMiddleware | - 数据未真正收，刚调用 stream.Recv() 函数<br><br>- res 参数为空         | - 数据已收到或遇到错误<br><br>- res 参数有真实值     |
+| StreamSendMiddleware | - 数据未真正发送，刚调用 stream.Send() 函数<br><br>- req 参数为真实请求 | - 数据发送完成或遇到错误<br><br>- req 参数为真实请求 |
+
+### Unary 中间件
+
+对所有非流式接口，我们额外提供了 ```UnaryMiddleware``` 用于注入仅对所有 unary 方法生效的中间件，该中间件与 kitex 原生支持的 ```WithMiddleware``` 的方法签名完全一致，区别在于后者可以同时对 streaming 方法生效。
+```go
+type UnaryEndpoint Endpoint
+type UnaryMiddleware func(next UnaryEndpoint) UnaryEndpoint
+
+// client.WithUnaryOptions(client.WithUnaryMiddleware(mw))
+// server.WithUnaryOptions(server.WithUnaryMiddleware(mw))
+```
+
+## 注入中间件
+
+### 注入 client 侧的中间件
+
+```go
+import "github.com/cloudwego/kitex/client"
+
+cli, err := xxx.NewClient(
+    "a.b.c", 
+    client.WithStreamOptions(
+        client.WithStreamMiddleware(func (next cep.StreamEndpoint) cep.StreamEndpoint {
+            return func (ctx context.Context) (stream streaming.ClientStream, err error) {
+                ri := rpcinfo.GetRPCInfo(stream.Context())
+                println("create stream, method: ", ri.Invocation().MethodName())
+                return next(ctx)
+            }
+        }), 
+        client.WithStreamSendMiddleware(func (next cep.StreamSendEndpoint) cep.StreamSendEndpoint {
+            return func (ctx context.Context, stream streaming.ClientStream, message interface{}) (err error) {
+                ri := rpcinfo.GetRPCInfo(stream.Context())
+                println("stream send message, method: ", ri.Invocation().MethodName())
+                return next(ctx, stream, message)
+            }
+        }), 
+        client.WithStreamRecvMiddleware(func (next cep.StreamRecvEndpoint) cep.StreamRecvEndpoint {
+            return func (ctx context.Context, stream streaming.ClientStream, message interface{}) (err error) {
+                ri := rpcinfo.GetRPCInfo(stream.Context())
+                println("stream recv message, method: ", ri.Invocation().MethodName())
+                return next(ctx, stream, message)
+            }
+        }), 
+    ), 
+)
+```
+
+### 注入 server 侧的中间件
+
+```go
+import "github.com/cloudwego/kitex/server"
+
+svr, err := xxx.NewServer(
+    //...
+    server.WithStreamOptions(
+        server.WithStreamMiddleware(func(next sep.StreamEndpoint) sep.StreamEndpoint {
+            return func(ctx context.Context, st streaming.ServerStream) (err error) {
+                ri := rpcinfo.GetRPCInfo(ctx)
+                println("create stream, method: ", ri.Invocation().MethodName())
+                return next(ctx, st)
+            }
+        }),
+        server.WithStreamRecvMiddleware(func(next sep.StreamRecvEndpoint) sep.StreamRecvEndpoint {
+            return func(ctx context.Context, stream streaming.ServerStream, message interface{}) (err error) {
+                ri := rpcinfo.GetRPCInfo(ctx)
+                println("stream recv message, method: ", ri.Invocation().MethodName())
+                return next(ctx, stream, message)
+            }
+        }), 
+        server.WithStreamSendMiddleware(func(next sep.StreamSendEndpoint) sep.StreamSendEndpoint {
+            return func(ctx context.Context, stream streaming.ServerStream, message interface{}) (err error) {
+                ri := rpcinfo.GetRPCInfo(ctx)
+                println("stream send message, method: ", ri.Invocation().MethodName())
+                return next(ctx, stream, message)
+            }
+        }), 
+    ),
+)
+```
+</script><h1>StreamX 流中间件最佳实践</h1><header class=article-meta></header><h2 id=中间件类型>中间件类型</h2><h3 id=stream-中间件>Stream 中间件</h3><p><strong>触发时机</strong>：每次创建流时</p><h4 id=类型定义>类型定义</h4><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// client: github.com/cloudwego/kitex/pkg/endpoint/cep</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>StreamEndpoint</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>func</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#000>stream</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>streaming</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>ClientStream</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>err</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>StreamMiddleware</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>func</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>next</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>StreamEndpoint</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>StreamEndpoint</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
@@ -238,4 +378,4 @@ stream 为单次 RPC 创建的流对象 Client middleware 内 next 函数执行�
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 March 6, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/1c992ba53a3563e92a1a8859f1211cf14bc2e7ef>docs: fix typos and update streamx documentation (#1506) (1c992ba5)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

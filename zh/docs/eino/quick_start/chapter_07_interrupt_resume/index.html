@@ -19,7 +19,7 @@ export PROJECT_ROOT=/path/to/eino # Eino 核心库根目录（不设置则默认
 you> 请执行命令 echo hello ⚠️ Approval Required ⚠️ Tool: execute Arguments: {"command":"echo hello"} Approve this action? (y/n): y [tool result] hello hello 从自动执行到人工审批：为什么需要 Interrupt 前几章我们实现的 Agent 会自动执行所有 Tool 调用，但在某些场景下这是危险的：
 自动执行的风险：
 删除文件：误删重要数据 发送邮件：发送错误内容 执行命令：执行危险操作 修改配置：破坏系统设置 Interrupt 的定位：
-Interrupt 是 Agent 的暂停机制：在关键操作前暂停，等待用户确认 Interrupt 可携带信息：向用户展示即将执行的操作 Interrupt 可恢复：用户确认后继续执行，拒绝后返回错误 简单类比：'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+Interrupt 是 Agent 的暂停机制：在关键操作前暂停，等待用户确认 Interrupt 可携带信息：向用户展示即将执行的操作 Interrupt 可恢复：用户确认后继续执行，拒绝后返回错误 简单类比：'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -128,7 +128,363 @@ Interrupt 是 Agent 的暂停机制：在关键操作前暂停，等待用户确
 <label for=m-zhdocseinofaq-check><a href=/zh/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/eino/quick_start/chapter_07_interrupt_resume.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/eino/quick_start?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e7%ac%ac%e4%b8%83%e7%ab%a0%ef%bc%9aInterrupt/Resume%ef%bc%88%e4%b8%ad%e6%96%ad%e4%b8%8e%e6%81%a2%e5%a4%8d%ef%bc%89" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#代码位置>代码位置</a></li><li><a href=#前置条件>前置条件</a></li><li><a href=#运行>运行</a></li><li><a href=#从自动执行到人工审批为什么需要-interrupt>从自动执行到人工审批：为什么需要 Interrupt</a></li><li><a href=#关键概念>关键概念</a><ul><li><a href=#interrupt-机制>Interrupt 机制</a></li><li><a href=#approvalmiddleware>ApprovalMiddleware</a></li><li><a href=#checkpointstore>CheckPointStore</a></li></ul></li><li><a href=#interruptresume-的实现>Interrupt/Resume 的实现</a><ul><li><a href=#1-配置-runner-使用-checkpointstore>1. 配置 Runner 使用 CheckPointStore</a></li><li><a href=#2-配置-agent-使用-approvalmiddleware>2. 配置 Agent 使用 ApprovalMiddleware</a></li><li><a href=#3-处理中断事件>3. 处理中断事件</a></li></ul></li><li><a href=#interruptresume-执行流程>Interrupt/Resume 执行流程</a></li><li><a href=#本章小结>本章小结</a></li><li><a href=#扩展思考>扩展思考</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/quick_start/>快速开始</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/quick_start/chapter_07_interrupt_resume/>第七章：Interrupt/Resume（中断与恢复）</a></li></ol></nav><div class=td-content><h1>第七章：Interrupt/Resume（中断与恢复）</h1><header class=article-meta></header><p>本章目标：理解 Interrupt/Resume 机制，实现 Tool 审批流程，让用户在敏感操作前进行确认。</p><h2 id=代码位置>代码位置</h2><ul><li>入口代码：<a href=https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch07/main.go>cmd/ch07/main.go</a></li></ul><h2 id=前置条件>前置条件</h2><p>与第一章一致：需要配置一个可用的 ChatModel（OpenAI 或 Ark）。同时，需要与第四章一样设置 <code>PROJECT_ROOT</code>：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#204a87>export</span> <span style=color:#000>PROJECT_ROOT</span><span style=color:#ce5c00;font-weight:700>=</span>/path/to/eino  <span style=color:#8f5902;font-style:italic># Eino 核心库根目录（不设置则默认使用当前目录）</span>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#代码位置>代码位置</a></li><li><a href=#前置条件>前置条件</a></li><li><a href=#运行>运行</a></li><li><a href=#从自动执行到人工审批为什么需要-interrupt>从自动执行到人工审批：为什么需要 Interrupt</a></li><li><a href=#关键概念>关键概念</a><ul><li><a href=#interrupt-机制>Interrupt 机制</a></li><li><a href=#approvalmiddleware>ApprovalMiddleware</a></li><li><a href=#checkpointstore>CheckPointStore</a></li></ul></li><li><a href=#interruptresume-的实现>Interrupt/Resume 的实现</a><ul><li><a href=#1-配置-runner-使用-checkpointstore>1. 配置 Runner 使用 CheckPointStore</a></li><li><a href=#2-配置-agent-使用-approvalmiddleware>2. 配置 Agent 使用 ApprovalMiddleware</a></li><li><a href=#3-处理中断事件>3. 处理中断事件</a></li></ul></li><li><a href=#interruptresume-执行流程>Interrupt/Resume 执行流程</a></li><li><a href=#本章小结>本章小结</a></li><li><a href=#扩展思考>扩展思考</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/quick_start/>快速开始</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/quick_start/chapter_07_interrupt_resume/>第七章：Interrupt/Resume（中断与恢复）</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=第七章：Interrupt/Resume（中断与恢复） data-url=https://www.cloudwego.io/zh/docs/eino/quick_start/chapter_07_interrupt_resume/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+本章目标：理解 Interrupt/Resume 机制，实现 Tool 审批流程，让用户在敏感操作前进行确认。
+
+## 代码位置
+
+- 入口代码：[cmd/ch07/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch07/main.go)
+
+## 前置条件
+
+与第一章一致：需要配置一个可用的 ChatModel（OpenAI 或 Ark）。同时，需要与第四章一样设置 `PROJECT_ROOT`：
+
+```bash
+export PROJECT_ROOT=/path/to/eino  # Eino 核心库根目录（不设置则默认使用当前目录）
+```
+
+## 运行
+
+在 `examples/quickstart/chatwitheino` 目录下执行：
+
+```bash
+# 设置项目根目录
+export PROJECT_ROOT=/path/to/your/project
+
+go run ./cmd/ch07
+```
+
+输出示例：
+
+```
+you> 请执行命令 echo hello
+
+⚠️  Approval Required ⚠️
+Tool: execute
+Arguments: {"command":"echo hello"}
+
+Approve this action? (y/n): y
+[tool result] hello
+
+hello
+```
+
+## 从自动执行到人工审批：为什么需要 Interrupt
+
+前几章我们实现的 Agent 会自动执行所有 Tool 调用，但在某些场景下这是危险的：
+
+**自动执行的风险：**
+
+- 删除文件：误删重要数据
+- 发送邮件：发送错误内容
+- 执行命令：执行危险操作
+- 修改配置：破坏系统设置
+
+**Interrupt 的定位：**
+
+- **Interrupt 是 Agent 的暂停机制**：在关键操作前暂停，等待用户确认
+- **Interrupt 可携带信息**：向用户展示即将执行的操作
+- **Interrupt 可恢复**：用户确认后继续执行，拒绝后返回错误
+
+**简单类比：**
+
+- **自动执行** = "自动驾驶"（完全信任系统）
+- **Interrupt** = "人工接管"（关键决策由人来做）
+
+## 关键概念
+
+### Interrupt 机制
+
+`Interrupt` 是 Eino 中实现人机协作的核心机制。
+
+**核心思想：在执行关键操作前暂停，等待用户确认后继续。**
+
+一个需要审批的 Tool 的执行被分成**两个阶段**：
+
+1. **第一次调用（触发中断）**：Tool 保存当前参数，然后返回一个中断信号。Runner 暂停执行，向调用侧返回 Interrupt 事件。
+2. **用户审批后恢复（Resume）**：Runner 重新调用 Tool，此时 Tool 检测到"已中断过"，直接读取用户的审批结果并执行（或拒绝）。
+
+**简化版伪代码：**
+
+```
+func myTool(ctx, args):
+    if 第一次调用:
+        保存 args
+        return 中断信号  // Runner 暂停，展示审批提示
+    else:  // Resume 后的第二次调用
+        if 用户批准:
+            return 执行操作(保存的 args)
+        else:
+            return "操作被用户拒绝"
+```
+
+**完整代码及关键字段说明：**
+
+```go
+// 在 Tool 中触发中断
+func myTool(ctx context.Context, args string) (string, error) {
+    // wasInterrupted: 是否是 Resume 后的第二次调用（第一次为 false，Resume 后为 true）
+    // storedArgs: 第一次调用时通过 StatefulInterrupt 保存的参数，Resume 后可取回
+    wasInterrupted, _, storedArgs := tool.GetInterruptState[string](ctx)
+
+    if !wasInterrupted {
+        // 第一次调用：触发中断，同时保存 args 供 Resume 后使用
+        return "", tool.StatefulInterrupt(ctx, &ApprovalInfo{
+            ToolName:        "my_tool",
+            ArgumentsInJSON: args,
+        }, args)  // 第三个参数是要保存的状态（Resume 后通过 storedArgs 取回）
+    }
+
+    // Resume 后的第二次调用：读取用户审批结果
+    // isTarget: 本次 Resume 是否针对当前 Tool（一次 Resume 只针对一个 Tool）
+    // hasData:  Resume 时是否携带了审批结果数据
+    // data:     用户传入的审批结果
+    isTarget, hasData, data := tool.GetResumeContext[*ApprovalResult](ctx)
+    if isTarget && hasData {
+        if data.Approved {
+            return doSomething(storedArgs)  // 使用保存的参数执行实际操作
+        }
+        return "Operation rejected by user", nil
+    }
+
+    // 其他情况（isTarget=false 意味着本次 Resume 目标不是当前 Tool）：重新中断
+    return "", tool.StatefulInterrupt(ctx, &ApprovalInfo{
+        ToolName:        "my_tool",
+        ArgumentsInJSON: storedArgs,
+    }, storedArgs)
+}
+```
+
+### ApprovalMiddleware
+
+`ApprovalMiddleware` 是一个通用的审批中间件，可以拦截特定 Tool 的调用：
+
+```go
+type approvalMiddleware struct {
+    *adk.BaseChatModelAgentMiddleware
+}
+
+func (m *approvalMiddleware) WrapInvokableToolCall(
+    _ context.Context,
+    endpoint adk.InvokableToolCallEndpoint,
+    tCtx *adk.ToolContext,
+) (adk.InvokableToolCallEndpoint, error) {
+    // 只拦截需要审批的 Tool
+    if tCtx.Name != "execute" {
+        return endpoint, nil
+    }
+    
+    return func(ctx context.Context, args string, opts ...tool.Option) (string, error) {
+        wasInterrupted, _, storedArgs := tool.GetInterruptState[string](ctx)
+        
+        if !wasInterrupted {
+            return "", tool.StatefulInterrupt(ctx, &commontool.ApprovalInfo{
+                ToolName:        tCtx.Name,
+                ArgumentsInJSON: args,
+            }, args)
+        }
+        
+        isTarget, hasData, data := tool.GetResumeContext[*commontool.ApprovalResult](ctx)
+        if isTarget && hasData {
+            if data.Approved {
+                return endpoint(ctx, storedArgs, opts...)
+            }
+            if data.DisapproveReason != nil {
+                return fmt.Sprintf("tool '%s' disapproved: %s", tCtx.Name, *data.DisapproveReason), nil
+            }
+            return fmt.Sprintf("tool '%s' disapproved", tCtx.Name), nil
+        }
+        
+        // 重新中断
+        return "", tool.StatefulInterrupt(ctx, &commontool.ApprovalInfo{
+            ToolName:        tCtx.Name,
+            ArgumentsInJSON: storedArgs,
+        }, storedArgs)
+    }, nil
+}
+
+func (m *approvalMiddleware) WrapStreamableToolCall(
+    _ context.Context,
+    endpoint adk.StreamableToolCallEndpoint,
+    tCtx *adk.ToolContext,
+) (adk.StreamableToolCallEndpoint, error) {
+    // 如果 agent 配置了 StreamingShell，则 execute 会走流式调用，需要实现该方法才能拦截到
+    if tCtx.Name != "execute" {
+        return endpoint, nil
+    }
+    return func(ctx context.Context, args string, opts ...tool.Option) (*schema.StreamReader[string], error) {
+        wasInterrupted, _, storedArgs := tool.GetInterruptState[string](ctx)
+        if !wasInterrupted {
+            return nil, tool.StatefulInterrupt(ctx, &commontool.ApprovalInfo{
+                ToolName:        tCtx.Name,
+                ArgumentsInJSON: args,
+            }, args)
+        }
+
+        isTarget, hasData, data := tool.GetResumeContext[*commontool.ApprovalResult](ctx)
+        if isTarget && hasData {
+            if data.Approved {
+                return endpoint(ctx, storedArgs, opts...)
+            }
+            if data.DisapproveReason != nil {
+                return singleChunkReader(fmt.Sprintf("tool '%s' disapproved: %s", tCtx.Name, *data.DisapproveReason)), nil
+            }
+            return singleChunkReader(fmt.Sprintf("tool '%s' disapproved", tCtx.Name)), nil
+        }
+
+        isTarget, _, _ = tool.GetResumeContext[any](ctx)
+        if !isTarget {
+            return nil, tool.StatefulInterrupt(ctx, &commontool.ApprovalInfo{
+                ToolName:        tCtx.Name,
+                ArgumentsInJSON: storedArgs,
+            }, storedArgs)
+        }
+
+        return endpoint(ctx, storedArgs, opts...)
+    }, nil
+}
+```
+
+### CheckPointStore
+
+`CheckPointStore` 是实现中断恢复的关键组件：
+
+```go
+type CheckPointStore interface {
+    // 保存检查点
+    Put(ctx context.Context, key string, checkpoint *Checkpoint) error
+    
+    // 获取检查点
+    Get(ctx context.Context, key string) (*Checkpoint, error)
+}
+```
+
+**为什么需要 CheckPointStore？**
+
+- 中断时保存状态：Tool 参数、执行位置等
+- 恢复时加载状态：从中断点继续执行
+- 支持跨进程恢复：进程重启后仍可恢复
+
+## Interrupt/Resume 的实现
+
+### 1. 配置 Runner 使用 CheckPointStore
+
+```go
+runner := adk.NewRunner(ctx, adk.RunnerConfig{
+    Agent:           agent,
+    EnableStreaming: true,
+    CheckPointStore: adkstore.NewInMemoryStore(),  // 内存存储
+})
+```
+
+### 2. 配置 Agent 使用 ApprovalMiddleware
+
+```go
+agent, err := deep.New(ctx, &deep.Config{
+    // ... 其他配置
+    Handlers: []adk.ChatModelAgentMiddleware{
+        &approvalMiddleware{},  // 添加审批中间件
+        &safeToolMiddleware{},  // 将 Tool 错误转换为字符串（中断类错误会继续向上抛出）
+    },
+})
+```
+
+### 3. 处理中断事件
+
+```go
+checkPointID := sessionID
+
+events := runner.Run(ctx, history, adk.WithCheckPointID(checkPointID))
+content, interruptInfo, err := printAndCollectAssistantFromEvents(events)
+if err != nil {
+    return err
+}
+
+if interruptInfo != nil {
+    // 注意：建议使用同一个 stdin reader 同时读取「用户输入」与「审批 y/n」
+    // 避免审批输入被当成下一轮 you> 的消息
+    content, err = handleInterrupt(ctx, runner, checkPointID, interruptInfo, reader)
+    if err != nil {
+        return err
+    }
+}
+
+_ = session.Append(schema.AssistantMessage(content, nil))
+```
+
+## Interrupt/Resume 执行流程
+
+```
+┌─────────────────────────────────────────┐
+│  用户：执行命令 echo hello               │
+└─────────────────────────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  Agent 分析意图       │
+        │  决定调用 execute     │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  ApprovalMiddleware  │
+        │  拦截 Tool 调用       │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  触发 Interrupt       │
+        │  保存状态到 Store     │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  返回 Interrupt 事件  │
+        │  等待用户审批         │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  用户输入 y/n         │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  runner.ResumeWith... │
+        │  恢复执行             │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  执行 execute         │
+        │  或返回拒绝信息       │
+        └──────────────────────┘
+```
+
+## 本章小结
+
+- **Interrupt**：Agent 的暂停机制，在关键操作前暂停等待确认
+- **Resume**：恢复执行，用户确认后继续或拒绝后返回错误
+- **ApprovalMiddleware**：通用审批中间件，拦截特定 Tool 调用
+- **CheckPointStore**：保存中断状态，支持跨进程恢复
+- **人机协作**：关键决策由人来确认，提高安全性
+
+## 扩展思考
+
+**其他 Interrupt 场景：**
+
+- 多选项审批：用户选择多个选项之一
+- 参数补全：用户提供缺失的参数
+- 条件分支：用户决定执行路径
+
+**审批策略：**
+
+- 白名单：只审批敏感操作
+- 黑名单：审批所有操作，除了安全的
+- 动态规则：根据参数内容决定是否审批
+</script><h1>第七章：Interrupt/Resume（中断与恢复）</h1><header class=article-meta></header><p>本章目标：理解 Interrupt/Resume 机制，实现 Tool 审批流程，让用户在敏感操作前进行确认。</p><h2 id=代码位置>代码位置</h2><ul><li>入口代码：<a href=https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch07/main.go>cmd/ch07/main.go</a></li></ul><h2 id=前置条件>前置条件</h2><p>与第一章一致：需要配置一个可用的 ChatModel（OpenAI 或 Ark）。同时，需要与第四章一样设置 <code>PROJECT_ROOT</code>：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#204a87>export</span> <span style=color:#000>PROJECT_ROOT</span><span style=color:#ce5c00;font-weight:700>=</span>/path/to/eino  <span style=color:#8f5902;font-style:italic># Eino 核心库根目录（不设置则默认使用当前目录）</span>
 </span></span></code></pre></div><h2 id=运行>运行</h2><p>在 <code>examples/quickstart/chatwitheino</code> 目录下执行：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#8f5902;font-style:italic># 设置项目根目录</span>
 </span></span><span style=display:flex><span><span style=color:#204a87>export</span> <span style=color:#000>PROJECT_ROOT</span><span style=color:#ce5c00;font-weight:700>=</span>/path/to/your/project
 </span></span><span style=display:flex><span>
@@ -344,4 +700,4 @@ hello
 </code></pre><h2 id=本章小结>本章小结</h2><ul><li><strong>Interrupt</strong>：Agent 的暂停机制，在关键操作前暂停等待确认</li><li><strong>Resume</strong>：恢复执行，用户确认后继续或拒绝后返回错误</li><li><strong>ApprovalMiddleware</strong>：通用审批中间件，拦截特定 Tool 调用</li><li><strong>CheckPointStore</strong>：保存中断状态，支持跨进程恢复</li><li><strong>人机协作</strong>：关键决策由人来确认，提高安全性</li></ul><h2 id=扩展思考>扩展思考</h2><p><strong>其他 Interrupt 场景：</strong></p><ul><li>多选项审批：用户选择多个选项之一</li><li>参数补全：用户提供缺失的参数</li><li>条件分支：用户决定执行路径</li></ul><p><strong>审批策略：</strong></p><ul><li>白名单：只审批敏感操作</li><li>黑名单：审批所有操作，除了安全的</li><li>动态规则：根据参数内容决定是否审批</li></ul><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 March 16, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c29dac9efde882c20ad259db6f9616def269fa0d>docs(eino): sync docs from feishu (2026-03-16) (#1522) (c29dac9e)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

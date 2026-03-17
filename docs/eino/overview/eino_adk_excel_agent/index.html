@@ -1,7 +1,7 @@
 <!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Build Your First AI Agent with Eino ADK: Starting from Excel Agent in Practice | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/overview/eino_adk_excel_agent/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Build Your First AI Agent with Eino ADK: Starting from Excel Agent in Practice"><meta property="og:description" content="Understanding Eino ADK Through the Excel Agent This article will introduce you to how to build a powerful multi-agent system using Eino ADK (Agent Development Kit). Previous Eino ADK introduction link: Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch
 The example is based on the Excel Agent, a real business scenario. The Excel Agent is an intelligent assistant that can “understand your words, read your spreadsheets, and write and execute code”. It breaks down complex Excel processing work into clear steps, completing various Excel data processing tasks reliably through automatic planning, tool calling, and result verification."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2025-12-02T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-02T21:50:06+08:00"><meta itemprop=name content="Build Your First AI Agent with Eino ADK: Starting from Excel Agent in Practice"><meta itemprop=description content="Understanding Eino ADK Through the Excel Agent This article will introduce you to how to build a powerful multi-agent system using Eino ADK (Agent Development Kit). Previous Eino ADK introduction link: Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch
 The example is based on the Excel Agent, a real business scenario. The Excel Agent is an intelligent assistant that can “understand your words, read your spreadsheets, and write and execute code”. It breaks down complex Excel processing work into clear steps, completing various Excel data processing tasks reliably through automatic planning, tool calling, and result verification."><meta itemprop=datePublished content="2025-12-02T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-02T21:50:06+08:00"><meta itemprop=wordCount content="3596"><meta name=twitter:card content="summary"><meta name=twitter:title content="Build Your First AI Agent with Eino ADK: Starting from Excel Agent in Practice"><meta name=twitter:description content="Understanding Eino ADK Through the Excel Agent This article will introduce you to how to build a powerful multi-agent system using Eino ADK (Agent Development Kit). Previous Eino ADK introduction link: Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch
-The example is based on the Excel Agent, a real business scenario. The Excel Agent is an intelligent assistant that can “understand your words, read your spreadsheets, and write and execute code”. It breaks down complex Excel processing work into clear steps, completing various Excel data processing tasks reliably through automatic planning, tool calling, and result verification."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+The example is based on the Excel Agent, a real business scenario. The Excel Agent is an intelligent assistant that can “understand your words, read your spreadsheets, and write and execute code”. It breaks down complex Excel processing work into clear steps, completing various Excel data processing tasks reliably through automatic planning, tool calling, and result verification."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,549 @@ The example is based on the Excel Agent, a real business scenario. The Excel Age
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/overview/eino_adk_excel_agent.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/overview?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Build%20Your%20First%20AI%20Agent%20with%20Eino%20ADK:%20Starting%20from%20Excel%20Agent%20in%20Practice" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#understanding-eino-adk-through-the-excel-agent>Understanding Eino ADK Through the Excel Agent</a><ul><li><a href=#what-is-the-excel-agent>What is the Excel Agent?</a></li><li><a href=#typical-use-cases-for-the-excel-agent>Typical Use Cases for the Excel Agent</a></li><li><a href=#chatmodelagent-the-foundation-for-interacting-with-llms>ChatModelAgent: The Foundation for Interacting with LLMs</a></li><li><a href=#plan-execute-agent-a-multi-agent-collaboration-framework-based-on-plan-execute-reflect>Plan-Execute Agent: A Multi-Agent Collaboration Framework Based on &ldquo;Plan-Execute-Reflect&rdquo;</a></li><li><a href=#workflow-agents-controllable-multi-agent-execution-pipeline>Workflow Agents: Controllable Multi-Agent Execution Pipeline</a></li><li><a href=#agent-abstraction-the-foundation-for-flexibly-defining-agents>Agent Abstraction: The Foundation for Flexibly Defining Agents</a></li><li><a href=#agent-collaboration-data-passing-hidden-behind-agents>Agent Collaboration: Data Passing Hidden Behind Agents</a></li></ul></li><li><a href=#excel-agent-example-execution>Excel Agent Example Execution</a><ul><li><a href=#configure-environment-and-inputoutput-paths>Configure Environment and Input/Output Paths</a></li><li><a href=#view-execution-results>View Execution Results</a></li><li><a href=#execution-process-output>Execution Process Output</a></li></ul></li><li><a href=#summary>Summary</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/overview/>Eino: Overview</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/overview/eino_adk_excel_agent/>Build Your First AI Agent with Eino ADK: Starting from Excel Agent in Practice</a></li></ol></nav><div class=td-content><h1>Build Your First AI Agent with Eino ADK: Starting from Excel Agent in Practice</h1><header class=article-meta></header><h2 id=understanding-eino-adk-through-the-excel-agent>Understanding Eino ADK Through the Excel Agent</h2><p>This article will introduce you to how to build a powerful multi-agent system using <strong>Eino ADK</strong> (<strong>Agent Development Kit</strong>). Previous Eino ADK introduction link: <a href=https://mp.weixin.qq.com/s/ffGjlDEzEzroo8w6knlLqw>Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch</a></p><p>The example is based on the Excel Agent, a real business scenario. The Excel Agent is an intelligent assistant that can &ldquo;understand your words, read your spreadsheets, and write and execute code&rdquo;. It breaks down complex Excel processing work into clear steps, completing various Excel data processing tasks reliably through automatic planning, tool calling, and result verification.</p><p>Next, we will demonstrate how this Agent is built step by step using Eino ADK, starting from the complete architecture and functionality of the Excel Agent. This will help you understand the core design features of Eino ADK in a simple and accessible way, helping you get started with Eino ADK quickly and move toward building custom agents and AI application systems.</p><p>The complete code for this example is located at <a href=https://github.com/cloudwego/eino-examples/tree/main/adk/multiagent/integration-excel-agent>GitHub</a>, and you can browse and download it at any time.</p><h3 id=what-is-the-excel-agent>What is the Excel Agent?</h3><p>The Excel Agent is an &ldquo;intelligent assistant that understands Excel&rdquo;. It first breaks down problems into steps, then executes and verifies results step by step. It can understand user questions and uploaded file content, propose feasible solutions, and select appropriate tools (system commands, generate and run Python code, web queries, etc.) to complete tasks.</p><p>The Excel Agent is a Multi-Agent system built on Eino ADK. The complete architecture is shown in the figure below:</p><p><a href=/img/eino/eino_adk_excel_agent_architecture.png target=_blank><img src=/img/eino/eino_adk_excel_agent_architecture.png width=100%></a></p><p>The Excel Agent contains several Agents with the following functions:</p><ul><li><strong>Planner</strong>: Analyzes user input and breaks down user problems into executable plans</li><li><strong>Executor</strong>: Correctly executes the first step in the current plan</li><li><strong>CodeAgent</strong>: Receives instructions from the Executor, calls various tools (such as reading/writing files, running Python code, etc.) to complete tasks</li><li><strong>WebSearchAgent</strong>: Receives instructions from the Executor and performs web searches</li><li><strong>Replanner</strong>: Based on the Executor&rsquo;s execution results and existing plans, decides whether to continue execution, adjust the plan, or complete execution</li><li><strong>ReportAgent</strong>: Generates summary reports based on the running process and results</li></ul><h3 id=typical-use-cases-for-the-excel-agent>Typical Use Cases for the Excel Agent</h3><p>In real business scenarios, you can treat the Excel Agent as an &ldquo;Excel expert + automation engineer&rdquo;. When you provide a raw spreadsheet and target description, it will propose a solution and execute it:</p><ul><li><strong>Data Cleaning and Formatting</strong>: Complete deduplication, null value handling, and date format standardization from an Excel file containing large amounts of data.</li><li><strong>Data Analysis and Report Generation</strong>: Extract monthly sales totals from sales data, perform aggregation statistics and pivot analysis, and finally generate and export chart reports.</li><li><strong>Automated Budget Calculation</strong>: Automatically calculate the total budget based on different departments&rsquo; budget requests and generate department budget allocation tables.</li><li><strong>Data Matching and Merging</strong>: Match and merge customer information tables from multiple different sources to generate a complete customer information database.</li></ul><p>The complete execution flow of the Excel Agent is:</p><p><a href=/img/eino/eino_adk_excel_agent_complete.png target=_blank><img src=/img/eino/eino_adk_excel_agent_complete.png width=100%></a></p><blockquote><p>💡
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#understanding-eino-adk-through-the-excel-agent>Understanding Eino ADK Through the Excel Agent</a><ul><li><a href=#what-is-the-excel-agent>What is the Excel Agent?</a></li><li><a href=#typical-use-cases-for-the-excel-agent>Typical Use Cases for the Excel Agent</a></li><li><a href=#chatmodelagent-the-foundation-for-interacting-with-llms>ChatModelAgent: The Foundation for Interacting with LLMs</a></li><li><a href=#plan-execute-agent-a-multi-agent-collaboration-framework-based-on-plan-execute-reflect>Plan-Execute Agent: A Multi-Agent Collaboration Framework Based on &ldquo;Plan-Execute-Reflect&rdquo;</a></li><li><a href=#workflow-agents-controllable-multi-agent-execution-pipeline>Workflow Agents: Controllable Multi-Agent Execution Pipeline</a></li><li><a href=#agent-abstraction-the-foundation-for-flexibly-defining-agents>Agent Abstraction: The Foundation for Flexibly Defining Agents</a></li><li><a href=#agent-collaboration-data-passing-hidden-behind-agents>Agent Collaboration: Data Passing Hidden Behind Agents</a></li></ul></li><li><a href=#excel-agent-example-execution>Excel Agent Example Execution</a><ul><li><a href=#configure-environment-and-inputoutput-paths>Configure Environment and Input/Output Paths</a></li><li><a href=#view-execution-results>View Execution Results</a></li><li><a href=#execution-process-output>Execution Process Output</a></li></ul></li><li><a href=#summary>Summary</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/overview/>Eino: Overview</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/overview/eino_adk_excel_agent/>Build Your First AI Agent with Eino ADK: Starting from Excel Agent in Practice</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Build Your First AI Agent with Eino ADK: Starting from Excel Agent in Practice" data-url=https://www.cloudwego.io/docs/eino/overview/eino_adk_excel_agent/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Understanding Eino ADK Through the Excel Agent
+
+This article will introduce you to how to build a powerful multi-agent system using **Eino ADK** (**Agent Development Kit**). Previous Eino ADK introduction link: [Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch](https://mp.weixin.qq.com/s/ffGjlDEzEzroo8w6knlLqw)
+
+The example is based on the Excel Agent, a real business scenario. The Excel Agent is an intelligent assistant that can "understand your words, read your spreadsheets, and write and execute code". It breaks down complex Excel processing work into clear steps, completing various Excel data processing tasks reliably through automatic planning, tool calling, and result verification.
+
+Next, we will demonstrate how this Agent is built step by step using Eino ADK, starting from the complete architecture and functionality of the Excel Agent. This will help you understand the core design features of Eino ADK in a simple and accessible way, helping you get started with Eino ADK quickly and move toward building custom agents and AI application systems.
+
+The complete code for this example is located at [GitHub](https://github.com/cloudwego/eino-examples/tree/main/adk/multiagent/integration-excel-agent), and you can browse and download it at any time.
+
+### What is the Excel Agent?
+
+The Excel Agent is an "intelligent assistant that understands Excel". It first breaks down problems into steps, then executes and verifies results step by step. It can understand user questions and uploaded file content, propose feasible solutions, and select appropriate tools (system commands, generate and run Python code, web queries, etc.) to complete tasks.
+
+The Excel Agent is a Multi-Agent system built on Eino ADK. The complete architecture is shown in the figure below:
+
+<a href="/img/eino/eino_adk_excel_agent_architecture.png" target="_blank"><img src="/img/eino/eino_adk_excel_agent_architecture.png" width="100%" /></a>
+
+The Excel Agent contains several Agents with the following functions:
+
+- **Planner**: Analyzes user input and breaks down user problems into executable plans
+- **Executor**: Correctly executes the first step in the current plan
+- **CodeAgent**: Receives instructions from the Executor, calls various tools (such as reading/writing files, running Python code, etc.) to complete tasks
+- **WebSearchAgent**: Receives instructions from the Executor and performs web searches
+- **Replanner**: Based on the Executor's execution results and existing plans, decides whether to continue execution, adjust the plan, or complete execution
+- **ReportAgent**: Generates summary reports based on the running process and results
+
+### Typical Use Cases for the Excel Agent
+
+In real business scenarios, you can treat the Excel Agent as an "Excel expert + automation engineer". When you provide a raw spreadsheet and target description, it will propose a solution and execute it:
+
+- **Data Cleaning and Formatting**: Complete deduplication, null value handling, and date format standardization from an Excel file containing large amounts of data.
+- **Data Analysis and Report Generation**: Extract monthly sales totals from sales data, perform aggregation statistics and pivot analysis, and finally generate and export chart reports.
+- **Automated Budget Calculation**: Automatically calculate the total budget based on different departments' budget requests and generate department budget allocation tables.
+- **Data Matching and Merging**: Match and merge customer information tables from multiple different sources to generate a complete customer information database.
+
+The complete execution flow of the Excel Agent is:
+
+<a href="/img/eino/eino_adk_excel_agent_complete.png" target="_blank"><img src="/img/eino/eino_adk_excel_agent_complete.png" width="100%" /></a>
+
+> 💡
+> **Core Benefits**:
+>
+> - **Less manual work**, letting the Agent automatically complete complex and tedious Excel processing tasks.
+> - **More stable output quality**, reducing omissions and errors through the "plan-execute-reflect" closed loop.
+> - **Stronger scalability**, with each Agent built independently, low coupling facilitates iterative updates.
+
+The Excel Agent can be used independently, or as a sub-Agent integrated into a composite multi-expert system, routed to by external systems to solve Excel domain-related problems.
+
+Below, we will gradually break down the Excel Agent to gain an in-depth understanding of the core design features of Eino ADK and how to use these features to build efficient, flexible AI application systems.
+
+### ChatModelAgent: The Foundation for Interacting with LLMs
+
+`ChatModelAgent` is a core pre-built Agent in Eino ADK that internally uses the [ReAct](https://react-lm.github.io/) pattern (a chain-of-reasoning pattern that lets the model "think-act-observe"):
+
+<a href="/img/eino/eino_adk_react_pattern.png" target="_blank"><img src="/img/eino/eino_adk_react_pattern.png" width="100%" /></a>
+
+`ChatModelAgent` is designed to let ChatModel perform explicit, step-by-step "thinking", combining the thinking process to drive actions, observing historical thinking processes and action results to continue with the next step of thinking and action, ultimately solving complex problems:
+
+- Call ChatModel (Reason)
+- LLM returns tool call requests (Action)
+- ChatModelAgent executes tools (Act)
+- Return tool results to LLM (Observation), combined with previous context to continue generation until the model determines no more tool calls are needed
+
+<a href="/img/eino/eino_adk_excel_chat_model_agent_view.png" target="_blank"><img src="/img/eino/eino_adk_excel_chat_model_agent_view.png" width="100%" /></a>
+
+In the Excel Agent, the core of each Agent is such a `ChatModelAgent`. Taking the Executor running the step [Read the header information of the user's input spreadsheet] as an example, we can understand how the ReAct pattern manifests in `ChatModelAgent` by observing the complete running process:
+
+1. Executor: After judgment, transfers the task to CodeAgent for execution
+2. CodeAgent: Receives the task [Read the header information of the user's input spreadsheet]
+   1. **Think-1**: The context doesn't provide all files in the working directory, need to check
+   2. **Act-1**: Call the Bash tool, ls to view all files in the working directory
+   3. **Think-2**: Found the user's input file, determines need to write Python code to read the xlsx spreadsheet's first row
+   4. **Act-2**: Call the PythonRunner tool, write and run code, get the execution result
+   5. **Think-3**: Got the xlsx first row, determines task is complete
+3. Execution complete, return the spreadsheet header information to Executor
+
+### Plan-Execute Agent: A Multi-Agent Collaboration Framework Based on "Plan-Execute-Reflect"
+
+Plan-Execute Agent is a multi-agent collaboration framework in Eino ADK based on the "plan-execute-reflect" paradigm, designed to solve the problems of step-by-step decomposition, execution, and dynamic adjustment of complex tasks. Through the collaborative work of **Planner**, **Executor**, and **Replanner** - three core agents, it achieves structured task planning, tool call execution, progress evaluation, and dynamic replanning, ultimately achieving user goals:
+
+```go
+// Complete code: https://github.com/cloudwego/eino/blob/main/adk/prebuilt/planexecute/plan_execute.go
+
+// NewPlanner creates a new planner agent based on the provided configuration.
+func NewPlanner(_ context.Context, cfg *PlannerConfig) (adk.Agent, error)
+
+// NewExecutor creates a new executor agent.
+func NewExecutor(ctx context.Context, cfg *ExecutorConfig) (adk.Agent, error)
+
+// NewReplanner creates a new replanner agent.
+func NewReplanner(_ context.Context, cfg *ReplannerConfig) (adk.Agent, error)
+
+// New creates a new plan-execute-replan agent with the given configuration.
+func New(ctx context.Context, cfg *Config) (adk.Agent, error)
+```
+
+<a href="/img/eino/eino_adk_why_excel_plan_executor.png" target="_blank"><img src="/img/eino/eino_adk_why_excel_plan_executor.png" width="100%" /></a>
+
+The Excel Agent's core capability is precisely [solving user problems in the Excel domain], which aligns with this agent collaboration framework:
+
+- **Planner**: Clarifies goals, automatically decomposes into executable steps
+- **Executor**: Calls tools (Excel reading, system commands, Python code) to complete each detailed step in the plan
+- **Replanner**: Decides to continue, adjust the plan, or end based on execution progress
+
+Planner and Replanner break down vague user instructions into clear, executable step lists - plans (Plan) containing multiple steps (Step). Eino ADK provides a flexible Plan interface definition for this, supporting users to customize Plan structure and details:
+
+```go
+type Plan interface {
+    // FirstStep returns the first step to be executed in the plan.
+    FirstStep() string
+    // Marshaler serializes the Plan into JSON.
+    // The resulting JSON can be used in prompt templates.
+    json.Marshaler
+    // Unmarshaler deserializes JSON content into the Plan.
+    // This processes output from structured chat models or tool calls into the Plan structure.
+    json.Unmarshaler
+}
+```
+
+By default, the framework uses the built-in Plan structure as a fallback configuration. For example, here is a complete execution plan generated by the Excel Agent:
+
+```sql
+### Task Plan
+- [x] 1. Read the contents of '模拟出题.csv' from the working directory into a pandas DataFrame.
+- [x] 2. Identify the question type (e.g., multiple-choice, short-answer) for each row in the DataFrame.
+- [x] 3. For non-short-answer questions, restructure the data to place question, answer, explanation, and options in the same row.
+- [x] 4. For short-answer questions, merge the answer content into the explanation column and ensure question and merged explanation are in the same row.
+- [x] 5. Verify that all processed rows have question, answer (where applicable), explanation, and options (where applicable) in a single row with consistent formatting.
+- [x] 6. Generate a cleaned report presenting the formatted questions with all relevant components (question, answer, explanation, options) in unified rows.
+```
+
+### Workflow Agents: Controllable Multi-Agent Execution Pipeline
+
+In the Excel Agent, there are situations where agents need to run in a specific order:
+
+1. **Sequential execution**: Run Planner first, then Executor and Replanner; Planner runs only once.
+2. **Loop execution**: Executor and Replanner need to run multiple times in a loop as needed, each loop runs Executor first then Replanner
+3. **Sequential execution**: After Plan-Executor completes overall execution, run ReportAgent once for summary.
+
+For these scenarios with fixed execution flows, Eino ADK provides three workflow orchestration methods to help users quickly build controllable workflows:
+
+- **SequentialAgent**: Executes a series of sub-Agents sequentially according to the order provided in the configuration. After each sub-Agent completes execution, its output is passed to the next sub-Agent through the History mechanism, forming a linear execution chain.
+
+  ```go
+  import github.com/cloudwego/eino/adk
+
+  // Execute in sequence: Create research plan -> Search materials -> Write report
+  sequential := adk.NewSequentialAgent(ctx, &adk.SequentialAgentConfig{
+      Name: "research_pipeline",
+      SubAgents: []adk.Agent{
+          planAgent,    // Create research plan
+          searchAgent,  // Search materials
+          writeAgent,   // Write report
+      },
+  })
+  ```
+
+<a href="/img/eino/eino_adk_excel_agent_sequential.png" target="_blank"><img src="/img/eino/eino_adk_excel_agent_sequential.png" width="100%" /></a>
+
+- **LoopAgent**: Repeatedly executes the configured sub-Agent sequence until the maximum number of iterations is reached or a sub-Agent produces an ExitAction. The results of each iteration accumulate, and subsequent iterations can access all historical information. LoopAgent is implemented based on SequentialAgent.
+
+  ```go
+  import github.com/cloudwego/eino/adk
+
+  // Loop execution 5 times, each sequence: Analyze current state -> Propose improvement plan -> Verify improvement results
+  loop := adk.NewLoopAgent(ctx, &adk.LoopAgentConfig{
+      Name: "iterative_optimization",
+      SubAgents: []adk.Agent{
+          analyzeAgent,  // Analyze current state
+          improveAgent,  // Propose improvement plan
+          validateAgent, // Verify improvement results
+      },
+      MaxIterations: 5,
+  })
+  ```
+
+<a href="/img/eino/eino_adk_loop_agent_max_iterations_example.png" target="_blank"><img src="/img/eino/eino_adk_loop_agent_max_iterations_example.png" width="100%" /></a>
+
+- **ParallelAgent**: Allows multiple sub-Agents to execute concurrently based on the same input context. All sub-Agents receive the same initial input, each running in an independent goroutine (a lightweight concurrent execution unit in Go), finally collecting all sub-Agent execution results and outputting them sequentially to `AsyncIterator`.
+
+  ```go
+  import github.com/cloudwego/eino/adk
+
+  // Concurrent execution: Sentiment analysis + Keyword extraction + Content summary
+  parallel := adk.NewParallelAgent(ctx, &adk.ParallelAgentConfig{
+      Name: "multi_analysis",
+      SubAgents: []adk.Agent{
+          sentimentAgent,  // Sentiment analysis
+          keywordAgent,    // Keyword extraction
+          summaryAgent,    // Content summary
+      },
+  })
+  ```
+
+<a href="/img/eino/eino_adk_yet_another_parallel.png" target="_blank"><img src="/img/eino/eino_adk_yet_another_parallel.png" width="100%" /></a>
+
+### Agent Abstraction: The Foundation for Flexibly Defining Agents
+
+The core of Eino ADK is a simple yet powerful Agent interface. Each Agent has a clear identity (Name), clear responsibilities (Description), and standardized execution methods (Run), providing the foundation for Agent discovery and invocation. Whether it's a simple Q&A bot or a complex multi-step task processing system, they can all be implemented through this unified interface.
+
+- **Unified Agent Abstraction**: All pre-built Agents provided by ADK (ChatModelAgent, Plan-Execute Agent, Workflow Agents) follow this interface definition. You can also write custom Agents based on this interface to meet customized requirements.
+
+  ```go
+  type Agent interface {
+      Name(ctx context.Context) string
+      Description(ctx context.Context) string
+      Run(ctx context.Context, input *AgentInput, options ...AgentRunOption) *AsyncIterator[*AgentEvent]
+  }
+  ```
+- **Standardized Input**: Agents typically have LLM as their core, so the Agent input defined by Eino ADK is consistent with LLM input:
+
+  ```go
+  type AgentInput struct {
+      Messages        []Message
+      EnableStreaming bool
+  }
+
+  type Message = *schema.Message // *schema.Message is the structure definition for model input and output
+  ```
+- **Asynchronous Event-Driven Output**: The Agent's output is an asynchronous iterator of AgentEvent, where AgentEvent represents the core event data generated by the Agent during its execution. It contains the Agent's metadata, output, behavior, and error information:
+
+  ```go
+  type AgentEvent struct {
+      AgentName string    // Name of the Agent that produced the Event (automatically filled by the framework)
+
+      RunPath []RunStep   // Complete execution trace to reach the current Agent (automatically filled by the framework)
+
+      Output *AgentOutput // Agent output message content
+
+      Action *AgentAction // Agent action event content
+
+      Err error           // Agent error
+  }
+
+  type AgentOutput struct {
+      MessageOutput *MessageVariant // Model message output content
+
+      CustomizedOutput any          // Customized output content
+  }
+
+  type MessageVariant struct {
+      IsStreaming bool            // Whether it's streaming output
+
+      Message       Message        // Non-streaming message output
+      MessageStream MessageStream  // Streaming message output
+
+      Role schema.RoleType         // Message role
+      ToolName string              // Tool name
+  }
+
+  type AgentAction struct {
+      Exit bool                               // Agent exit
+
+      Interrupted *InterruptInfo              // Agent interrupted
+
+      TransferToAgent *TransferToAgentAction  // Agent transfer
+
+      CustomizedAction any                    // Customized Agent action
+  }
+  ```
+
+The asynchronous iterator allows the Agent to send messages to the iterator at any time during execution (Agent's model call results, tool execution results, intermediate states, etc.), while the caller consumes this series of events in an ordered, blocking manner:
+
+```go
+iter := myAgent.Run(ctx, "hello") // get AsyncIterator
+
+for {
+    event, ok := iter.Next()
+    if !ok {
+        break
+    }
+    // handle event
+}
+```
+
+### Agent Collaboration: Data Passing Hidden Behind Agents
+
+The nodes in the Excel Agent architecture diagram represent each specific Agent, and the edges represent data flow and task transfer. When building multi-Agent systems, it's crucial to enable efficient and accurate information sharing between different Agents.
+
+This information includes not only the Agent's input and output, but also various additional information that is global and partially visible, such as:
+
+- Executor execution needs to get a structured plan (Plan) that can be broken down into detailed steps (Step) from Planner/Replanner, rather than an unstructured raw LLM output message.
+- ReportAgent needs to get the complete execution plan, execution process, and execution artifacts to correctly generate reports.
+
+Eino ADK includes two basic data passing mechanisms:
+
+- **History**: Every AgentEvent produced by an Agent is saved to this hidden History. When calling a new Agent, the AgentEvents in History are converted and concatenated into AgentInput. By default, Assistant or Tool Messages from other Agents are converted to User Messages. This is equivalent to telling the current LLM: "Just now, Agent_A called some_tool and returned some_result. Now, it's your turn to make a decision." In this way, other Agents' behaviors are treated as "external information" or "factual statements" provided to the current Agent, rather than its own behavior, thus avoiding LLM context confusion.
+
+<a href="/img/eino/eino_adk_history.png" target="_blank"><img src="/img/eino/eino_adk_history.png" width="100%" /></a>
+
+- **Shared Session**: Persistent KV storage during a single execution process, used to support cross-Agent state management and data sharing. Any Agent in a single execution can read and write SessionValues at any time. Taking the Plan-Execute Agent pattern as an example, Planner generates the initial plan and writes it to Session; Executor reads the plan from Session and executes it; Replanner reads the current plan from Session, combines it with execution results, and writes the updated plan back to Session to overwrite the current plan.
+
+  ```go
+  // Get all SessionValues within an Agent
+  func GetSessionValues(ctx context.Context) map[string]any
+
+  // Get value from SessionValues by specified key within an Agent
+  func GetSessionValue(ctx context.Context, key string) (any, bool)
+
+  // Add SessionValues within an Agent
+  func AddSessionValue(ctx context.Context, key string, value any)
+
+  // Batch add SessionValues within an Agent
+  func AddSessionValues(ctx context.Context, kvs map[string]any)
+
+  // WithSessionValues injects SessionValues from outside before Agent execution
+  func WithSessionValues(v map[string]any) AgentRunOption
+  ```
+
+<a href="/img/eino/eino_adk_plan_execute_replan_session.png" target="_blank"><img src="/img/eino/eino_adk_plan_execute_replan_session.png" width="100%" /></a>
+
+In addition to comprehensive data passing mechanisms between Agents, Eino ADK provides multiple Agent collaboration patterns based on practical experience:
+
+- **Preset Agent Execution Order (Workflow)**: Execute according to the flow preset in code, the Agent execution order is predetermined and predictable. Corresponds to the three paradigms mentioned in the Workflow Agents section.
+- **Transfer Execution**: Carry the current Agent's output result context and transfer the task to a sub-Agent for continued processing. Suitable for scenarios where agent functionality can be clearly divided into boundaries and hierarchies, often used in combination with ChatModelAgent for dynamic routing through LLM generation results. Structurally, two Agents collaborating in this way are called parent-child Agents:
+
+<a href="/img/eino/eino_adk_excel_transfer.png" target="_blank"><img src="/img/eino/eino_adk_excel_transfer.png" width="100%" /></a>
+
+```go
+// Set parent-child Agent relationship
+func SetSubAgents(ctx context.Context, agent Agent, subAgents []Agent) (Agent, error)
+
+// Construct Transfer Event by specifying target Agent name
+func NewTransferToAgentAction(destAgentName string) *AgentAction
+```
+
+- **Explicit Invocation (ToolCall)**: Treat the Agent as a tool for invocation, suitable for scenarios where Agent execution only requires clear and explicit parameters rather than complete execution context. Often combined with ChatModelAgent, running the Agent as a tool and returning results to ChatModel for continued processing. Additionally, ToolCall also supports calling regular tools that conform to the tool interface construction without containing an Agent.
+
+<a href="/img/eino/eino_adk_agent_as_tool_case.png" target="_blank"><img src="/img/eino/eino_adk_agent_as_tool_case.png" width="100%" /></a>
+
+```go
+// Convert Agent to Tool
+func NewAgentTool(_ context.Context, agent Agent, options ...AgentToolOption) tool.BaseTool
+```
+
+## Excel Agent Example Execution
+
+### Configure Environment and Input/Output Paths
+
+- Environment Variables: The complete environment variables required for Excel Agent execution can be found in the project README.
+- Execution Input: Includes a user requirement description and a series of files to be processed, where:
+
+  - The first line in `main.go` represents the user's input requirement description, which you can modify:
+
+    ```go
+    func main() {
+        // query := schema.UserMessage("Count the recommended novel names and recommendation counts in the attachment file, and write the results to a file. Any content with 《》 is a novel name, form a table with headers for novel name and recommendation count, list same-named novels in one row only, and add up recommendation counts")
+        // query := schema.UserMessage("Read the content in 模拟出题.csv, standardize the format to put question, answer, explanation, options in the same row, for short-answer questions just write the answer into the explanation")
+        query := schema.UserMessage("Please help me extract the first column from the question.csv spreadsheet into a new csv")
+    }
+    ```
+  - `adk/multiagent/integration-excel-agent/playground/input` is the default attachment input path. The attachment input path can be configured, refer to README.
+  - The `adk/multiagent/integration-excel-agent/playground/test_data` path provides several example files. You can copy files to the attachment input path for test execution:
+
+    ```go
+    % tree adk/multiagent/integration-excel-agent/playground/test_data
+    adk/multiagent/integration-excel-agent/playground/test_data
+    ├── questions.csv
+    ├── 推荐小说.txt
+    └── 模拟出题.csv
+
+    1 directory, 3 files
+    ```
+- Execution Output: Input attachments, intermediate artifacts, and final results from Excel Agent execution are all placed in the working path: `adk/multiagent/integration-excel-agent/playground/${uuid}`. The output path can be configured, refer to README.
+
+### View Execution Results
+
+A single Excel Agent execution creates a new working directory under the output path, completing tasks in that directory. Intermediate artifacts and final results generated during execution are written to that directory.
+
+Taking the task `Please help me extract the first column from question.csv spreadsheet into a new csv` as an example, the files in the working directory after execution include:
+
+<a href="/img/eino/eino_adk_excel_directory.png" target="_blank"><img src="/img/eino/eino_adk_excel_directory.png" width="100%" /></a>
+
+1. Original input: `question.csv` obtained from the input path
+2. Execution plan from Planner/Replanner: `plan.md`
+
+   ```go
+   ### Task Plan
+   - [x] 1. {"desc":"Read the 'questions.csv' file into a pandas DataFrame."}
+   - [x] 2. Save the extracted first column to a new CSV file.
+   ```
+3. Code written by CodeAgent in Executor: `$uuid.py`
+
+   ```go
+   import pandas as pd
+
+   df = pd.read_csv('questions.csv')
+   first_column = df.iloc[:, _0_]
+   first_column.to_csv('extracted_first_column.csv', index=_False_)
+   ```
+4. Intermediate artifacts: `extracted_first_column.csv` and `first_column.csv`
+
+   ```go
+   type
+   multiple-choice
+   ...
+   short-answer
+   ```
+5. Final report: `final_report.json`
+
+   ```json
+   {
+     "is_success": true,
+     "result": "Successfully extracted the first column from questions.csv and saved it to first_column.csv.",
+     "files": [
+       {
+         "path": "/User/user/go/src/github.com/cloudwego/eino-examples/adk/multiagent/integration-excel-agent/playground/00f118af-4bd8-42f7-8d11-71f2801218bd/first_column.csv",
+         "desc": "A CSV file containing only the first column data from the original questions.csv."
+       }
+     ]
+   }
+   ```
+
+### Execution Process Output
+
+The Excel Agent outputs the execution results of each step to the log. Below, still using the task `Please help me extract the first column from question.csv spreadsheet into a new csv` as an example, we will show you several key steps and their outputs during Excel Agent execution, and through explaining the steps, intuitively present the Agent's execution flow and powerful capabilities:
+
+- Planner generates initial plan in JSON format
+
+  ```yaml
+  name: Planner
+  answer: {
+      **"steps"**: [
+          {
+              **"index"**: **1**,
+              **"desc"**: **"Read the 'questions.csv' file into a pandas DataFrame."**
+          },
+          {
+              **"index"**: **2**,
+              **"desc"**: **"Extract the first column from the DataFrame."**
+          },
+          {
+              **"index"**: **3**,
+              **"desc"**: **"Save the extracted first column to a new CSV file."**
+          }
+      ]
+  }
+  ```
+- Executor calls CodeAgent as a tool to execute the first step in the plan
+
+  ```yaml
+  name: Executor
+  tool name: CodeAgent
+  arguments: {"request":"Read the 'questions.csv' file into a pandas DataFrame using pandas. Use the pandas.read_csv function and store the result in a variable named df."}
+  ```
+- CodeAgent uses the PythonRunner tool to run code, and uses ReAct pattern for automatic error correction, fixing errors in the code
+
+  ```yaml
+  # CodeAgent uses PythonRunner tool to run code
+  name: Executor
+  tool name: PythonRunner
+  arguments: {"code":"```python\nfirst_column = df.iloc[:, 0]\n```"}
+
+  # PythonRunner code execution error
+  name: Executor
+  tool response: Traceback (most recent call last):
+    File "/User/user/go/src/github.com/cloudwego/eino-examples/adk/multiagent/integration-excel-agent/playground/00f118af-4bd8-42f7-8d11-71f2801218bd/00f118af-4bd8-42f7-8d11-71f2801218bd.py", line 1, in <module>
+      first_column = df.iloc[:, 0]
+                     ^^
+  NameError: name 'df' is not defined
+
+  # ReAct pattern automatic error correction, fixing non-executable code
+  name: Executor
+  answer: The error occurs because the DataFrame `df` is not defined. We need to first load the data from the existing CSV file `questions.csv` into `df`. Here's the corrected code:
+  tool name: PythonRunner
+  arguments: {"code":"```python\nimport pandas as pd\ndf = pd.read_csv('questions.csv')\nfirst_column = df.iloc[:, 0]\nprint(first_column.head())  # Verify the result\n```"}
+
+  # Code execution successful, return execution result
+  name: Executor
+  path: [{SequentialAgent} {plan_execute_replan} {Planner} {execute_replan} {Executor}]
+  tool response: 
+  0    multiple-choice
+  1    multiple-choice
+  2    multiple-choice
+  3    multiple-choice
+  4    multiple-choice
+  Name: type, dtype: object
+  ```
+- Replanner determines plan is complete, submits execution results to ReportAgent
+
+  ```yaml
+  name: Replanner
+  answer: {
+      **"is_success"**: **true**,
+      **"result"**: **"Successfully extracted the first column from 'questions.csv' into the new CSV file 'extracted_first_column.csv'."**,
+      **"files"**: [
+          {
+              **"desc"**: **"New CSV file containing the first column data from the original spreadsheet"**,
+              **"path"**: **"extracted_first_column.csv"**
+          }
+      ]
+  }
+  ```
+- ReportAgent generates summary and ends execution
+
+  ```yaml
+  name: Report
+  tool name: SubmitResult
+  arguments: {
+      **"is_success"**: **true**,
+      **"result"**: **"Successfully extracted the first column from questions.csv and saved it to first_column.csv."**,
+      **"files"**: [
+          {
+              **"path"**: **"/User/user/go/src/github.com/cloudwego/eino-examples/adk/multiagent/integration-excel-agent/playground/00f118af-4bd8-42f7-8d11-71f2801218bd/first_column.csv"**,
+              **"desc"**: **"A CSV file containing only the first column data from the original questions.csv."**
+          }
+      ]
+  }
+  ```
+
+## Summary
+
+What the Excel Agent demonstrates is not the techniques of a "single agent", but a set of Multi-Agent system engineering methodology based on Eino ADK:
+
+- Built on the ReAct capability of ChatModelAgent as the foundation, enabling the model to "think and call tools".
+- With WorkflowAgents orchestration capabilities, allowing each Agent in the Multi-Agent system to run in the user-expected order.
+- With the Planner–Executor–Replanner closed loop, enabling complex tasks to be "decomposable and error-correctable".
+- With History/Session data passing mechanisms, enabling multi-Agent systems to "collaborate and replay".
+
+> 💡
+> **Start Your Agent Development Journey Now**
+>
+> - ⌨️ View Excel Agent source code: [GitHub Excel Agent Source Code](https://github.com/cloudwego/eino-examples/tree/main/adk/multiagent/integration-excel-agent)
+> - 📚 View more documentation: [Eino ADK Documentation](https://www.cloudwego.io/docs/eino/core_modules/eino_adk/)
+> - 🛠️ Browse ADK source code: [Eino ADK Source Code](https://github.com/cloudwego/eino/tree/main/adk)
+> - 💡 Explore all ADK examples: [Eino ADK Examples](https://github.com/cloudwego/eino-examples/tree/main/adk)
+> - 🤝 Join the developer community: Exchange experiences and best practices with other developers
+>
+> Eino ADK makes agent development simple and powerful!
+
+<a href="/img/eino/eino_adk_excel_agent_user_group.png" target="_blank"><img src="/img/eino/eino_adk_excel_agent_user_group.png" width="100%" /></a>
+</script><h1>Build Your First AI Agent with Eino ADK: Starting from Excel Agent in Practice</h1><header class=article-meta></header><h2 id=understanding-eino-adk-through-the-excel-agent>Understanding Eino ADK Through the Excel Agent</h2><p>This article will introduce you to how to build a powerful multi-agent system using <strong>Eino ADK</strong> (<strong>Agent Development Kit</strong>). Previous Eino ADK introduction link: <a href=https://mp.weixin.qq.com/s/ffGjlDEzEzroo8w6knlLqw>Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch</a></p><p>The example is based on the Excel Agent, a real business scenario. The Excel Agent is an intelligent assistant that can &ldquo;understand your words, read your spreadsheets, and write and execute code&rdquo;. It breaks down complex Excel processing work into clear steps, completing various Excel data processing tasks reliably through automatic planning, tool calling, and result verification.</p><p>Next, we will demonstrate how this Agent is built step by step using Eino ADK, starting from the complete architecture and functionality of the Excel Agent. This will help you understand the core design features of Eino ADK in a simple and accessible way, helping you get started with Eino ADK quickly and move toward building custom agents and AI application systems.</p><p>The complete code for this example is located at <a href=https://github.com/cloudwego/eino-examples/tree/main/adk/multiagent/integration-excel-agent>GitHub</a>, and you can browse and download it at any time.</p><h3 id=what-is-the-excel-agent>What is the Excel Agent?</h3><p>The Excel Agent is an &ldquo;intelligent assistant that understands Excel&rdquo;. It first breaks down problems into steps, then executes and verifies results step by step. It can understand user questions and uploaded file content, propose feasible solutions, and select appropriate tools (system commands, generate and run Python code, web queries, etc.) to complete tasks.</p><p>The Excel Agent is a Multi-Agent system built on Eino ADK. The complete architecture is shown in the figure below:</p><p><a href=/img/eino/eino_adk_excel_agent_architecture.png target=_blank><img src=/img/eino/eino_adk_excel_agent_architecture.png width=100%></a></p><p>The Excel Agent contains several Agents with the following functions:</p><ul><li><strong>Planner</strong>: Analyzes user input and breaks down user problems into executable plans</li><li><strong>Executor</strong>: Correctly executes the first step in the current plan</li><li><strong>CodeAgent</strong>: Receives instructions from the Executor, calls various tools (such as reading/writing files, running Python code, etc.) to complete tasks</li><li><strong>WebSearchAgent</strong>: Receives instructions from the Executor and performs web searches</li><li><strong>Replanner</strong>: Based on the Executor&rsquo;s execution results and existing plans, decides whether to continue execution, adjust the plan, or complete execution</li><li><strong>ReportAgent</strong>: Generates summary reports based on the running process and results</li></ul><h3 id=typical-use-cases-for-the-excel-agent>Typical Use Cases for the Excel Agent</h3><p>In real business scenarios, you can treat the Excel Agent as an &ldquo;Excel expert + automation engineer&rdquo;. When you provide a raw spreadsheet and target description, it will propose a solution and execute it:</p><ul><li><strong>Data Cleaning and Formatting</strong>: Complete deduplication, null value handling, and date format standardization from an Excel file containing large amounts of data.</li><li><strong>Data Analysis and Report Generation</strong>: Extract monthly sales totals from sales data, perform aggregation statistics and pivot analysis, and finally generate and export chart reports.</li><li><strong>Automated Budget Calculation</strong>: Automatically calculate the total budget based on different departments&rsquo; budget requests and generate department budget allocation tables.</li><li><strong>Data Matching and Merging</strong>: Match and merge customer information tables from multiple different sources to generate a complete customer information database.</li></ul><p>The complete execution flow of the Excel Agent is:</p><p><a href=/img/eino/eino_adk_excel_agent_complete.png target=_blank><img src=/img/eino/eino_adk_excel_agent_complete.png width=100%></a></p><blockquote><p>💡
 <strong>Core Benefits</strong>:</p><ul><li><strong>Less manual work</strong>, letting the Agent automatically complete complex and tedious Excel processing tasks.</li><li><strong>More stable output quality</strong>, reducing omissions and errors through the &ldquo;plan-execute-reflect&rdquo; closed loop.</li><li><strong>Stronger scalability</strong>, with each Agent built independently, low coupling facilitates iterative updates.</li></ul></blockquote><p>The Excel Agent can be used independently, or as a sub-Agent integrated into a composite multi-expert system, routed to by external systems to solve Excel domain-related problems.</p><p>Below, we will gradually break down the Excel Agent to gain an in-depth understanding of the core design features of Eino ADK and how to use these features to build efficient, flexible AI application systems.</p><h3 id=chatmodelagent-the-foundation-for-interacting-with-llms>ChatModelAgent: The Foundation for Interacting with LLMs</h3><p><code>ChatModelAgent</code> is a core pre-built Agent in Eino ADK that internally uses the <a href=https://react-lm.github.io/>ReAct</a> pattern (a chain-of-reasoning pattern that lets the model &ldquo;think-act-observe&rdquo;):</p><p><a href=/img/eino/eino_adk_react_pattern.png target=_blank><img src=/img/eino/eino_adk_react_pattern.png width=100%></a></p><p><code>ChatModelAgent</code> is designed to let ChatModel perform explicit, step-by-step &ldquo;thinking&rdquo;, combining the thinking process to drive actions, observing historical thinking processes and action results to continue with the next step of thinking and action, ultimately solving complex problems:</p><ul><li>Call ChatModel (Reason)</li><li>LLM returns tool call requests (Action)</li><li>ChatModelAgent executes tools (Act)</li><li>Return tool results to LLM (Observation), combined with previous context to continue generation until the model determines no more tool calls are needed</li></ul><p><a href=/img/eino/eino_adk_excel_chat_model_agent_view.png target=_blank><img src=/img/eino/eino_adk_excel_chat_model_agent_view.png width=100%></a></p><p>In the Excel Agent, the core of each Agent is such a <code>ChatModelAgent</code>. Taking the Executor running the step [Read the header information of the user&rsquo;s input spreadsheet] as an example, we can understand how the ReAct pattern manifests in <code>ChatModelAgent</code> by observing the complete running process:</p><ol><li>Executor: After judgment, transfers the task to CodeAgent for execution</li><li>CodeAgent: Receives the task [Read the header information of the user&rsquo;s input spreadsheet]<ol><li><strong>Think-1</strong>: The context doesn&rsquo;t provide all files in the working directory, need to check</li><li><strong>Act-1</strong>: Call the Bash tool, ls to view all files in the working directory</li><li><strong>Think-2</strong>: Found the user&rsquo;s input file, determines need to write Python code to read the xlsx spreadsheet&rsquo;s first row</li><li><strong>Act-2</strong>: Call the PythonRunner tool, write and run code, get the execution result</li><li><strong>Think-3</strong>: Got the xlsx first row, determines task is complete</li></ol></li><li>Execution complete, return the spreadsheet header information to Executor</li></ol><h3 id=plan-execute-agent-a-multi-agent-collaboration-framework-based-on-plan-execute-reflect>Plan-Execute Agent: A Multi-Agent Collaboration Framework Based on &ldquo;Plan-Execute-Reflect&rdquo;</h3><p>Plan-Execute Agent is a multi-agent collaboration framework in Eino ADK based on the &ldquo;plan-execute-reflect&rdquo; paradigm, designed to solve the problems of step-by-step decomposition, execution, and dynamic adjustment of complex tasks. Through the collaborative work of <strong>Planner</strong>, <strong>Executor</strong>, and <strong>Replanner</strong> - three core agents, it achieves structured task planning, tool call execution, progress evaluation, and dynamic replanning, ultimately achieving user goals:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// Complete code: https://github.com/cloudwego/eino/blob/main/adk/prebuilt/planexecute/plan_execute.go</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#8f5902;font-style:italic>// NewPlanner creates a new planner agent based on the provided configuration.</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -360,4 +902,4 @@ The example is based on the Excel Agent, a real business scenario. The Excel Age
 <strong>Start Your Agent Development Journey Now</strong></p><ul><li>⌨️ View Excel Agent source code: <a href=https://github.com/cloudwego/eino-examples/tree/main/adk/multiagent/integration-excel-agent>GitHub Excel Agent Source Code</a></li><li>📚 View more documentation: <a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino ADK Documentation</a></li><li>🛠️ Browse ADK source code: <a href=https://github.com/cloudwego/eino/tree/main/adk>Eino ADK Source Code</a></li><li>💡 Explore all ADK examples: <a href=https://github.com/cloudwego/eino-examples/tree/main/adk>Eino ADK Examples</a></li><li>🤝 Join the developer community: Exchange experiences and best practices with other developers</li></ul><p>Eino ADK makes agent development simple and powerful!</p></blockquote><p><a href=/img/eino/eino_adk_excel_agent_user_group.png target=_blank><img src=/img/eino/eino_adk_excel_agent_user_group.png width=100%></a></p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 2, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/96139d4140c93a677eec194c2d34dffa3e2673dd>feat: sync eino docs (#1512) (96139d41)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

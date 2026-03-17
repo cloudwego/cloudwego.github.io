@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Multiple Services | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/multi_service/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Multiple Services"><meta property="og:description" content="Kitex supports multiple service registration on a server."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-03-05T00:00:00+00:00"><meta property="article:modified_time" content="2025-02-07T10:25:52+08:00"><meta itemprop=name content="Multiple Services"><meta itemprop=description content="Kitex supports multiple service registration on a server."><meta itemprop=datePublished content="2024-03-05T00:00:00+00:00"><meta itemprop=dateModified content="2025-02-07T10:25:52+08:00"><meta itemprop=wordCount content="1262"><meta itemprop=keywords content="Kitex,Multi Services,gRPC,thrift,protobuf"><meta name=twitter:card content="summary"><meta name=twitter:title content="Multiple Services"><meta name=twitter:description content="Kitex supports multiple service registration on a server."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Multiple Services | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/multi_service/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Multiple Services"><meta property="og:description" content="Kitex supports multiple service registration on a server."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-03-05T00:00:00+00:00"><meta property="article:modified_time" content="2025-02-07T10:25:52+08:00"><meta itemprop=name content="Multiple Services"><meta itemprop=description content="Kitex supports multiple service registration on a server."><meta itemprop=datePublished content="2024-03-05T00:00:00+00:00"><meta itemprop=dateModified content="2025-02-07T10:25:52+08:00"><meta itemprop=wordCount content="1262"><meta itemprop=keywords content="Kitex,Multi Services,gRPC,thrift,protobuf"><meta name=twitter:card content="summary"><meta name=twitter:title content="Multiple Services"><meta name=twitter:description content="Kitex supports multiple service registration on a server."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -145,7 +145,279 @@
 <label for=m-docskitexfaq-check><a href=/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-docskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/kitex/Tutorials/advanced-feature/multi_service/multi_service.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/kitex/Tutorials/advanced-feature/multi_service?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Multiple%20Services" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#usage>Usage</a><ul><li><a href=#client-side-users>Client Side Users</a></li><li><a href=#server-side-users>Server Side Users</a></li></ul></li><li><a href=#obtain-servicename-and-methodname>Obtain ServiceName and MethodName</a></li><li><a href=#middlewares>Middlewares</a><ul><li><a href=#distinguish-streamingnon-streaming-methods>Distinguish Streaming/Non-Streaming Methods</a></li></ul></li><li><a href=#faq>FAQ</a></li><li><a href=#whats-the-difference-between-multi-service-and-combine-service>What&rsquo;s the difference between Multi-Service and Combine Service?</a></li><li><a href=#why-does-the-service-registration-fail>Why does the service registration fail?</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/>Advanced Feature</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/>Multiple Services</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/multi_service/>Multiple Services</a></li></ol></nav><div class=td-content><h1>Multiple Services</h1><div class=lead>Kitex supports multiple service registration on a server.</div><header class=article-meta></header><h2 id=introduction>Introduction</h2><p>Since Kitex v0.8.0, multiple service registrations on a single server are supported.</p><p>Currently, the feature is available for:</p><ul><li>gRPC transport protocol, including <a href=/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/thrift_streaming/>Thrift Streaming over HTTP2</a> (which is also based on gRPC) (>= v0.8.0)</li><li>Kitex thrift & protobuf (non-streaming) (>= v0.9.0)</li></ul><h2 id=usage>Usage</h2><h3 id=client-side-users>Client Side Users</h3><p>If you are client-side users and using the multi-service feature, please follow the instructions below:</p><ol><li>Upgrade the client to the Kitex version >= v0.9.0</li><li>For Kitex thrift & protobuf (non-streaming) APIs:<ol><li>Use TTHeader as the transport protocol <code>client.WithTransportProtocol(transport.TTHeader)</code></li><li>Add the following option on the client side: <code>client.WithMetaHandler(transmeta.ClientTTHeaderHandler)</code></li></ol></li></ol><h3 id=server-side-users>Server Side Users</h3><h4 id=preparation>Preparation</h4><blockquote><p>Kitex Tool ( >= v0.11.0 ) supports generating and registering handler for each service, please refer to <a href=/docs/kitex/tutorials/advanced-feature/multi_service/multi_handler/>Generating Multiple Handlers for Multiple Services</a>.</p></blockquote><p>Please generate code for each service using kitex command tool (>= v0.9.0). For more details, please refer to <a href=/docs/kitex/tutorials/code-gen/code_generation/>Code Generation Tool</a>.</p><p>(Note: For users utilizing the gRPC multi-service feature from v0.8.0 onwards, there have been some slight usage changes regarding service registration, so please upgrade your kitex command tool to v0.9.0+. For more details, please refer to the section &ldquo;Create a server and register your services on the server&rdquo;.)</p><p>The results of code generation will be as follows:</p><pre tabindex=0><code>kitex_gen
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#usage>Usage</a><ul><li><a href=#client-side-users>Client Side Users</a></li><li><a href=#server-side-users>Server Side Users</a></li></ul></li><li><a href=#obtain-servicename-and-methodname>Obtain ServiceName and MethodName</a></li><li><a href=#middlewares>Middlewares</a><ul><li><a href=#distinguish-streamingnon-streaming-methods>Distinguish Streaming/Non-Streaming Methods</a></li></ul></li><li><a href=#faq>FAQ</a></li><li><a href=#whats-the-difference-between-multi-service-and-combine-service>What&rsquo;s the difference between Multi-Service and Combine Service?</a></li><li><a href=#why-does-the-service-registration-fail>Why does the service registration fail?</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/>Advanced Feature</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/>Multiple Services</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/multi_service/>Multiple Services</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Multiple Services" data-url=https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/multi_service/multi_service/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Introduction
+
+Since Kitex v0.8.0, multiple service registrations on a single server are supported.
+
+Currently, the feature is available for:
+
+- gRPC transport protocol, including [Thrift Streaming over HTTP2](/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/thrift_streaming/) (which is also based on gRPC) (>= v0.8.0)
+- Kitex thrift & protobuf (non-streaming) (>= v0.9.0)
+
+## Usage
+
+### Client Side Users
+
+If you are client-side users and using the multi-service feature, please follow the instructions below:
+
+1. Upgrade the client to the Kitex version >= v0.9.0
+2. For Kitex thrift & protobuf (non-streaming) APIs:
+   1. Use TTHeader as the transport protocol `client.WithTransportProtocol(transport.TTHeader)`
+   2. Add the following option on the client side: `client.WithMetaHandler(transmeta.ClientTTHeaderHandler)`
+
+### Server Side Users
+
+#### Preparation
+
+> Kitex Tool ( >= v0.11.0 ) supports generating and registering handler for each service, please refer to [Generating Multiple Handlers for Multiple Services](/docs/kitex/tutorials/advanced-feature/multi_service/multi_handler/).
+
+Please generate code for each service using kitex command tool (>= v0.9.0). For more details, please refer to [Code Generation Tool](/docs/kitex/tutorials/code-gen/code_generation/).
+
+(Note: For users utilizing the gRPC multi-service feature from v0.8.0 onwards, there have been some slight usage changes regarding service registration, so please upgrade your kitex command tool to v0.9.0+. For more details, please refer to the section "Create a server and register your services on the server".)
+
+The results of code generation will be as follows:
+
+```
+kitex_gen
+    |_ api
+        |_ servicea
+            |_ client.go
+            |_ invoker.go
+            |_ server.go
+            |_ servicea.go
+        |_ serviceb
+            |_ client.go
+            |_ invoker.go
+            |_ server.go
+            |_ serviceb.go
+        |_ ...
+
+```
+
+You will see `RegisterService` func in each service's `server.go`.
+
+```go
+func RegisterService(svr server.Server, handler XXX, opts ...server.RegisterOption) error {
+   if err := svr.RegisterService(serviceInfo(), handler, opts...); err != nil {
+      return err
+   }
+   return nil
+}
+
+```
+
+#### Create a server and register your services on the server
+
+Registering services on a server is a straightforward process.
+
+First, create a server. Then, by calling the `RegisterService` function in your generated code, a service can be registered.
+
+Multiple services can be called on the same server, registering as many services as needed.
+
+```go
+package main
+
+import (
+   "github.com/cloudwego/kitex/pkg/server"
+
+   servicea "your_servicea_kitex_gen_path"
+   serviceb "your_serviceb_kitex_gen_path"
+)
+
+func main() {
+   // create a server by calling server.NewServer
+   svr := server.NewServer(your_server_option)
+   // register your multi-service on a server
+   err := **servicea**.RegisterService(svr, new(ServiceAImpl))
+   err := **serviceb**.RegisterService(svr, new(ServiceBImpl))
+
+   if err := svr.Run(); err != nil {
+      klog.Errorf("%s", err.Error())
+   }
+}
+
+```
+
+#### Fallback Service
+
+Suppose there is the same named method between services.
+
+```thrift
+// demo.thrift
+namespace go api
+
+struct Request {
+   1: string message
+}
+
+struct Response {
+   1: string message
+}
+
+service ServiceA {
+    Response sameNamedMethod(1: Request req)
+}
+
+service ServiceB {
+    Response sameNamedMethod(1: Request req)
+}
+
+```
+
+In this case, **please note that you need to specify one service as a fallback service.**
+
+Fallback service is used to maintain compatibility when the client does not meet any of the conditions written in section [Client Side Users](/docs/kitex/tutorials/advanced-feature/multi_service/#client-side-users).
+
+**If you don't specify any fallback service or if you specify multiple fallback services, an error will be returned on server startup.**
+
+Note that you can specify only one service as a fallback service.
+
+`RegisterService()` in the generated code (`server.go`) has an optional argument: `server.RegisterOption`. If `server.WithFallbackService` option is passed, the service will be registered as a fallback service.
+
+```go
+func main() {
+   // create a server by calling server.NewServer
+   svr := server.NewServer(your_server_option)
+   // register multi-service on a server
+   // servicea will be a fallback service
+   servicea.RegisterService(svr, new(ServiceAImpl), server.WithFallbackService())
+   serviceb.RegisterService(svr, new(ServiceBImpl))
+
+   err := svr.Run()
+   if err != nil {
+      logs.Error("%s", err.Error())
+   }
+   logs.Stop()
+}
+
+```
+
+Another way to avoid an error on server startup without specifying a fallback service is to use the option `server.WithRefuseTrafficWithoutServiceName`.
+
+With this option, no error is returned when starting up the server even when you don't specify a fallback service for your method with conflicting names.
+
+But when using this option, the following must be noted:
+
+When `server.WithRefuseTrafficWithoutServiceName` option is enabled, an error will occur with a message “no service name while the server has WithRefuseTrafficWithoutServiceName option enabled” if the client does not meet any of the conditions mentioned in section [Client Side Users](/docs/kitex/tutorials/advanced-feature/multi_service/#client-side-users).
+
+#### How to not fallback to a fallback service (= not rely on method name to find a service)
+
+In some cases, even though a fallback service is specified for methods with the same name between services, the client's request may be intended to call a different service than the fallback service.
+
+In such cases, please ensure the client meets the conditions written in section [Client Side Users](/docs/kitex/tutorials/advanced-feature/multi_service/#client-side-users).
+
+## Obtain ServiceName and MethodName
+
+- Service Name
+
+```go
+idlService, ok := kitexutil.GetIDLServiceName(ctx)
+
+```
+
+- Method Name
+
+```go
+method, ok := kitexutil.GetMethod(ctx)
+
+```
+
+## Middlewares
+
+Generally, it's just the same as before, just add the option when calling `NewServer`:
+
+```go
+options = append(options, server.WithMiddleware(yourMiddleware))
+svr := server.NewServer(options...)
+
+```
+
+You can distinguish each request by the service/method with the usage shown before.
+
+### Distinguish Streaming/Non-Streaming Methods
+
+The recommended way to determine whether a request has an underlying protocol for Streaming would be to check the type of the request/response arguments:
+
+|                                     | **Client Middleware**                                                                                        | **Server Middleware**                                                                                                                                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Bidirectional**<br/>**(gRPC)**    | - request: `interface{}` = nil <br/>- response: \*streaming.Result                                           | - request: \*streaming.Args<br/>- response: `interface{}` = nil                                                                                                                             |
+| **Client Streaming**<br/>**(gRPC)** | - request: interface{} = nil <br/>- response: \*streaming.Result                                             | - request: \*streaming.Args<br/>- response: `interface{}` = nil                                                                                                                             |
+| **Server Streaming**<br/>**(gRPC)** | - request: `interface{}` = nil <br/>- response: \*streaming.Result                                           | - request: \*streaming.Args<br/>- response: `interface{}` = nil                                                                                                                             |
+| **Unary (gRPC)**                    | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: \*streaming.Args<br/>- response: `interface{}` = nil<br/>Note: the option provided since v0.9.0: `server.WithCompatibleMiddlewareForUnary()` makes it the same with PingPong API |
+| **PingPong API (KitexPB)**          | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result | - request: *kitex_gen/some_pkg.${svc}${method}Args<br/>- response: *kitex_gen/some_pkg.${svc}${method}Result                                                                                |
+
+**NOTE:**
+Kitex server supports auto-detection on incoming requests, and for GRPC/Protobuf Unary methods, it accepts both GRPC requests and KitexProtobuf(TTHeader + Pure Protobuf Payload) requests, so **it may not be accurate to rely solely on the method name from RPCInfo**.
+
+#### Client Middleware Example
+
+**Client** middlewares should rely on the type of `resp`:
+
+```go
+func clientMWForIdentifyStreamingRequests(next endpoint.Endpoint) endpoint.Endpoint {
+    return func(ctx context.Context, req, resp interface{}) (err error) {
+        if _, ok := resp.(*streaming.Result); ok {
+            // it's a streaming request
+            return next(ctx, req, resp)
+        } else {
+            // it's a non-streaming request
+            return next(ctx, req, resp)
+        }
+    }
+}
+
+```
+
+#### Server Middleware Example
+
+**Server** middlewares should rely on the type of `req`:
+
+```go
+func serverMWForIdentifyStreamingRequests(next endpoint.Endpoint) endpoint.Endpoint {
+    return func(ctx context.Context, req, resp interface{}) (err error) {
+        if _, ok := req.(*streaming.Args); ok {
+            // it's a streaming request
+            return next(ctx, req, resp)
+        } else {
+            // it's a non-streaming request
+            return next(ctx, req, resp)
+        }
+    }
+}
+
+```
+
+## FAQ
+
+## What's the difference between Multi-Service and Combine Service?
+
+- Combine Service (A service formed by merging multiple services into one unified service by generating code with `-combine-service` flag)
+  - Code for all services (both combineservice and each service being combined) are generated.
+  - All the method names of your services must be unique.
+  - Only one service (= combine service) can be registered on a server. Otherwise, you'll receive an error message saying "only one service can be registered when registering combined service".
+- Multi-Service **RECOMMENDED USING INSTEAD OF COMBINE SERVICE**
+  - Code for each service is generated.
+  - Method names can be the same between services. But there are some restrictions. Please choose one.
+    - You need to specify a fallback service for the conflicting method.
+    - Add `server.WithRefuseTrafficWithoutServiceName` option when creating a server, and make sure that client meets the conditions mentioned in section [Client Side Users](/docs/kitex/tutorials/advanced-feature/multi_service/#client-side-users).
+
+## Why does the service registration fail?
+
+There are some possible reasons:
+
+- No fallback service is specified, despite having methods with the same name between services you register. Please specify a fallback service.
+- You are attempting to register both combine service and other services on the server. Combine service can only be registered on a server by itself. If you want to register other services as well, you either need to merge those services into the combine service or register each service separately without using combine service.
+</script><h1>Multiple Services</h1><div class=lead>Kitex supports multiple service registration on a server.</div><header class=article-meta></header><h2 id=introduction>Introduction</h2><p>Since Kitex v0.8.0, multiple service registrations on a single server are supported.</p><p>Currently, the feature is available for:</p><ul><li>gRPC transport protocol, including <a href=/docs/kitex/tutorials/basic-feature/protocol/streaming/grpc/thrift_streaming/>Thrift Streaming over HTTP2</a> (which is also based on gRPC) (>= v0.8.0)</li><li>Kitex thrift & protobuf (non-streaming) (>= v0.9.0)</li></ul><h2 id=usage>Usage</h2><h3 id=client-side-users>Client Side Users</h3><p>If you are client-side users and using the multi-service feature, please follow the instructions below:</p><ol><li>Upgrade the client to the Kitex version >= v0.9.0</li><li>For Kitex thrift & protobuf (non-streaming) APIs:<ol><li>Use TTHeader as the transport protocol <code>client.WithTransportProtocol(transport.TTHeader)</code></li><li>Add the following option on the client side: <code>client.WithMetaHandler(transmeta.ClientTTHeaderHandler)</code></li></ol></li></ol><h3 id=server-side-users>Server Side Users</h3><h4 id=preparation>Preparation</h4><blockquote><p>Kitex Tool ( >= v0.11.0 ) supports generating and registering handler for each service, please refer to <a href=/docs/kitex/tutorials/advanced-feature/multi_service/multi_handler/>Generating Multiple Handlers for Multiple Services</a>.</p></blockquote><p>Please generate code for each service using kitex command tool (>= v0.9.0). For more details, please refer to <a href=/docs/kitex/tutorials/code-gen/code_generation/>Code Generation Tool</a>.</p><p>(Note: For users utilizing the gRPC multi-service feature from v0.8.0 onwards, there have been some slight usage changes regarding service registration, so please upgrade your kitex command tool to v0.9.0+. For more details, please refer to the section &ldquo;Create a server and register your services on the server&rdquo;.)</p><p>The results of code generation will be as follows:</p><pre tabindex=0><code>kitex_gen
     |_ api
         |_ servicea
             |_ client.go
@@ -246,4 +518,4 @@ Kitex server supports auto-detection on incoming requests, and for GRPC/Protobuf
 </span></span></span></code></pre></div><h2 id=faq>FAQ</h2><h2 id=whats-the-difference-between-multi-service-and-combine-service>What&rsquo;s the difference between Multi-Service and Combine Service?</h2><ul><li>Combine Service (A service formed by merging multiple services into one unified service by generating code with <code>-combine-service</code> flag)<ul><li>Code for all services (both combineservice and each service being combined) are generated.</li><li>All the method names of your services must be unique.</li><li>Only one service (= combine service) can be registered on a server. Otherwise, you&rsquo;ll receive an error message saying &ldquo;only one service can be registered when registering combined service&rdquo;.</li></ul></li><li>Multi-Service <strong>RECOMMENDED USING INSTEAD OF COMBINE SERVICE</strong><ul><li>Code for each service is generated.</li><li>Method names can be the same between services. But there are some restrictions. Please choose one.<ul><li>You need to specify a fallback service for the conflicting method.</li><li>Add <code>server.WithRefuseTrafficWithoutServiceName</code> option when creating a server, and make sure that client meets the conditions mentioned in section <a href=/docs/kitex/tutorials/advanced-feature/multi_service/#client-side-users>Client Side Users</a>.</li></ul></li></ul></li></ul><h2 id=why-does-the-service-registration-fail>Why does the service registration fail?</h2><p>There are some possible reasons:</p><ul><li>No fallback service is specified, despite having methods with the same name between services you register. Please specify a fallback service.</li><li>You are attempting to register both combine service and other services on the server. Combine service can only be registered on a server by itself. If you want to register other services as well, you either need to merge those services into the combine service or register each service separately without using combine service.</li></ul><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified February 7, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c0730d7a2e0e07a99bf4fabde78426d6ba5e8015>chore: fix link error (#1227) (c0730d7a)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

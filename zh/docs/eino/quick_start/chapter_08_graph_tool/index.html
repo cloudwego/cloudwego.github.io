@@ -16,7 +16,7 @@ you> 请帮我分析 RFC6455 文档中关于 WebSocket 握手的部分 [assistan
 # 设置项目根目录 export PROJECT_ROOT=/path/to/your/project go run ./cmd/ch08 输出示例：
 you> 请帮我分析 RFC6455 文档中关于 WebSocket 握手的部分 [assistant] 我来帮你分析文档... [tool call] answer_from_document(file_path: "rfc6455.txt", question: "WebSocket 握手过程") [tool result] 找到 3 个相关片段，正在生成答案... [assistant] 根据 RFC6455 文档，WebSocket 握手过程如下... 从简单 Tool 到 Graph Tool：为什么需要复杂工作流 第四章我们创建了简单的 Tool，每个 Tool 执行单一任务。但实际场景中，很多任务需要多个步骤协同完成。
 简单 Tool 的局限：
-单一职责：每个 Tool 只做一件事 无法并行：多个独立任务无法同时执行 难以复用：复杂逻辑难以拆分和组合 重要说明：本章只是展示 compose/graph/workflow 能力的一角。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+单一职责：每个 Tool 只做一件事 无法并行：多个独立任务无法同时执行 难以复用：复杂逻辑难以拆分和组合 重要说明：本章只是展示 compose/graph/workflow 能力的一角。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -125,7 +125,321 @@ you> 请帮我分析 RFC6455 文档中关于 WebSocket 握手的部分 [assistan
 <label for=m-zhdocseinofaq-check><a href=/zh/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/eino/quick_start/chapter_08_graph_tool.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/eino/quick_start?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e7%ac%ac%e5%85%ab%e7%ab%a0%ef%bc%9aGraph%20Tool%ef%bc%88%e5%a4%8d%e6%9d%82%e5%b7%a5%e4%bd%9c%e6%b5%81%ef%bc%89" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#代码位置>代码位置</a></li><li><a href=#前置条件>前置条件</a></li><li><a href=#运行>运行</a></li><li><a href=#从简单-tool-到-graph-tool为什么需要复杂工作流>从简单 Tool 到 Graph Tool：为什么需要复杂工作流</a></li><li><a href=#关键概念>关键概念</a><ul><li><a href=#composeworkflow>compose.Workflow</a></li><li><a href=#batchnode>BatchNode</a></li><li><a href=#fieldmapping>FieldMapping</a></li></ul></li><li><a href=#graph-tool-的实现>Graph Tool 的实现</a><ul><li><a href=#1-定义输入输出结构>1. 定义输入输出结构</a></li><li><a href=#2-构建工作流>2. 构建工作流</a></li><li><a href=#3-封装为-tool>3. 封装为 Tool</a></li></ul></li><li><a href=#graph-tool-执行流程>Graph Tool 执行流程</a></li><li><a href=#本章小结>本章小结</a></li><li><a href=#扩展思考>扩展思考</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/quick_start/>快速开始</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/quick_start/chapter_08_graph_tool/>第八章：Graph Tool（复杂工作流）</a></li></ol></nav><div class=td-content><h1>第八章：Graph Tool（复杂工作流）</h1><header class=article-meta></header><p>本章目标：理解 Graph Tool 的概念，实现大文件的并行 chunk 召回，引入 compose 包构建复杂工作流。</p><h2 id=代码位置>代码位置</h2><ul><li>入口代码：<a href=https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch08/main.go>cmd/ch08/main.go</a></li><li>RAG 实现：<a href=https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/rag/rag.go>rag/rag.go</a></li></ul><h2 id=前置条件>前置条件</h2><p>与第一章一致：需要配置一个可用的 ChatModel（OpenAI 或 Ark）。</p><h2 id=运行>运行</h2><p>在 <code>examples/quickstart/chatwitheino</code> 目录下执行：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#8f5902;font-style:italic># 设置项目根目录</span>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#代码位置>代码位置</a></li><li><a href=#前置条件>前置条件</a></li><li><a href=#运行>运行</a></li><li><a href=#从简单-tool-到-graph-tool为什么需要复杂工作流>从简单 Tool 到 Graph Tool：为什么需要复杂工作流</a></li><li><a href=#关键概念>关键概念</a><ul><li><a href=#composeworkflow>compose.Workflow</a></li><li><a href=#batchnode>BatchNode</a></li><li><a href=#fieldmapping>FieldMapping</a></li></ul></li><li><a href=#graph-tool-的实现>Graph Tool 的实现</a><ul><li><a href=#1-定义输入输出结构>1. 定义输入输出结构</a></li><li><a href=#2-构建工作流>2. 构建工作流</a></li><li><a href=#3-封装为-tool>3. 封装为 Tool</a></li></ul></li><li><a href=#graph-tool-执行流程>Graph Tool 执行流程</a></li><li><a href=#本章小结>本章小结</a></li><li><a href=#扩展思考>扩展思考</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/quick_start/>快速开始</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/quick_start/chapter_08_graph_tool/>第八章：Graph Tool（复杂工作流）</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="第八章：Graph Tool（复杂工作流）" data-url=https://www.cloudwego.io/zh/docs/eino/quick_start/chapter_08_graph_tool/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+本章目标：理解 Graph Tool 的概念，实现大文件的并行 chunk 召回，引入 compose 包构建复杂工作流。
+
+## 代码位置
+
+- 入口代码：[cmd/ch08/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch08/main.go)
+- RAG 实现：[rag/rag.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/rag/rag.go)
+
+## 前置条件
+
+与第一章一致：需要配置一个可用的 ChatModel（OpenAI 或 Ark）。
+
+## 运行
+
+在 `examples/quickstart/chatwitheino` 目录下执行：
+
+```bash
+# 设置项目根目录
+export PROJECT_ROOT=/path/to/your/project
+
+go run ./cmd/ch08
+```
+
+输出示例：
+
+```
+you> 请帮我分析 RFC6455 文档中关于 WebSocket 握手的部分
+[assistant] 我来帮你分析文档...
+[tool call] answer_from_document(file_path: "rfc6455.txt", question: "WebSocket 握手过程")
+[tool result] 找到 3 个相关片段，正在生成答案...
+[assistant] 根据 RFC6455 文档，WebSocket 握手过程如下...
+```
+
+## 从简单 Tool 到 Graph Tool：为什么需要复杂工作流
+
+第四章我们创建了简单的 Tool，每个 Tool 执行单一任务。但实际场景中，很多任务需要多个步骤协同完成。
+
+**简单 Tool 的局限：**
+
+- 单一职责：每个 Tool 只做一件事
+- 无法并行：多个独立任务无法同时执行
+- 难以复用：复杂逻辑难以拆分和组合
+
+**重要说明：本章只是展示 compose/graph/workflow 能力的一角。**
+
+从更大的视角看，Eino 的 `compose` 包提供了非常通用、确定性的编排能力：你可以把任何需要"确定性业务流程"的系统，用 `compose` 的 Graph/Chain/Workflow 组织成可执行的流水线，并且它能够**原生编排 Eino 的所有 component**（如 ChatModel、Prompt、Tools、Retriever、Embedding、Indexer 等），同时具备完整的 **callback** 体系，以及 **interrupt/resume + checkpoint** 支持。
+
+**Graph Tool 的定位：**
+
+- **Graph Tool 是 compose 工作流的 Tool 化封装**：把 `compose.Graph / compose.Chain / compose.Workflow` 这类可编译的编排产物，包装成一个 Agent 可调用的 Tool
+- **支持并行/分支/组合**：由 compose 提供（并行、分支、字段映射、子图等），Graph Tool 只是把它们暴露为 Tool 入口
+- **支持状态管理与持久化**：节点间传递数据、以及通过 checkpoint 保存/恢复运行状态
+- **可中断恢复**：既支持工作流内部的中断（节点里触发 interrupt），也支持工具层面的中断包装（嵌套 interrupt 场景）
+
+**简单类比：**
+
+- **简单 Tool** = "单步操作"（读取文件）
+- **Graph Tool** = "流水线"（读取 → 分块 → 评分 → 筛选 → 生成答案）
+
+## 关键概念
+
+### compose.Workflow
+
+`compose.Workflow` 是 Eino 中构建工作流的核心组件：
+
+```go
+wf := compose.NewWorkflow[Input, Output]()
+
+// 添加节点
+wf.AddLambdaNode("load", loadFunc).AddInput(compose.START)
+wf.AddLambdaNode("chunk", chunkFunc).AddInput("load")
+wf.AddLambdaNode("score", scoreFunc).AddInput("chunk")
+wf.AddLambdaNode("answer", answerFunc).AddInput("score")
+
+// 连接到结束节点
+wf.End().AddInput("answer")
+```
+
+**核心概念：**
+
+- **Node**：工作流中的处理单元
+- **Edge**：节点间的数据流向
+- **START**：工作流的入口
+- **END**：工作流的出口
+
+### BatchNode
+
+`BatchNode` 用于并行处理多个任务：
+
+```go
+scorer := batch.NewBatchNode(&batch.NodeConfig[Task, Result]{
+    Name:           "ChunkScorer",
+    InnerTask:      scoreOneChunk,  // 单个任务的处理函数
+    MaxConcurrency: 5,              // 最大并发数
+})
+```
+
+**工作原理：**
+
+1. 接收任务列表作为输入
+2. 并行执行每个任务（受 MaxConcurrency 限制）
+3. 收集所有结果返回
+
+### FieldMapping
+
+`FieldMapping` 用于跨节点传递数据：
+
+```go
+wf.AddLambdaNode("answer", answerFunc).
+    AddInputWithOptions("filter",  // 从 filter 节点获取数据
+        []*compose.FieldMapping{compose.ToField("TopK")},
+        compose.WithNoDirectDependency()).
+    AddInputWithOptions(compose.START,  // 从 START 节点获取数据
+        []*compose.FieldMapping{compose.MapFields("Question", "Question")},
+        compose.WithNoDirectDependency())
+```
+
+**为什么需要 FieldMapping？**
+
+- 非相邻节点间传递数据
+- 多个数据源合并到同一节点
+- 数据字段重命名
+
+## Graph Tool 的实现
+
+### 1. 定义输入输出结构
+
+```go
+type Input struct {
+    FilePath string `json:"file_path" jsonschema:"description=Absolute path to the document"`
+    Question string `json:"question"  jsonschema:"description=The question to answer"`
+}
+
+type Output struct {
+    Answer  string   `json:"answer"`
+    Sources []string `json:"sources"`
+}
+```
+
+### 2. 构建工作流
+
+```go
+func buildWorkflow(cm model.BaseChatModel) *compose.Workflow[Input, Output] {
+    wf := compose.NewWorkflow[Input, Output]()
+
+    // load: 读取文件
+    wf.AddLambdaNode("load", compose.InvokableLambda(
+        func(ctx context.Context, in Input) ([]*schema.Document, error) {
+            data, err := os.ReadFile(in.FilePath)
+            if err != nil {
+                return nil, err
+            }
+            return []*schema.Document{{Content: string(data)}}, nil
+        },
+    )).AddInput(compose.START)
+
+    // chunk: 分块
+    wf.AddLambdaNode("chunk", compose.InvokableLambda(
+        func(ctx context.Context, docs []*schema.Document) ([]*schema.Document, error) {
+            var out []*schema.Document
+            for _, d := range docs {
+                out = append(out, splitIntoChunks(d.Content, 800)...)
+            }
+            return out, nil
+        },
+    )).AddInput("load")
+
+    // score: 并行评分
+    scorer := batch.NewBatchNode(&batch.NodeConfig[scoreTask, scoredChunk]{
+        Name:           "ChunkScorer",
+        InnerTask:      newScoreWorkflow(cm),
+        MaxConcurrency: 5,
+    })
+
+    wf.AddLambdaNode("score", compose.InvokableLambda(
+        func(ctx context.Context, in scoreIn) ([]scoredChunk, error) {
+            tasks := make([]scoreTask, len(in.Chunks))
+            for i, c := range in.Chunks {
+                tasks[i] = scoreTask{Text: c.Content, Question: in.Question}
+            }
+            return scorer.Invoke(ctx, tasks)
+        },
+    )).
+        AddInputWithOptions("chunk", []*compose.FieldMapping{compose.ToField("Chunks")}, compose.WithNoDirectDependency()).
+        AddInputWithOptions(compose.START, []*compose.FieldMapping{compose.MapFields("Question", "Question")}, compose.WithNoDirectDependency())
+
+    // filter: 筛选 top-k
+    wf.AddLambdaNode("filter", compose.InvokableLambda(
+        func(ctx context.Context, scored []scoredChunk) ([]scoredChunk, error) {
+            sort.Slice(scored, func(i, j int) bool {
+                return scored[i].Score > scored[j].Score
+            })
+            // 返回 top-3
+            if len(scored) > 3 {
+                scored = scored[:3]
+            }
+            return scored, nil
+        },
+    )).AddInput("score")
+
+    // answer: 生成答案
+    wf.AddLambdaNode("answer", compose.InvokableLambda(
+        func(ctx context.Context, in synthIn) (Output, error) {
+            return synthesize(ctx, cm, in)
+        },
+    )).
+        AddInputWithOptions("filter", []*compose.FieldMapping{compose.ToField("TopK")}, compose.WithNoDirectDependency()).
+        AddInputWithOptions(compose.START, []*compose.FieldMapping{compose.MapFields("Question", "Question")}, compose.WithNoDirectDependency())
+
+    wf.End().AddInput("answer")
+
+    return wf
+}
+```
+
+### 3. 封装为 Tool
+
+```go
+func BuildTool(ctx context.Context, cm model.BaseChatModel) (tool.BaseTool, error) {
+    wf := buildWorkflow(cm)
+    return graphtool.NewInvokableGraphTool[Input, Output](
+        wf,
+        "answer_from_document",
+        "Search a large document for relevant content and synthesize an answer.",
+    )
+}
+```
+
+**关键代码片段（**注意：这是简化后的代码片段，不能直接运行，完整代码请参考** [rag/rag.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/rag/rag.go)）：
+
+```go
+// 构建工作流
+wf := compose.NewWorkflow[Input, Output]()
+
+// 添加节点
+wf.AddLambdaNode("load", loadFunc).AddInput(compose.START)
+wf.AddLambdaNode("chunk", chunkFunc).AddInput("load")
+wf.AddLambdaNode("score", scoreFunc).
+    AddInputWithOptions("chunk", []*compose.FieldMapping{compose.ToField("Chunks")}, compose.WithNoDirectDependency()).
+    AddInputWithOptions(compose.START, []*compose.FieldMapping{compose.MapFields("Question", "Question")}, compose.WithNoDirectDependency())
+
+// 封装为 Tool
+return graphtool.NewInvokableGraphTool[Input, Output](wf, "answer_from_document", "...")
+```
+
+## Graph Tool 执行流程
+
+```
+┌─────────────────────────────────────────┐
+│  输入：file_path, question               │
+└─────────────────────────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  load: 读取文件       │
+        │  输出: []*Document    │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  chunk: 分块          │
+        │  输出: []*Document    │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  score: 并行评分      │
+        │  (MaxConcurrency=5)  │
+        │  输出: []scoredChunk  │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  filter: 筛选 top-k   │
+        │  输出: []scoredChunk  │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  answer: 生成答案     │
+        │  输出: Output         │
+        └──────────────────────┘
+                   ↓
+        ┌──────────────────────┐
+        │  返回结果             │
+        │  {answer, sources}    │
+        └──────────────────────┘
+```
+
+## 本章小结
+
+- **Graph Tool**：将复杂工作流封装为 Tool，支持多步骤协同
+- **compose.Workflow**：构建工作流的核心组件
+- **BatchNode**：并行处理多个任务
+- **FieldMapping**：跨节点传递数据
+- **可中断恢复**：Graph Tool 支持 Checkpoint 机制
+
+## 扩展思考
+
+**其他 Graph Tool 应用：**
+
+- 多文档 RAG：并行处理多个文档
+- 多模型协作：不同模型处理不同任务
+- 复杂决策树：根据条件选择不同分支
+
+**性能优化：**
+
+- 调整 MaxConcurrency 控制并发
+- 使用缓存避免重复计算
+- 流式输出提升用户体验
+</script><h1>第八章：Graph Tool（复杂工作流）</h1><header class=article-meta></header><p>本章目标：理解 Graph Tool 的概念，实现大文件的并行 chunk 召回，引入 compose 包构建复杂工作流。</p><h2 id=代码位置>代码位置</h2><ul><li>入口代码：<a href=https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch08/main.go>cmd/ch08/main.go</a></li><li>RAG 实现：<a href=https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/rag/rag.go>rag/rag.go</a></li></ul><h2 id=前置条件>前置条件</h2><p>与第一章一致：需要配置一个可用的 ChatModel（OpenAI 或 Ark）。</p><h2 id=运行>运行</h2><p>在 <code>examples/quickstart/chatwitheino</code> 目录下执行：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#8f5902;font-style:italic># 设置项目根目录</span>
 </span></span><span style=display:flex><span><span style=color:#204a87>export</span> <span style=color:#000>PROJECT_ROOT</span><span style=color:#ce5c00;font-weight:700>=</span>/path/to/your/project
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>go run ./cmd/ch08
@@ -293,4 +607,4 @@ you> 请帮我分析 RFC6455 文档中关于 WebSocket 握手的部分 [assistan
 </code></pre><h2 id=本章小结>本章小结</h2><ul><li><strong>Graph Tool</strong>：将复杂工作流封装为 Tool，支持多步骤协同</li><li><strong>compose.Workflow</strong>：构建工作流的核心组件</li><li><strong>BatchNode</strong>：并行处理多个任务</li><li><strong>FieldMapping</strong>：跨节点传递数据</li><li><strong>可中断恢复</strong>：Graph Tool 支持 Checkpoint 机制</li></ul><h2 id=扩展思考>扩展思考</h2><p><strong>其他 Graph Tool 应用：</strong></p><ul><li>多文档 RAG：并行处理多个文档</li><li>多模型协作：不同模型处理不同任务</li><li>复杂决策树：根据条件选择不同分支</li></ul><p><strong>性能优化：</strong></p><ul><li>调整 MaxConcurrency 控制并发</li><li>使用缓存避免重复计算</li><li>流式输出提升用户体验</li></ul><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 March 16, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c29dac9efde882c20ad259db6f9616def269fa0d>docs(eino): sync docs from feishu (2026-03-16) (#1522) (c29dac9e)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

@@ -16,7 +16,7 @@ BeforeAgent - Agent 运行前修改配置 BeforeModelRewriteState - 模型调用
 ChatModelAgentMiddleware 是 v0.8 最重要的架构更新，为 ChatModelAgent 及基于它构建的 Agent（如 DeepAgent）提供统一的扩展点。
 相比 AgentMiddleware 的优势:
 特性AgentMiddlewareChatModelAgentMiddleware 扩展性封闭开放，可实现自定义 handler Context 传播回调只返回 error所有方法返回 (ctx, ..., error) 配置管理分散在闭包中集中在结构体字段中 接口方法:
-BeforeAgent - Agent 运行前修改配置 BeforeModelRewriteState - 模型调用前处理状态 AfterModelRewriteState - 模型调用后处理状态 WrapInvokableToolCall - 包装同步工具调用 WrapStreamableToolCall - 包装流式工具调用 WrapModel - 包装模型调用 使用方式:"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+BeforeAgent - Agent 运行前修改配置 BeforeModelRewriteState - 模型调用前处理状态 AfterModelRewriteState - 模型调用后处理状态 WrapInvokableToolCall - 包装同步工具调用 WrapStreamableToolCall - 包装流式工具调用 WrapModel - 包装模型调用 使用方式:"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -125,7 +125,284 @@ BeforeAgent - Agent 运行前修改配置 BeforeModelRewriteState - 模型调用
 <label for=m-zhdocseinofaq-check><a href=/zh/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/eino/release_notes_and_migration/Eino_v0.8._-adk_middlewares/_index.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/eino/release_notes_and_migration/Eino_v0.8._-adk_middlewares?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=v0.8.*-adk%20middlewares" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#版本亮点>版本亮点</a></li><li><a href=#1-chatmodelagentmiddleware-接口>1. ChatModelAgentMiddleware 接口</a><ul><li><a href=#11-summarization-中间件>1.1 Summarization 中间件</a></li><li><a href=#12-toolreduction-中间件>1.2 ToolReduction 中间件</a></li><li><a href=#13-filesystem-中间件>1.3 Filesystem 中间件</a></li><li><a href=#14-skill-中间件>1.4 Skill 中间件</a></li><li><a href=#15-plantask-中间件>1.5 PlanTask 中间件</a></li><li><a href=#16-toolsearch-中间件>1.6 ToolSearch 中间件</a></li><li><a href=#17-patchtoolcalls-中间件>1.7 PatchToolCalls 中间件</a></li></ul></li><li><a href=#2-agent-callback-支持>2. Agent Callback 支持</a></li><li><a href=#3-language-setting>3. Language Setting</a></li><li><a href=#中间件使用建议>中间件使用建议</a></li><li><a href=#breaking-changes>Breaking Changes</a></li><li><a href=#升级指南>升级指南</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/release_notes_and_migration/>发布记录 & 迁移指引</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/release_notes_and_migration/eino_v0.8._-adk_middlewares/>v0.8.*-adk middlewares</a></li></ol></nav><div class=td-content><h1>v0.8.*-adk middlewares</h1><header class=article-meta></header><p>本文档介绍 Eino ADK v0.8.* 版本的主要新功能和改进。</p><h2 id=版本亮点>版本亮点</h2><p>v0.8 是一个重要的功能增强版本，引入了全新的中间件接口架构，新增多个实用中间件，并提供了增强的可观测性支持。</p><table><tbody><tr><td><strong>🔧 灵活的中间件架构</strong>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#版本亮点>版本亮点</a></li><li><a href=#1-chatmodelagentmiddleware-接口>1. ChatModelAgentMiddleware 接口</a><ul><li><a href=#11-summarization-中间件>1.1 Summarization 中间件</a></li><li><a href=#12-toolreduction-中间件>1.2 ToolReduction 中间件</a></li><li><a href=#13-filesystem-中间件>1.3 Filesystem 中间件</a></li><li><a href=#14-skill-中间件>1.4 Skill 中间件</a></li><li><a href=#15-plantask-中间件>1.5 PlanTask 中间件</a></li><li><a href=#16-toolsearch-中间件>1.6 ToolSearch 中间件</a></li><li><a href=#17-patchtoolcalls-中间件>1.7 PatchToolCalls 中间件</a></li></ul></li><li><a href=#2-agent-callback-支持>2. Agent Callback 支持</a></li><li><a href=#3-language-setting>3. Language Setting</a></li><li><a href=#中间件使用建议>中间件使用建议</a></li><li><a href=#breaking-changes>Breaking Changes</a></li><li><a href=#升级指南>升级指南</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/release_notes_and_migration/>发布记录 & 迁移指引</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/release_notes_and_migration/eino_v0.8._-adk_middlewares/>v0.8.*-adk middlewares</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="v0.8.*-adk middlewares" data-url=https://www.cloudwego.io/zh/docs/eino/release_notes_and_migration/eino_v0.8._-adk_middlewares/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+本文档介绍 Eino ADK v0.8.* 版本的主要新功能和改进。
+
+## 版本亮点
+
+v0.8 是一个重要的功能增强版本，引入了全新的中间件接口架构，新增多个实用中间件，并提供了增强的可观测性支持。
+
+<table><tbody><tr>
+<td>
+<strong>🔧 灵活的中间件架构</strong>
+全新 ChatModelAgentMiddleware 接口</td><td>
+<strong>📊 增强的可观测性</strong>
+Agent 级别 Callback 支持</td></tr></tbody></table>
+
+---
+
+## 1. ChatModelAgentMiddleware 接口
+
+> 💡
+> **核心更新**: 全新的中间件接口，提供更灵活的 Agent 扩展机制
+
+`ChatModelAgentMiddleware` 是 v0.8 最重要的架构更新，为 `ChatModelAgent` 及基于它构建的 Agent（如 `DeepAgent`）提供统一的扩展点。
+
+**相比 AgentMiddleware 的优势**:
+
+<table>
+<tr><td>特性</td><td>AgentMiddleware</td><td>ChatModelAgentMiddleware</td></tr>
+<tr><td>扩展性</td><td>封闭</td><td>开放，可实现自定义 handler</td></tr>
+<tr><td>Context 传播</td><td>回调只返回 error</td><td>所有方法返回 (ctx, ..., error)</td></tr>
+<tr><td>配置管理</td><td>分散在闭包中</td><td>集中在结构体字段中</td></tr>
+</table>
+
+**接口方法**:
+
+- `BeforeAgent` - Agent 运行前修改配置
+- `BeforeModelRewriteState` - 模型调用前处理状态
+- `AfterModelRewriteState` - 模型调用后处理状态
+- `WrapInvokableToolCall` - 包装同步工具调用
+- `WrapStreamableToolCall` - 包装流式工具调用
+- `WrapModel` - 包装模型调用
+
+**使用方式**:
+
+```go
+agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    Model:    model,
+    Handlers: []adk.ChatModelAgentMiddleware{mw1, mw2, mw3},
+})
+```
+
+详见 [Eino ADK: ChatModelAgentMiddleware](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware)
+
+---
+
+### 1.1 Summarization 中间件
+
+> 💡
+> **功能**: 自动对话历史摘要，防止超出模型上下文窗口限制
+
+📚 **详细文档**: [Middleware: Summarization](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_summarization)
+
+当对话历史的 Token 数量超过阈值时，自动调用 LLM 生成摘要，压缩上下文。
+
+**核心能力**:
+
+- 可配置的触发条件（Token 阈值）
+- 支持保留最近的用户消息
+- 支持记录完整对话历史到文件
+- 提供前后处理钩子
+
+**快速开始**:
+
+```go
+mw, err := summarization.New(ctx, &summarization.Config{
+    Model: chatModel,
+    Trigger: &summarization.TriggerCondition{
+        ContextTokens: 100000,
+    },
+})
+```
+
+### 1.2 ToolReduction 中间件
+
+> 💡
+> **功能**: 工具结果压缩，优化上下文使用效率
+
+📚 **详细文档**: [Middleware: ToolReduction](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_toolreduction)
+
+提供两阶段的工具输出管理：
+
+<table>
+<tr><td>阶段</td><td>触发时机</td><td>作用</td></tr>
+<tr><td>截断 (Truncation)</td><td>工具返回后</td><td>截断超长输出，保存到文件</td></tr>
+<tr><td>清理 (Clear)</td><td>模型调用前</td><td>清理历史工具结果，释放 Token</td></tr>
+</table>
+
+**快速开始**:
+
+```go
+mw, err := reduction.New(ctx, &reduction.Config{
+    Backend:           fsBackend,
+    MaxLengthForTrunc: 30000,
+    MaxTokensForClear: 50000,
+})
+```
+
+### 1.3 Filesystem 中间件
+
+> 💡
+> **功能**: 文件系统操作工具集
+
+📚 **详细文档**: [Middleware: FileSystem](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem)
+
+**新增能力**:
+
+- **Grep 功能增强**: 支持完整正则表达式语法
+- **新增选项**: `CaseInsensitive`、`EnableMultiline`、`FileType` 过滤
+- **自定义工具名**: 所有 filesystem 工具支持自定义名称
+
+### 1.4 Skill 中间件
+
+> 💡
+> **功能**: 动态加载和执行 Skill
+
+📚 **详细文档**: [Middleware: Skill](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_skill)
+
+**新增能力**:
+
+- **Context 模式**: 支持 `fork` 和 `isolate` 两种上下文模式
+- **自定义配置**: 支持自定义系统提示和工具描述
+- **FrontMatter 扩展**: 支持通过 FrontMatter 指定 agent 和 model
+
+### 1.5 PlanTask 中间件
+
+> 💡
+> **功能**: 任务规划和执行工具
+
+📚 **详细文档**: [Middleware: PlanTask](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_plantask)
+
+支持 Agent 创建和管理任务计划，适用于需要分步执行的复杂任务场景。
+
+### 1.6 ToolSearch 中间件
+
+> 💡
+> **功能**: 工具搜索，支持从大量工具中动态检索
+
+📚 **详细文档**: [Middleware: ToolSearch](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_toolsearch)
+
+当工具数量较多时，通过语义搜索动态选择最相关的工具，避免上下文过载。
+
+### 1.7 PatchToolCalls 中间件
+
+> 💡
+> **功能**: 修补悬空的工具调用，确保消息历史完整性
+
+📚 **详细文档**: [Middleware: PatchToolCalls](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_patchtoolcalls)
+
+扫描消息历史，为缺少响应的工具调用插入占位符消息。适用于工具调用被中断或取消的场景。
+
+**快速开始**:
+
+```go
+mw, err := patchtoolcalls.New(ctx, nil)
+```
+
+## 2. Agent Callback 支持
+
+> 💡
+> **功能**: Agent 级别的回调机制，用于观测和追踪
+
+支持在 Agent 执行的全生命周期中注册回调，实现日志记录、追踪、监控等功能。
+
+**核心类型**:
+
+- `AgentCallbackInput` - 回调输入，包含 Agent 输入或恢复信息
+- `AgentCallbackOutput` - 回调输出，包含 Agent 事件流
+
+**使用方式**:
+
+```go
+agent.Run(ctx, input, adk.WithCallbacks(
+    callbacks.NewHandler(
+        callbacks.WithOnStart(func(ctx context.Context, info *callbacks.RunInfo, input callbacks.CallbackInput) context.Context {
+            agentInput := adk.ConvAgentCallbackInput(input)
+            // 处理 Agent 启动事件
+            return ctx
+        }),
+        callbacks.WithOnEnd(func(ctx context.Context, info *callbacks.RunInfo, output callbacks.CallbackOutput) context.Context {
+            agentOutput := adk.ConvAgentCallbackOutput(output)
+            // 处理 Agent 完成事件
+            return ctx
+        }),
+    ),
+))
+```
+
+详见 [Eino ADK: Agent Callback](/zh/docs/eino/core_modules/eino_adk/adk_agent_callback)
+
+---
+
+## 3. Language Setting
+
+> 💡
+> **功能**: 全局语言设置
+
+支持全局设置 ADK 的语言偏好，影响内置提示词和消息的语言。
+
+**使用方式**:
+
+```go
+adk.SetLanguage(adk.LanguageChinese)  // 设置为中文
+adk.SetLanguage(adk.LanguageEnglish)  // 设置为英文（默认）
+```
+
+---
+
+## 中间件使用建议
+
+> 💡
+> **推荐组合**: 以下中间件可组合使用，覆盖大部分长对话场景
+
+```go
+handlers := []adk.ChatModelAgentMiddleware{
+    patchMW,          // 1. 修补悬空工具调用
+    reductionMW,      // 2. 压缩工具输出
+    summarizationMW,  // 3. 摘要对话历史
+}
+
+agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    Model:    model,
+    Handlers: handlers,
+})
+```
+
+---
+
+## Breaking Changes
+
+> 💡
+> 升级到 v0.8 前，请查阅 Breaking Changes 文档了解所有不兼容变更
+
+📚 **完整文档**: [Eino v0.8 不兼容更新](/zh/docs/eino/release_notes_and_migration/eino_v0.8._-adk_middlewares/eino_v0.8_不兼容更新)
+
+**变更概览**:
+
+<table>
+<tr><td>类型</td><td>变更项</td></tr>
+<tr><td>API 变更</td><td><pre>ShellBackend</pre> → <pre>Shell</pre> 接口重命名</td></tr>
+<tr><td>行为变更</td><td><pre>AgentEvent</pre> 发送机制改为 Middleware</td></tr>
+<tr><td>行为变更</td><td><pre>ReadRequest.Offset</pre> 从 0-based 改为 1-based</td></tr>
+<tr><td>行为变更</td><td><pre>FileInfo.Path</pre> 不再保证为绝对路径</td></tr>
+<tr><td>行为变更</td><td><pre>WriteRequest</pre> 文件存在时从报错改为覆盖</td></tr>
+<tr><td>行为变更</td><td><pre>GrepRequest.Pattern</pre> 从字面量改为正则表达式</td></tr>
+</table>
+
+## 升级指南
+
+详细的迁移步骤和代码示例请参考：[Eino v0.8 不兼容更新](/zh/docs/eino/release_notes_and_migration/eino_v0.8._-adk_middlewares/eino_v0.8_不兼容更新)
+
+**快速检查清单**:
+
+1. 检查是否使用了 `ShellBackend` / `StreamingShellBackend` 接口（需重命名）
+2. 检查 `ReadRequest.Offset` 使用（0-based → 1-based）
+3. 检查 `GrepRequest.Pattern` 使用（字面量 → 正则表达式，特殊字符需转义）
+4. 检查是否依赖 `WriteRequest` 的"文件存在报错"行为
+5. 检查是否依赖 `FileInfo.Path` 为绝对路径
+6. 如有自定义 ChatModel/Tool Decorator/Wrapper，考虑迁移到 `ChatModelAgentMiddleware`
+7. 运行测试验证功能正常
+</script><h1>v0.8.*-adk middlewares</h1><header class=article-meta></header><p>本文档介绍 Eino ADK v0.8.* 版本的主要新功能和改进。</p><h2 id=版本亮点>版本亮点</h2><p>v0.8 是一个重要的功能增强版本，引入了全新的中间件接口架构，新增多个实用中间件，并提供了增强的可观测性支持。</p><table><tbody><tr><td><strong>🔧 灵活的中间件架构</strong>
 全新 ChatModelAgentMiddleware 接口</td><td><strong>📊 增强的可观测性</strong>
 Agent 级别 Callback 支持</td></tr></tbody></table><hr><h2 id=1-chatmodelagentmiddleware-接口>1. ChatModelAgentMiddleware 接口</h2><blockquote><p>💡
 <strong>核心更新</strong>: 全新的中间件接口，提供更灵活的 Agent 扩展机制</p></blockquote><p><code>ChatModelAgentMiddleware</code> 是 v0.8 最重要的架构更新，为 <code>ChatModelAgent</code> 及基于它构建的 Agent（如 <code>DeepAgent</code>）提供统一的扩展点。</p><p><strong>相比 AgentMiddleware 的优势</strong>:</p><table><tr><td>特性</td><td>AgentMiddleware</td><td>ChatModelAgentMiddleware</td></tr><tr><td>扩展性</td><td>封闭</td><td>开放，可实现自定义 handler</td></tr><tr><td>Context 传播</td><td>回调只返回 error</td><td>所有方法返回 (ctx, ..., error)</td></tr><tr><td>配置管理</td><td>分散在闭包中</td><td>集中在结构体字段中</td></tr></table><p><strong>接口方法</strong>:</p><ul><li><code>BeforeAgent</code> - Agent 运行前修改配置</li><li><code>BeforeModelRewriteState</code> - 模型调用前处理状态</li><li><code>AfterModelRewriteState</code> - 模型调用后处理状态</li><li><code>WrapInvokableToolCall</code> - 包装同步工具调用</li><li><code>WrapStreamableToolCall</code> - 包装流式工具调用</li><li><code>WrapModel</code> - 包装模型调用</li></ul><p><strong>使用方式</strong>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#000>agent</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>err</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>:=</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>adk</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>NewChatModelAgent</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>&amp;</span><span style=color:#000>adk</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>ChatModelAgentConfig</span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -184,4 +461,4 @@ Agent 级别 Callback 支持</td></tr></tbody></table><hr><h2 id=1-chatmodelagen
 升级到 v0.8 前，请查阅 Breaking Changes 文档了解所有不兼容变更</p></blockquote><p>📚 <strong>完整文档</strong>: <a href=/zh/docs/eino/release_notes_and_migration/eino_v0.8._-adk_middlewares/eino_v0.8_%E4%B8%8D%E5%85%BC%E5%AE%B9%E6%9B%B4%E6%96%B0>Eino v0.8 不兼容更新</a></p><p><strong>变更概览</strong>:</p><table><tr><td>类型</td><td>变更项</td></tr><tr><td>API 变更</td><td><pre>ShellBackend</pre>→<pre>Shell</pre>接口重命名</td></tr><tr><td>行为变更</td><td><pre>AgentEvent</pre>发送机制改为 Middleware</td></tr><tr><td>行为变更</td><td><pre>ReadRequest.Offset</pre>从 0-based 改为 1-based</td></tr><tr><td>行为变更</td><td><pre>FileInfo.Path</pre>不再保证为绝对路径</td></tr><tr><td>行为变更</td><td><pre>WriteRequest</pre>文件存在时从报错改为覆盖</td></tr><tr><td>行为变更</td><td><pre>GrepRequest.Pattern</pre>从字面量改为正则表达式</td></tr></table><h2 id=升级指南>升级指南</h2><p>详细的迁移步骤和代码示例请参考：<a href=/zh/docs/eino/release_notes_and_migration/eino_v0.8._-adk_middlewares/eino_v0.8_%E4%B8%8D%E5%85%BC%E5%AE%B9%E6%9B%B4%E6%96%B0>Eino v0.8 不兼容更新</a></p><p><strong>快速检查清单</strong>:</p><ol><li>检查是否使用了 <code>ShellBackend</code> / <code>StreamingShellBackend</code> 接口（需重命名）</li><li>检查 <code>ReadRequest.Offset</code> 使用（0-based → 1-based）</li><li>检查 <code>GrepRequest.Pattern</code> 使用（字面量 → 正则表达式，特殊字符需转义）</li><li>检查是否依赖 <code>WriteRequest</code> 的"文件存在报错"行为</li><li>检查是否依赖 <code>FileInfo.Path</code> 为绝对路径</li><li>如有自定义 ChatModel/Tool Decorator/Wrapper，考虑迁移到 <code>ChatModelAgentMiddleware</code></li><li>运行测试验证功能正常</li></ol><div class=section-index><hr class=panel-line><div class=entry><h5><a href=/zh/docs/eino/release_notes_and_migration/eino_v0.8._-adk_middlewares/eino_v0.8_%E4%B8%8D%E5%85%BC%E5%AE%B9%E6%9B%B4%E6%96%B0/>Eino v0.8 不兼容更新</a></h5><p></p></div></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 March 10, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c2aa4096ad71b3ef0ce9941d864394f623fd7b74>docs(eino): sync docs from feishu 2026-03-09 (#1518) (c2aa4096)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

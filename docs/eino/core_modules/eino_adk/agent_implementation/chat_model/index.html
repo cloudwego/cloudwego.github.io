@@ -4,7 +4,7 @@ ChatModelAgent ReAct Pattern ChatModelAgent uses the ReAct pattern internally, w
 What is ChatModelAgent ChatModelAgent is a core prebuilt Agent in Eino ADK that encapsulates the complex logic of interacting with Large Language Models (LLMs) and supports using tools to complete tasks.
 ChatModelAgent ReAct Pattern ChatModelAgent uses the ReAct pattern internally, which is designed to solve complex problems by having the ChatModel perform explicit, step-by-step “thinking”. After configuring tools for ChatModelAgent, its internal execution flow follows the ReAct pattern:'><meta itemprop=datePublished content="2026-03-16T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-16T20:55:36+08:00"><meta itemprop=wordCount content="3418"><meta name=twitter:card content="summary"><meta name=twitter:title content="Eino ADK: ChatModelAgent"><meta name=twitter:description content='ChatModelAgent Overview Import Path import "github.com/cloudwego/eino/adk"
 What is ChatModelAgent ChatModelAgent is a core prebuilt Agent in Eino ADK that encapsulates the complex logic of interacting with Large Language Models (LLMs) and supports using tools to complete tasks.
-ChatModelAgent ReAct Pattern ChatModelAgent uses the ReAct pattern internally, which is designed to solve complex problems by having the ChatModel perform explicit, step-by-step “thinking”. After configuring tools for ChatModelAgent, its internal execution flow follows the ReAct pattern:'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+ChatModelAgent ReAct Pattern ChatModelAgent uses the ReAct pattern internally, which is designed to solve complex problems by having the ChatModel perform explicit, step-by-step “thinking”. After configuring tools for ChatModelAgent, its internal execution flow follows the ReAct pattern:'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -110,7 +110,903 @@ ChatModelAgent ReAct Pattern ChatModelAgent uses the ReAct pattern internally, w
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/eino_adk/agent_implementation/chat_model.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/eino_adk/agent_implementation?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino%20ADK:%20ChatModelAgent" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#import-path>Import Path</a></li><li><a href=#what-is-chatmodelagent>What is ChatModelAgent</a></li><li><a href=#chatmodelagent-react-pattern>ChatModelAgent ReAct Pattern</a></li><li><a href=#chatmodelagent-configuration-fields>ChatModelAgent Configuration Fields</a></li><li><a href=#chatmodelagent-transfer>ChatModelAgent Transfer</a></li><li><a href=#chatmodelagent-agentastool>ChatModelAgent AgentAsTool</a></li><li><a href=#chatmodelagent-middleware>ChatModelAgent Middleware</a><ul><li><a href=#beforeagent>BeforeAgent</a></li><li><a href=#beforemodelrewritestate--aftermodelrewritestate>BeforeModelRewriteState / AfterModelRewriteState</a></li><li><a href=#wrapmodel>WrapModel</a></li><li><a href=#wrapinvokabletoolcall--wrapstreamabletoolcall>WrapInvokableToolCall / WrapStreamableToolCall</a></li></ul></li></ul><ul><li><a href=#scenario-description>Scenario Description</a></li><li><a href=#code-implementation>Code Implementation</a><ul><li><a href=#step-1-define-tools>Step 1: Define Tools</a></li><li><a href=#step-2-create-chatmodel>Step 2: Create ChatModel</a></li><li><a href=#step-3-create-chatmodelagent>Step 3: Create ChatModelAgent</a></li><li><a href=#step-4-run-via-runner>Step 4: Run via Runner</a></li></ul></li><li><a href=#running-result>Running Result</a></li></ul><ul><li><a href=#introduction>Introduction</a></li><li><a href=#example>Example</a><ul><li><a href=#step-1-add-tool-supporting-interrupt>Step 1: Add Tool Supporting Interrupt</a></li><li><a href=#step-2-add-tool-to-agent>Step 2: Add Tool to Agent</a></li><li><a href=#step-3-configure-checkpointstore-in-agent-runner>Step 3: Configure CheckPointStore in Agent Runner</a></li><li><a href=#running-result-1>Running Result</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino: ADK - Agent Development Kit</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_implementation/>Eino ADK: Agent Implementations</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_implementation/chat_model/>Eino ADK: ChatModelAgent</a></li></ol></nav><div class=td-content><h1>Eino ADK: ChatModelAgent</h1><header class=article-meta></header><h1 id=chatmodelagent-overview>ChatModelAgent Overview</h1><h2 id=import-path>Import Path</h2><p><code>import "github.com/cloudwego/eino/adk"</code></p><h2 id=what-is-chatmodelagent>What is ChatModelAgent</h2><p><code>ChatModelAgent</code> is a core prebuilt Agent in Eino ADK that encapsulates the complex logic of interacting with Large Language Models (LLMs) and supports using tools to complete tasks.</p><h2 id=chatmodelagent-react-pattern>ChatModelAgent ReAct Pattern</h2><p><code>ChatModelAgent</code> uses the <a href=https://react-lm.github.io/>ReAct</a> pattern internally, which is designed to solve complex problems by having the ChatModel perform explicit, step-by-step &ldquo;thinking&rdquo;. After configuring tools for <code>ChatModelAgent</code>, its internal execution flow follows the ReAct pattern:</p><ul><li>Call ChatModel (Reason)</li><li>LLM returns tool call request (Action)</li><li>ChatModelAgent executes tool (Act)</li><li>It returns the tool result to ChatModel (Observation), then starts a new cycle until ChatModel determines no Tool call is needed and ends.</li></ul><p>When no tools are configured, <code>ChatModelAgent</code> degrades to a single ChatModel call.</p><p><a href=/img/eino/eino_adk_chat_model_agent_view.png target=_blank><img src=/img/eino/eino_adk_chat_model_agent_view.png width=100%></a></p><p>You can configure Tools for ChatModelAgent through ToolsConfig:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// github.com/cloudwego/eino/adk/chatmodel.go</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#import-path>Import Path</a></li><li><a href=#what-is-chatmodelagent>What is ChatModelAgent</a></li><li><a href=#chatmodelagent-react-pattern>ChatModelAgent ReAct Pattern</a></li><li><a href=#chatmodelagent-configuration-fields>ChatModelAgent Configuration Fields</a></li><li><a href=#chatmodelagent-transfer>ChatModelAgent Transfer</a></li><li><a href=#chatmodelagent-agentastool>ChatModelAgent AgentAsTool</a></li><li><a href=#chatmodelagent-middleware>ChatModelAgent Middleware</a><ul><li><a href=#beforeagent>BeforeAgent</a></li><li><a href=#beforemodelrewritestate--aftermodelrewritestate>BeforeModelRewriteState / AfterModelRewriteState</a></li><li><a href=#wrapmodel>WrapModel</a></li><li><a href=#wrapinvokabletoolcall--wrapstreamabletoolcall>WrapInvokableToolCall / WrapStreamableToolCall</a></li></ul></li></ul><ul><li><a href=#scenario-description>Scenario Description</a></li><li><a href=#code-implementation>Code Implementation</a><ul><li><a href=#step-1-define-tools>Step 1: Define Tools</a></li><li><a href=#step-2-create-chatmodel>Step 2: Create ChatModel</a></li><li><a href=#step-3-create-chatmodelagent>Step 3: Create ChatModelAgent</a></li><li><a href=#step-4-run-via-runner>Step 4: Run via Runner</a></li></ul></li><li><a href=#running-result>Running Result</a></li></ul><ul><li><a href=#introduction>Introduction</a></li><li><a href=#example>Example</a><ul><li><a href=#step-1-add-tool-supporting-interrupt>Step 1: Add Tool Supporting Interrupt</a></li><li><a href=#step-2-add-tool-to-agent>Step 2: Add Tool to Agent</a></li><li><a href=#step-3-configure-checkpointstore-in-agent-runner>Step 3: Configure CheckPointStore in Agent Runner</a></li><li><a href=#running-result-1>Running Result</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino: ADK - Agent Development Kit</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_implementation/>Eino ADK: Agent Implementations</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_implementation/chat_model/>Eino ADK: ChatModelAgent</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino ADK: ChatModelAgent" data-url=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_implementation/chat_model/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+# ChatModelAgent Overview
+
+## Import Path
+
+`import "github.com/cloudwego/eino/adk"`
+
+## What is ChatModelAgent
+
+`ChatModelAgent` is a core prebuilt Agent in Eino ADK that encapsulates the complex logic of interacting with Large Language Models (LLMs) and supports using tools to complete tasks.
+
+## ChatModelAgent ReAct Pattern
+
+`ChatModelAgent` uses the [ReAct](https://react-lm.github.io/) pattern internally, which is designed to solve complex problems by having the ChatModel perform explicit, step-by-step "thinking". After configuring tools for `ChatModelAgent`, its internal execution flow follows the ReAct pattern:
+
+- Call ChatModel (Reason)
+- LLM returns tool call request (Action)
+- ChatModelAgent executes tool (Act)
+- It returns the tool result to ChatModel (Observation), then starts a new cycle until ChatModel determines no Tool call is needed and ends.
+
+When no tools are configured, `ChatModelAgent` degrades to a single ChatModel call.
+
+<a href="/img/eino/eino_adk_chat_model_agent_view.png" target="_blank"><img src="/img/eino/eino_adk_chat_model_agent_view.png" width="100%" /></a>
+
+You can configure Tools for ChatModelAgent through ToolsConfig:
+
+```go
+// github.com/cloudwego/eino/adk/chatmodel.go
+
+type ToolsConfig struct {
+    compose.ToolsNodeConfig
+
+    // Names of the tools that will make agent return directly when the tool is called.
+    // When multiple tools are called and more than one tool is in the return directly list, only the first one will be returned.
+    ReturnDirectly map[string]bool
+    
+    // EmitInternalEvents indicates whether internal events from agentTool should be emitted
+    // to the parent generator via a tool option injection at run-time.
+    EmitInternalEvents bool
+}
+```
+
+ToolsConfig reuses Eino Graph ToolsNodeConfig, see [Eino: ToolsNode & Tool Usage Guide](/docs/eino/core_modules/components/tools_node_guide) for details. Additionally, it provides the ReturnDirectly configuration. ChatModelAgent will exit directly after calling a Tool configured in ReturnDirectly.
+
+## ChatModelAgent Configuration Fields
+
+> 💡
+> Note: GenModelInput by default renders the Instruction in F-String format using adk.GetSessionValues(). To disable this behavior, customize the GenModelInput method.
+
+```go
+type ChatModelAgentConfig struct {
+    // Name of the agent. Better be unique across all agents.
+    Name string
+    // Description of the agent's capabilities.
+    // Helps other agents determine whether to transfer tasks to this agent.
+    Description string
+    // Instruction used as the system prompt for this agent.
+    // Optional. If empty, no system prompt will be used.
+    // Supports f-string placeholders for session values in default GenModelInput, for example:
+    // "You are a helpful assistant. The current time is {Time}. The current user is {User}."
+    // These placeholders will be replaced with session values for "Time" and "User".
+    Instruction string
+
+    Model model.ToolCallingChatModel
+
+    ToolsConfig ToolsConfig
+
+    // GenModelInput transforms instructions and input messages into the model's input format.
+    // Optional. Defaults to defaultGenModelInput which combines instruction and messages.
+    GenModelInput GenModelInput
+
+    // Exit defines the tool used to terminate the agent process.
+    // Optional. If nil, no Exit Action will be generated.
+    // You can use the provided 'ExitTool' implementation directly.
+    Exit tool.BaseTool
+
+    // OutputKey stores the agent's response in the session.
+    // Optional. When set, stores output via AddSessionValue(ctx, outputKey, msg.Content).
+    OutputKey string
+
+    // MaxIterations defines the upper limit of ChatModel generation cycles.
+    // The agent will terminate with an error if this limit is exceeded.
+    // Optional. Defaults to 20.
+    MaxIterations int
+    
+    // ModelRetryConfig configures retry behavior for the ChatModel.
+    // When set, the agent will automatically retry failed ChatModel calls
+    // based on the configured policy.
+    // Optional. If nil, no retry will be performed.
+    ModelRetryConfig *ModelRetryConfig
+}
+
+type ToolsConfig struct {
+    compose.ToolsNodeConfig
+
+    // Names of the tools that will make agent return directly when the tool is called.
+    // When multiple tools are called and more than one tool is in the return directly list, only the first one will be returned.
+    ReturnDirectly map[string]bool
+    
+    // EmitInternalEvents indicates whether internal events from agentTool should be emitted
+    // to the parent generator via a tool option injection at run-time.
+    EmitInternalEvents bool
+}
+
+type GenModelInput func(ctx context.Context, instruction string, input *AgentInput) ([]Message, error)
+```
+
+- `Name`: Agent name
+- `Description`: Agent description
+- `Instruction`: System Prompt when calling ChatModel, supports f-string rendering
+- `Model`: ChatModel used for running, must support tool calling
+- `ToolsConfig`: Tool configuration
+  - ToolsConfig reuses Eino Graph ToolsNodeConfig, see [Eino: ToolsNode & Tool Usage Guide](/docs/eino/core_modules/components/tools_node_guide) for details.
+  - ReturnDirectly: When ChatModelAgent calls a Tool configured in ReturnDirectly, it will immediately exit with the result, without returning to ChatModel per the react pattern. If multiple Tools are hit, only the first Tool is returned. Map key is the Tool name.
+  - EmitInternalEvents: When using adk.AgentTool() to treat an Agent as a SubAgent through ToolCall, by default, this SubAgent will not send AgentEvents, only returning the final result as ToolResult.
+- `GenModelInput`: When the Agent is called, it uses this method to convert `Instruction` and `AgentInput` into Messages for calling ChatModel. The Agent provides a default GenModelInput method:
+  1. Add `Instruction` as `System Message` before `AgentInput.Messages`
+  2. Render `SessionValues` as variables into the message list from step 1
+
+> 💡
+> The default `GenModelInput` uses pyfmt rendering. Text in the message list is treated as a pyfmt template, meaning '{' and '}' in the text are treated as keywords. If you want to input these two characters directly, they need to be escaped as '{{' and '}}'.
+
+- `OutputKey`: When configured, the last Message produced by ChatModelAgent running will be set in `SessionValues` with `OutputKey` as the key
+- `MaxIterations`: Maximum number of ChatModel generations in react mode. Agent will exit with error when exceeded. Default value is 20
+- `Exit`: Exit is a special Tool. When the model calls this tool and executes it, ChatModelAgent will exit directly, with an effect similar to `ToolsConfig.ReturnDirectly`. ADK provides a default ExitTool implementation for users:
+
+```go
+type ExitTool struct{}
+
+func (et ExitTool) Info(_ context.Context) (*schema.ToolInfo, error) {
+    return ToolInfoExit, nil
+}
+
+func (et ExitTool) InvokableRun(ctx context.Context, argumentsInJSON string, _ ...tool.Option) (string, error) {
+    type exitParams struct {
+       FinalResult string `json:"final_result"`
+    }
+
+    params := &exitParams{}
+    err := sonic.UnmarshalString(argumentsInJSON, params)
+    if err != nil {
+       return "", err
+    }
+
+    err = SendToolGenAction(ctx, "exit", NewExitAction())
+    if err != nil {
+       return "", err
+    }
+
+    return params.FinalResult, nil
+}
+```
+
+- `ModelRetryConfig`: When configured, various errors during ChatModel request (including direct errors and errors during streaming response) will be retried according to the configured policy. If an error occurs during streaming response, the streaming response will still be returned through AgentEvent immediately. If the error during streaming response will be retried according to the configured policy, consuming the message stream in AgentEvent will get `WillRetryError`. Users can handle this error for corresponding display processing. Example:
+
+```go
+iterator := agent.Run(ctx, input)
+for {
+    event, ok := iterator.Next()
+    if !ok {
+        break
+    }
+    
+    if event.Err != nil {
+        handleFinalError(event.Err)
+        break
+    }
+    
+    // Process streaming output
+    if event.Output != nil && event.Output.MessageOutput.IsStreaming {
+        stream := event.Output.MessageOutput.MessageStream
+        for {
+            msg, err := stream.Recv()
+            if err == io.EOF {
+                break  // Stream completed successfully
+            }
+            if err != nil {
+                // Check if this error will be retried (more streams coming)
+                var willRetry *adk.WillRetryError
+                if errors.As(err, &willRetry) {
+                    log.Printf("Attempt %d failed, retrying...", willRetry.RetryAttempt)
+                    break  // Wait for next event with new stream
+                }
+                // Original error - won't retry, agent will stop and the next AgentEvent probably will be an error
+                log.Printf("Final error (no retry): %v", err)
+                break
+            }
+            // Display chunk to user
+            displayChunk(msg)
+        }
+    }
+}
+```
+
+## ChatModelAgent Transfer
+
+`ChatModelAgent` supports converting other Agents' meta information into its own Tools, achieving dynamic Transfer through ChatModel judgment:
+
+- `ChatModelAgent` implements the `OnSubAgents` interface. After using `SetSubAgents` to set sub Agents for `ChatModelAgent`, `ChatModelAgent` will add a `Transfer Tool` and instruct ChatModel in the prompt to call this Tool when transfer is needed, using the transfer target AgentName as Tool input.
+
+```go
+const (
+    TransferToAgentInstruction = `Available other agents: %s
+
+Decision rule:
+- If you're best suited for the question according to your description: ANSWER
+- If another agent is better according its description: CALL '%s' function with their agent name
+
+When transferring: OUTPUT ONLY THE FUNCTION CALL`
+)
+
+func genTransferToAgentInstruction(ctx context.Context, agents []Agent) string {
+    var sb strings.Builder
+    for _, agent := range agents {
+       sb.WriteString(fmt.Sprintf("\n- Agent name: %s\n  Agent description: %s",
+          agent.Name(ctx), agent.Description(ctx)))
+    }
+
+    return fmt.Sprintf(TransferToAgentInstruction, sb.String(), TransferToAgentToolName)
+}
+```
+
+- `Transfer Tool` running sets a Transfer Event, specifying the jump to the target Agent, and ChatModelAgent exits after completion.
+- Agent Runner receives the Transfer Event and jumps to the target Agent for execution, completing the Transfer operation
+
+## ChatModelAgent AgentAsTool
+
+When the Agent being called doesn't need a complete running context but only clear and explicit input parameters to run correctly, the Agent can be converted to a Tool for `ChatModelAgent` to judge and call:
+
+- ADK provides utility methods to conveniently convert Eino ADK Agents to Tools for ChatModelAgent to call:
+
+```go
+// github.com/cloudwego/eino/adk/agent_tool.go    
+
+func NewAgentTool(_ context.Context, agent Agent, options ...AgentToolOption) tool.BaseTool
+```
+
+- Agents converted to Tools can be registered directly in ChatModelAgent through `ToolsConfig`
+
+```go
+bookRecommender := NewBookRecommendAgent()
+bookRecommendeTool := NewAgentTool(ctx, bookRecommender)
+
+a, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    // ...
+    ToolsConfig: adk.ToolsConfig{
+        ToolsNodeConfig: compose.ToolsNodeConfig{
+            Tools: []tool.BaseTool{bookRecommendeTool},
+        },
+    },
+})
+```
+
+## ChatModelAgent Middleware
+
+`ChatModelAgentMiddleware` is an extension mechanism for `ChatModelAgent` that allows developers to inject custom logic at various stages of Agent execution:
+
+<a href="/img/eino/TXVlwT7Iohh1EtbEeC6cIptxnZd.png" target="_blank"><img src="/img/eino/TXVlwT7Iohh1EtbEeC6cIptxnZd.png" width="100%" /></a>
+
+`ChatModelAgentMiddleware` is defined as an interface. Developers can implement this interface and configure it in `ChatModelAgentConfig` to make it effective in `ChatModelAgent`:
+
+```go
+type ChatModelAgentMiddleware interface {
+    // ...
+}
+
+a, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    // ...
+    Handlers: []adk.ChatModelAgentMiddleware{
+        &MyMiddleware{},
+    },
+})
+```
+
+**Using BaseChatModelAgentMiddleware**
+
+`BaseChatModelAgentMiddleware` provides default empty implementations for all methods. By embedding it, you can override only the methods you need:
+
+```go
+type MyMiddleware struct {
+    *adk.BaseChatModelAgentMiddleware
+    // Custom fields
+    logger *log.Logger
+}
+
+// Only override the methods you need
+func (m *MyMiddleware) BeforeModelRewriteState(
+    ctx context.Context, 
+    state *adk.ChatModelAgentState, 
+    mc *adk.ModelContext,
+) (context.Context, *adk.ChatModelAgentState, error) {
+    m.logger.Printf("Messages count: %d", len(state.Messages))
+    return ctx, state, nil
+}
+```
+
+### BeforeAgent
+
+Called before each Agent run, can be used to modify instructions and tool configuration. ChatModelAgentContext defines the content that can be read and written in BeforeAgent:
+
+```go
+type ChatModelAgentContext struct {
+    // Instruction is the current Agent's instruction
+    Instruction string
+    // Tools is the current configured original tool list
+    Tools []tool.BaseTool
+    // ReturnDirectly configures tool name sets that return directly after being called
+    ReturnDirectly map[string]bool
+}
+
+type ChatModelAgentMiddleware interface {
+    // ...
+    BeforeAgent(ctx context.Context, runCtx *ChatModelAgentContext) (context.Context, *ChatModelAgentContext, error)
+    // ...
+}
+```
+
+Example:
+
+```go
+func (m *MyMiddleware) BeforeAgent(
+    ctx context.Context, 
+    runCtx *adk.ChatModelAgentContext,
+) (context.Context, *adk.ChatModelAgentContext, error) {
+    // Copy runCtx to avoid modifying input
+    nRunCtx := *runCtx
+    
+    // Modify instruction
+    nRunCtx.Instruction += "\n\nPlease always reply in Chinese."
+    
+    // Add tool
+    nRunCtx.Tools = append(runCtx.Tools, myCustomTool)
+    
+    // Set tool to return directly
+    nRunCtx.ReturnDirectly["my_tool"] = true
+    
+    return ctx, &nRunCtx, nil
+}
+```
+
+### BeforeModelRewriteState / AfterModelRewriteState
+
+Called before/after each model call, can be used to inspect and modify message history. ModelContext defines read-only content, ChatModelAgentState defines read-write content:
+
+```go
+type ModelContext struct {
+    // Tools contains the list of tools currently configured for the Agent
+    // Populated at request time, contains tool info that will be sent to the model
+    Tools []*schema.ToolInfo
+
+    // ModelRetryConfig contains the retry configuration for the model
+    // Populated from Agent's ModelRetryConfig
+    ModelRetryConfig *ModelRetryConfig
+}
+
+type ChatModelAgentState struct {
+    // Messages contains all messages in the current session
+    Messages []Message
+}
+
+type ChatModelAgentMiddleware interface {
+    BeforeModelRewriteState(ctx context.Context, state *ChatModelAgentState, mc *ModelContext) (context.Context, *ChatModelAgentState, error)
+    AfterModelRewriteState(ctx context.Context, state *ChatModelAgentState, mc *ModelContext) (context.Context, *ChatModelAgentState, error)
+}
+```
+
+Example:
+
+```go
+func (m *MyMiddleware) BeforeModelRewriteState(
+    ctx context.Context,
+    state *adk.ChatModelAgentState,
+    mc *adk.ModelContext,
+) (context.Context, *adk.ChatModelAgentState, error) {
+    // Copy state to avoid modifying input
+    nState := *state
+    
+    // Check message history
+    if len(state.Messages) > 50 {
+        // Truncate old messages
+        nState.Messages = state.Messages[len(state.Messages)-50:]
+    }
+    return ctx, &nState, nil
+}
+
+func (m *MyMiddleware) AfterModelRewriteState(
+    ctx context.Context,
+    state *adk.ChatModelAgentState,
+    mc *adk.ModelContext,
+) (context.Context, *adk.ChatModelAgentState, error) {
+    // Model response is the last message
+    lastMsg := state.Messages[len(state.Messages)-1]
+    m.logger.Printf("Model response: %s", lastMsg.Content)
+    return ctx, state, nil
+}
+```
+
+### WrapModel
+
+Wraps model calls, can be used to intercept and modify model input and output:
+
+```go
+type ChatModelAgentMiddleware interface {
+    WrapModel(ctx context.Context, m model.BaseChatModel, mc *ModelContext) (model.BaseChatModel, error)
+}
+```
+
+Example:
+
+```go
+func (m *MyMiddleware) WrapModel(
+    ctx context.Context,
+    chatModel model.BaseChatModel,
+    mc *adk.ModelContext,
+) (model.BaseChatModel, error) {
+    return &loggingModel{
+        inner: chatModel,
+        logger: m.logger,
+    }, nil
+}
+
+type loggingModel struct {
+    inner  model.BaseChatModel
+    logger *log.Logger
+}
+
+func (m *loggingModel) Generate(ctx context.Context, msgs []*schema.Message, opts ...model.Option) (*schema.Message, error) {
+    m.logger.Printf("Input messages: %d", len(msgs))
+    resp, err := m.inner.Generate(ctx, msgs, opts...)
+    m.logger.Printf("Output: %v, error: %v", resp != nil, err)
+    return resp, err
+}
+
+func (m *loggingModel) Stream(ctx context.Context, msgs []*schema.Message, opts ...model.Option) (*schema.StreamReader[*schema.Message], error) {
+    return m.inner.Stream(ctx, msgs, opts...)
+}
+```
+
+### WrapInvokableToolCall / WrapStreamableToolCall
+
+Wraps tool calls, can be used to intercept and modify tool input and output:
+
+```go
+// InvokableToolCallEndpoint is the function signature for tool calls.
+// Middleware developers add custom logic around this Endpoint.
+type InvokableToolCallEndpoint func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error)
+
+// StreamableToolCallEndpoint is the function signature for streaming tool calls.
+// Middleware developers add custom logic around this Endpoint.
+type StreamableToolCallEndpoint func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (*schema.StreamReader[string], error)
+
+type ToolContext struct {
+    // Name indicates the name of the tool being called
+    Name   string
+    // CallID indicates the ToolCallID of this tool call
+    CallID string
+}
+
+type ChatModelAgentMiddleware interface {
+    WrapInvokableToolCall(ctx context.Context, endpoint InvokableToolCallEndpoint, tCtx *ToolContext) (InvokableToolCallEndpoint, error)
+    WrapStreamableToolCall(ctx context.Context, endpoint StreamableToolCallEndpoint, tCtx *ToolContext) (StreamableToolCallEndpoint, error)
+}
+```
+
+Example:
+
+```go
+func (m *MyMiddleware) WrapInvokableToolCall(
+    ctx context.Context,
+    endpoint adk.InvokableToolCallEndpoint,
+    tCtx *adk.ToolContext,
+) (adk.InvokableToolCallEndpoint, error) {
+    return func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error) {
+        m.logger.Printf("Calling tool: %s (ID: %s)", tCtx.Name, tCtx.CallID)
+        start := time.Now()
+        
+        result, err := endpoint(ctx, argumentsInJSON, opts...)
+        
+        m.logger.Printf("Tool %s completed in %v", tCtx.Name, time.Since(start))
+        return result, err
+    }, nil
+}
+```
+
+# ChatModelAgent Usage Example
+
+## Scenario Description
+
+Create a book recommendation Agent that can recommend relevant books based on user input.
+
+## Code Implementation
+
+### Step 1: Define Tools
+
+The book recommendation Agent needs a `book_search` tool that can search for books based on user requirements (genre, rating, etc.).
+
+Using utility methods provided by Eino makes it easy to create (see [How to create a tool?](/docs/eino/core_modules/components/tools_node_guide/how_to_create_a_tool)):
+
+```go
+import (
+    "context"
+    "log"
+
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/components/tool/utils"
+)
+
+type BookSearchInput struct {
+    Genre     string `json:"genre" jsonschema:"description=Preferred book genre,enum=fiction,enum=sci-fi,enum=mystery,enum=biography,enum=business"`
+    MaxPages  int    `json:"max_pages" jsonschema:"description=Maximum page length (0 for no limit)"`
+    MinRating int    `json:"min_rating" jsonschema:"description=Minimum user rating (0-5 scale)"`
+}
+
+type BookSearchOutput struct {
+    Books []string
+}
+
+func NewBookRecommender() tool.InvokableTool {
+    bookSearchTool, err := utils.InferTool("search_book", "Search books based on user preferences", func(ctx context.Context, input *BookSearchInput) (output *BookSearchOutput, err error) {
+       // search code
+       // ...
+       return &BookSearchOutput{Books: []string{"God's blessing on this wonderful world!"}}, nil
+    })
+    if err != nil {
+       log.Fatalf("failed to create search book tool: %v", err)
+    }
+    return bookSearchTool
+}
+```
+
+### Step 2: Create ChatModel
+
+Eino provides various ChatModel wrappers (such as openai, gemini, doubao, etc., see [Eino: ChatModel Usage Guide](/docs/eino/core_modules/components/chat_model_guide) for details). Here we use openai ChatModel as an example:
+
+```go
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/cloudwego/eino-ext/components/model/openai"
+    "github.com/cloudwego/eino/components/model"
+)
+
+func NewChatModel() model.ToolCallingChatModel {
+    ctx := context.Background()
+    apiKey := os.Getenv("OPENAI_API_KEY")
+    openaiModel := os.Getenv("OPENAI_MODEL")
+
+    cm, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+       APIKey: apiKey,
+       Model:  openaiModel,
+    })
+    if err != nil {
+       log.Fatal(fmt.Errorf("failed to create chatmodel: %w", err))
+    }
+    return cm
+}
+```
+
+### Step 3: Create ChatModelAgent
+
+In addition to configuring ChatModel and tools, you need to configure Name and Description describing the Agent's function and purpose, as well as the Instruction that instructs the ChatModel. The Instruction will ultimately be passed to ChatModel as a system message.
+
+```go
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/cloudwego/eino/adk"
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/compose"
+)
+
+func NewBookRecommendAgent() adk.Agent {
+    ctx := context.Background()
+
+    a, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+       Name:        "BookRecommender",
+       Description: "An agent that can recommend books",
+       Instruction: `You are an expert book recommender. Based on the user's request, use the "search_book" tool to find relevant books. Finally, present the results to the user.`,
+       Model:       NewChatModel(),
+       ToolsConfig: adk.ToolsConfig{
+          ToolsNodeConfig: compose.ToolsNodeConfig{
+             Tools: []tool.BaseTool{NewBookRecommender()},
+          },
+       },
+    })
+    if err != nil {
+       log.Fatal(fmt.Errorf("failed to create chatmodel: %w", err))
+    }
+
+    return a
+}
+```
+
+### Step 4: Run via Runner
+
+```go
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/cloudwego/eino/adk"
+
+    "github.com/cloudwego/eino-examples/adk/intro/chatmodel/internal"
+)
+
+func main() {
+    ctx := context.Background()
+    a := internal.NewBookRecommendAgent()
+    runner := adk.NewRunner(ctx, adk.RunnerConfig{
+       Agent: a,
+    })
+    iter := runner.Query(ctx, "recommend a fiction book to me")
+    for {
+       event, ok := iter.Next()
+       if !ok {
+          break
+       }
+       if event.Err != nil {
+          log.Fatal(event.Err)
+       }
+       msg, err := event.Output.MessageOutput.GetMessage()
+       if err != nil {
+          log.Fatal(err)
+       }
+       fmt.Printf("\nmessage:\n%v\n======", msg)
+    }
+}
+```
+
+## Running Result
+
+```yaml
+message:
+assistant: 
+tool_calls:
+{Index:<nil> ID:call_o2It087hoqj8L7atzr70EnfG Type:function Function:{Name:search_book Arguments:{"genre":"fiction","max_pages":0,"min_rating":0}} Extra:map[]}
+
+finish_reason: tool_calls
+usage: &{140 24 164}
+======
+
+
+message:
+tool: {"Books":["God's blessing on this wonderful world!"]}
+tool_call_id: call_o2It087hoqj8L7atzr70EnfG
+tool_call_name: search_book
+======
+
+
+message:
+assistant: I recommend the fiction book "God's blessing on this wonderful world!". It's a great choice for readers looking for an exciting story. Enjoy your reading!
+finish_reason: stop
+usage: &{185 31 216}
+======
+```
+
+# ChatModelAgent Interrupt and Resume
+
+## Introduction
+
+`ChatModelAgent` is implemented using Eino Graph, so it can reuse Eino Graph's Interrupt&Resume capability in the agent.
+
+- On Interrupt, return a special error in the tool to make the Graph trigger an interrupt and throw custom information. On resume, the Graph will re-run this tool:
+
+```go
+// github.com/cloudwego/eino/adk/interrupt.go
+
+func NewInterruptAndRerunErr(extra any) error
+```
+
+- On Resume, custom ToolOptions are supported for passing additional information to the Tool during resume:
+
+```go
+import (
+    "github.com/cloudwego/eino/components/tool"
+)
+
+type askForClarificationOptions struct {
+    NewInput *string
+}
+
+func WithNewInput(input string) tool.Option {
+    return tool.WrapImplSpecificOptFn(func(t *askForClarificationOptions) {
+       t.NewInput = &input
+    })
+}
+```
+
+## Example
+
+Below we will build on the code from the [ChatModelAgent Usage Example] section above to add a tool `ask_for_clarification` to `BookRecommendAgent`. When the user provides insufficient information for recommendations, the Agent will call this tool to ask the user for more information. `ask_for_clarification` uses the Interrupt&Resume capability to implement "asking" the user.
+
+### Step 1: Add Tool Supporting Interrupt
+
+```go
+import (
+    "context"
+    "log"
+
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/components/tool/utils"
+    "github.com/cloudwego/eino/compose"
+)
+
+type askForClarificationOptions struct {
+    NewInput *string
+}
+
+func WithNewInput(input string) tool.Option {
+    return tool.WrapImplSpecificOptFn(func(t *askForClarificationOptions) {
+       t.NewInput = &input
+    })
+}
+
+type AskForClarificationInput struct {
+    Question string `json:"question" jsonschema:"description=The specific question you want to ask the user to get the missing information"`
+}
+
+func NewAskForClarificationTool() tool.InvokableTool {
+    t, err := utils.InferOptionableTool(
+       "ask_for_clarification",
+       "Call this tool when the user's request is ambiguous or lacks the necessary information to proceed. Use it to ask a follow-up question to get the details you need, such as the book's genre, before you can use other tools effectively.",
+       func(ctx context.Context, input *AskForClarificationInput, opts ...tool.Option) (output string, err error) {
+          o := tool.GetImplSpecificOptions[askForClarificationOptions](nil, opts...)
+          if o.NewInput == nil {
+             return "", compose.NewInterruptAndRerunErr(input.Question)
+          }
+          return *o.NewInput, nil
+       })
+    if err != nil {
+       log.Fatal(err)
+    }
+    return t
+}
+```
+
+### Step 2: Add Tool to Agent
+
+```go
+func NewBookRecommendAgent() adk.Agent {
+    // xxx
+    a, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+       // xxx
+       ToolsConfig: adk.ToolsConfig{
+          ToolsNodeConfig: compose.ToolsNodeConfig{
+             Tools: []tool.BaseTool{NewBookRecommender(), NewAskForClarificationTool()},
+          },
+          // Whether to output AgentEvents from SubAgent when Tool internally calls SubAgent via AgentTool()
+          EmitInternalEvents: true,
+       },
+    })
+    // xxx
+}
+```
+
+### Step 3: Configure CheckPointStore in Agent Runner
+
+Configure `CheckPointStore` in Runner (the example uses the simplest InMemoryStore), and pass in `CheckPointID` when calling the Agent for use during resume. Also, on interrupt, Graph places `InterruptInfo` in `Interrupted.Data`:
+
+```go
+func newInMemoryStore() compose.CheckPointStore {
+    return &inMemoryStore{
+       mem: map[string][]byte{},
+    }
+}
+
+func main() {
+    ctx := context.Background()
+    a := subagents.NewBookRecommendAgent()
+    runner := adk.NewRunner(ctx, adk.RunnerConfig{
+       EnableStreaming: true, // you can disable streaming here
+       Agent:           a,
+       CheckPointStore: newInMemoryStore(),
+    })
+    iter := runner.Query(ctx, "recommend a book to me", adk.WithCheckPointID("1"))
+    for {
+       event, ok := iter.Next()
+       if !ok {
+          break
+       }
+       if event.Err != nil {
+          log.Fatal(event.Err)
+       }
+       if event.Action != nil && event.Action.Interrupted != nil {
+          fmt.Printf("\ninterrupt happened, info: %+v\n", event.Action.Interrupted.Data.(*adk.ChatModelAgentInterruptInfo).RerunNodesExtra["ToolNode"])
+          continue
+       }
+       msg, err := event.Output.MessageOutput.GetMessage()
+       if err != nil {
+          log.Fatal(err)
+       }
+       fmt.Printf("\nmessage:\n%v\n======\n\n", msg)
+    }
+
+    scanner := bufio.NewScanner(os.Stdin)
+    fmt.Print("\nyour input here: ")
+    scanner.Scan()
+    fmt.Println()
+    nInput := scanner.Text()
+
+    iter, err := runner.Resume(ctx, "1", adk.WithToolOptions([]tool.Option{subagents.WithNewInput(nInput)}))
+    if err != nil {
+       log.Fatal(err)
+    }
+    for {
+       event, ok := iter.Next()
+       if !ok {
+          break
+       }
+
+       if event.Err != nil {
+          log.Fatal(event.Err)
+       }
+
+       prints.Event(event)
+    }
+}
+```
+
+### Running Result
+
+An interrupt will occur after running
+
+```
+message:
+assistant: 
+tool_calls:
+{Index:<nil> ID:call_3HAobzkJvW3JsTmSHSBRftaG Type:function Function:{Name:ask_for_clarification Arguments:{"question":"Could you please specify the genre you're interested in and any preferences like maximum page length or minimum user rating?"}} Extra:map[]}
+
+finish_reason: tool_calls
+usage: &{219 37 256}
+======
+
+
+interrupt happened, info: &{ToolCalls:[{Index:<nil> ID:call_3HAobzkJvW3JsTmSHSBRftaG Type:function Function:{Name:ask_for_clarification Arguments:{"question":"Could you please specify the genre you're interested in and any preferences like maximum page length or minimum user rating?"}} Extra:map[]}] ExecutedTools:map[] RerunTools:[call_3HAobzkJvW3JsTmSHSBRftaG] RerunExtraMap:map[call_3HAobzkJvW3JsTmSHSBRftaG:Could you please specify the genre you're interested in and any preferences like maximum page length or minimum user rating?]}
+your input here:
+```
+
+After stdin input, retrieve the previous interrupt state from CheckPointStore and continue running with the completed input
+
+```
+new input is:
+recommend me a fiction book
+
+message:
+tool: recommend me a fiction book
+tool_call_id: call_3HAobzkJvW3JsTmSHSBRftaG
+tool_call_name: ask_for_clarification
+======
+
+
+message:
+assistant: 
+tool_calls:
+{Index:<nil> ID:call_3fC5OqPZLls11epXMv7sZGAF Type:function Function:{Name:search_book Arguments:{"genre":"fiction","max_pages":0,"min_rating":0}} Extra:map[]}
+
+finish_reason: tool_calls
+usage: &{272 24 296}
+======
+
+
+message:
+tool: {"Books":["God's blessing on this wonderful world!"]}
+tool_call_id: call_3fC5OqPZLls11epXMv7sZGAF
+tool_call_name: search_book
+======
+
+
+message:
+assistant: I recommend the fiction book "God's Blessing on This Wonderful World!" Enjoy your reading!
+finish_reason: stop
+usage: &{317 20 337}
+======
+```
+
+# Summary
+
+`ChatModelAgent` is the core Agent implementation in ADK, serving as the "thinking" part of applications. It leverages the powerful capabilities of LLMs for reasoning, understanding natural language, making decisions, generating responses, and interacting with tools.
+
+`ChatModelAgent`'s behavior is non-deterministic, dynamically deciding which tools to use or transferring control to other Agents through LLM.
+</script><h1>Eino ADK: ChatModelAgent</h1><header class=article-meta></header><h1 id=chatmodelagent-overview>ChatModelAgent Overview</h1><h2 id=import-path>Import Path</h2><p><code>import "github.com/cloudwego/eino/adk"</code></p><h2 id=what-is-chatmodelagent>What is ChatModelAgent</h2><p><code>ChatModelAgent</code> is a core prebuilt Agent in Eino ADK that encapsulates the complex logic of interacting with Large Language Models (LLMs) and supports using tools to complete tasks.</p><h2 id=chatmodelagent-react-pattern>ChatModelAgent ReAct Pattern</h2><p><code>ChatModelAgent</code> uses the <a href=https://react-lm.github.io/>ReAct</a> pattern internally, which is designed to solve complex problems by having the ChatModel perform explicit, step-by-step &ldquo;thinking&rdquo;. After configuring tools for <code>ChatModelAgent</code>, its internal execution flow follows the ReAct pattern:</p><ul><li>Call ChatModel (Reason)</li><li>LLM returns tool call request (Action)</li><li>ChatModelAgent executes tool (Act)</li><li>It returns the tool result to ChatModel (Observation), then starts a new cycle until ChatModel determines no Tool call is needed and ends.</li></ul><p>When no tools are configured, <code>ChatModelAgent</code> degrades to a single ChatModel call.</p><p><a href=/img/eino/eino_adk_chat_model_agent_view.png target=_blank><img src=/img/eino/eino_adk_chat_model_agent_view.png width=100%></a></p><p>You can configure Tools for ChatModelAgent through ToolsConfig:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// github.com/cloudwego/eino/adk/chatmodel.go</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>ToolsConfig</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>compose</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>ToolsNodeConfig</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -749,4 +1645,4 @@ usage: &amp;{317 20 337}
 </code></pre><h1 id=summary>Summary</h1><p><code>ChatModelAgent</code> is the core Agent implementation in ADK, serving as the &ldquo;thinking&rdquo; part of applications. It leverages the powerful capabilities of LLMs for reasoning, understanding natural language, making decisions, generating responses, and interacting with tools.</p><p><code>ChatModelAgent</code>&rsquo;s behavior is non-deterministic, dynamically deciding which tools to use or transferring control to other Agents through LLM.</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 16, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c29dac9efde882c20ad259db6f9616def269fa0d>docs(eino): sync docs from feishu (2026-03-16) (#1522) (c29dac9e)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

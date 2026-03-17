@@ -4,7 +4,7 @@ The “Agent” represented by the “chat box”. Agents use LLM (Large Languag
 This seemingly simple screenshot represents two forms of “AI applications”:
 The “Agent” represented by the “chat box”. Agents use LLM (Large Language Model) as the decision center, autonomously plan and can conduct multi-turn interactions, naturally suited for handling open-ended, continuous tasks, manifesting as a “dialogue” form. The “Graph” represented by “buttons” or “APIs”. For example, the “Recording Summary” button above - the Graph behind it is roughly “Recording” → “LLM understands and summarizes” → “Save recording” - this kind of fixed process. The core of Graph lies in the determinism of its process and the closure of tasks, completing specific goals through predefined nodes and edges, manifesting as a “function” form. For example, video generation is an “API” form AI application:"><meta itemprop=datePublished content="2026-03-02T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-02T21:50:06+08:00"><meta itemprop=wordCount content="2675"><meta name=twitter:card content="summary"><meta name=twitter:title content="Agent or Graph? AI Application Path Analysis"><meta name=twitter:description content="Introduction: Two Coexisting AI Interaction Paradigms Many application interfaces have integrated different forms of AI capabilities, as shown below:
 This seemingly simple screenshot represents two forms of “AI applications”:
-The “Agent” represented by the “chat box”. Agents use LLM (Large Language Model) as the decision center, autonomously plan and can conduct multi-turn interactions, naturally suited for handling open-ended, continuous tasks, manifesting as a “dialogue” form. The “Graph” represented by “buttons” or “APIs”. For example, the “Recording Summary” button above - the Graph behind it is roughly “Recording” → “LLM understands and summarizes” → “Save recording” - this kind of fixed process. The core of Graph lies in the determinism of its process and the closure of tasks, completing specific goals through predefined nodes and edges, manifesting as a “function” form. For example, video generation is an “API” form AI application:"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+The “Agent” represented by the “chat box”. Agents use LLM (Large Language Model) as the decision center, autonomously plan and can conduct multi-turn interactions, naturally suited for handling open-ended, continuous tasks, manifesting as a “dialogue” form. The “Graph” represented by “buttons” or “APIs”. For example, the “Recording Summary” button above - the Graph behind it is roughly “Recording” → “LLM understands and summarizes” → “Save recording” - this kind of fixed process. The core of Graph lies in the determinism of its process and the closure of tasks, completing specific goals through predefined nodes and edges, manifesting as a “function” form. For example, video generation is an “API” form AI application:"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -110,7 +110,356 @@ The “Agent” represented by the “chat box”. Agents use LLM (Large Languag
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/overview/graph_or_agent.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/overview?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Agent%20or%20Graph?%20AI%20Application%20Path%20Analysis" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction-two-coexisting-ai-interaction-paradigms>Introduction: Two Coexisting AI Interaction Paradigms</a></li><li><a href=#core-concept-analysis>Core Concept Analysis</a><ul><li><a href=#basic-definitions>Basic Definitions</a></li><li><a href=#deep-comparison>Deep Comparison</a></li></ul></li><li><a href=#historical-perspective-from-determinism-to-autonomy>Historical Perspective: From Determinism to Autonomy</a></li><li><a href=#exploring-integration-paths-the-relationship-between-agent-and-graph>Exploring Integration Paths: The Relationship Between Agent and Graph</a><ul><li><a href=#multi-agent-and-orchestration>Multi-Agent and Orchestration</a></li><li><a href=#agent-as-a-graph-node>Agent as a Graph Node</a></li><li><a href=#the-integration-path-encapsulating-graph-as-agents-tool>The Integration Path: Encapsulating Graph as Agent&rsquo;s Tool</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/overview/>Eino: Overview</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/overview/graph_or_agent/>Agent or Graph? AI Application Path Analysis</a></li></ol></nav><div class=td-content><h1>Agent or Graph? AI Application Path Analysis</h1><header class=article-meta></header><h2 id=introduction-two-coexisting-ai-interaction-paradigms>Introduction: Two Coexisting AI Interaction Paradigms</h2><p>Many application interfaces have integrated different forms of AI capabilities, as shown below:</p><p><a href=/img/eino/eino_ai_app_form.png target=_blank><img src=/img/eino/eino_ai_app_form.png width=100%></a></p><p>This seemingly simple screenshot represents two forms of &ldquo;AI applications&rdquo;:</p><ul><li>The &ldquo;Agent&rdquo; represented by the &ldquo;chat box&rdquo;. <strong>Agents use LLM (Large Language Model) as the decision center, autonomously plan and can conduct multi-turn interactions</strong>, naturally suited for handling open-ended, continuous tasks, manifesting as a &ldquo;dialogue&rdquo; form.</li><li>The &ldquo;Graph&rdquo; represented by &ldquo;buttons&rdquo; or &ldquo;APIs&rdquo;. For example, the &ldquo;Recording Summary&rdquo; button above - the Graph behind it is roughly &ldquo;Recording&rdquo; → &ldquo;LLM understands and summarizes&rdquo; → &ldquo;Save recording&rdquo; - this kind of fixed process. <strong>The core of Graph lies in the determinism of its process and the closure of tasks</strong>, completing specific goals through predefined nodes and edges, manifesting as a &ldquo;function&rdquo; form. For example, video generation is an &ldquo;API&rdquo; form AI application:</li></ul><p><a href=/img/eino/eino_complex_workflow_as_api.png target=_blank><img src=/img/eino/eino_complex_workflow_as_api.png width=100%></a></p><pre tabindex=0><code class=language-mermaid data-lang=mermaid>flowchart TD
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction-two-coexisting-ai-interaction-paradigms>Introduction: Two Coexisting AI Interaction Paradigms</a></li><li><a href=#core-concept-analysis>Core Concept Analysis</a><ul><li><a href=#basic-definitions>Basic Definitions</a></li><li><a href=#deep-comparison>Deep Comparison</a></li></ul></li><li><a href=#historical-perspective-from-determinism-to-autonomy>Historical Perspective: From Determinism to Autonomy</a></li><li><a href=#exploring-integration-paths-the-relationship-between-agent-and-graph>Exploring Integration Paths: The Relationship Between Agent and Graph</a><ul><li><a href=#multi-agent-and-orchestration>Multi-Agent and Orchestration</a></li><li><a href=#agent-as-a-graph-node>Agent as a Graph Node</a></li><li><a href=#the-integration-path-encapsulating-graph-as-agents-tool>The Integration Path: Encapsulating Graph as Agent&rsquo;s Tool</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/overview/>Eino: Overview</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/overview/graph_or_agent/>Agent or Graph? AI Application Path Analysis</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Agent or Graph? AI Application Path Analysis" data-url=https://www.cloudwego.io/docs/eino/overview/graph_or_agent/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Introduction: Two Coexisting AI Interaction Paradigms
+
+Many application interfaces have integrated different forms of AI capabilities, as shown below:
+
+<a href="/img/eino/eino_ai_app_form.png" target="_blank"><img src="/img/eino/eino_ai_app_form.png" width="100%" /></a>
+
+This seemingly simple screenshot represents two forms of "AI applications":
+
+- The "Agent" represented by the "chat box". **Agents use LLM (Large Language Model) as the decision center, autonomously plan and can conduct multi-turn interactions**, naturally suited for handling open-ended, continuous tasks, manifesting as a "dialogue" form.
+- The "Graph" represented by "buttons" or "APIs". For example, the "Recording Summary" button above - the Graph behind it is roughly "Recording" → "LLM understands and summarizes" → "Save recording" - this kind of fixed process. **The core of Graph lies in the determinism of its process and the closure of tasks**, completing specific goals through predefined nodes and edges, manifesting as a "function" form. For example, video generation is an "API" form AI application:
+
+<a href="/img/eino/eino_complex_workflow_as_api.png" target="_blank"><img src="/img/eino/eino_complex_workflow_as_api.png" width="100%" /></a>
+
+```mermaid
+flowchart TD
+  linkStyle default stroke-width:2px,stroke:#000000
+
+  classDef startend_style fill:#EAE2FE,stroke:#000000,stroke-width:2px,color:#1f2329
+  classDef process_style fill:#F0F4FC,stroke:#000000,stroke-width:2px,color:#1f2329
+  classDef decision_style fill:#FEF1CE,stroke:#000000,stroke-width:2px,color:#1f2329
+  classDef subgraph_style fill:#f5f5f5,stroke:#bbbfc4,stroke-width:1px,color:#000000
+
+  S(["AI Application Forms"]) 
+  D{"Task Characteristics"}
+  A("Agent")
+  G("Graph")
+  A1("LLM Decision Center")
+  A2("Multi-turn Interaction")
+  G1("Preset Topology")
+  G2("Deterministic Output")
+
+  S --> D
+  D -->|"Open or Uncertain"| A
+  D -->|"Closed and Deterministic"| G
+  A --> A1
+  A --> A2
+  G --> G1
+  G --> G2
+
+  class S startend_style
+  class D decision_style
+  class A,G,A1,A2,G1,G2 process_style
+```
+
+This article explores in detail the differences and connections between Agent and Graph, two forms of AI applications, proposes that "the best integration point is to encapsulate Graph as Agent's Tool", and provides recommended usage patterns for [Eino](https://github.com/cloudwego/eino) developers.
+
+## Core Concept Analysis
+
+### Basic Definitions
+
+- **Graph**: A flowchart **predefined** by developers with a clear topology. Its nodes can be code functions, API calls, or LLMs, and inputs and outputs are typically structured. **The core characteristic is "determinism"** - given the same input, the execution path and final output are predictable.
+- **Agent**: An entity centered on LLM that can **autonomously plan, decide, and execute** tasks. It completes goals through **dynamic interaction** with the environment (Tools, users, other Agents), and its behavior is uncertain. **The core characteristic is "autonomy"**.
+- **Tool**: Any external capability that an Agent can call, typically a **function or API that encapsulates specific functionality**. Tools themselves can be synchronous or asynchronous, stateful or stateless. They are only responsible for execution and do not have autonomous decision-making capabilities.
+- **Orchestration**: The process of **organizing and coordinating multiple compute units (nodes, Agents) to work together**. In this article, it specifically refers to predefining static processes through Graphs.
+
+### Deep Comparison
+
+<table>
+<tr><td>Feature Dimension</td><td>Agent</td><td>Graph</td></tr>
+<tr><td><strong>Core Driver</strong></td><td><strong>LLM Autonomous Decision</strong></td><td><strong>Developer Preset Process</strong></td></tr>
+<tr><td><strong>Input</strong></td><td><strong>Unstructured</strong> natural language, images, etc.</td><td><strong>Structured</strong> data</td></tr>
+<tr><td><strong>Deliverable</strong></td><td><strong>Process and result equally important</strong></td><td><strong>Focused on final result</strong></td></tr>
+<tr><td><strong>State Management</strong></td><td><strong>Long-term, cross-execution</strong></td><td><strong>Single execution, stateless</strong></td></tr>
+<tr><td><strong>Runtime Mode</strong></td><td>Tends toward <strong>asynchronous</strong></td><td>Tends toward <strong>synchronous</strong></td></tr>
+</table>
+
+Summary: Agent can be considered autonomous, driven overall by LLM, using external capabilities in the form of Tool Calls. Graph is deterministic, connecting external capabilities with a clear topology, while locally utilizing LLM for decision-making/generation.
+
+```mermaid
+flowchart TD
+    subgraph AIApp["AI Application"]
+        Agent["Agent (Autonomy)"]
+        Graph["Graph (Determinism)"]
+    end
+
+    subgraph CoreDrive["Source of Intelligence"]
+        LLM["LLM (Decision/Generation)"]
+    end
+
+    subgraph ExternalCap["External Capability"]
+        Tool["External Capability<br>(Function/API)"]
+    end
+
+    Agent -- "Source of drive" --> LLM
+    Graph -- "Contains node" --> LLM
+    Agent -- "Tool call" --> Tool
+    Graph -- "Contains node" --> Tool
+
+    classDef agent fill:#EAE2FE,stroke:#000000
+    classDef graphClass fill:#F0F4FC,stroke:#000000
+    classDef llm fill:#FEF1CE,stroke:#000000
+    classDef tool fill:#DFF5E5,stroke:#000000
+
+    class Agent agent
+    class Graph graphClass
+    class LLM llm
+    class Tool tool
+```
+
+## Historical Perspective: From Determinism to Autonomy
+
+When the Langchain framework was first released in 2022, the LLM world's API paradigm was still OpenAI's [Completions API](https://platform.openai.com/docs/guides/completions), a simple "text in, text out" API. At launch, Langchain's slogan was "[connect LLMs to external sources of computation and data](https://blog.langchain.com/langchain-second-birthday/)". A typical "Chain" might look like this:
+
+```mermaid
+flowchart LR
+  S[retrievers, loaders, <br>prompt templates, etc...]
+  L[LLM]
+  P[output parsers, other handlers, etc...]
+
+  S-->L-->P
+```
+
+Subsequently, the [ReAct](https://react-lm.github.io/) (Reasoning and Acting) paradigm was proposed, systematically demonstrating for the first time how LLMs can not only generate text but also interact with the external world through "think-act-observe" loops to solve complex problems. This breakthrough laid the theoretical foundation for Agent's autonomous planning capabilities. Almost simultaneously, OpenAI launched the [ChatCompletions API](https://platform.openai.com/docs/api-reference/chat), driving the transformation of LLM interaction capabilities from "single text input/output" to "multi-turn dialogue". Then [Function Calling](https://platform.openai.com/docs/guides/function-calling) capability emerged, giving LLMs standard capabilities to interact with external functions and APIs. At this point, we could already build "multi-turn dialogue with autonomous external interaction" LLM application scenarios, i.e., Agents. In this context, AI application frameworks saw two important developments:
+
+- Langchain launched Langgraph: Static orchestration evolved from simple input/output Chains to complex topologies. This type of orchestration framework fits well with "Graph" type AI application forms: "arbitrary" structured inputs, with "final result" as the core deliverable, decoupling message history and other state management mechanisms from core orchestration logic, supporting flexible orchestration of various topologies, and various nodes/components represented by LLMs and knowledge bases.
+- Agent and Multi-Agent frameworks emerged in large numbers: such as AutoGen, CrewAI, Google ADK, etc. The common thread among these Agent frameworks is attempting to solve problems like "LLM-driven processes", "context passing", "memory management", and "Multi-Agent common patterns", which are different from the "connecting LLMs with external systems in complex processes" problem that orchestration frameworks try to solve.
+
+Even with different positioning, orchestration frameworks can implement ReAct Agents or other Multi-Agent patterns, because "Agent" is a special form of "LLM interacting with external systems", and "LLM-driven processes" can be implemented through "static branch enumeration" and other methods. However, this implementation is essentially a "simulation", like writing code in Word - possible, but not a good fit. Orchestration frameworks were originally designed to manage deterministic Graphs, while the core of Agents is responding to dynamically changing "chains of thought". Forcing the latter to adapt to the former will inevitably produce "mismatches" in deliverables, runtime modes, etc. For example, in actual use, you might encounter some pain points:
+
+- Deliverable mismatch: The output of an orchestrated ReAct Agent is the "final result", while actual applications often focus on various intermediate processes. Callbacks and other solutions can solve this - complete enough, but still a "patch".
+
+```mermaid
+flowchart LR
+  A[ReAct Agent]
+  P@{ shape: processes, label: "Full Process Data" }
+  A--o|Focus on|P
+
+  G[Graph]
+  F[Final Result]
+  G-->|Main flow output,<br>but covered by side-channel output|F
+
+  G-.->|Side-channel extraction|P
+```
+
+- Runtime mode mismatch: Due to synchronous execution, "to display LLM replies to users as quickly as possible", nodes within ReAct Agent orchestration need to be as "fast" as possible. This mainly means that in the branch judgment logic of "whether LLM output contains ToolCall", decisions should be made based on the first packet or first few packets as much as possible. This branch judgment logic can be customized, such as "read streaming output until Content is seen, then determine no ToolCall", but sometimes it cannot completely solve the problem, and callbacks are used as a "side-channel" to manually switch from "synchronous" to "asynchronous".
+
+```mermaid
+flowchart LR
+  L[LLM Node]
+  S@{ shape: processes, label: "Streaming Content"}
+  L-->|Generate|S
+
+  B{Contains<br>Tool Call?}
+  D@{ shape: processes, label: "Streaming Content"}
+
+  B-->|No, display on screen|D
+
+  S-->|Frame-by-frame check|B
+```
+
+These pain points stem from the essential differences between the two. A framework designed for deterministic processes (Graph) has difficulty natively supporting an autonomous system (Agent) centered on dynamic "chains of thought".
+
+## Exploring Integration Paths: The Relationship Between Agent and Graph
+
+The goal of the Eino framework is to support both Graph and Agent scenarios. Our evolution path started with Graph and orchestration framework (eino-compose), and introduced relatively independent Agent capabilities (eino-adk) outside the orchestration framework. This may seem like an unnecessary split, as if "Eino as an orchestration framework" and "Eino as an Agent framework" are independent of each other, with development experience not being shareable. The current situation is indeed so, and in the long term the "relatively independent" state will continue, but there will also be deep integration in some areas.
+
+Below we analyze the specific relationship between "Agent" and "Graph" in the Eino framework from three perspectives:
+
+- Multi-Agent orchestration
+- Agent as a node
+- Graph as a Tool
+
+### Multi-Agent and Orchestration
+
+Although "Agent" and "Graph" have essential differences, are there scenarios that belong to the "intersection" of the two forms, where you can't make a black-or-white choice? A typical scenario is Multi-Agent, where multiple Agents interact in "some way", presenting to users as a complete Agent. Can this "interaction method" be understood as "Graph orchestration"?
+
+Let's observe several mainstream collaboration patterns:
+
+- Hierarchical invocation (Agent as Tool): This is the most common pattern (see Google ADK's [definition](https://google.github.io/adk-docs/agents/multi-agents/#c-explicit-invocation-agenttool) and [examples](https://google.github.io/adk-docs/agents/multi-agents/#hierarchical-task-decomposition)). A top-level Agent delegates specific subtasks to specialized "Tool Agents". For example, a main Agent is responsible for interacting with users, and when code execution is needed, it calls a "code execution Agent". In this pattern, sub-Agents are usually stateless, don't share memory with the main Agent, and their interaction is a simple Function Call. There is only one relationship between the top-level Agent and sub-Agents: caller and callee. Therefore, we can conclude that the Agent as Tool Multi-Agent pattern is not the "node flow" relationship in "Graph orchestration".
+
+```mermaid
+flowchart LR
+  subgraph Main Agent
+    L[Main Agent's LLM]
+    T1[Sub Agent 1]
+    T2[Sub Agent 2]
+
+    L-->|Tool Call|T1
+    L-->|Tool Call|T2
+  end
+```
+
+- Preset flows: For some mature collaboration patterns, such as "Plan-Execute-Replan" (see Langchain's [example](https://langchain-ai.github.io/langgraph/tutorials/plan-and-execute/plan-and-execute/)), the interaction order and roles between Agents are fixed. Frameworks (like Eino adk) can encapsulate these patterns as "prebuilt Multi-Agent patterns", which developers can use directly without caring about internal details or manually setting up or adjusting the process relationships between sub-Agents. Therefore, we can conclude that for mature collaboration patterns, "Graph orchestration" is an implementation detail encapsulated inside the prebuilt pattern, which developers don't perceive.
+
+```mermaid
+flowchart LR
+  subgraph Plan-Execute-Replan
+    P[Planner]
+    E[Executor]
+    R[Replanner]
+    P-->E
+    E-->R
+    R-->E
+  end
+
+  user -->|Use as a whole| Plan-Execute-Replan
+```
+
+- Dynamic collaboration: In more complex scenarios, the collaboration method between Agents is dynamic (see Google ADK's [definition](https://google.github.io/adk-docs/agents/multi-agents/#b-llm-driven-delegation-agent-transfer) and [examples](https://google.github.io/adk-docs/agents/multi-agents/#coordinatordispatcher-pattern)), possibly involving bidding, voting, or runtime decisions by a "coordinator Agent". In this pattern, the relationship between Agents is "Agent transfer", similar to "node flow" in "Graph orchestration" - both are complete handoffs of "control" from A to B. However, this "Agent transfer" can be completely dynamic, with its dynamic nature reflected not only in "which Agents can be transferred to", but also in "how the decision of which Agent to transfer to is made" - neither is preset by developers, but is the LLM's real-time dynamic behavior. This forms a sharp contrast with the static determinism of "Graph orchestration". Therefore, we can conclude that the dynamic collaboration Multi-Agent pattern is fundamentally different from "Graph orchestration" and is better suited for independent solutions at the Agent framework level.
+
+```mermaid
+flowchart LR
+  A[Agent 1]
+  B[Agent 2]
+  C[Agent 3]
+
+  A-.->|Dynamic handoff|B-.->|Dynamic handoff|C
+```
+
+In summary, Multi-Agent collaboration problems can either be solved by reducing dimensions through the "Agent as Tool" pattern, or by frameworks providing fixed patterns, or are essentially completely dynamic collaborations. Their need for "orchestration" is fundamentally different from Graph's static, deterministic process orchestration.
+
+### Agent as a Graph Node
+
+After exploring "the relationship between Multi-Agent and Graph orchestration", we can ask from another angle: Is there a need to use Agents in Graph orchestration? In other words, can an Agent be a "node" in a Graph?
+
+Let's first recall the characteristics of Agent and Graph:
+
+- Agent's input sources are more diverse. Besides receiving structured data from upstream nodes, it heavily depends on its own conversation history (Memory). This forms a sharp contrast with Graph nodes that strictly depend on upstream outputs as the only input.
+- Agent's output is asynchronous full-process data. This means other nodes have difficulty using the output of an "Agent node".
+
+```mermaid
+flowchart LR
+  U[Upstream Node]
+  A[Agent Node]
+  D[Downstream Node]
+  M[Memory]
+
+  U-->|Not all inputs<br>|A
+  M-.->|External state injection|A
+  A-->|Full process data<br>for users or LLM<br>|D
+```
+
+Therefore, adding an Agent node to a Graph means forcing an Agent that requires multi-turn interaction, long-term memory, and asynchronous output into a deterministic, synchronously executing Graph node, which is usually inelegant. An Agent's startup can be orchestrated by a Graph, but its internal complex interactions should not block the main flow.
+
+In fact, what we need in a Graph is not a complete Agent node, but a more functionally pure **"LLM node"**. This node is responsible for receiving specific inputs in deterministic processes, completing intent recognition or content generation, and producing structured outputs, thereby injecting intelligence into the process.
+
+At the same time, if a simple "LLM" node really doesn't meet the requirements and an "Agent" is indeed needed, a more appropriate approach might not be to stuff the Agent into a statically predefined Graph, but to add various "plugins" like pre-processing and post-processing to the "Agent", embedding specific business logic inside the Agent.
+
+In summary: Treating an Agent simply as a Graph node is **inefficient**; a better approach is to use LLM nodes, or inject business logic as plugins into Agents.
+
+### The Integration Path: Encapsulating Graph as Agent's Tool
+
+Since direct integration of Agent and Graph at the micro level (nodes) faces difficulties, is there a more elegant way to combine them at the macro level? The answer is yes, and this bridge is "Tool". If we observe the meanings of Graph and Tool, we can find many similarities:
+
+<table>
+<tr><td>Feature Dimension</td><td>Graph</td><td>Tool</td></tr>
+<tr><td>Input</td><td><strong>Structured data</strong></td><td><strong>Structured data</strong></td></tr>
+<tr><td>Deliverable</td><td><strong>Focused on final result</strong></td><td><strong>Focused on final result</strong></td></tr>
+<tr><td>State Management</td><td><strong>Single execution, stateless</strong></td><td><strong>Single execution, stateless</strong></td></tr>
+<tr><td>Runtime Mode</td><td><strong>Synchronous as a whole</strong></td><td><strong>Tool is synchronous from LLM's perspective</strong></td></tr>
+</table>
+
+These similarities mean that "Graph's presentation form matches Tool's requirements very well, so encapsulating Graph as a Tool is intuitive and simple". Therefore, most Graphs are suitable for joining Agents through the Tool mechanism, becoming part of Agent's capabilities. This way, Agents can clearly use most of Graph's capabilities, including efficient orchestration of "arbitrary" business topologies, ecosystem integration of a large number of related components, and supporting framework and governance capabilities (stream processing, callbacks, interrupt/resume, etc.).
+
+The "route debate" between "Agent" and "Graph" achieves dialectical unity.
+
+```mermaid
+flowchart TD
+    subgraph Agent ["Agent"]
+        A["LLM Decision"] --> B{"Call Tool?"}
+        B -- "Yes" --> C["Tool: my_graph_tool"]
+    end
+
+    subgraph Tool ["Tool"]
+        C -- "Encapsulate" --> D["Graph: my_graph"]
+    end
+
+    subgraph Graph ["Graph"]
+        D -- "Execute" --> E["Node 1"]
+        E --> F["Node 2"]
+        F --> G["Return Result"]
+    end
+
+    G -- "Output" --> C
+    C -- "Result" --> A
+
+    classDef agent fill:#EAE2FE,stroke:#000000
+    classDef tool fill:#DFF5E5,stroke:#000000
+    classDef graphGroup fill:#F0F4FC,stroke:#000000
+    class A,B agent
+    class C tool
+    class D,E,F,G graphGroup
+```
+
+Graph-Tool-Agent Relationship Diagram
+
+## Conclusion
+
+Agent and Graph are not a route debate, but two complementary AI application paradigms.
+
+- Graph is the cornerstone for building reliable, deterministic AI functionality. It excels at orchestrating complex business logic, data processing pipelines, and API calls into predictable, maintainable workflows. When you need a "feature button" or a stable backend service, Graph is the best choice.
+- Agent is the future for achieving general intelligence and autonomous exploration. It centers on LLM, solving open-ended problems through dynamic planning and Tools. When you need an "intelligent assistant" that can converse with people and autonomously complete complex tasks, Agent is the core direction.
+
+The best integration point is to encapsulate Graph as Agent's Tool.
+
+Through this approach, we can fully leverage Graph's powerful capabilities in process orchestration and ecosystem integration to expand Agent's Tool list. A complex Graph application (such as a complete RAG pipeline, a data analysis pipeline) can be simplified into one of Agent's atomic capabilities, dynamically called at the right time.
+
+For Eino developers, this means:
+
+- Use eino-compose to write your Graphs, encapsulating deterministic business logic into "functional modules".
+- Use eino-adk to build your Agents, giving them the ability to think, plan, and interact with users.
+- Use the former as Tools for the latter, ultimately achieving a "1+1 > 2" effect.
+
+Code example:
+
+```go
+// NewInvokableGraphTool converts ANY Graph to the `InvokableTool` interface.
+func NewInvokableGraphTool[I, O any](graph compose.Graph[I, O],
+    name, desc string,
+    opts ...compose.GraphCompileOption,
+) (*InvokableGraphTool[I, O], error) {
+    tInfo, err := utils.GoStruct2ToolInfo[I](name, desc)
+    if err != nil {
+       return nil, err
+    }
+
+    return &InvokableGraphTool[I, O]{
+       graph:          graph,
+       compileOptions: opts,
+       tInfo:          tInfo,
+    }, nil
+}
+
+func (g *InvokableGraphTool[I, O]) InvokableRun(ctx context.Context, input string,
+    opts ...tool.Option) (output string, err error) {
+    // trigger callbacks where needed
+    // compile the graph
+    // convert input string to I
+    // run the graph
+    // handle interrupt
+    // convert output O to string
+}
+
+func (g *InvokableGraphTool[I, O]) Info(_ context.Context) (*schema.ToolInfo, error) {
+    return g.tInfo, nil
+}
+```
+
+[eino-example project link](https://github.com/cloudwego/eino-examples/tree/main/adk/common/tool/graphtool)
+</script><h1>Agent or Graph? AI Application Path Analysis</h1><header class=article-meta></header><h2 id=introduction-two-coexisting-ai-interaction-paradigms>Introduction: Two Coexisting AI Interaction Paradigms</h2><p>Many application interfaces have integrated different forms of AI capabilities, as shown below:</p><p><a href=/img/eino/eino_ai_app_form.png target=_blank><img src=/img/eino/eino_ai_app_form.png width=100%></a></p><p>This seemingly simple screenshot represents two forms of &ldquo;AI applications&rdquo;:</p><ul><li>The &ldquo;Agent&rdquo; represented by the &ldquo;chat box&rdquo;. <strong>Agents use LLM (Large Language Model) as the decision center, autonomously plan and can conduct multi-turn interactions</strong>, naturally suited for handling open-ended, continuous tasks, manifesting as a &ldquo;dialogue&rdquo; form.</li><li>The &ldquo;Graph&rdquo; represented by &ldquo;buttons&rdquo; or &ldquo;APIs&rdquo;. For example, the &ldquo;Recording Summary&rdquo; button above - the Graph behind it is roughly &ldquo;Recording&rdquo; → &ldquo;LLM understands and summarizes&rdquo; → &ldquo;Save recording&rdquo; - this kind of fixed process. <strong>The core of Graph lies in the determinism of its process and the closure of tasks</strong>, completing specific goals through predefined nodes and edges, manifesting as a &ldquo;function&rdquo; form. For example, video generation is an &ldquo;API&rdquo; form AI application:</li></ul><p><a href=/img/eino/eino_complex_workflow_as_api.png target=_blank><img src=/img/eino/eino_complex_workflow_as_api.png width=100%></a></p><pre tabindex=0><code class=language-mermaid data-lang=mermaid>flowchart TD
   linkStyle default stroke-width:2px,stroke:#000000
 
   classDef startend_style fill:#EAE2FE,stroke:#000000,stroke-width:2px,color:#1f2329
@@ -286,4 +635,4 @@ The “Agent” represented by the “chat box”. Agents use LLM (Large Languag
 </span></span></span></code></pre></div><p><a href=https://github.com/cloudwego/eino-examples/tree/main/adk/common/tool/graphtool>eino-example project link</a></p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 2, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/96139d4140c93a677eec194c2d34dffa3e2673dd>feat: sync eino docs (#1512) (96139d41)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

@@ -7,7 +7,7 @@ type Loader interface { Load(ctx context.Context, src Source, opts ...LoaderOpti
 URI：文档的统一资源标识符，可以是网络 URL 或本地文件路径 Document 结构体 type Document struct { // ID 是文档的唯一标识符 ID string // Content 是文档的内容 Content string // MetaData 用于存储文档的元数据信息 MetaData map[string]any } Document 结构体是文档的标准格式，包含以下重要字段："><meta itemprop=datePublished content="2025-11-20T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-10T20:19:16+08:00"><meta itemprop=wordCount content="552"><meta name=twitter:card content="summary"><meta name=twitter:title content="Document Loader 使用说明"><meta name=twitter:description content="基本介绍 Document Loader 是一个用于加载文档的组件。它的主要作用是从不同来源（如网络 URL、本地文件等）加载文档内容，并将其转换为标准的文档格式。这个组件在处理需要从各种来源获取文档内容的场景中发挥重要作用，比如:
 从网络 URL 加载网页内容 读取本地 PDF、Word 等格式的文档 组件定义 接口定义 代码位置：eino/components/document/interface.go
 type Loader interface { Load(ctx context.Context, src Source, opts ...LoaderOption) ([]*schema.Document, error) } Load 方法 功能：从指定的数据源加载文档 参数： ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager src：文档来源，包含文档的 URI 信息 opts：加载选项，用于配置加载行为 返回值： []*schema.Document：加载的文档列表 error：加载过程中的错误信息 Source 结构体 type Source struct { URI string } Source 结构体定义了文档的来源信息：
-URI：文档的统一资源标识符，可以是网络 URL 或本地文件路径 Document 结构体 type Document struct { // ID 是文档的唯一标识符 ID string // Content 是文档的内容 Content string // MetaData 用于存储文档的元数据信息 MetaData map[string]any } Document 结构体是文档的标准格式，包含以下重要字段："><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+URI：文档的统一资源标识符，可以是网络 URL 或本地文件路径 Document 结构体 type Document struct { // ID 是文档的唯一标识符 ID string // Content 是文档的内容 Content string // MetaData 用于存储文档的元数据信息 MetaData map[string]any } Document 结构体是文档的标准格式，包含以下重要字段："><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -116,7 +116,316 @@ URI：文档的统一资源标识符，可以是网络 URL 或本地文件路径
 <label for=m-zhdocseinofaq-check><a href=/zh/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/eino/core_modules/components/document_loader_guide/_index.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/eino/core_modules/components/document_loader_guide?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Document%20Loader%20%e4%bd%bf%e7%94%a8%e8%af%b4%e6%98%8e" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#基本介绍><strong>基本介绍</strong></a></li><li><a href=#组件定义><strong>组件定义</strong></a><ul><li><a href=#接口定义><strong>接口定义</strong></a></li><li><a href=#source-结构体><strong>Source 结构体</strong></a></li><li><a href=#document-结构体><strong>Document 结构体</strong></a></li><li><a href=#公共选项><strong>公共选项</strong></a></li></ul></li><li><a href=#使用方式><strong>使用方式</strong></a><ul><li><a href=#单独使用><strong>单独使用</strong></a></li><li><a href=#在编排中使用><strong>在编排中使用</strong></a></li></ul></li><li><a href=#option-和-callback-使用><strong>Option 和 Callback 使用</strong></a><ul><li><a href=#callback-使用示例><strong>Callback 使用示例</strong></a></li></ul></li><li><a href=#已有实现><strong>已有实现</strong></a></li><li><a href=#自行实现参考><strong>自行实现参考</strong></a><ul><li><a href=#option-机制>option <strong>机制</strong></a></li><li><a href=#callback-处理><strong>Callback 处理</strong></a></li><li><a href=#完整实现示例><strong>完整实现示例</strong></a></li><li><a href=#注意事项><strong>注意事项</strong></a></li></ul></li><li><a href=#其他参考文档>其他参考文档</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/components/>Components 组件</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/components/document_loader_guide/>Document Loader 使用说明</a></li></ol></nav><div class=td-content><h1>Document Loader 使用说明</h1><header class=article-meta></header><h2 id=基本介绍><strong>基本介绍</strong></h2><p>Document Loader 是一个用于加载文档的组件。它的主要作用是从不同来源（如网络 URL、本地文件等）加载文档内容，并将其转换为标准的文档格式。这个组件在处理需要从各种来源获取文档内容的场景中发挥重要作用，比如:</p><ul><li>从网络 URL 加载网页内容</li><li>读取本地 PDF、Word 等格式的文档</li></ul><h2 id=组件定义><strong>组件定义</strong></h2><h3 id=接口定义><strong>接口定义</strong></h3><blockquote><p>代码位置：eino/components/document/interface.go</p></blockquote><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Loader</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#基本介绍><strong>基本介绍</strong></a></li><li><a href=#组件定义><strong>组件定义</strong></a><ul><li><a href=#接口定义><strong>接口定义</strong></a></li><li><a href=#source-结构体><strong>Source 结构体</strong></a></li><li><a href=#document-结构体><strong>Document 结构体</strong></a></li><li><a href=#公共选项><strong>公共选项</strong></a></li></ul></li><li><a href=#使用方式><strong>使用方式</strong></a><ul><li><a href=#单独使用><strong>单独使用</strong></a></li><li><a href=#在编排中使用><strong>在编排中使用</strong></a></li></ul></li><li><a href=#option-和-callback-使用><strong>Option 和 Callback 使用</strong></a><ul><li><a href=#callback-使用示例><strong>Callback 使用示例</strong></a></li></ul></li><li><a href=#已有实现><strong>已有实现</strong></a></li><li><a href=#自行实现参考><strong>自行实现参考</strong></a><ul><li><a href=#option-机制>option <strong>机制</strong></a></li><li><a href=#callback-处理><strong>Callback 处理</strong></a></li><li><a href=#完整实现示例><strong>完整实现示例</strong></a></li><li><a href=#注意事项><strong>注意事项</strong></a></li></ul></li><li><a href=#其他参考文档>其他参考文档</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/components/>Components 组件</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/components/document_loader_guide/>Document Loader 使用说明</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Document Loader 使用说明" data-url=https://www.cloudwego.io/zh/docs/eino/core_modules/components/document_loader_guide/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## **基本介绍**
+
+Document Loader 是一个用于加载文档的组件。它的主要作用是从不同来源（如网络 URL、本地文件等）加载文档内容，并将其转换为标准的文档格式。这个组件在处理需要从各种来源获取文档内容的场景中发挥重要作用，比如:
+
+- 从网络 URL 加载网页内容
+- 读取本地 PDF、Word 等格式的文档
+
+## **组件定义**
+
+### **接口定义**
+
+> 代码位置：eino/components/document/interface.go
+
+```go
+type Loader interface {
+    Load(ctx context.Context, src Source, opts ...LoaderOption) ([]*schema.Document, error)
+}
+```
+
+#### **Load 方法**
+
+- 功能：从指定的数据源加载文档
+- 参数：
+  - ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager
+  - src：文档来源，包含文档的 URI 信息
+  - opts：加载选项，用于配置加载行为
+- 返回值：
+  - `[]*schema.Document`：加载的文档列表
+  - error：加载过程中的错误信息
+
+### **Source 结构体**
+
+```go
+type Source struct {
+    URI string
+}
+```
+
+Source 结构体定义了文档的来源信息：
+
+- URI：文档的统一资源标识符，可以是网络 URL 或本地文件路径
+
+### **Document 结构体**
+
+```go
+type Document struct {
+    // ID 是文档的唯一标识符
+    ID string
+    // Content 是文档的内容
+    Content string
+    // MetaData 用于存储文档的元数据信息
+    MetaData map[string]any
+}
+```
+
+Document 结构体是文档的标准格式，包含以下重要字段：
+
+- ID：文档的唯一标识符，用于在系统中唯一标识一个文档
+- Content：文档的实际内容
+- MetaData：文档的元数据，可以存储如下信息：
+  - 文档的来源信息
+  - 文档的向量表示（用于向量检索）
+  - 文档的分数（用于排序）
+  - 文档的子索引（用于分层检索）
+  - 其他自定义元数据
+
+### **公共选项**
+
+Loader 组件使用 `LoaderOption` 来定义加载选项。Loader 目前没有公共的 Option，每个具体的实现可以定义自己的特定选项，通过 `WrapLoaderImplSpecificOptFn` 函数包装成统一的 `LoaderOption` 类型。
+
+## **使用方式**
+
+### **单独使用**
+
+> 代码位置：eino-ext/components/document/loader/file/examples/fileloader
+
+```go
+import (
+    "github.com/cloudwego/eino/components/document"
+    "github.com/cloudwego/eino-ext/components/document/loader/file"
+)
+
+// 初始化 loader (以file loader为例)
+loader, _ := file.NewFileLoader(ctx, &file.FileLoaderConfig{
+    // 配置参数
+    UseNameAsID: true,
+})
+
+// 加载文档
+filePath := "../../testdata/test.md"
+docs, _ := loader.Load(ctx, document.Source{
+    URI: filePath,
+})
+
+log.Printf("doc content: %v", docs[0].Content)
+```
+
+### **在编排中使用**
+
+```go
+// 在 Chain 中使用
+chain := compose.NewChain[string, []*schema.Document]()
+chain.AppendLoader(loader)
+
+// 编译并运行
+runnable, _ := chain.Compile()
+
+result, _ := runnable.Invoke(ctx, input)
+
+// 在 Graph 中使用
+graph := compose.NewGraph[string, []*schema.Document]()
+graph.AddLoaderNode("loader_node", loader)
+```
+
+## **Option 和 Callback 使用**
+
+### **Callback 使用示例**
+
+> 代码位置：eino-ext/components/document/loader/file/examples/fileloader
+
+```go
+import (
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/components/document"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+    callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
+
+    "github.com/cloudwego/eino-ext/components/document/loader/file"
+)
+
+// 创建 callback handler
+handler := &callbacksHelper.LoaderCallbackHandler{
+    OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *document.LoaderCallbackInput) context.Context {
+       log.Printf("start loading docs...: %s\n", input.Source.URI)
+       return ctx
+    },
+    OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *document.LoaderCallbackOutput) context.Context {
+       log.Printf("complete loading docs，total loaded docs: %d\n", len(output.Docs))
+       return ctx
+    },
+    // OnError
+}
+
+// 使用 callback handler
+helper := callbacksHelper.NewHandlerHelper().
+    Loader(handler).
+    Handler()
+
+chain := compose.NewChain[document.Source, []*schema.Document]()
+chain.AppendLoader(loader)
+// 在运行时使用
+run, _ := chain.Compile(ctx)
+
+outDocs, _ := run.Invoke(ctx, document.Source{
+    URI: filePath,
+}, compose.WithCallbacks(helper))
+
+log.Printf("doc content: %v", outDocs[0].Content)
+```
+
+## **已有实现**
+
+1. File Loader: 用于加载本地文件系统中的文档 [Loader - local file](/zh/docs/eino/ecosystem_integration/document/loader_local_file)
+2. Web Loader: 用于加载网络 URL 指向的文档 [Loader - web url](/zh/docs/eino/ecosystem_integration/document/loader_web_url)
+3. S3 Loader: 用于加载存储在 S3 兼容存储系统中的文档 [Loader - amazon s3](/zh/docs/eino/ecosystem_integration/document/loader_amazon_s3)
+
+## **自行实现参考**
+
+自行实现 loader 组件时，需要注意 option 机制和 callback 的处理。
+
+### option **机制**
+
+自定义 Loader 需要实现自己的 Option 参数机制：
+
+```go
+// 定义选项结构体
+type MyLoaderOptions struct {
+    Timeout time.Duration
+    RetryCount int
+}
+
+// 定义选项函数
+func WithTimeout(timeout time.Duration) document.LoaderOption {
+    return document.WrapLoaderImplSpecificOptFn(func(o *MyLoaderOptions) {
+        o.Timeout = timeout
+    })
+}
+
+func WithRetryCount(count int) document.LoaderOption {
+    return document.WrapLoaderImplSpecificOptFn(func(o *MyLoaderOptions) {
+        o.RetryCount = count
+    })
+}
+```
+
+### **Callback 处理**
+
+Loader 实现需要在适当的时机触发回调：
+
+> 代码位置：eino/components/document/callback_extra_loader.go
+
+```go
+// 这是由loader组件定义的回调输入输出, 在实现时需要满足参数的含义
+type LoaderCallbackInput struct {
+    Source Source
+    Extra map[string]any
+}
+
+type LoaderCallbackOutput struct {
+    Source Source
+    Docs []*schema.Document
+    Extra map[string]any
+}
+```
+
+### **完整实现示例**
+
+```go
+import (
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/components/document"
+    "github.com/cloudwego/eino/schema"
+)
+
+func NewCustomLoader(config *Config) (*CustomLoader, error) {
+    return &CustomLoader{
+       timeout:    config.DefaultTimeout,
+       retryCount: config.DefaultRetryCount,
+    }, nil
+}
+
+type CustomLoader struct {
+    timeout    time.Duration
+    retryCount int
+}
+
+type Config struct {
+    DefaultTimeout    time.Duration
+    DefaultRetryCount int
+}
+
+func (l *CustomLoader) Load(ctx context.Context, src document.Source, opts ...document.LoaderOption) ([]*schema.Document, error) {
+    // 1. 处理 option
+    options := &customLoaderOptions{
+       Timeout:    l.timeout,
+       RetryCount: l.retryCount,
+    }
+    options = document.GetLoaderImplSpecificOptions(options, opts...)
+    var err error
+
+    // 2. 处理错误，并进行错误回调方法
+    defer func() {
+       if err != nil {
+          callbacks.OnError(ctx, err)
+       }
+    }()
+
+    // 3. 开始加载前的回调
+    ctx = callbacks.OnStart(ctx, &document.LoaderCallbackInput{
+       Source: src,
+    })
+
+    // 4. 执行加载逻辑
+    docs, err := l.doLoad(ctx, src, options)
+
+    if err != nil {
+       return nil, err
+    }
+
+    ctx = callbacks.OnEnd(ctx, &document.LoaderCallbackOutput{
+       Source: src,
+       Docs:   docs,
+    })
+
+    return docs, nil
+}
+
+func (l *CustomLoader) doLoad(ctx context.Context, src document.Source, opts *customLoaderOptions) ([]*schema.Document, error) {
+    // 实现文档加载逻辑
+    // 1. 加载文档内容
+    // 2. 构造 Document 对象，注意可在 MetaData 中保存文档来源等重要信息
+    return []*schema.Document{{
+       Content: "Hello World",
+    }}, nil
+}
+```
+
+### **注意事项**
+
+- MetaData 是文档的重要组成部分，用于保存文档的各种元信息
+- 文档加载失败时返回有意义的错误信息，便于做错误的排查
+
+## 其他参考文档
+
+- [[🚧]Eino: Document Transformer 使用说明](/zh/docs/eino/core_modules/components/document_transformer_guide)
+- [[🚧]Eino: Embedding 使用说明](/zh/docs/eino/core_modules/components/embedding_guide)
+- [[🚧]Eino: Indexer 使用说明](/zh/docs/eino/core_modules/components/indexer_guide)
+- [[🚧]Eino: Retriever 使用说明](/zh/docs/eino/core_modules/components/retriever_guide)
+</script><h1>Document Loader 使用说明</h1><header class=article-meta></header><h2 id=基本介绍><strong>基本介绍</strong></h2><p>Document Loader 是一个用于加载文档的组件。它的主要作用是从不同来源（如网络 URL、本地文件等）加载文档内容，并将其转换为标准的文档格式。这个组件在处理需要从各种来源获取文档内容的场景中发挥重要作用，比如:</p><ul><li>从网络 URL 加载网页内容</li><li>读取本地 PDF、Word 等格式的文档</li></ul><h2 id=组件定义><strong>组件定义</strong></h2><h3 id=接口定义><strong>接口定义</strong></h3><blockquote><p>代码位置：eino/components/document/interface.go</p></blockquote><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Loader</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>Load</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>src</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Source</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>opts</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000>LoaderOption</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>([]</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Document</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#000;font-weight:700>}</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span></code></pre></div><h4 id=load-方法><strong>Load 方法</strong></h4><ul><li>功能：从指定的数据源加载文档</li><li>参数：<ul><li>ctx：上下文对象，用于传递请求级别的信息，同时也用于传递 Callback Manager</li><li>src：文档来源，包含文档的 URI 信息</li><li>opts：加载选项，用于配置加载行为</li></ul></li><li>返回值：<ul><li><code>[]*schema.Document</code>：加载的文档列表</li><li>error：加载过程中的错误信息</li></ul></li></ul><h3 id=source-结构体><strong>Source 结构体</strong></h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Source</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -297,4 +606,4 @@ URI：文档的统一资源标识符，可以是网络 URL 或本地文件路径
 </span></span></span></code></pre></div><h3 id=注意事项><strong>注意事项</strong></h3><ul><li>MetaData 是文档的重要组成部分，用于保存文档的各种元信息</li><li>文档加载失败时返回有意义的错误信息，便于做错误的排查</li></ul><h2 id=其他参考文档>其他参考文档</h2><ul><li><a href=/zh/docs/eino/core_modules/components/document_transformer_guide>[🚧]Eino: Document Transformer 使用说明</a></li><li><a href=/zh/docs/eino/core_modules/components/embedding_guide>[🚧]Eino: Embedding 使用说明</a></li><li><a href=/zh/docs/eino/core_modules/components/indexer_guide>[🚧]Eino: Indexer 使用说明</a></li><li><a href=/zh/docs/eino/core_modules/components/retriever_guide>[🚧]Eino: Retriever 使用说明</a></li></ul><div class=section-index><hr class=panel-line><div class=entry><h5><a href=/zh/docs/eino/core_modules/components/document_loader_guide/document_parser_interface_guide/>Document Parser 接口使用说明</a></h5><p></p></div></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 March 10, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c2aa4096ad71b3ef0ce9941d864394f623fd7b74>docs(eino): sync docs from feishu 2026-03-09 (#1518) (c2aa4096)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

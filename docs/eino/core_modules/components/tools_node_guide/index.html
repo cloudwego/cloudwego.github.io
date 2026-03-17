@@ -4,7 +4,7 @@ ToolsNode is the designated “Tool executor” in the Eino framework. Whether i
 ToolsNode is the designated “Tool executor” in the Eino framework. Whether inside a Graph or in an Agent, tool execution is performed via ToolsNode:
 // compose/tool_node.go // run tools using `Invoke` func (tn *ToolsNode) Invoke(ctx context.Context, input *schema.Message, opts ...ToolsNodeOption) ([]*schema.Message, error) // run tools using `Stream` func (tn *ToolsNode) Stream(ctx context.Context, input *schema.Message, opts ...ToolsNodeOption) (*schema.StreamReader[[]*schema.Message], error) Configure ToolsNode with a list of tools and supporting policies:"><meta itemprop=datePublished content="2026-03-03T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-03T12:09:36+08:00"><meta itemprop=wordCount content="2349"><meta name=twitter:card content="summary"><meta name=twitter:title content="Eino: ToolsNode & Tool Guide"><meta name=twitter:description content="Introduction Tool in the Eino framework is defined as “external capabilities that ChatModel can choose to call”, including local functions, MCP server tools, etc.
 ToolsNode is the designated “Tool executor” in the Eino framework. Whether inside a Graph or in an Agent, tool execution is performed via ToolsNode:
-// compose/tool_node.go // run tools using `Invoke` func (tn *ToolsNode) Invoke(ctx context.Context, input *schema.Message, opts ...ToolsNodeOption) ([]*schema.Message, error) // run tools using `Stream` func (tn *ToolsNode) Stream(ctx context.Context, input *schema.Message, opts ...ToolsNodeOption) (*schema.StreamReader[[]*schema.Message], error) Configure ToolsNode with a list of tools and supporting policies:"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+// compose/tool_node.go // run tools using `Invoke` func (tn *ToolsNode) Invoke(ctx context.Context, input *schema.Message, opts ...ToolsNodeOption) ([]*schema.Message, error) // run tools using `Stream` func (tn *ToolsNode) Stream(ctx context.Context, input *schema.Message, opts ...ToolsNodeOption) (*schema.StreamReader[[]*schema.Message], error) Configure ToolsNode with a list of tools and supporting policies:"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -110,7 +110,725 @@ ToolsNode is the designated “Tool executor” in the Eino framework. Whether i
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/components/tools_node_guide/_index.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/components/tools_node_guide?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino:%20ToolsNode%20&%20Tool%20Guide" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#tool-definition>Tool Definition</a><ul><li><a href=#interface-definition>Interface Definition</a></li><li><a href=#enhanced-tool-data-structures>Enhanced Tool Data Structures</a></li><li><a href=#method-descriptions>Method Descriptions</a></li><li><a href=#toolinfo-struct>ToolInfo Struct</a></li><li><a href=#common-options>Common Options</a></li></ul></li><li><a href=#usage>Usage</a><ul><li><a href=#standard-tool-usage>Standard Tool Usage</a></li><li><a href=#enhanced-tool-usage>Enhanced Tool Usage</a></li><li><a href=#usage-in-orchestration>Usage in Orchestration</a></li></ul></li><li><a href=#option-mechanism>Option Mechanism</a></li><li><a href=#middleware-mechanism>Middleware Mechanism</a><ul><li><a href=#middleware-usage-example>Middleware Usage Example</a></li></ul></li><li><a href=#option-and-callback-usage>Option and Callback Usage</a><ul><li><a href=#callback-usage-example>Callback Usage Example</a></li></ul></li><li><a href=#how-to-get-toolcallid>How to Get ToolCallID</a></li><li><a href=#existing-implementations>Existing Implementations</a><ul><li><a href=#v05x--v06x>v0.5.x → v0.6.x</a></li><li><a href=#v06x-new-enhanced-tools>v0.6.x New Enhanced Tools</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/components/>Eino: Components</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/components/tools_node_guide/>Eino: ToolsNode & Tool Guide</a></li></ol></nav><div class=td-content><h1>Eino: ToolsNode & Tool Guide</h1><header class=article-meta></header><h2 id=introduction>Introduction</h2><p><code>Tool</code> in the Eino framework is defined as &ldquo;external capabilities that ChatModel can choose to call&rdquo;, including local functions, MCP server tools, etc.</p><p><code>ToolsNode</code> is the designated &ldquo;Tool executor&rdquo; in the Eino framework. Whether inside a Graph or in an Agent, tool execution is performed via ToolsNode:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// compose/tool_node.go</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#tool-definition>Tool Definition</a><ul><li><a href=#interface-definition>Interface Definition</a></li><li><a href=#enhanced-tool-data-structures>Enhanced Tool Data Structures</a></li><li><a href=#method-descriptions>Method Descriptions</a></li><li><a href=#toolinfo-struct>ToolInfo Struct</a></li><li><a href=#common-options>Common Options</a></li></ul></li><li><a href=#usage>Usage</a><ul><li><a href=#standard-tool-usage>Standard Tool Usage</a></li><li><a href=#enhanced-tool-usage>Enhanced Tool Usage</a></li><li><a href=#usage-in-orchestration>Usage in Orchestration</a></li></ul></li><li><a href=#option-mechanism>Option Mechanism</a></li><li><a href=#middleware-mechanism>Middleware Mechanism</a><ul><li><a href=#middleware-usage-example>Middleware Usage Example</a></li></ul></li><li><a href=#option-and-callback-usage>Option and Callback Usage</a><ul><li><a href=#callback-usage-example>Callback Usage Example</a></li></ul></li><li><a href=#how-to-get-toolcallid>How to Get ToolCallID</a></li><li><a href=#existing-implementations>Existing Implementations</a><ul><li><a href=#v05x--v06x>v0.5.x → v0.6.x</a></li><li><a href=#v06x-new-enhanced-tools>v0.6.x New Enhanced Tools</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/components/>Eino: Components</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/components/tools_node_guide/>Eino: ToolsNode & Tool Guide</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino: ToolsNode & Tool Guide" data-url=https://www.cloudwego.io/docs/eino/core_modules/components/tools_node_guide/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Introduction
+
+`Tool` in the Eino framework is defined as "external capabilities that ChatModel can choose to call", including local functions, MCP server tools, etc.
+
+`ToolsNode` is the designated "Tool executor" in the Eino framework. Whether inside a Graph or in an Agent, tool execution is performed via ToolsNode:
+
+```go
+// compose/tool_node.go
+
+// run tools using `Invoke`
+func (tn *ToolsNode) Invoke(ctx context.Context, input *schema.Message,
+    opts ...ToolsNodeOption) ([]*schema.Message, error)
+    
+// run tools using `Stream`
+func (tn *ToolsNode) Stream(ctx context.Context, input *schema.Message,
+    opts ...ToolsNodeOption) (*schema.StreamReader[[]*schema.Message], error)
+```
+
+Configure ToolsNode with a list of tools and supporting policies:
+
+```go
+// compose/tool_node.go
+
+type ToolsNodeConfig struct {
+    Tools []tool.BaseTool
+
+    UnknownToolsHandler func(ctx context.Context, name, input string) (string, error)
+
+    ExecuteSequentially bool
+
+    ToolArgumentsHandler func(ctx context.Context, name, arguments string) (string, error)
+
+    ToolCallMiddlewares []ToolMiddleware
+}
+```
+
+With this, ToolsNode "can execute configured tools" and gains extensibility such as execution ordering, error handling, argument processing, and middleware extensions.
+
+How does ToolsNode "decide" which Tool to execute? It doesn't decide - it executes according to the incoming `*schema.Message`:
+
+```go
+// schema/message.go
+
+type Message struct {
+    // role should be 'assistant' for tool call message
+    Role RoleType `json:"role"`
+
+    // here each `ToolCall` is generated by ChatModel and to be executed by ToolsNode
+    ToolCalls []ToolCall `json:"tool_calls,omitempty"`
+    
+    // other fields...
+}
+
+// ToolCall is the tool call in a message.
+// It's used in Assistant Message when there are tool calls should be made.
+type ToolCall struct {
+    // Index is used when there are multiple tool calls in a message.
+    // In stream mode, it's used to identify the chunk of the tool call for merging.
+    Index *int `json:"index,omitempty"`
+    // ID is the id of the tool call, it can be used to identify the specific tool call.
+    ID string `json:"id"`
+    // Type is the type of the tool call, default is "function".
+    Type string `json:"type"`
+    // Function is the function call to be made.
+    Function FunctionCall `json:"function"`
+
+    // Extra is used to store extra information for the tool call.
+    Extra map[string]any `json:"extra,omitempty"`
+}
+
+// FunctionCall is the function call in a message.
+// It's used in Assistant Message.
+type FunctionCall struct {
+    // Name is the name of the function to call, it can be used to identify the specific function.
+    Name string `json:"name,omitempty"`
+    // Arguments is the arguments to call the function with, in JSON format.
+    Arguments string `json:"arguments,omitempty"`
+}
+```
+
+ChatModel (LLM) generates the []ToolCall to be called (including ToolName, Argument, etc.) and places them in a *schema.Message to pass to ToolsNode. ToolsNode actually executes a call for each ToolCall.
+
+If ExecuteSequentially is configured, ToolsNode will execute tools in the order they appear in []ToolCall.
+
+The result of each ToolCall execution is wrapped into a *schema.Message as part of the ToolsNode output.
+
+## Tool Definition
+
+### Interface Definition
+
+The Tool component provides two types of interfaces: **Standard Tool Interface** and **Enhanced Tool Interface**.
+
+> Code location: eino/components/tool/interface.go
+
+#### Standard Tool Interface
+
+Standard tool interfaces return string type results:
+
+```go
+// Basic tool interface, provides tool information
+type BaseTool interface {
+    Info(ctx context.Context) (*schema.ToolInfo, error)
+}
+
+// Invokable tool interface, supports synchronous calls
+type InvokableTool interface {
+    BaseTool
+    InvokableRun(ctx context.Context, argumentsInJSON string, opts ...Option) (string, error)
+}
+
+// Tool interface supporting streaming output
+type StreamableTool interface {
+    BaseTool
+    StreamableRun(ctx context.Context, argumentsInJSON string, opts ...Option) (*schema.StreamReader[string], error)
+}
+```
+
+#### Enhanced Tool Interface
+
+Enhanced tool interfaces support returning structured multimodal results (`*schema.ToolResult`), which can contain text, images, audio, video, and files:
+
+```go
+// EnhancedInvokableTool is a tool interface that supports returning structured multimodal results
+// Unlike InvokableTool which returns a string, this interface returns *schema.ToolResult
+// which can contain text, images, audio, video, and files
+type EnhancedInvokableTool interface {
+    BaseTool
+    InvokableRun(ctx context.Context, toolArgument *schema.ToolArgument, opts ...Option) (*schema.ToolResult, error)
+}
+
+// EnhancedStreamableTool is a streaming tool interface that supports returning structured multimodal results
+// Provides a streaming reader for incremental access to multimodal content
+type EnhancedStreamableTool interface {
+    BaseTool
+    StreamableRun(ctx context.Context, toolArgument *schema.ToolArgument, opts ...Option) (*schema.StreamReader[*schema.ToolResult], error)
+}
+```
+
+### Enhanced Tool Data Structures
+
+> Code location: eino/schema/message.go
+
+#### ToolArgument - Tool Input Parameters
+
+```go
+// ToolArgument contains the input information for a tool call
+type ToolArgument struct {
+    // TextArgument contains the tool call parameters in JSON format
+    TextArgument string
+}
+```
+
+#### ToolResult - Tool Output Result
+
+```go
+// ToolResult represents the structured multimodal output of tool execution
+// Used when a tool needs to return more than just a simple string,
+// such as images, files, or other structured data
+type ToolResult struct {
+    // Parts contains multimodal output parts. Each part can be a different type of content,
+    // such as text, images, or files
+    Parts []ToolOutputPart `json:"parts,omitempty"`
+}
+```
+
+#### ToolOutputPart - Output Content Part
+
+```go
+// ToolPartType defines the content type of a tool output part
+type ToolPartType string
+
+const (
+    ToolPartTypeText  ToolPartType = "text"   // Text
+    ToolPartTypeImage ToolPartType = "image"  // Image
+    ToolPartTypeAudio ToolPartType = "audio"  // Audio
+    ToolPartTypeVideo ToolPartType = "video"  // Video
+    ToolPartTypeFile  ToolPartType = "file"   // File
+)
+
+// ToolOutputPart represents a part of the tool execution output
+type ToolOutputPart struct {
+    Type  ToolPartType     `json:"type"`            // Content type
+    Text  string           `json:"text,omitempty"`  // Text content
+    Image *ToolOutputImage `json:"image,omitempty"` // Image content
+    Audio *ToolOutputAudio `json:"audio,omitempty"` // Audio content
+    Video *ToolOutputVideo `json:"video,omitempty"` // Video content
+    File  *ToolOutputFile  `json:"file,omitempty"`  // File content
+    Extra map[string]any   `json:"extra,omitempty"` // Extra information
+}
+
+// Multimedia content structs, all containing URL or Base64 data and MIME type information
+type ToolOutputImage struct { MessagePartCommon }
+type ToolOutputAudio struct { MessagePartCommon }
+type ToolOutputVideo struct { MessagePartCommon }
+type ToolOutputFile  struct { MessagePartCommon }
+```
+
+### Method Descriptions
+
+#### Info Method
+
+- Purpose: Get tool description information
+- Parameters:
+  - ctx: Context object
+- Returns:
+  - `*schema.ToolInfo`: Tool description information
+  - error: Errors during information retrieval
+
+#### InvokableRun Method (Standard Tool)
+
+- Purpose: Synchronously execute the tool
+- Parameters:
+  - ctx: Context object for passing request-level information and Callback Manager
+  - `argumentsInJSON`: JSON format parameter string
+  - opts: Tool execution options
+- Returns:
+  - string: Execution result
+  - error: Errors during execution
+
+#### InvokableRun Method (Enhanced Tool)
+
+- Purpose: Synchronously execute the tool, returning multimodal results
+- Parameters:
+  - ctx: Context object
+  - `toolArgument`: `*schema.ToolArgument` containing JSON format parameters
+  - opts: Tool execution options
+- Returns:
+  - `*schema.ToolResult`: Execution result containing multimodal content
+  - error: Errors during execution
+
+#### StreamableRun Method (Standard Tool)
+
+- Purpose: Execute tool in streaming mode
+- Parameters:
+  - ctx: Context object
+  - `argumentsInJSON`: JSON format parameter string
+  - opts: Tool execution options
+- Returns:
+  - `*schema.StreamReader[string]`: Streaming execution result
+  - error: Errors during execution
+
+#### StreamableRun Method (Enhanced Tool)
+
+- Purpose: Execute tool in streaming mode, returning multimodal result stream
+- Parameters:
+  - ctx: Context object
+  - `toolArgument`: `*schema.ToolArgument` containing JSON format parameters
+  - opts: Tool execution options
+- Returns:
+  - `*schema.StreamReader[*schema.ToolResult]`: Streaming multimodal execution result
+  - error: Errors during execution
+
+### ToolInfo Struct
+
+> Code location: eino/schema/tool.go
+
+```go
+type ToolInfo struct {
+    // Unique tool name that clearly expresses its purpose
+    Name string
+    // Used to tell the model how/when/why to use this tool
+    // Can include brief examples in the description
+    Desc string
+    // Definition of parameters the tool accepts
+    // Can be described in two ways:
+    // 1. Using ParameterInfo: schema.NewParamsOneOfByParams(params)
+    // 2. Using OpenAPIV3: schema.NewParamsOneOfByOpenAPIV3(openAPIV3)
+    *ParamsOneOf
+}
+```
+
+### Common Options
+
+The Tool component uses ToolOption to define optional parameters. ToolsNode has no abstracted common options. Each specific implementation can define its own specific Options, wrapped into the unified ToolOption type using the WrapToolImplSpecificOptFn function.
+
+## Usage
+
+### Standard Tool Usage
+
+```go
+import (
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+)
+
+// Create tools node
+toolsNode := compose.NewToolsNode([]tool.Tool{
+    searchTool,    // Search tool
+    weatherTool,   // Weather query tool
+    calculatorTool, // Calculator tool
+})
+
+// Mock LLM output as input
+input := &schema.Message{
+    Role: schema.Assistant,
+    ToolCalls: []schema.ToolCall{
+       {
+          Function: schema.FunctionCall{
+             Name:      "weather",
+             Arguments: `{"city": "Shenzhen", "date": "tomorrow"}`,
+          },
+       },
+    },
+}
+
+toolMessages, err := toolsNode.Invoke(ctx, input)
+```
+
+### Enhanced Tool Usage
+
+Enhanced tools are suitable for scenarios that need to return multimodal content, such as images, audio, video, or files.
+
+#### Method 1: Use InferEnhancedTool for Automatic Inference
+
+```go
+import (
+    "context"
+    
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/components/tool/utils"
+    "github.com/cloudwego/eino/schema"
+)
+
+// Define input parameter struct
+type ImageSearchInput struct {
+    Query string `json:"query" jsonschema:"description=Search keyword"`
+}
+
+// Create enhanced tool
+imageSearchTool, err := utils.InferEnhancedTool(
+    "image_search",
+    "Search and return related images",
+    func(ctx context.Context, input *ImageSearchInput) (*schema.ToolResult, error) {
+        // Execute image search logic...
+        imageURL := "https://example.com/image.png"
+        
+        return &schema.ToolResult{
+            Parts: []schema.ToolOutputPart{
+                {Type: schema.ToolPartTypeText, Text: "Found the following images:"},
+                {
+                    Type: schema.ToolPartTypeImage,
+                    Image: &schema.ToolOutputImage{
+                        MessagePartCommon: schema.MessagePartCommon{
+                            URL: &imageURL,
+                        },
+                    },
+                },
+            },
+        }, nil
+    },
+)
+```
+
+#### Method 2: Use NewEnhancedTool for Manual Creation
+
+```go
+import (
+    "context"
+    
+    "github.com/cloudwego/eino/components/tool/utils"
+    "github.com/cloudwego/eino/schema"
+)
+
+type FileGeneratorInput struct {
+    FileName string `json:"file_name"`
+    Content  string `json:"content"`
+}
+
+// Manually define ToolInfo
+toolInfo := &schema.ToolInfo{
+    Name: "file_generator",
+    Desc: "Generate and return a file",
+    ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
+        "file_name": {Type: "string", Desc: "File name"},
+        "content":   {Type: "string", Desc: "File content"},
+    }),
+}
+
+// Create enhanced tool
+fileGenTool := utils.NewEnhancedTool[*FileGeneratorInput](
+    toolInfo,
+    func(ctx context.Context, input *FileGeneratorInput) (*schema.ToolResult, error) {
+        fileURL := "https://example.com/files/" + input.FileName
+        
+        return &schema.ToolResult{
+            Parts: []schema.ToolOutputPart{
+                {Type: schema.ToolPartTypeText, Text: "File generated: " + input.FileName},
+                {
+                    Type: schema.ToolPartTypeFile,
+                    File: &schema.ToolOutputFile{
+                        MessagePartCommon: schema.MessagePartCommon{
+                            URL:      &fileURL,
+                            MIMEType: "text/plain",
+                        },
+                    },
+                },
+            },
+        }, nil
+    },
+)
+```
+
+#### Method 3: Implement EnhancedInvokableTool Interface
+
+```go
+import (
+    "context"
+    
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/schema"
+)
+
+type MyEnhancedTool struct {
+    info *schema.ToolInfo
+}
+
+func (t *MyEnhancedTool) Info(ctx context.Context) (*schema.ToolInfo, error) {
+    return t.info, nil
+}
+
+func (t *MyEnhancedTool) InvokableRun(ctx context.Context, toolArgument *schema.ToolArgument, opts ...tool.Option) (*schema.ToolResult, error) {
+    // Parse arguments
+    // toolArgument.TextArgument contains JSON format parameters
+    
+    // Execute tool logic...
+    
+    return &schema.ToolResult{
+        Parts: []schema.ToolOutputPart{
+            {Type: schema.ToolPartTypeText, Text: "Execution result"},
+        },
+    }, nil
+}
+```
+
+#### Enhanced Streaming Tool
+
+```go
+import (
+    "context"
+    
+    "github.com/cloudwego/eino/components/tool/utils"
+    "github.com/cloudwego/eino/schema"
+)
+
+type StreamInput struct {
+    Query string `json:"query"`
+}
+
+// Create enhanced streaming tool
+streamTool, err := utils.InferEnhancedStreamTool(
+    "stream_search",
+    "Streaming search tool",
+    func(ctx context.Context, input *StreamInput) (*schema.StreamReader[*schema.ToolResult], error) {
+        results := []*schema.ToolResult{
+            {Parts: []schema.ToolOutputPart{{Type: schema.ToolPartTypeText, Text: "Searching..."}}},
+            {Parts: []schema.ToolOutputPart{{Type: schema.ToolPartTypeText, Text: "Found results"}}},
+        }
+        return schema.StreamReaderFromArray(results), nil
+    },
+)
+```
+
+### Usage in Orchestration
+
+```go
+import (
+    "github.com/cloudwego/eino/components/tool"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+)
+
+// Create tools node
+toolsNode, _ := compose.NewToolNode(ctx, &compose.ToolsNodeConfig{
+       Tools: []tool.BaseTool{
+          searchTool,     // Search tool
+          weatherTool,    // Weather query tool
+          calculatorTool, // Calculator tool
+       },
+    })
+
+// In Chain
+chain := compose.NewChain[*schema.Message, []*schema.Message]()
+chain.AppendToolsNode(toolsNode)
+
+// In Graph
+graph := compose.NewGraph[*schema.Message, []*schema.Message]()
+graph.AddToolsNode("tools", toolsNode)
+```
+
+> **Note**: When a tool implements both standard and enhanced interfaces, ToolsNode will prioritize using the enhanced interface.
+
+## Option Mechanism
+
+Custom Tools can implement specific Options as needed:
+
+```go
+import "github.com/cloudwego/eino/components/tool"
+
+// Define Option struct
+type MyToolOptions struct {
+    Timeout time.Duration
+    MaxRetries int
+    RetryInterval time.Duration
+}
+
+// Define Option function
+func WithTimeout(timeout time.Duration) tool.Option {
+    return tool.WrapImplSpecificOptFn(func(o *MyToolOptions) {
+        o.Timeout = timeout
+    })
+}
+```
+
+## Middleware Mechanism
+
+ToolsNode supports intercepting and enhancing tool calls through Middleware. There are four types of Middleware:
+
+```go
+// compose/tool_node.go
+
+// ToolMiddleware combines middleware hooks for invokable and streamable tool calls
+type ToolMiddleware struct {
+    // Invokable is for non-streaming standard tool calls
+    Invokable InvokableToolMiddleware
+    
+    // Streamable is for streaming standard tool calls
+    Streamable StreamableToolMiddleware
+    
+    // EnhancedInvokable is for non-streaming enhanced tool calls
+    EnhancedInvokable EnhancedInvokableToolMiddleware
+    
+    // EnhancedStreamable is for streaming enhanced tool calls
+    EnhancedStreamable EnhancedStreamableToolMiddleware
+}
+```
+
+### Middleware Usage Example
+
+```go
+import (
+    "context"
+    "fmt"
+    
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+)
+
+// Create ToolsNode with Middleware
+toolsNode, err := compose.NewToolNode(ctx, &compose.ToolsNodeConfig{
+    Tools: []tool.BaseTool{myEnhancedTool},
+    ToolCallMiddlewares: []compose.ToolMiddleware{
+        {
+            // Standard tool middleware
+            Invokable: func(next compose.InvokableToolEndpoint) compose.InvokableToolEndpoint {
+                return func(ctx context.Context, input *compose.ToolInput) (*compose.ToolOutput, error) {
+                    fmt.Printf("Calling standard tool: %s\n", input.Name)
+                    return next(ctx, input)
+                }
+            },
+            // Enhanced tool middleware
+            EnhancedInvokable: func(next compose.EnhancedInvokableToolEndpoint) compose.EnhancedInvokableToolEndpoint {
+                return func(ctx context.Context, input *compose.ToolInput) (*compose.EnhancedInvokableToolOutput, error) {
+                    fmt.Printf("Calling enhanced tool: %s\n", input.Name)
+                    output, err := next(ctx, input)
+                    if err != nil {
+                        return nil, err
+                    }
+                    fmt.Printf("Enhanced tool returned %d content parts\n", len(output.Result.Parts))
+                    return output, nil
+                }
+            },
+        },
+    },
+})
+```
+
+## Option and Callback Usage
+
+### Callback Usage Example
+
+```go
+import (
+    "context"
+
+    callbackHelper "github.com/cloudwego/eino/utils/callbacks"
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/components/tool"
+)
+
+// Create callback handler
+handler := &callbackHelper.ToolCallbackHandler{
+    OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *tool.CallbackInput) context.Context {
+       fmt.Printf("Starting tool execution, arguments: %s\n", input.ArgumentsInJSON)
+       return ctx
+    },
+    OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *tool.CallbackOutput) context.Context {
+       fmt.Printf("Tool execution completed, result: %s\n", output.Response)
+       return ctx
+    },
+    OnEndWithStreamOutput: func(ctx context.Context, info *callbacks.RunInfo, output *schema.StreamReader[*tool.CallbackOutput]) context.Context {
+       fmt.Println("Tool starting streaming output")
+       go func() {
+          defer output.Close()
+
+          for {
+             chunk, err := output.Recv()
+             if errors.Is(err, io.EOF) {
+                return
+             }
+             if err != nil {
+                return
+             }
+             fmt.Printf("Received streaming output: %s\n", chunk.Response)
+          }
+       }()
+       return ctx
+    },
+}
+
+// Use callback handler
+helper := callbackHelper.NewHandlerHelper().
+    Tool(handler).
+    Handler()
+ 
+/*** compose a chain
+* chain := NewChain
+* chain.appendxxx().
+*       appendxxx().
+*       ...
+*/
+
+// Use at runtime
+runnable, err := chain.Compile()
+if err != nil {
+    return err
+}
+result, err := runnable.Invoke(ctx, input, compose.WithCallbacks(helper))
+```
+
+## How to Get ToolCallID
+
+In the tool function body or tool callback handler, you can use `compose.GetToolCallID(ctx)` to get the current Tool's ToolCallID.
+
+## Existing Implementations
+
+1. Google Search Tool: Tool implementation based on Google search [Tool - Googlesearch](/docs/eino/ecosystem_integration/tool/tool_googlesearch)
+2. DuckDuckGo Search Tool: Tool implementation based on DuckDuckGo search [Tool - DuckDuckGoSearch](/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search)
+3. MCP: Use MCP server as tool [Tool - MCP](/docs/eino/ecosystem_integration/tool/tool_mcp)
+
+### v0.5.x → v0.6.x
+
+Based on the following two considerations:
+
+1. Major model vendor APIs and MCP Tool protocols specify using JSONSchema to describe tool input/output schemas.
+2. The getkin/kin-openapi@v0.118.0 referenced by Eino has security issues, and secure versions of kin-openapi have incompatible updates.
+
+Eino has removed all OpenAPI schema 3.0 related definitions and methods, switching to JSONSchema 2020-12. For specific removed and added definitions and methods, see [https://github.com/cloudwego/eino/discussions/397](https://github.com/cloudwego/eino/discussions/397).
+
+After upgrading, some eino-ext modules may error with "undefined: schema.NewParamsOneOfByOpenAPIV3" - upgrade the erroring eino-ext modules to the latest version.
+
+If schema migration is complex, you can use the helper tool methods provided in [https://github.com/cloudwego/eino/discussions/397](https://github.com/cloudwego/eino/discussions/397).
+
+### v0.6.x New Enhanced Tools
+
+New `EnhancedInvokableTool` and `EnhancedStreamableTool` interfaces have been added, supporting structured multimodal results.
+
+**Main Changes:**
+
+1. **New Tool Interfaces**:
+
+- `EnhancedInvokableTool`: Receives `*schema.ToolArgument`, returns `*schema.ToolResult`
+- `EnhancedStreamableTool`: Receives `*schema.ToolArgument`, returns `*schema.StreamReader[*schema.ToolResult]`
+
+2. **New Tool Helper Functions** (`components/tool/utils/`):
+
+- `InferEnhancedTool`: Automatically infer and create enhanced tool from function
+- `InferEnhancedStreamTool`: Automatically infer and create enhanced streaming tool from function
+- `NewEnhancedTool`: Manually create enhanced tool
+- `NewEnhancedStreamTool`: Manually create enhanced streaming tool
+
+3. **New Data Structures** (`schema/message.go`):
+
+- `ToolPartType`: Tool output content type enum (text, image, audio, video, file)
+- `ToolArgument`: Tool input parameter struct
+- `ToolResult`: Tool multimodal output result struct
+- `ToolOutputPart`: Tool output content part
+- `ToolOutputImage/Audio/Video/File`: Various multimedia output structs
+
+4. **ToolsNode Enhancements**:
+
+- Added `EnhancedInvokableToolMiddleware` and `EnhancedStreamableToolMiddleware`
+- Supports mixed use of enhanced tools and standard tools
+- When a tool implements both interfaces, the enhanced interface is prioritized
+
+5. **Callback Enhancements**:
+
+- `CallbackOutput` added `ToolOutput *schema.ToolResult` field for enhanced tool multimodal output
+
+**Use Cases:**
+
+Enhanced tools are suitable for scenarios that need to return rich media content, such as:
+
+- Image search tools returning found images
+- File generation tools returning generated files
+- Audio/video processing tools returning processed media files
+- Multimodal AI Agent scenarios
+</script><h1>Eino: ToolsNode & Tool Guide</h1><header class=article-meta></header><h2 id=introduction>Introduction</h2><p><code>Tool</code> in the Eino framework is defined as &ldquo;external capabilities that ChatModel can choose to call&rdquo;, including local functions, MCP server tools, etc.</p><p><code>ToolsNode</code> is the designated &ldquo;Tool executor&rdquo; in the Eino framework. Whether inside a Graph or in an Agent, tool execution is performed via ToolsNode:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// compose/tool_node.go</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#8f5902;font-style:italic>// run tools using `Invoke`</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#000>tn</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>ToolsNode</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Invoke</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>input</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Message</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -556,4 +1274,4 @@ ToolsNode is the designated “Tool executor” in the Eino framework. Whether i
 </span></span></span></code></pre></div><h2 id=how-to-get-toolcallid>How to Get ToolCallID</h2><p>In the tool function body or tool callback handler, you can use <code>compose.GetToolCallID(ctx)</code> to get the current Tool&rsquo;s ToolCallID.</p><h2 id=existing-implementations>Existing Implementations</h2><ol><li>Google Search Tool: Tool implementation based on Google search <a href=/docs/eino/ecosystem_integration/tool/tool_googlesearch>Tool - Googlesearch</a></li><li>DuckDuckGo Search Tool: Tool implementation based on DuckDuckGo search <a href=/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search>Tool - DuckDuckGoSearch</a></li><li>MCP: Use MCP server as tool <a href=/docs/eino/ecosystem_integration/tool/tool_mcp>Tool - MCP</a></li></ol><h3 id=v05x--v06x>v0.5.x → v0.6.x</h3><p>Based on the following two considerations:</p><ol><li>Major model vendor APIs and MCP Tool protocols specify using JSONSchema to describe tool input/output schemas.</li><li>The <a href=mailto:getkin/kin-openapi@v0.118.0>getkin/kin-openapi@v0.118.0</a> referenced by Eino has security issues, and secure versions of kin-openapi have incompatible updates.</li></ol><p>Eino has removed all OpenAPI schema 3.0 related definitions and methods, switching to JSONSchema 2020-12. For specific removed and added definitions and methods, see <a href=https://github.com/cloudwego/eino/discussions/397>https://github.com/cloudwego/eino/discussions/397</a>.</p><p>After upgrading, some eino-ext modules may error with &ldquo;undefined: schema.NewParamsOneOfByOpenAPIV3&rdquo; - upgrade the erroring eino-ext modules to the latest version.</p><p>If schema migration is complex, you can use the helper tool methods provided in <a href=https://github.com/cloudwego/eino/discussions/397>https://github.com/cloudwego/eino/discussions/397</a>.</p><h3 id=v06x-new-enhanced-tools>v0.6.x New Enhanced Tools</h3><p>New <code>EnhancedInvokableTool</code> and <code>EnhancedStreamableTool</code> interfaces have been added, supporting structured multimodal results.</p><p><strong>Main Changes:</strong></p><ol><li><strong>New Tool Interfaces</strong>:</li></ol><ul><li><code>EnhancedInvokableTool</code>: Receives <code>*schema.ToolArgument</code>, returns <code>*schema.ToolResult</code></li><li><code>EnhancedStreamableTool</code>: Receives <code>*schema.ToolArgument</code>, returns <code>*schema.StreamReader[*schema.ToolResult]</code></li></ul><ol start=2><li><strong>New Tool Helper Functions</strong> (<code>components/tool/utils/</code>):</li></ol><ul><li><code>InferEnhancedTool</code>: Automatically infer and create enhanced tool from function</li><li><code>InferEnhancedStreamTool</code>: Automatically infer and create enhanced streaming tool from function</li><li><code>NewEnhancedTool</code>: Manually create enhanced tool</li><li><code>NewEnhancedStreamTool</code>: Manually create enhanced streaming tool</li></ul><ol start=3><li><strong>New Data Structures</strong> (<code>schema/message.go</code>):</li></ol><ul><li><code>ToolPartType</code>: Tool output content type enum (text, image, audio, video, file)</li><li><code>ToolArgument</code>: Tool input parameter struct</li><li><code>ToolResult</code>: Tool multimodal output result struct</li><li><code>ToolOutputPart</code>: Tool output content part</li><li><code>ToolOutputImage/Audio/Video/File</code>: Various multimedia output structs</li></ul><ol start=4><li><strong>ToolsNode Enhancements</strong>:</li></ol><ul><li>Added <code>EnhancedInvokableToolMiddleware</code> and <code>EnhancedStreamableToolMiddleware</code></li><li>Supports mixed use of enhanced tools and standard tools</li><li>When a tool implements both interfaces, the enhanced interface is prioritized</li></ul><ol start=5><li><strong>Callback Enhancements</strong>:</li></ol><ul><li><code>CallbackOutput</code> added <code>ToolOutput *schema.ToolResult</code> field for enhanced tool multimodal output</li></ul><p><strong>Use Cases:</strong></p><p>Enhanced tools are suitable for scenarios that need to return rich media content, such as:</p><ul><li>Image search tools returning found images</li><li>File generation tools returning generated files</li><li>Audio/video processing tools returning processed media files</li><li>Multimodal AI Agent scenarios</li></ul><div class=section-index><hr class=panel-line><div class=entry><h5><a href=/docs/eino/core_modules/components/tools_node_guide/how_to_create_a_tool/>How to Create a Tool</a></h5><p></p></div></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 3, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/8788f90c35c1a1e1c0c3a0644a2b725b1bed1fa9>fix: eino docs (#1515) (8788f90c)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

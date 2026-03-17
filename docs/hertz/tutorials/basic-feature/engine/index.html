@@ -1,7 +1,7 @@
 <!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Engine | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/engine/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Engine"><meta property="og:description" content="Server.Hertz is the core type of Hertz, consisting of route.Engine and signalWaiter. The important methods for starting, registering routes, registering middleware, and exiting the Hertz server are all included in server.Hertz. The following is the definition of server.Hertz:
 type Hertz struct { *route.Engine // used to receive signal for elegant exit signalWaiter func (err chan error) error } Route.Engine is an important component of server.Hertz, and the definition of Engine is located in Engine."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-08-18T00:00:00+00:00"><meta property="article:modified_time" content="2025-09-08T09:23:15+08:00"><meta itemprop=name content="Engine"><meta itemprop=description content="Server.Hertz is the core type of Hertz, consisting of route.Engine and signalWaiter. The important methods for starting, registering routes, registering middleware, and exiting the Hertz server are all included in server.Hertz. The following is the definition of server.Hertz:
 type Hertz struct { *route.Engine // used to receive signal for elegant exit signalWaiter func (err chan error) error } Route.Engine is an important component of server.Hertz, and the definition of Engine is located in Engine."><meta itemprop=datePublished content="2023-08-18T00:00:00+00:00"><meta itemprop=dateModified content="2025-09-08T09:23:15+08:00"><meta itemprop=wordCount content="2612"><meta name=twitter:card content="summary"><meta name=twitter:title content="Engine"><meta name=twitter:description content="Server.Hertz is the core type of Hertz, consisting of route.Engine and signalWaiter. The important methods for starting, registering routes, registering middleware, and exiting the Hertz server are all included in server.Hertz. The following is the definition of server.Hertz:
-type Hertz struct { *route.Engine // used to receive signal for elegant exit signalWaiter func (err chan error) error } Route.Engine is an important component of server.Hertz, and the definition of Engine is located in Engine."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+type Hertz struct { *route.Engine // used to receive signal for elegant exit signalWaiter func (err chan error) error } Route.Engine is an important component of server.Hertz, and the definition of Engine is located in Engine."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -110,7 +110,630 @@ type Hertz struct { *route.Engine // used to receive signal for elegant exit sig
 <label for=m-docshertzreferenceversion-check><a href=/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshertzreferenceversion><span>Version Descriptions</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/hertz/tutorials/basic-feature/engine.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/hertz/tutorials/basic-feature?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Engine" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#config>Config</a></li><li><a href=#initial-service>Initial Service</a><ul><li><a href=#default>Default</a></li><li><a href=#new>New</a></li></ul></li><li><a href=#service-run-and-exit>Service Run and Exit</a><ul><li><a href=#spin>Spin</a></li><li><a href=#run>Run</a></li><li><a href=#setcustomsignalwaiter>SetCustomSignalWaiter</a></li></ul></li><li><a href=#middleware>Middleware</a><ul><li><a href=#use>Use</a></li></ul></li><li><a href=#streaming>Streaming</a><ul><li><a href=#streaming-read>Streaming Read</a></li><li><a href=#streaming-write>Streaming Write</a></li></ul></li><li><a href=#register-custom-protocol>Register Custom Protocol</a></li><li><a href=#setclientipfunc>SetClientIPFunc</a></li><li><a href=#setformvaluefunc>SetFormValueFunc</a></li><li><a href=#hooks>Hooks</a></li><li><a href=#panichandler>PanicHandler</a></li><li><a href=#continuehandler>ContinueHandler</a></li><li><a href=#rendering-template>Rendering Template</a></li><li><a href=#using-noroute-and-nomethod>Using NoRoute and NoMethod</a></li><li><a href=#get-route-information>Get Route Information</a><ul><li><a href=#routes>Routes</a></li></ul></li><li><a href=#transporter>Transporter</a><ul><li><a href=#gettransportername>GetTransporterName</a></li><li><a href=#settransporter>SetTransporter</a></li></ul></li><li><a href=#tracing>Tracing</a></li><li><a href=#hijack>Hijack</a><ul><li><a href=#nohijackconnpool>NoHijackConnPool</a></li><li><a href=#hijackconnhandle>HijackConnHandle</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/>Basic Feature</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/engine/>Engine</a></li></ol></nav><div class=td-content><h1>Engine</h1><header class=article-meta></header><p><code>Server.Hertz</code> is the core type of <code>Hertz</code>, consisting of <code>route.Engine</code> and <code>signalWaiter</code>. The important methods for starting, registering routes, registering middleware, and exiting the <code>Hertz</code> server are all included in <code>server.Hertz</code>. The following is the definition of <code>server.Hertz</code>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Hertz</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#config>Config</a></li><li><a href=#initial-service>Initial Service</a><ul><li><a href=#default>Default</a></li><li><a href=#new>New</a></li></ul></li><li><a href=#service-run-and-exit>Service Run and Exit</a><ul><li><a href=#spin>Spin</a></li><li><a href=#run>Run</a></li><li><a href=#setcustomsignalwaiter>SetCustomSignalWaiter</a></li></ul></li><li><a href=#middleware>Middleware</a><ul><li><a href=#use>Use</a></li></ul></li><li><a href=#streaming>Streaming</a><ul><li><a href=#streaming-read>Streaming Read</a></li><li><a href=#streaming-write>Streaming Write</a></li></ul></li><li><a href=#register-custom-protocol>Register Custom Protocol</a></li><li><a href=#setclientipfunc>SetClientIPFunc</a></li><li><a href=#setformvaluefunc>SetFormValueFunc</a></li><li><a href=#hooks>Hooks</a></li><li><a href=#panichandler>PanicHandler</a></li><li><a href=#continuehandler>ContinueHandler</a></li><li><a href=#rendering-template>Rendering Template</a></li><li><a href=#using-noroute-and-nomethod>Using NoRoute and NoMethod</a></li><li><a href=#get-route-information>Get Route Information</a><ul><li><a href=#routes>Routes</a></li></ul></li><li><a href=#transporter>Transporter</a><ul><li><a href=#gettransportername>GetTransporterName</a></li><li><a href=#settransporter>SetTransporter</a></li></ul></li><li><a href=#tracing>Tracing</a></li><li><a href=#hijack>Hijack</a><ul><li><a href=#nohijackconnpool>NoHijackConnPool</a></li><li><a href=#hijackconnhandle>HijackConnHandle</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/>Basic Feature</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/engine/>Engine</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=Engine data-url=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/engine/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+`Server.Hertz` is the core type of `Hertz`, consisting of `route.Engine` and `signalWaiter`. The important methods for starting, registering routes, registering middleware, and exiting the `Hertz` server are all included in `server.Hertz`. The following is the definition of `server.Hertz`:
+
+```go
+type Hertz struct {
+    *route.Engine
+    // used to receive signal for elegant exit
+    signalWaiter func (err chan error) error
+}
+```
+
+`Route.Engine` is an important component of `server.Hertz`, and the definition of `Engine` is located in [Engine](https://github.com/cloudwego/hertz/blob/main/pkg/route/engine.go).
+
+## Config
+
+| **Option**                        | **Default**                | **Description**                                                                                                                                                                                                                                                                                                 |
+| :-------------------------------- | :------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WithTransport                     | network.NewTransporter     | Replace the transport                                                                                                                                                                                                                                                                                           |
+| WithHostPorts                     | `:8888`                    | Specify the listening address and port                                                                                                                                                                                                                                                                          |
+| WithKeepAliveTimeout              | 1min                       | Set the keep-alive time of tcp persistent connection, generally no need to modify it, you should more pay attention to idleTimeout rather than modifying it                                                                                                                                                     |
+| WithReadTimeout                   | 3min                       | The timeout of data reading                                                                                                                                                                                                                                                                                     |
+| WithIdleTimeout                   | 3min                       | The free timeout of the request link for persistent connection                                                                                                                                                                                                                                                  |
+| WithMaxRequestBodySize            | 4 _ 1024 _ 1024            | Max body size of a request                                                                                                                                                                                                                                                                                      |
+| WithRedirectTrailingSlash         | true                       | Whether to redirect with the / which is at the end of the router automatically. For example： If there is only /foo/ in the router, /foo will be redirected to /foo/. And if there is only /foo in the router, /foo/ will be redirected to /foo                                                                 |
+| WithRemoveExtraSlash              | false                      | RemoveExtraSlash makes the parameter still valid when it contains an extra /. For example, if WithRemoveExtraSlash is true user//xiaoming can match the user/:name router                                                                                                                                       |
+| WithUnescapePathValues            | true                       | If true, the request path will be escaped automatically (eg. '%2F' -> '/'). If UseRawPath is false (the default), UnescapePathValues is true, because URI().Path() will be used and it is already escaped. To set WithUnescapePathValues to false, you need to set WithUseRawPath to true                       |
+| WithUseRawPath                    | false                      | If true, the original path will be used to match the route                                                                                                                                                                                                                                                      |
+| WithHandleMethodNotAllowed        | false                      | If true when the current path cannot match any method, the server will check whether other methods are registered with the route of the current path, and if exist other methods, it will respond "Method Not Allowed" and return the status code 405; if not, it will use the handler of NotFound to handle it |
+| WithDisablePreParseMultipartForm  | false                      | If true, the multipart form will not be preprocessed. The body can be obtained via c.Request.Body() and then can be processed by user                                                                                                                                                                           |
+| WithStreamBody                    | false                      | If true, the body will be handled by stream processing                                                                                                                                                                                                                                                          |
+| WithNetwork                       | "tcp"                      | Set the network protocol, optional: tcp，udp，unix(unix domain socket)                                                                                                                                                                                                                                          |
+| WithExitWaitTime                  | 5s                         | Set the graceful exit time. the Server will stop connection establishment for new requests and set the Connection: Close header for each request after closing. When the set time is reached, Server will to be closed. the Server can be closed early when all connections have been closed                    |
+| WithTLS                           | nil                        | Configuring server tls capabilities, For detailed information, please refer to [TLS](/zh/docs/hertz/tutorials/basic-feature/tls/)                                                                                                                                                                               |
+| WithListenConfig                  | nil                        | Set the listener configuration. Can be used to set whether to allow reuse ports, etc.                                                                                                                                                                                                                           |
+| WithALPN                          | false                      | Whether to enable ALPN                                                                                                                                                                                                                                                                                          |
+| WithTracer                        | []interface{}{}            | Inject tracer implementation, if not inject Tracer, default: close.                                                                                                                                                                                                                                             |
+| WithTraceLevel                    | LevelDetailed              | Set trace level                                                                                                                                                                                                                                                                                                 |
+| WithWriteTimeout                  | infinite                   | The timeout of data writing                                                                                                                                                                                                                                                                                     |
+| WithRedirectFixedPath             | false                      | If enabled, if the current request path does not match, the server will try to repair the request path and re-match, if the match is successful and the request is a GET request, it will return status code 301 for redirect, other requests will return 308 for redirect                                      |
+| WithBasePath                      | `/`                        | Set the base path, which must be prefixed and suffixed with `/`                                                                                                                                                                                                                                                 |
+| WithMaxKeepBodySize               | 4 _ 1024 _ 1024            | Sets the maximum size of the request body and response body to be retained during reclaim. Unit: Byte                                                                                                                                                                                                           |
+| WithGetOnly                       | false                      | If enabled, only GET requests are accepted                                                                                                                                                                                                                                                                      |
+| WithKeepAlive                     | true                       | If enabled, use HTTP keepalive                                                                                                                                                                                                                                                                                  |
+| WithAltTransport                  | network.NewTransporter     | Set up the alternate transport                                                                                                                                                                                                                                                                                  |
+| WithH2C                           | false                      | Sets whether H2C is enabled                                                                                                                                                                                                                                                                                     |
+| WithReadBufferSize                | 4 \* 1024                  | Set the read buffer size                                                                                                                                                                                                                                                                                        |
+| WithRegistry                      | registry.NoopRegistry, nil | Setup registry configuration, service registration information                                                                                                                                                                                                                                                  |
+| WithAutoReloadRender              | false, 0                   | Set up the automatic reload rendering configuration                                                                                                                                                                                                                                                             |
+| WithDisablePrintRoute             | false                      | Sets whether debugPrintRoute is disabled                                                                                                                                                                                                                                                                        |
+| WithOnAccept                      | nil                        | Set the callback function when a new connection is accepted but cannot receive data in netpoll. In go net, it will be called before converting tls connection                                                                                                                                                   |
+| WithOnConnect                     | nil                        | Set the onConnect function. It can received data from connection in netpoll. In go net, it will be called after converting tls connection                                                                                                                                                                       |
+| WithDisableHeaderNamesNormalizing | false                      | Sets whether or not to disable Request and Response Header name normalization (capitalization of the first letter and the first letter after a dash)                                                                                                                                                            |
+
+Server Connection limitation:
+
+- If you are using the standard network library, there is no such restriction.
+- If netpoll is used, the maximum number of connections is 10000 (this is
+  the [gopool](https://github.com/bytedance/gopkg/blob/b9c1c36b51a6837cef4c2223e11522e3a647460c/util/gopool/gopool.go#L46))
+  used at the bottom of netpoll. Yes, the modification method is also very simple, just call the function provided by
+  gopool: `gopool.SetCap(xxx)` (you can call it once in main.go).
+
+The configuration items on the server side are initialized using the `server.WithXXX` method, such as:
+
+```go
+func main() {
+	h := server.New(server.WithXXXX())
+	...
+}
+```
+
+## Initial Service
+
+```go
+func Default(opts ...config.Option) *Hertz
+func New(opts ...config.Option) *Hertz
+```
+
+### Default
+
+`Default` is used to initialize the service, and the `Recovery` middleware is used by default to ensure that the service will not crash during runtime due to `panic`.
+
+Function Signature:
+
+```go
+func Default(opts ...config.Option) *Hertz
+```
+
+Example Code:
+
+```go
+func main() {
+    h := server.Default()
+    h.Spin()
+}
+```
+
+### New
+
+`New` is used to initialize service and does not use the default `Recovery` middleware.
+
+Function Signature:
+
+```go
+func New(opts ...config.Option) *Hertz
+```
+
+Example Code:
+
+```go
+func main() {
+    h := server.New()
+    h.Spin()
+}
+```
+
+## Service Run and Exit
+
+```go
+func (h *Hertz) Spin()
+func (engine *Engine) Run() (err error)
+func (h *Hertz) SetCustomSignalWaiter(f func(err chan error) error)
+```
+
+### Spin
+
+The `Spin` function is used to run the Hertz server and can exit the service upon receiving an exit signal.
+
+This function supports graceful shutdown of services. For detailed information on graceful shutdown, please refer to [graceful-shutdown](/docs/hertz/tutorials/basic-feature/graceful-shutdown/).
+
+When using the function of [service_discovery](/docs/hertz/tutorials/third-party/service_discovery/), `Spin` will register the service into the registry when it is started, and use `signalWaiter` to monitor service exceptions.
+
+Function Signature:
+
+```go
+func (h *Hertz) Spin()
+```
+
+Example Code:
+
+```go
+func main() {
+    h := server.Default()
+    h.Spin()
+}
+```
+
+### Run
+
+The `Run` function is used to run the Hertz server and can exit the service upon receiving an exit signal.
+
+This function does not support graceful shutdown of service. Unless there are **special** requirements, the [Spin](#spin) function is generally used to run service.
+
+Function Signature:
+
+```go
+func (engine *Engine) Run() (err error)
+```
+
+Example Code:
+
+```go
+func main() {
+    h := server.Default()
+    if err := h.Run(); err != nil {
+        // ...
+    	panic(err)
+    }
+}
+```
+
+### SetCustomSignalWaiter
+
+The `SetCustomimSignalWaiter` function is used to customize the processing function of the server after receiving signals. If no custom function is set, Hertz uses the `waitSignal` function as the default implementation method for signal processing. For more details, please refer to [graceful-shutdown](/docs/hertz/tutorials/basic-feature/graceful-shutdown/).
+
+Function Signature:
+
+```go
+func (h *Hertz) SetCustomSignalWaiter(f func(err chan error) error)
+```
+
+Example Code:
+
+```go
+func main() {
+	h := server.New()
+	h.SetCustomSignalWaiter(func(err chan error) error {
+		return nil
+	})
+	h.Spin()
+}
+```
+
+## Middleware
+
+```go
+func (engine *Engine) Use(middleware ...app.HandlerFunc) IRoutes
+```
+
+### Use
+
+The `Use` function is used to register the middleware into the router.
+
+Hertz supports user-defined middleware, and has implemented some commonly used middleware. Please refer to [hertz contrib](https://github.com/hertz-contrib) for details.
+
+The usage methods of middleware supported by Hertz include **global registration**, **routing group** level, and **single routing** level registration. For details, please refer to [server-side-middleware](/docs/hertz/tutorials/basic-feature/middleware/#server-side-middleware).
+
+The formal parameter of `middleware` in the `Use` function must be the http processing function of `app.HandlerFunc`:
+
+```go
+type HandlerFunc func (ctx context.Context, c *app.RequestContext)
+```
+
+Function Signature:
+
+```go
+func (engine *Engine) Use(middleware ...app.HandlerFunc) IRoutes
+```
+
+Example Code:
+
+```go
+func main() {
+    h := server.New()
+    // Register built-in Recovery middleware into routes.
+    h.Use(recovery.Recovery())
+    // Use custom middleware.
+    h.Use(exampleMiddleware())
+}
+
+func exampleMiddleware() app.HandlerFunc {
+    return func(ctx context.Context, c *app.RequestContext) {
+        // Print logs before executing functions in Next.
+        hlog.Info("print before...")
+        // Use Next to execute the matching function in route.
+        c.Next(ctx)
+        // Print logs after executing functions in Next.
+        hlog.Info("print after...")
+    }
+}
+```
+
+## Streaming
+
+Hertz supports server streaming processing, including streaming read and streaming write.
+
+> Note: Due to the different triggering modes between netpoll and go net, netpoll streaming is "pseudo" (due to LT triggering, data will be read into the buffer of the network library by the network library). In scenarios with large packets (such as uploading files), there may be memory issues, and it is recommended to use go net.
+
+### Streaming Read
+
+Hertz Server supports streaming read request content.
+
+Example Code:
+
+```go
+func main() {
+	h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true), server.WithTransport(standard.NewTransporter))
+
+	h.POST("/bodyStream", handler)
+
+	h.Spin()
+}
+
+func handler(ctx context.Context, c *app.RequestContext) {
+	// Acquire body streaming
+	bodyStream := c.RequestBodyStream()
+	// Read half of body bytes
+	p := make([]byte, c.Request.Header.ContentLength()/2)
+	r, err := bodyStream.Read(p)
+	if err != nil {
+		panic(err)
+	}
+	left, _ := ioutil.ReadAll(bodyStream)
+	c.String(consts.StatusOK, "bytes streaming_read: %d\nbytes left: %d\n", r, len(left))
+}
+```
+
+### Streaming Write
+
+Hertz Server supports streaming write responses.
+
+Two methods are provided:
+
+1. The user passes in a `io.Reader` through the `ctx.SetBodyStream` function in the handler, and then reads and writes data in blocks in a similar manner to the example code (using channel to control data partitioning and read/write order) **Note that data needs to be written asynchronously**.
+
+   If the user knows the total length of the transmitted data in advance, they can pass in the length in the `ctx.SetBodyStream` function for streaming writing, as shown in the example code `/streamWrite1`.
+
+   If the user does not know the total length of the transmitted data in advance, they can pass in -1 in the `ctx.SetBodyStream` function to write the stream in the form of `Transfer-Encoding: chunked`, as shown in the example code `/streamWrite2`.
+
+   Example Code:
+
+   ```go
+   func main() {
+       h := server.Default(server.WithHostPorts("127.0.0.1:8080"), server.WithStreamBody(true), server.WithTransport(standard.NewTransporter))
+
+       h.GET("/streamWrite1", func(ctx context.Context, c *app.RequestContext) {
+           rw := newChunkReader()
+           line := []byte("line\r\n")
+           c.SetBodyStream(rw, 500*len(line))
+
+           go func() {
+               for i := 1; i <= 500; i++ {
+                   // For each streaming_write, the upload_file prints
+                   rw.Write(line)
+                   fmt.Println(i)
+                   time.Sleep(10 * time.Millisecond)
+               }
+               rw.Close()
+           }()
+
+           go func() {
+               <-c.Finished()
+               fmt.Println("request process end")
+           }()
+       })
+
+       h.GET("/streamWrite2", func(ctx context.Context, c *app.RequestContext) {
+           rw := newChunkReader()
+           // Content-Length may be negative:
+           // -1 means Transfer-Encoding: chunked.
+           c.SetBodyStream(rw, -1)
+
+           go func() {
+               for i := 1; i < 1000; i++ {
+                   // For each streaming_write, the upload_file prints
+                   rw.Write([]byte(fmt.Sprintf("===%d===\n", i)))
+                   fmt.Println(i)
+                   time.Sleep(100 * time.Millisecond)
+               }
+               rw.Close()
+           }()
+
+           go func() {
+               <-c.Finished()
+               fmt.Println("request process end")
+           }()
+       })
+
+       h.Spin()
+   }
+
+   type ChunkReader struct {
+       rw  bytes.Buffer
+       w2r chan struct{}
+       r2w chan struct{}
+   }
+
+   func newChunkReader() *ChunkReader {
+       var rw bytes.Buffer
+       w2r := make(chan struct{})
+       r2w := make(chan struct{})
+       cr := &ChunkReader{rw, w2r, r2w}
+       return cr
+   }
+
+   var closeOnce = new(sync.Once)
+
+   func (cr *ChunkReader) Read(p []byte) (n int, err error) {
+       for {
+           _, ok := <-cr.w2r
+           if !ok {
+               closeOnce.Do(func() {
+                   close(cr.r2w)
+               })
+               n, err = cr.rw.Read(p)
+               return
+           }
+
+           n, err = cr.rw.Read(p)
+
+           cr.r2w <- struct{}{}
+
+           if n == 0 {
+               continue
+           }
+           return
+       }
+   }
+
+   func (cr *ChunkReader) Write(p []byte) (n int, err error) {
+       n, err = cr.rw.Write(p)
+       cr.w2r <- struct{}{}
+       <-cr.r2w
+       return
+   }
+
+   func (cr *ChunkReader) Close() {
+       close(cr.w2r)
+   }
+
+   ```
+
+2. Users can use the `NewChunkedBodyWriter` method provided under `pkg/protocol/http1/resp/writer` in the handler to hijack the response writer, and then use the `ctx.Write` function to write the partitioned data to the body and immediately send it to the client using the `ctx.Flush` function.
+
+   Example Code:
+
+   ```go
+   h.GET("/flush/chunk", func(ctx context.Context, c *app.RequestContext) {
+   	// Hijack the writer of response
+   	c.Response.HijackWriter(resp.NewChunkedBodyWriter(&c.Response, c.GetWriter()))
+
+   	for i := 0; i < 10; i++ {
+   		c.Write([]byte(fmt.Sprintf("chunk %d: %s", i, strings.Repeat("hi~", i)))) // nolint: errcheck
+   		c.Flush()                                                                 // nolint: errcheck
+   		time.Sleep(200 * time.Millisecond)
+   	}
+   })
+   ```
+
+**The difference between these two methods: the first method sends the data to the client in blocks after executing the handler logic, and the second method can send the partitioned data out in the handler logic.**
+
+For more example code, please refer to [example](/docs/hertz/tutorials/example/#streaming-readwrite).
+
+## Register Custom Protocol
+
+```go
+func (engine *Engine) AddProtocol(protocol string, factory interface{})
+```
+
+Detailed information can be found in [registration-of-custom-protocol-server-into-hertz](/docs/hertz/tutorials/framework-exten/protocol/#registration-of-custom-protocol-server-into-hertz).
+
+## SetClientIPFunc
+
+The parameter f of this function will be passed to the `RequestContext.SetClientIPFunc` function. The function and example code are shown in [SetClientIPFunc](/docs/hertz/tutorials/basic-feature/context/request/#setclientipfunc).
+
+Function Signature:
+
+```go
+func (engine *Engine) SetClientIPFunc(f app.ClientIP)
+```
+
+## SetFormValueFunc
+
+The parameter f of this function will be passed to the `RequestContext.SetFormValueFunc` function. The function and example code are shown in [SetFormValueFunc](/docs/hertz/tutorials/basic-feature/context/request/#setformvaluefunc).
+
+Function Signature:
+
+```go
+func (engine *Engine) SetFormValueFunc(f app.FormValueFunc)
+```
+
+## Hooks
+
+Hook function is a general concept that represents the operations that accompany an event when it is triggered.
+
+Hertz provides global Hook injection capabilities for injecting its own processing logic after service triggering and before exiting. For detailed information, please refer to [Hooks](/docs/hertz/tutorials/basic-feature/hooks/).
+
+## PanicHandler
+
+Used to set the handler function when panic occurs in the program, default to `nil`.
+
+> Note: If both `PanicHandler` and `Recovery` middleware are set, the `Recovery` middleware will override the handler logic of `PanicHandler`.
+
+Example Code:
+
+```go
+func main() {
+    h := server.New()
+    // When in Panic, the function in PanicHandler will be triggered, returning a 500 status code and carrying error information
+    h.PanicHandler = func(ctx context.Context, c *app.RequestContext) {
+        c.JSON(500, utils.H{
+            "message": "panic",
+        })
+    }
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        panic("panic")
+    })
+    h.Spin()
+}
+```
+
+## ContinueHandler
+
+Call ContinueHandler after receiving the Expect 100 Continue header sent by the client. Using ContinueHandler, the server can decide whether to read potentially large request bodies, which will be read by default.
+
+Example Code:
+
+```go
+h := server.Default()
+h.ContinueHandler = func(header *protocol.RequestHeader) bool {
+	return false
+}
+```
+
+## Rendering Template
+
+Hertz provides methods such as `Delims`, `SetFuncMap`, `LoadHTMLGlob`, and `LoadHTMLFiles` for rendering HTML or template files. For detailed information, please refer to [HTML](/docs/hertz/tutorials/basic-feature/render/#html).
+
+## Using NoRoute and NoMethod
+
+Hertz provides `NoRoute` and `NoMethod` methods for global processing of HTTP 404 and 405 requests. For detailed information, please refer to [NoRoute And NoMethod](/docs/hertz/tutorials/basic-feature/route/#noroute-and-nomethod).
+
+## Get Route Information
+
+```go
+func (engine *Engine) Routes() (routes RoutesInfo)
+```
+
+### Routes
+
+The `Routes` function returns a slice divided by HTTP methods that contains routing information (HTTP method name, routing path, request handler function name).
+
+Function Signature:
+
+```go
+func (engine *Engine) Routes() (routes RoutesInfo)
+```
+
+Example Code:
+
+```go
+func getHandler() app.HandlerFunc {
+	return func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "get handler")
+	}
+}
+
+func postHandler() app.HandlerFunc {
+	return func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "post handler")
+	}
+}
+
+func main() {
+	h := server.Default()
+	h.GET("/get", getHandler())
+	h.POST("/post", postHandler())
+	routesInfo := h.Routes()
+	fmt.Printf("%v\n", routesInfo)
+	// [{GET /get main.getHandler.func1 0xb2afa0} {POST /post main.postHandler.func1 0xb2b060}]
+}
+```
+
+## Transporter
+
+```go
+func (engine *Engine) GetTransporterName() (tName string)
+func SetTransporter(transporter func (options *config.Options) network.Transporter)
+```
+
+### GetTransporterName
+
+Obtain the name of the currently used network library, which now has two native options: `go net` and `netpoll`.
+
+Linux uses `netpoll` by default, while Windows can only use `go net`.
+
+If you have any doubts about how to use the corresponding network library, please refer to [here](/docs/hertz/tutorials/basic-feature/network-lib/).
+
+Function Signature:
+
+```go
+func (engine *Engine) GetTransporterName() (tName string)
+```
+
+Example Code:
+
+```go
+h := server.New()
+tName := h.GetTransporterName()
+```
+
+### SetTransporter
+
+`SetTransporter` is used to set network library.
+
+> Note: `SetTransporter` only sets the global default values of the Engine, so using `WithTransporter` to set the network library when initializing the Engine will overwrite the settings of `SetTransporter`.
+
+Function Signature:
+
+```go
+func SetTransporter(transporter func (options *config.Options) network.Transporter)
+```
+
+Example Code:
+
+```go
+route.SetTransporter(standard.NewTransporter)
+```
+
+## Tracing
+
+Hertz provides the capability of link tracking and also supports user-defined link tracking. For details, please refer to [tracking](/docs/hertz/tutorials/observability/tracing/).
+
+## Hijack
+
+### NoHijackConnPool
+
+> The hijacked connection used during Hertz connection hijacking is managed by pool management. Therefore, when the hijacked connection is used for websockets it does not support asynchronous operations.
+
+The hijacked connection can only be closed once; closing it a second time will result in a null pointer exception.
+
+NoHijackConnPool controls whether to use cache pools to obtain/release hijacked connections. Using pools improves performance of memory resource allocation but cannot prevent exceptions caused by closing connections twice.
+
+If it is difficult to ensure that hijackConn won't be closed repeatedly, it can be set as true.
+
+Example Code:
+
+```go
+package main
+
+func main() {
+    // https://github.com/cloudwego/hertz/issues/121
+    h.NoHijackConnPool = true
+}
+```
+
+### HijackConnHandle
+
+Set the Hijack connection processing function.
+
+Function Signature:
+
+```go
+func (engine *Engine) HijackConnHandle(c network.Conn, h app.HijackHandler)
+```
+</script><h1>Engine</h1><header class=article-meta></header><p><code>Server.Hertz</code> is the core type of <code>Hertz</code>, consisting of <code>route.Engine</code> and <code>signalWaiter</code>. The important methods for starting, registering routes, registering middleware, and exiting the <code>Hertz</code> server are all included in <code>server.Hertz</code>. The following is the definition of <code>server.Hertz</code>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Hertz</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>route</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Engine</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#8f5902;font-style:italic>// used to receive signal for elegant exit</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>signalWaiter</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#000>err</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>chan</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -365,4 +988,4 @@ gopool: <code>gopool.SetCap(xxx)</code> (you can call it once in main.go).</li><
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified September 8, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/5252c1d1b32b0194806fe9a3113e5fd05bc4b9fc>docs(hertz): fix outdated doc of hertz server config (#1408) (5252c1d1)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Request | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/volo/volo-http/tutorials/request/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Request"><meta property="og:description" content="Volo-HTTP Request parameters extraction"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-09-02T00:00:00+00:00"><meta property="article:modified_time" content="2024-09-10T15:29:34+08:00"><meta itemprop=name content="Request"><meta itemprop=description content="Volo-HTTP Request parameters extraction"><meta itemprop=datePublished content="2024-09-02T00:00:00+00:00"><meta itemprop=dateModified content="2024-09-10T15:29:34+08:00"><meta itemprop=wordCount content="495"><meta itemprop=keywords content="Route,Request,Parameter,WebSocket"><meta name=twitter:card content="summary"><meta name=twitter:title content="Request"><meta name=twitter:description content="Volo-HTTP Request parameters extraction"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Request | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/volo/volo-http/tutorials/request/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Request"><meta property="og:description" content="Volo-HTTP Request parameters extraction"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-09-02T00:00:00+00:00"><meta property="article:modified_time" content="2024-09-10T15:29:34+08:00"><meta itemprop=name content="Request"><meta itemprop=description content="Volo-HTTP Request parameters extraction"><meta itemprop=datePublished content="2024-09-02T00:00:00+00:00"><meta itemprop=dateModified content="2024-09-10T15:29:34+08:00"><meta itemprop=wordCount content="495"><meta itemprop=keywords content="Route,Request,Parameter,WebSocket"><meta name=twitter:card content="summary"><meta name=twitter:title content="Request"><meta name=twitter:description content="Volo-HTTP Request parameters extraction"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -38,7 +38,168 @@
 <label for=m-docsvolofaq-check><a href=/docs/volo/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-docsvolofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/volo/volo-http/tutorials/request.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/volo/volo-http/tutorials?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Request" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/volo/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#extraction-of-routing-parameters>Extraction of Routing Parameters</a></li><li><a href=#what-is-extractor>What is <code>extractor</code>?</a></li><li><a href=#types-that-implement-extractor-by-default>Types that Implement <code>extractor</code> By Default</a></li><li><a href=#implementing-extractors-for-your-own-types>Implementing Extractors for Your Own Types</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/>Volo</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/volo-http/>Volo-HTTP</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/volo-http/tutorials/>Tutorials</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/volo/volo-http/tutorials/request/>Request</a></li></ol></nav><div class=td-content><h1>Request</h1><div class=lead>Volo-HTTP Request parameters extraction</div><header class=article-meta></header><h2 id=extraction-of-routing-parameters>Extraction of Routing Parameters</h2><p>Volo-HTTP&rsquo;s handler can take multiple extractors as arguments, e.g.,</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#204a87;font-weight:700>use</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>volo_http</span>::<span style=color:#000>Address</span><span style=color:#000;font-weight:700>;</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/volo/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#extraction-of-routing-parameters>Extraction of Routing Parameters</a></li><li><a href=#what-is-extractor>What is <code>extractor</code>?</a></li><li><a href=#types-that-implement-extractor-by-default>Types that Implement <code>extractor</code> By Default</a></li><li><a href=#implementing-extractors-for-your-own-types>Implementing Extractors for Your Own Types</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/>Volo</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/volo-http/>Volo-HTTP</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/volo-http/tutorials/>Tutorials</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/volo/volo-http/tutorials/request/>Request</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=Request data-url=https://www.cloudwego.io/docs/volo/volo-http/tutorials/request/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Extraction of Routing Parameters
+
+Volo-HTTP's handler can take multiple extractors as arguments, e.g.,
+
+```rust
+use volo_http::Address;
+
+async fn who_am_i(peer: Address) -> String {
+    format!("You are `{peer}`")
+}
+
+async fn post_something(data: String) -> string {
+    format!("data: `{data}`")
+}
+```
+
+In addition to this, handlers can take deserializable objects such as `json`, `form`, `query`, etc. as arguments.
+
+The Rust pattern matching feature is used here to receive parameters: `json`, `form`, `query`, and so on.
+
+```rust
+use volo_http::{
+    http::StatusCode,
+    server::{
+        extract::{Form, Query},
+        route::{get, Router},
+    },
+};
+use serde::Deserialize;
+
+#[derive(Deserialize, Debug)]
+struct Login {
+    username: String,
+    password: String,
+}
+
+fn process_login(info: Login) -> Result<String, StatusCode> {
+    if info.username == "admin" && info.password == "password" {
+        Ok("Login Success!".to_string())
+    } else {
+        Err(StatusCode::IM_A_TEAPOT)
+    }
+}
+
+// test with:
+//     curl "http://localhost:8080/user/login?username=admin&password=admin"
+//     curl "http://localhost:8080/user/login?username=admin&password=password"
+async fn get_with_query(Query(info): Query<Login>) -> Result<String, StatusCode> {
+    process_login(info)
+}
+
+// test with:
+//     curl http://localhost:8080/user/login -X POST -d 'username=admin&password=admin'
+//     curl http://localhost:8080/user/login -X POST -d 'username=admin&password=password'
+async fn post_with_form(Form(info): Form<Login>) -> Result<String, StatusCode> {
+    process_login(info)
+}
+
+pub fn user_login_router() -> Router {
+    Router::new().route("/user/login", get(get_with_query).post(post_with_form))
+}
+```
+
+## What is `extractor`?
+
+The types that can be used as handler arguments implement `FromContext` or `FromRequest`, which are often referred to as `extractor`.
+
+Where `FromContext` doesn't consume the body of the request, i.e. the data passed in by methods such as POST,
+
+Whereas `FromRequest` consumes the body of the request, so the handler can only have at most one parameter of a type that implements `FromRequest`.
+
+## Types that Implement `extractor` By Default
+
+**`FromContext`**
+- `Address`
+- `Uri`
+- `Method`
+- `Option<T>`
+- `Result<T, T::Rejection>`
+- `Query<T>`
+- `WebSocketUpgrade`
+
+**`FromRequest`**
+- `Option<T>`
+- `Result<T, T::Rejection>`
+- `ServerRequest<B>`
+- `Vec<u8>`
+- `Bytes`
+- `String`
+- `FastStr`
+- `MaybeInvalid<T>`
+- `Form<T>`
+
+## Implementing Extractors for Your Own Types
+
+We can receive our own types directly as arguments to a handler, which requires implementing `FromContext` or `FromRequest` for our own types.
+
+For example, we might get the LogID from the header of a request, in which case we can define a type and implement `FromContext` for it:
+
+```rust
+use std::convert::Infallible;
+
+use volo_http::{
+    context::ServerContext,
+    http::request::Parts,
+    server::extract::FromContext,
+};
+
+const LOGID_KEY: &str = "x-logid";
+
+pub enum LogID {
+    ID(String),
+    None,
+}
+
+impl FromContext for LogID {
+    type Rejection = Infallible;
+
+    async fn from_context(
+        _: &mut ServerContext,
+        parts: &mut Parts,
+    ) -> Result<Self, Self::Rejection> {
+        let id = match parts.headers.get(LOGID_KEY) {
+            Some(log_id) => LogID::ID(log_id.to_str().unwrap().to_owned()),
+            None => LogID::None,
+        };
+
+        Ok(id)
+    }
+}
+```
+
+Once you have implemented the LogID type, you can use it as an extractor and receive it directly using a handler:
+
+```rust
+async fn show_logid(id: LogID) -> String {
+    match id {
+        LogID::ID(s) => format!("{s}"),
+        LogID::None => "LogID not found".to_owned(),
+    }
+}
+
+pub fn logid_router() -> Router {
+    Router::new().route("/extract/logid", get(print_logid))
+}
+```
+
+One thing to note is that when implementing a handler, the types `Uri`, `Method`, `Address`, etc. are extracted via `FromContext`.
+Types such as Body are not consumed, and can be listed in any of the handler's parameters.
+However, since Body can only be consumed once, types such as `String`, `Bytes`, `From`, `Json`, etc. extracted by `FromRequest`
+**So it can only be placed in the last parameter of the handler**.
+</script><h1>Request</h1><div class=lead>Volo-HTTP Request parameters extraction</div><header class=article-meta></header><h2 id=extraction-of-routing-parameters>Extraction of Routing Parameters</h2><p>Volo-HTTP&rsquo;s handler can take multiple extractors as arguments, e.g.,</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#204a87;font-weight:700>use</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>volo_http</span>::<span style=color:#000>Address</span><span style=color:#000;font-weight:700>;</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>async</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>fn</span> <span style=color:#000>who_am_i</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>peer</span>: <span style=color:#000>Address</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span>-&gt; <span style=color:#204a87>String</span> <span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>format!</span><span style=color:#000;font-weight:700>(</span><span style=color:#4e9a06>&#34;You are `</span><span style=color:#4e9a06>{peer}</span><span style=color:#4e9a06>`&#34;</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -133,4 +294,4 @@ However, since Body can only be consumed once, types such as <code>String</code>
 <strong>So it can only be placed in the last parameter of the handler</strong>.</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified September 10, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/da93d0f5e52ea25c73f90922760379f384f7ea94>docs: add docs for volo-http and refactor volo directories (#1125) (da93d0f5)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

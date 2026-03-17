@@ -10,7 +10,7 @@ Track progress of complex tasks Break large tasks into smaller steps Manage depe
 💡 This middleware was introduced in v0.8.0.Beta.
 Overview plantask is a task management middleware that allows Agents to create and manage task lists. The middleware injects four tools through the BeforeAgent hook:
 TaskCreate: Create a task TaskGet: View task details TaskUpdate: Update a task TaskList: List all tasks Main purposes:
-Track progress of complex tasks Break large tasks into smaller steps Manage dependencies between tasks Architecture ┌─────────────────────────────────────────────────────────────────────────┐ │ Agent │ │ │ │ ┌───────────────────────────────────────────────────────────────────┐ │ │ │ BeforeAgent: Inject task tools │ │ │ │ - TaskCreate │ │ │ │ - TaskGet │ │ │ │ - TaskUpdate │ │ │ │ - TaskList │ │ │ └───────────────────────────────────────────────────────────────────┘ │ │ │ └─────────────────────────────────────────────────────────────────────────┘ │ ▼ ┌─────────────────────────────────────────────────────────────────────────┐ │ Backend │ │ │ │ Storage structure: │ │ baseDir/ │ │ ├── .highwatermark # ID counter │ │ ├── 1.json # Task #1 │ │ ├── 2.json # Task #2 │ │ └── ... │ │ │ └─────────────────────────────────────────────────────────────────────────┘ Configuration type Config struct { Backend Backend // Storage backend, required BaseDir string // Task file directory, required } Note that the Backend implementation should be isolated by session, with different sessions corresponding to different Backends (task lists) Backend Interface type Backend interface { LsInfo(ctx context.Context, req *LsInfoRequest) ([]FileInfo, error) Read(ctx context.Context, req *ReadRequest) (string, error) Write(ctx context.Context, req *WriteRequest) error Delete(ctx context.Context, req *DeleteRequest) error } Task Structure type task struct { ID string `json:"id"` // Task ID Subject string `json:"subject"` // Title Description string `json:"description"` // Description Status string `json:"status"` // Status Blocks []string `json:"blocks"` // Tasks blocked by this one BlockedBy []string `json:"blockedBy"` // Tasks blocking this one ActiveForm string `json:"activeForm"` // Active form text Owner string `json:"owner"` // Responsible agent Metadata map[string]any `json:"metadata"` // Custom data } Status StatusDescription pendingPending (default) in_progressIn progress completedCompleted deletedDeleted (will delete the file) Status transition: pending → in_progress → completed, any status can be directly deleted.'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+Track progress of complex tasks Break large tasks into smaller steps Manage dependencies between tasks Architecture ┌─────────────────────────────────────────────────────────────────────────┐ │ Agent │ │ │ │ ┌───────────────────────────────────────────────────────────────────┐ │ │ │ BeforeAgent: Inject task tools │ │ │ │ - TaskCreate │ │ │ │ - TaskGet │ │ │ │ - TaskUpdate │ │ │ │ - TaskList │ │ │ └───────────────────────────────────────────────────────────────────┘ │ │ │ └─────────────────────────────────────────────────────────────────────────┘ │ ▼ ┌─────────────────────────────────────────────────────────────────────────┐ │ Backend │ │ │ │ Storage structure: │ │ baseDir/ │ │ ├── .highwatermark # ID counter │ │ ├── 1.json # Task #1 │ │ ├── 2.json # Task #2 │ │ └── ... │ │ │ └─────────────────────────────────────────────────────────────────────────┘ Configuration type Config struct { Backend Backend // Storage backend, required BaseDir string // Task file directory, required } Note that the Backend implementation should be isolated by session, with different sessions corresponding to different Backends (task lists) Backend Interface type Backend interface { LsInfo(ctx context.Context, req *LsInfoRequest) ([]FileInfo, error) Read(ctx context.Context, req *ReadRequest) (string, error) Write(ctx context.Context, req *WriteRequest) error Delete(ctx context.Context, req *DeleteRequest) error } Task Structure type task struct { ID string `json:"id"` // Task ID Subject string `json:"subject"` // Title Description string `json:"description"` // Description Status string `json:"status"` // Status Blocks []string `json:"blocks"` // Tasks blocked by this one BlockedBy []string `json:"blockedBy"` // Tasks blocking this one ActiveForm string `json:"activeForm"` // Active form text Owner string `json:"owner"` // Responsible agent Metadata map[string]any `json:"metadata"` // Custom data } Status StatusDescription pendingPending (default) in_progressIn progress completedCompleted deletedDeleted (will delete the file) Status transition: pending → in_progress → completed, any status can be directly deleted.'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -116,7 +116,300 @@ Track progress of complex tasks Break large tasks into smaller steps Manage depe
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_PlanTask.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Middleware:%20PlanTask" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#overview>Overview</a></li><li><a href=#architecture>Architecture</a></li><li><a href=#configuration>Configuration</a></li><li><a href=#backend-interface>Backend Interface</a></li><li><a href=#task-structure>Task Structure</a><ul><li><a href=#status>Status</a></li></ul></li><li><a href=#tools>Tools</a><ul><li><a href=#taskcreate>TaskCreate</a></li><li><a href=#taskget>TaskGet</a></li><li><a href=#taskupdate>TaskUpdate</a></li><li><a href=#tasklist>TaskList</a></li></ul></li><li><a href=#usage-example>Usage Example</a><ul><li><a href=#typical-flow>Typical Flow</a></li></ul></li><li><a href=#dependency-management>Dependency Management</a></li><li><a href=#automatic-cleanup>Automatic Cleanup</a></li><li><a href=#notes>Notes</a></li><li><a href=#multi-language-support>Multi-language Support</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino: ADK - Agent Development Kit</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/>Eino ADK: ChatModelAgentMiddleware</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_plantask/>Middleware: PlanTask</a></li></ol></nav><div class=td-content><h1>Middleware: PlanTask</h1><header class=article-meta></header><h1 id=plantask-middleware>PlanTask Middleware</h1><p>adk/middlewares/plantask</p><blockquote><p>💡
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#overview>Overview</a></li><li><a href=#architecture>Architecture</a></li><li><a href=#configuration>Configuration</a></li><li><a href=#backend-interface>Backend Interface</a></li><li><a href=#task-structure>Task Structure</a><ul><li><a href=#status>Status</a></li></ul></li><li><a href=#tools>Tools</a><ul><li><a href=#taskcreate>TaskCreate</a></li><li><a href=#taskget>TaskGet</a></li><li><a href=#taskupdate>TaskUpdate</a></li><li><a href=#tasklist>TaskList</a></li></ul></li><li><a href=#usage-example>Usage Example</a><ul><li><a href=#typical-flow>Typical Flow</a></li></ul></li><li><a href=#dependency-management>Dependency Management</a></li><li><a href=#automatic-cleanup>Automatic Cleanup</a></li><li><a href=#notes>Notes</a></li><li><a href=#multi-language-support>Multi-language Support</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino: ADK - Agent Development Kit</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/>Eino ADK: ChatModelAgentMiddleware</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_plantask/>Middleware: PlanTask</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Middleware: PlanTask" data-url=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_plantask/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+# PlanTask Middleware
+
+adk/middlewares/plantask
+
+> 💡
+> This middleware was introduced in [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1).
+
+## Overview
+
+`plantask` is a task management middleware that allows Agents to create and manage task lists. The middleware injects four tools through the `BeforeAgent` hook:
+
+- **TaskCreate**: Create a task
+- **TaskGet**: View task details
+- **TaskUpdate**: Update a task
+- **TaskList**: List all tasks
+
+Main purposes:
+
+- Track progress of complex tasks
+- Break large tasks into smaller steps
+- Manage dependencies between tasks
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                              Agent                                      │
+│                                                                         │
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │  BeforeAgent: Inject task tools                                   │  │
+│  │    - TaskCreate                                                    │  │
+│  │    - TaskGet                                                       │  │
+│  │    - TaskUpdate                                                    │  │
+│  │    - TaskList                                                      │  │
+│  └───────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                             Backend                                     │
+│                                                                         │
+│  Storage structure:                                                     │
+│    baseDir/                                                             │
+│    ├── .highwatermark    # ID counter                                   │
+│    ├── 1.json            # Task #1                                      │
+│    ├── 2.json            # Task #2                                      │
+│    └── ...                                                              │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Configuration
+
+```go
+type Config struct {
+    Backend Backend  // Storage backend, required
+    BaseDir string   // Task file directory, required
+}
+```
+
+- Note that the Backend implementation should be isolated by session, with different sessions corresponding to different Backends (task lists)
+
+---
+
+## Backend Interface
+
+```go
+type Backend interface {
+    LsInfo(ctx context.Context, req *LsInfoRequest) ([]FileInfo, error)
+    Read(ctx context.Context, req *ReadRequest) (string, error)
+    Write(ctx context.Context, req *WriteRequest) error
+    Delete(ctx context.Context, req *DeleteRequest) error
+}
+```
+
+---
+
+## Task Structure
+
+```go
+type task struct {
+    ID          string         `json:"id"`          // Task ID
+    Subject     string         `json:"subject"`     // Title
+    Description string         `json:"description"` // Description
+    Status      string         `json:"status"`      // Status
+    Blocks      []string       `json:"blocks"`      // Tasks blocked by this one
+    BlockedBy   []string       `json:"blockedBy"`   // Tasks blocking this one
+    ActiveForm  string         `json:"activeForm"`  // Active form text
+    Owner       string         `json:"owner"`       // Responsible agent
+    Metadata    map[string]any `json:"metadata"`    // Custom data
+}
+```
+
+### Status
+
+<table>
+<tr><td>Status</td><td>Description</td></tr>
+<tr><td><pre>pending</pre></td><td>Pending (default)</td></tr>
+<tr><td><pre>in_progress</pre></td><td>In progress</td></tr>
+<tr><td><pre>completed</pre></td><td>Completed</td></tr>
+<tr><td><pre>deleted</pre></td><td>Deleted (will delete the file)</td></tr>
+</table>
+
+Status transition: `pending` → `in_progress` → `completed`, any status can be directly `deleted`.
+
+---
+
+## Tools
+
+### TaskCreate
+
+Create a task.
+
+<table>
+<tr><td>Parameter</td><td>Type</td><td>Required</td><td>Description</td></tr>
+<tr><td><pre>subject</pre></td><td>string</td><td>Yes</td><td>Title</td></tr>
+<tr><td><pre>description</pre></td><td>string</td><td>Yes</td><td>Description</td></tr>
+<tr><td><pre>activeForm</pre></td><td>string</td><td>No</td><td>Active form text, e.g., "Running tests"</td></tr>
+<tr><td><pre>metadata</pre></td><td>object</td><td>No</td><td>Custom data</td></tr>
+</table>
+
+When to use:
+
+- The task is relatively complex with 3 or more steps
+- The user has given a list of things to do
+- You need to show progress to the user
+
+When not to use:
+
+- It's just a simple task
+- Something that can be done quickly
+
+### TaskGet
+
+View task details.
+
+<table>
+<tr><td>Parameter</td><td>Type</td><td>Required</td><td>Description</td></tr>
+<tr><td><pre>taskId</pre></td><td>string</td><td>Yes</td><td>Task ID</td></tr>
+</table>
+
+Returns complete information about the task: title, description, status, dependencies, etc.
+
+### TaskUpdate
+
+Update a task.
+
+<table>
+<tr><td>Parameter</td><td>Type</td><td>Required</td><td>Description</td></tr>
+<tr><td><pre>taskId</pre></td><td>string</td><td>Yes</td><td>Task ID</td></tr>
+<tr><td><pre>subject</pre></td><td>string</td><td>No</td><td>New title</td></tr>
+<tr><td><pre>description</pre></td><td>string</td><td>No</td><td>New description</td></tr>
+<tr><td><pre>activeForm</pre></td><td>string</td><td>No</td><td>New active form text</td></tr>
+<tr><td><pre>status</pre></td><td>string</td><td>No</td><td>New status</td></tr>
+<tr><td><pre>addBlocks</pre></td><td>[]string</td><td>No</td><td>Add blocked tasks</td></tr>
+<tr><td><pre>addBlockedBy</pre></td><td>[]string</td><td>No</td><td>Add tasks blocking this one</td></tr>
+<tr><td><pre>owner</pre></td><td>string</td><td>No</td><td>Responsible agent</td></tr>
+<tr><td><pre>metadata</pre></td><td>object</td><td>No</td><td>Custom data (set to null to delete)</td></tr>
+</table>
+
+Notes:
+
+- `status: "deleted"` will directly delete the task file
+- Circular dependencies are checked when adding dependencies
+- Automatic cleanup occurs when all tasks are completed
+
+### TaskList
+
+List all tasks, no parameters required.
+
+Returns a summary of each task: ID, status, title, responsible agent, dependencies.
+
+---
+
+## Usage Example
+
+```go
+ctx := context.Background()
+
+// The plantask middleware should normally be session-scoped
+// Different sessions correspond to different task lists
+middleware, err := plantask.New(ctx, &plantask.Config{
+    Backend: myBackend,
+    BaseDir: "/tasks",
+})
+if err != nil {
+    return err
+}
+
+agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    Model:    myModel,
+    Handlers: []adk.ChatModelAgentMiddleware{middleware},
+})
+```
+
+### Typical Flow
+
+```
+1. Receive complex task
+       │
+       ▼
+2. TaskCreate to create tasks
+   - #1: Analyze requirements
+   - #2: Write code
+       │
+       ▼
+3. TaskUpdate to set dependencies
+   - #2 depends on #1
+   - #3 depends on #2
+       │
+       ▼
+4. TaskList to see what tasks exist
+       │
+       ▼
+5. TaskUpdate to start working
+   - Change #1 to in_progress
+       │
+       ▼
+6. When done, TaskUpdate
+   - Change #1 to completed
+       │
+       ▼
+7. Loop 4-6 until all completed
+       │
+       ▼
+8. Automatic cleanup
+```
+
+---
+
+## Dependency Management
+
+- **blocks**: These tasks can start after I complete
+- **blockedBy**: I can start after these tasks complete
+
+```
+Task #1 (blocks: ["2"])  ────►  Task #2 (blockedBy: ["1"])
+
+#2 can only start after #1 completes
+```
+
+Circular dependencies will throw an error:
+
+```
+#1 blocks #2
+#2 blocks #1  ← Not allowed, circular
+```
+
+---
+
+## Automatic Cleanup
+
+When all tasks are `completed`, all task files will be automatically deleted.
+
+---
+
+## Notes
+
+- Task files are stored in JSON format in the `BaseDir` directory, with filenames as `{id}.json`
+- The `.highwatermark` file is used to record the maximum assigned task ID, ensuring IDs don't repeat
+- All tool operations are protected by mutex locks and are concurrency-safe
+- The tool descriptions contain detailed usage guidelines that the Agent will follow
+
+---
+
+## Multi-language Support
+
+Tool descriptions support Chinese and English switching via `adk.SetLanguage()`:
+
+```go
+// Use Chinese descriptions
+adk.SetLanguage(adk.LanguageChinese)
+
+// Use English descriptions (default)
+adk.SetLanguage(adk.LanguageEnglish)
+```
+
+This setting is global and affects all ADK built-in prompts and tool descriptions.
+</script><h1>Middleware: PlanTask</h1><header class=article-meta></header><h1 id=plantask-middleware>PlanTask Middleware</h1><p>adk/middlewares/plantask</p><blockquote><p>💡
 This middleware was introduced in <a href=https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1>v0.8.0.Beta</a>.</p></blockquote><h2 id=overview>Overview</h2><p><code>plantask</code> is a task management middleware that allows Agents to create and manage task lists. The middleware injects four tools through the <code>BeforeAgent</code> hook:</p><ul><li><strong>TaskCreate</strong>: Create a task</li><li><strong>TaskGet</strong>: View task details</li><li><strong>TaskUpdate</strong>: Update a task</li><li><strong>TaskList</strong>: List all tasks</li></ul><p>Main purposes:</p><ul><li>Track progress of complex tasks</li><li>Break large tasks into smaller steps</li><li>Manage dependencies between tasks</li></ul><hr><h2 id=architecture>Architecture</h2><pre tabindex=0><code>┌─────────────────────────────────────────────────────────────────────────┐
 │                              Agent                                      │
 │                                                                         │
@@ -220,4 +513,4 @@ This middleware was introduced in <a href=https://github.com/cloudwego/eino/rele
 </span></span></span></code></pre></div><p>This setting is global and affects all ADK built-in prompts and tool descriptions.</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 2, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/96139d4140c93a677eec194c2d34dffa3e2673dd>feat: sync eino docs (#1512) (96139d41)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

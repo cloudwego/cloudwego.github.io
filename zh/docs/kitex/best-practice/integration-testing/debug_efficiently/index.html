@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>高效 Debug | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/best-practice/integration-testing/debug_efficiently/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="高效 Debug"><meta property="og:description" content="通过模仿真实错误示例，描述不同现象背后可能是什么样的原因类型，并提供分析原因的方法。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-02-18T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="高效 Debug"><meta itemprop=description content="通过模仿真实错误示例，描述不同现象背后可能是什么样的原因类型，并提供分析原因的方法。"><meta itemprop=datePublished content="2024-02-18T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="1538"><meta name=twitter:card content="summary"><meta name=twitter:title content="高效 Debug"><meta name=twitter:description content="通过模仿真实错误示例，描述不同现象背后可能是什么样的原因类型，并提供分析原因的方法。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>高效 Debug | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/best-practice/integration-testing/debug_efficiently/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="高效 Debug"><meta property="og:description" content="通过模仿真实错误示例，描述不同现象背后可能是什么样的原因类型，并提供分析原因的方法。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-02-18T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="高效 Debug"><meta itemprop=description content="通过模仿真实错误示例，描述不同现象背后可能是什么样的原因类型，并提供分析原因的方法。"><meta itemprop=datePublished content="2024-02-18T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="1538"><meta name=twitter:card content="summary"><meta name=twitter:title content="高效 Debug"><meta name=twitter:description content="通过模仿真实错误示例，描述不同现象背后可能是什么样的原因类型，并提供分析原因的方法。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -149,7 +149,596 @@
 <label for=m-zhdocskitexfaq-check><a href=/zh/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/kitex/Best%20Practice/Integration%20Testing/debug_efficiently.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/kitex/Best%20Practice/Integration%20Testing?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e9%ab%98%e6%95%88%20Debug" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#排查-panic-原因>排查 Panic 原因</a><ul><li><a href=#通过-stack-排查>通过 Stack 排查</a></li><li><a href=#通过-race-溯源>通过 Race 溯源</a></li></ul></li><li><a href=#排查-crash-问题>排查 Crash 问题</a><ul><li><a href=#获取-coredump-文件>获取 Coredump 文件</a></li><li><a href=#通过-delve-分析>通过 Delve 分析</a></li></ul></li><li><a href=#排查内存泄漏问题>排查内存泄漏问题</a><ul><li><a href=#定位泄漏对象>定位泄漏对象</a></li><li><a href=#追溯泄漏源头>追溯泄漏源头</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/best-practice/>最佳实践</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/best-practice/integration-testing/>集成测试</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/best-practice/integration-testing/debug_efficiently/>高效 Debug</a></li></ol></nav><div class=td-content><h1>高效 Debug</h1><div class=lead>通过模仿真实错误示例，描述不同现象背后可能是什么样的原因类型，并提供分析原因的方法。</div><header class=article-meta></header><h2 id=排查-panic-原因>排查 Panic 原因</h2><p>虽然 Panic 问题不全是因为并发导致的，但是非并发导致的 Panic 往往都比较容易通过代码 Review 排查，所以这里只讨论并发引起的 Panic 问题。</p><p>假设我们现在有如下代码，Handle 函数在 ctx 超时结束时，会直接返回 resp。但该函数存在一个潜在的并发问题是，当 Process 函数已经获得 Response 变量时，依然有可能在之后被修改，从而产生了并发问题。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Handle</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>Response</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#排查-panic-原因>排查 Panic 原因</a><ul><li><a href=#通过-stack-排查>通过 Stack 排查</a></li><li><a href=#通过-race-溯源>通过 Race 溯源</a></li></ul></li><li><a href=#排查-crash-问题>排查 Crash 问题</a><ul><li><a href=#获取-coredump-文件>获取 Coredump 文件</a></li><li><a href=#通过-delve-分析>通过 Delve 分析</a></li></ul></li><li><a href=#排查内存泄漏问题>排查内存泄漏问题</a><ul><li><a href=#定位泄漏对象>定位泄漏对象</a></li><li><a href=#追溯泄漏源头>追溯泄漏源头</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/best-practice/>最佳实践</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/best-practice/integration-testing/>集成测试</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/best-practice/integration-testing/debug_efficiently/>高效 Debug</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="高效 Debug" data-url=https://www.cloudwego.io/zh/docs/kitex/best-practice/integration-testing/debug_efficiently/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 排查 Panic 原因
+
+虽然 Panic 问题不全是因为并发导致的，但是非并发导致的 Panic 往往都比较容易通过代码 Review 排查，所以这里只讨论并发引起的 Panic 问题。
+
+假设我们现在有如下代码，Handle 函数在 ctx 超时结束时，会直接返回 resp。但该函数存在一个潜在的并发问题是，当 Process 函数已经获得 Response 变量时，依然有可能在之后被修改，从而产生了并发问题。
+
+```go
+func Handle(ctx context.Context) *Response {
+   done := make(chan struct{})
+   resp := &Response{Data: []byte("12345")} // default value
+   go func() {
+      runtime.Gosched() // mock network call¬s
+      resp.Data = nil
+      close(done)
+   }()
+
+   select {
+   case <-ctx.Done(): // canceled
+   case <-done:
+   }
+   return resp
+}
+
+func Process(ctx context.Context) {
+   resp := Handle(ctx)
+   size := len(resp.Data)
+   if size > 0 {
+      runtime.Gosched()
+      fmt.Println(resp.Data[:size])
+   }
+}
+```
+
+### 通过 Stack 排查
+
+上述代码在遇到并发冲突时的 Stack 如下：
+
+```go
+panic: runtime error: slice bounds out of range [:5] with capacity 0 [recovered]
+        panic: runtime error: slice bounds out of range [:5] with capacity 0
+
+goroutine 6 [running]:
+testing.tRunner.func1.2(0x113c6c0, 0xc00008c000)
+        /usr/local/go/src/testing/testing.go:1144 +0x332
+testing.tRunner.func1(0xc000001380)
+        /usr/local/go/src/testing/testing.go:1147 +0x4b6
+panic(0x113c6c0, 0xc00008c000)
+        /usr/local/go/src/runtime/panic.go:965 +0x1b9
+chore/example.Process(0x1178d68, 0xc000022480)
+        /Users/bytedance/Code/go/chore/example/panic_test.go:36 +0xf8
+chore/example.TestPanic(0xc000001380)
+        /Users/bytedance/Code/go/chore/example/panic_test.go:44 +0x85
+testing.tRunner(0xc000001380, 0x11557f8)
+        /usr/local/go/src/testing/testing.go:1194 +0xef
+created by testing.(*T).Run
+        /usr/local/go/src/testing/testing.go:1239 +0x2b3
+```
+
+1. 找到 panic 原因
+
+​ 首先我们需要知道导致我们 Panic 的真正原因是什么，可以在完整的 panic stack 最上面一行找到。
+
+​ 如这里就是 **`panic: runtime error: slice bounds out of range [:5] with capacity 0 [recovered]`**。
+
+2. 找到原始 panic 位置
+
+   其次，我们还需要找到真正触发 Panic 的代码在哪里。任何 panic stack 都会包含至少一条 `runtime/panic.go` 的日志，该日志的下一条便是真正触发 Panic 的代码行。如这里是 **`example/panic_test.go:36`**。
+
+   但有些时候，用户的 panic 会被上层 recover 函数所包裹，例如：
+
+   ```go
+   func WrapPanic(ctx context.Context) {
+      defer func() {
+         err := recover()
+         if err != nil {
+            panic(err)
+         }
+      }()
+      Process(ctx)
+   }
+   ```
+
+   此时的 panic 会变成如下：
+
+   ```go
+   panic: runtime error: slice bounds out of range [:5] with capacity 0 [recovered]
+           panic: runtime error: slice bounds out of range [:5] with capacity 0 [recovered]
+           panic: runtime error: slice bounds out of range [:5] with capacity 0
+
+   goroutine 18 [running]:
+   testing.tRunner.func1.2(0x113c7c0, 0xc00011c000)
+           /usr/local/go/src/testing/testing.go:1144 +0x332
+   testing.tRunner.func1(0xc000082600)
+           /usr/local/go/src/testing/testing.go:1147 +0x4b6
+   panic(0x113c7c0, 0xc00011c000)
+           /usr/local/go/src/runtime/panic.go:965 +0x1b9
+   chore/example.WrapPanic.func1()
+           /Users/bytedance/Code/go/chore/example/panic_test.go:47 +0x55
+   panic(0x113c7c0, 0xc00011c000)
+           /usr/local/go/src/runtime/panic.go:965 +0x1b9
+   chore/example.Process(0x1178e68, 0xc000022480)
+           /Users/bytedance/Code/go/chore/example/panic_test.go:38 +0xf8
+   chore/example.WrapPanic(0x1178e68, 0xc000022480)
+           /Users/bytedance/Code/go/chore/example/panic_test.go:50 +0x57
+   chore/example.TestPanic(0xc000082600)
+           /Users/bytedance/Code/go/chore/example/panic_test.go:57 +0x85
+   testing.tRunner(0xc000082600, 0x1155900)
+           /usr/local/go/src/testing/testing.go:1194 +0xef
+   created by testing.(*T).Run
+           /usr/local/go/src/testing/testing.go:1239 +0x2b3
+   ```
+
+   panic stack 的顺序是越往下，越是在函数调用链最外层。我们需要找到最先“调用” panic() 的地方，所以需要找最下面的 runtime/panic.go 段，其下面一行便是真正触发 panic 的代码行位置。
+
+### 通过 Race 溯源
+
+依然以上面的示例代码举例，在代码量很少的情况下，我们能够非常清楚的看到是哪个异步逻辑修改了变量。但在业务代码量非常庞大的情况下，尤其是涉及到第三方库的情况下，我们通过肉眼已经很难判断，此时需要借助工具来帮我们找出罪魁祸首。
+
+#### 单测排查
+
+对于示例中这种修改逻辑都在同一个函数内的情况，我们可以简单写一个单元测试便可以发现问题：
+
+```go
+func TestPanic(t *testing.T) {
+   ctx, cancelFn := context.WithTimeout(context.Background(), time.Millisecond)
+   cancelFn() // ctx is done
+   Process(ctx)
+}
+```
+
+然后我们通过 go test -race ./panic_test.go 在开启 race 检测下运行测试函数。Go 会输出日志告诉我们哪些 Goroutine 在并发读写哪些变量，并且会告诉我们这些 Goroutine 的创建位置：
+
+```go
+WARNING: DATA RACE
+Write at 0x00c000124030 by goroutine 8:
+  command-line-arguments.Handle.func1()
+      /Users/bytedance/Code/go/chore/example/panic_test.go:21 +0x44
+
+Previous read at 0x00c000124030 by goroutine 7:
+  command-line-arguments.Process()
+      /Users/bytedance/Code/go/chore/example/panic_test.go:35 +0x5b
+  command-line-arguments.WrapPanic()
+      /Users/bytedance/Code/go/chore/example/panic_test.go:50 +0x6c
+  command-line-arguments.TestPanic()
+      /Users/bytedance/Code/go/chore/example/panic_test.go:56 +0x9a
+  testing.tRunner()
+      /usr/local/go/src/testing/testing.go:1194 +0x202
+
+Goroutine 8 (running) created at:
+  command-line-arguments.Handle()
+      /Users/bytedance/Code/go/chore/example/panic_test.go:19 +0x116
+  command-line-arguments.Process()
+      /Users/bytedance/Code/go/chore/example/panic_test.go:34 +0x46
+  command-line-arguments.WrapPanic()
+      /Users/bytedance/Code/go/chore/example/panic_test.go:50 +0x6c
+  command-line-arguments.TestPanic()
+      /Users/bytedance/Code/go/chore/example/panic_test.go:56 +0x9a
+  testing.tRunner()
+      /usr/local/go/src/testing/testing.go:1194 +0x202
+
+Goroutine 7 (finished) created at:
+  testing.(*T).Run()
+      /usr/local/go/src/testing/testing.go:1239 +0x5d7
+  testing.runTests.func1()
+      /usr/local/go/src/testing/testing.go:1512 +0xa6
+  testing.tRunner()
+      /usr/local/go/src/testing/testing.go:1194 +0x202
+  testing.runTests()
+      /usr/local/go/src/testing/testing.go:1510 +0x612
+  testing.(*M).Run()
+      /usr/local/go/src/testing/testing.go:1418 +0x3b3
+  main.main()
+      _testmain.go:43 +0x236
+```
+
+通过上述 race 报告，我们可以看出以下信息：
+
+- goroutine 8 在 **panic_test.go:21** 行出现了一次有 race 的写入
+- goroutine 7 在 **panic_test.go:35** 行出现了一次有 race 的读取
+- goroutine 7 已经结束，但是 goroutine 8 依然还在运行
+
+根据以上信息，基本上我们已经能够清楚知道问题所在了。
+
+#### 线上排查
+
+有些时候我们并不容易对一些业务逻辑写单测，尤其是涉及到多个上下游服务共同配合才能触发的逻辑。此时就需要依赖于线上排查来验证问题所在。
+
+假如我们有下列代码：
+
+```go
+type Request struct {
+   Id int
+}
+
+type Response struct {
+   Data []byte
+}
+
+//go:noinline
+func RPCCall(req *Request) *Response {
+   resp := &Response{Data: []byte("hello")}
+   if req.Id%100 == 0 { // Logic Bug
+      go func() {
+         resp.Data = []byte("world")
+      }()
+   }
+   return resp
+}
+
+func main() {
+   for id := 0; ; id++ {
+      resp := RPCCall(&Request{Id: id})
+      if string(resp.Data) != "hello" {
+         log.Println("abnormal response!")
+         return
+      }
+   }
+}
+```
+
+RPCCall 函数用来模拟一个仅会对于特定线上请求参数时，才会出现逻辑 Bug 的 Race 问题。然后我们使用 `go build -race` 来编译这个程序。
+
+需要注意的是，这种编译方法会大幅降低程序性能， 我们如果能够有流量重放的环境，可以单独针对该实例去重放线上流量以此来复现问题。如果不能流量重放，也只能在个别实例中开启，并做好因为性能降低可能引发超时的准备。
+
+## 排查 Crash 问题
+
+在 Go 中，进程的非预期退出一般有以下两种原因引起：
+
+- unrecovered panic: 任何一个 Goroutine 中，出现了一个没有被 recover 的 panic 错误
+- unexpected exception: Go Runtime 遇到了一个无法恢复的致命错误，常见的比如并发写 Map 冲突（concurrent map writes），访问非法地址（unexpected fault address）等。
+
+Go 默认会对所有异常退出都打印对应的 Stack，对于简单的项目，使用前面排查 Panic 问题时的 Stack 定位方法依然可以直观地看出问题所在。但对于复杂的项目，即便我们能够知道导致退出的位置在哪里，但依然无法判断为什么代码会走到该位置。这时，我们便需要引入能够对整个系统当时状态进行细致分析的工具了。
+
+在 C/C++ 中，一般使用 GDB 进行这类调试，而在 Go 中，我们可以使用专为 Go 运行时特性和数据结构优化的 Delve 工具。
+
+### 获取 Coredump 文件
+
+#### 被动获取
+
+Delve 工具需要我们传入进程退出时，保存的 coredump 文件。我们需要使用：
+
+```bash
+# 不限制 coredump 的文件大小
+ulimit -c unlimited
+
+# 查看 coredump 文件目录
+# 对于由公司统一控制的机器来说，一般这个目录会被指定到 /opt/tiger/cores 。
+cat /proc/sys/kernel/core_pattern
+
+# 指示 Go Runtime 处理 coredump
+GOTRACEBACK=crash ./{bin_exec}
+```
+
+需要注意的是，Go 对于那些被 recover 的 panic 并不会异常退出，也不会产生 coredump 文件。
+
+#### 主动获取
+
+此外，也并不一定只有程序退出时才能产生 coredump ，如果我们判断某个程序已经进入到异常状态（例如卡死），但是又没有异常退出，此时我们可以通过主动发送 core 信号，让其产生 coredump 以保存现场：
+
+```bash
+# 强制生成 coredump
+apt install gdb
+gcore -o server.coredump {pid} # gcore 会暂时让程序停止响应，但并不会杀死程序
+```
+
+### 通过 Delve 分析
+
+我们通过下面一个会偶发 Crash 的示例代码来展示如何使用 Delve 深入分析问题：
+
+```go
+package main
+
+import (
+   "fmt"
+   "log"
+   "sync"
+)
+
+var _ error = (*MyError)(nil)
+var store sync.Map
+
+func init() {
+   for id := 0; id < 1000; id++ {
+      item := &Item{Name: fmt.Sprintf("Item-%d", id)}
+      store.Store(id, item)
+   }
+}
+
+type MyError struct {
+   Reason string
+}
+
+func (e MyError) Error() string {
+   return fmt.Sprintf("MyError: %s", e.Reason)
+}
+
+func Buy(id int) (*Item, error) {
+   var err *MyError
+   val, ok := store.LoadAndDelete(id)
+   if !ok {
+      return nil, err
+   }
+   item := val.(*Item)
+   return item, err
+}
+
+func Handler(id int) {
+   item, err := Buy(id)
+   if item == nil && err != nil {
+      if merr, ok := err.(*MyError); ok {
+         log.Printf("Buy[%d] get error: %v", id, merr.Error())
+      }
+      return
+   }
+   log.Printf("Buy item success: %v", item)
+}
+
+func main() {
+   var wg sync.WaitGroup
+   for id := 0; id < 1000; id++ {
+      wg.Add(1)
+      go func() {
+         defer wg.Done()
+         log.Printf("Handling: %d", id)
+         Handler(id)
+      }()
+   }
+   wg.Wait()
+}
+
+type Item struct {
+   Name string
+}
+```
+
+该程序首先在 `init` 函数中，为 `store` 变量创建了 1000 个商品 `Item`，然后在 `main` 函数中使用 1000 个 Groutine 并发调用 `Buy` 函数从 `store` 获取商品。由于购买过程中有可能出现各种异常情况，所以我们封装了 `MyError` 用来表达购买失败的原因。
+
+该程序运行时，会出现以下 panic 错误并退出：
+
+```go
+panic: runtime error: invalid memory address or nil pointer dereference
+[signal SIGSEGV: segmentation violation code=0x1 addr=0x0 pc=0x491101]
+
+goroutine 48 [running]:
+panic({0x49c4e0, 0x53e0b0})
+        /usr/local/go/src/runtime/panic.go:941 +0x397 fp=0xc00004ad50 sp=0xc00004ac90 pc=0x437337
+runtime.panicmem(...)
+        /usr/local/go/src/runtime/panic.go:220
+runtime.sigpanic()
+        /usr/local/go/src/runtime/signal_unix.go:826 +0x31d fp=0xc00004ada0 sp=0xc00004ad50 pc=0x44be1d
+main.Handler(0x39)
+        /home/wangzhuowei/code/chore/main.go:41 +0x121 fp=0xc00004aef8 sp=0xc00004ada0 pc=0x491101
+main.main.func1()
+        /home/wangzhuowei/code/chore/main.go:55 +0x159 fp=0xc00004afe0 sp=0xc00004aef8 pc=0x491619
+runtime.goexit()
+        /usr/local/go/src/runtime/asm_amd64.s:1571 +0x1 fp=0xc00004afe8 sp=0xc00004afe0 pc=0x4635e1
+created by main.main
+        /home/wangzhuowei/code/chore/main.go:52 +0xf1
+```
+
+如果你对 Go 的一些常见的编码的坑有一定了解，可能通过阅读这里的代码就能够发现其中蕴藏的几个 Bug，但假设这里的函数都是一些嵌套了几十层复杂代码，甚至牵涉到第三方 SDK 的处理，那么就已经很难通过人肉阅读代码来排查了。
+
+#### 定位直接原因
+
+通过前面讲的方法，我们首先在本机目录中找到 coredump 文件，然后运行：
+
+```bash
+dlv core {elf_exec} {coredump_file}
+```
+
+进入 coredump 文件后，我们先输入 stack 查看发生 crash 时，程序的 stack 停留在哪里：
+
+```go
+(dlv) stack
+ 0  0x0000000000464f01 in runtime.raise
+    at /usr/local/go/src/runtime/sys_linux_amd64.s:170
+ 1  0x000000000044bf45 in runtime.dieFromSignal
+    at /usr/local/go/src/runtime/signal_unix.go:860
+ 2  0x000000000044c516 in runtime.sigfwdgo
+    at /usr/local/go/src/runtime/signal_unix.go:1074
+ 3  0x000000000044ac2a in runtime.sigtrampgo
+    at /usr/local/go/src/runtime/signal_unix.go:430
+ 4  0x0000000000465cce in runtime.sigtrampgo
+    at <autogenerated>:1
+ 5  0x00000000004651dd in runtime.sigtramp
+    at /usr/local/go/src/runtime/sys_linux_amd64.s:363
+ 6  0x00000000004652e0 in runtime.sigreturn
+    at /usr/local/go/src/runtime/sys_linux_amd64.s:468
+ 7  0x0000000000437b69 in runtime.crash
+    at /usr/local/go/src/runtime/signal_unix.go:952
+ 8  0x0000000000437b69 in runtime.fatalpanic
+    at /usr/local/go/src/runtime/panic.go:1092
+ 9  0x0000000000437337 in runtime.gopanic
+    at /usr/local/go/src/runtime/panic.go:941
+10  0x000000000044be1d in runtime.panicmem
+    at /usr/local/go/src/runtime/panic.go:220
+11  0x000000000044be1d in runtime.sigpanic
+    at /usr/local/go/src/runtime/signal_unix.go:826
+12  0x0000000000491101 in main.Handler
+    at /home/wangzhuowei/code/chore/main.go:41
+13  0x0000000000491619 in main.main.func1
+    at /home/wangzhuowei/code/chore/main.go:55
+14  0x00000000004635e1 in runtime.goexit
+    at /usr/local/go/src/runtime/asm_amd64.s:1571
+```
+
+最左边的数字表示了 stack 中每一个 frame 的层级序号，我们可以使用 frame N 命令进入具体的 frame 中，查看更多信息：
+
+```go
+(dlv) frame 12
+> runtime.raise() /usr/local/go/src/runtime/sys_linux_amd64.s:170 (PC: 0x464f01)
+Frame 12: /home/wangzhuowei/code/chore/main.go:41 (PC: 491101)
+    36:
+    37:        func Handler(id int) {
+    38:                item, err := Buy(id)
+    39:                if item == nil && err != nil {
+    40:                        if merr, ok := err.(*MyError); ok {
+=>  41:                                log.Printf("Buy[%d] get error: %v", id, merr.Error())
+    42:                        }
+    43:                        return
+    44:                }
+    45:                log.Printf("Buy item success: %v", item)
+```
+
+目前为止的所有信息量，只能让我们知道导致 panic 的直接原因是什么，那就是 merr 不知为何在这里成了 nil 。其实这些信息我们单纯分析 crash 时候的 panic 日志都能获得，但它们远不足以让我们弄清楚事故现场究竟发生了什么，所以我们还需要后续步骤进一步分析找到造成问题的根本原因。
+
+#### 溯源根本原因
+
+从第 41 行代码中我们可以看到，为了拿到真实的 MyError 对象，我们已经做了很多安全保护，先检查了是否为 nil，再检查了是否可以进行类型转换，但依然还是报了 `invalid memory address or nil pointer dereference` 的错误。所以，我们首先就需要看下 `merr` 和 `err` 变量到底在这里是一个什么：
+
+```go
+(dlv) print merr
+*main.MyError nil
+(dlv) print err
+error(*main.MyError) nil
+```
+
+可以看到这里 merr 的类型是指针，值为 nil。而 err 的类型是 interface ，它的显示规则为 `<interface name>(<concrete type>)<value> `，所以我们得知它是一个类型为 `*MyError` 值为 nil 的对象。
+
+通过阅读 Go 的源码和文档，我们可以知道在 Go 中，一个有具体类型但是值为 nil 的 interface 对象，并不是等于 nil 的。
+
+接下来的问题是，在什么情况下，会导致 err 有类型，但是值为 nil 呢？我们可以在代码中搜索所有可能声明 var err \*MyError 的地方，找到如下位置：
+
+```go
+func Buy(id int) (*Item, error) {
+   var err *MyError
+   val, ok := store.LoadAndDelete(id)
+   if !ok {
+      return nil, err
+   }
+   item := val.(*Item)
+   return item, err
+}
+```
+
+这里的 Buy 函数可以很直观的发现，当在 store 中查找不到 id 对象时，就会返回 item 为 nil ，同时 err 值为 nil 类型不为 nil 的对象。
+
+但如果阅读代码最开始的 init 函数，我们实现已经创建了 ID 为 [0, 1000) 范围的所有 Item，且 main 函数也是从 [0,1000) 去调用的 Buy 函数，那么为什么会查不到值呢？于是，我们可以进一步往调用链的深处查找所有相关变量：
+
+```go
+(dlv) frame 13
+Frame 13: /home/wangzhuowei/code/chore/main.go:55 (PC: 491619)
+    50:                for id := 0; id < 1000; id++ {
+    51:                        wg.Add(1)
+    52:                        go func() {
+    53:                                defer wg.Done()
+    54:                                log.Printf("Handling: %d", id)
+=>  55:                                Handler(id)
+    56:                        }()
+    57:                }
+(dlv) print id
+58
+
+(dlv) frame 12
+Frame 12: /home/wangzhuowei/code/chore/main.go:41 (PC: 491101)
+    37:        func Handler(id int) {
+    38:                item, err := Buy(id)
+    39:                if item == nil && err != nil {
+    40:                        if merr, ok := err.(*MyError); ok {
+=>  41:                                log.Printf("Buy[%d] get error: %v", id, merr.Error())
+    42:                        }
+(dlv) print id
+57
+```
+
+由于这里的 `Handler` 函数与上层调用函数唯一的联系只有参数 id ，所以我们只需要打印它的值即可。可以看到，在外层 frame 13 中，id 的值为 58，而内层 frame 12 中，它的值为 57，所以我们可以知道，在开始 Handler 调用的时候，id 值为 57 ，而发生 panic 的时候，id 值已经被修改为 58 了。而这是不符合我们预期的，因为这证明了在调用 Handler 函数前，很可能 id 也被修改了，从而使得内层 Buy 函数出现访问到了已经被访问并删除的对象。进而出现上面最终的错误。
+当找到这个线索后，我们再根据线索去找会修改 id 值的代码段，便可以清晰地找到真正的问题所在了。即，在 50 行修改了此时正被其他 Goroutine 对象持有的 id 对象。
+
+```go
+func main() {
+   var wg sync.WaitGroup
+   for id := 0; id < 1000; id++ {
+      wg.Add(1)
+      go func() {
+         defer wg.Done()
+         log.Printf("Handling: %d", id)
+         Handler(id)
+      }()
+   }
+   wg.Wait()
+}
+```
+
+## 排查内存泄漏问题
+
+在 Go 中，排查内存泄露类型问题只要有两大难点：
+
+1. Go 是自带垃圾回收的语言，不需要用户手动管理对象的生命周期，这也变相导致了，代码中任何一段如果可能会长期持有某个变量，或是部分持有（例如切片）某个地址空间，都可能会导致内存泄露。
+2. Go pprof heap 只能看到由哪个函数创建了内存，并不能看到谁依然在持有内存引用。目前只能靠阅读代码完成。
+
+假设我们有如下代码，将用户的 SSH RSA key 缩写成 "xx...x" 的形式保存在 cache 中：
+
+```go
+var global string
+var cache sync.Map
+
+type SSHData struct {
+   UserId int
+   RSAKey []byte
+}
+
+func AddSSH(data *SSHData) {
+   // Mask RSAKey to xx...x format
+   cache.Store(data.UserId, append(data.RSAKey[:2], '.', '.', '.', data.RSAKey[len(data.RSAKey)-1]))
+}
+
+func main() {
+   go func() {
+      log.Println(http.ListenAndServe("localhost:6060", nil))
+   }()
+
+   global = string(make([]byte, 1024*1024*100))
+   for i := 0; ; i++ {
+      req := new(SSHData)
+      req.UserId = i
+      req.RSAKey = randBytes(2048)
+
+      AddSSH(req)
+
+      time.Sleep(time.Millisecond * 1)
+   }
+}
+
+func randBytes(size int) []byte {
+   data := make([]byte, size)
+   for i := 0; i < size; i++ {
+      data[i] = byte('a' + i%26)
+   }
+   return data
+}
+```
+
+### 定位泄漏对象
+
+我们首先访问 http://localhost:6060/debug/pprof/heap 对服务进行一次初次采样，并将结果保存为 `heap.old`。此时，我们可以看到 heap 的图像显示结果。
+
+![image](/img/docs/debug_efficiently/1.png)
+
+由于我们服务自身一启动就会创建 100MB 数据，所以这段 heap profiling 事实上并没有太大参考意义。我们需要查看的，是在一段时间内的两次 heap 采样之间，相对来说增加的那部分内存。
+
+所以我们可以在 1 分钟后，再次访问一样的 URL 进行一次采样，结果保存为 `heap.new` 。然后执行 `go tool pprof -http=:8000 -diff_base=heap.old heap.new` ，所得 heap diff 图如下：
+
+![image](/img/docs/debug_efficiently/2.png)
+
+由此我们可以看出，新增内存都是由于 `randBytes` 这个函数所创建的，而根据代码可知，引用了这个函数返回内容的对象是 `RSAKey`。
+
+### 追溯泄漏源头
+
+定位到了泄漏对象，我们就要去追溯代码哪里会持久化引用该对象。由于示例代码很简单，我们可以发现唯一的持久化函数为：
+
+```go
+func AddSSH(data *SSHData) {
+   cache.Store(data.UserId, append(data.RSAKey[:2], '.', '.', '.', data.RSAKey[len(data.RSAKey)-1]))
+}
+```
+
+该函数理论上，对于每一个 UserId，会在 Map 里存储 6 字节的对象。而由于 main 函数每秒会调用 `AddSSH` 1000 次，即每秒泄漏 6KB 的内存。即便如此，我们就算程序运行一小时，也无非泄漏 6 _ 60 _ 60 = 21600KB = 21MB 的数据，不至于一分钟内就泄漏了 60MB。
+
+但如果再进一步去细看 `append` 函数的细节，我们会发现它最终返回的那个切片对象，底层数组的引用，依然还是原始 `randBytes` 函数所创建的那个，而切片的部分引用，依然会导致原始对象不能够被完全释放。
+</script><h1>高效 Debug</h1><div class=lead>通过模仿真实错误示例，描述不同现象背后可能是什么样的原因类型，并提供分析原因的方法。</div><header class=article-meta></header><h2 id=排查-panic-原因>排查 Panic 原因</h2><p>虽然 Panic 问题不全是因为并发导致的，但是非并发导致的 Panic 往往都比较容易通过代码 Review 排查，所以这里只讨论并发引起的 Panic 问题。</p><p>假设我们现在有如下代码，Handle 函数在 ctx 超时结束时，会直接返回 resp。但该函数存在一个潜在的并发问题是，当 Process 函数已经获得 Response 变量时，依然有可能在之后被修改，从而产生了并发问题。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Handle</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>Response</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>   </span><span style=color:#000>done</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>:=</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87>make</span><span style=color:#000;font-weight:700>(</span><span style=color:#204a87;font-weight:700>chan</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#000;font-weight:700>{})</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>   </span><span style=color:#000>resp</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>:=</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>&amp;</span><span style=color:#000>Response</span><span style=color:#000;font-weight:700>{</span><span style=color:#000>Data</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>[]</span><span style=color:#204a87>byte</span><span style=color:#000;font-weight:700>(</span><span style=color:#4e9a06>&#34;12345&#34;</span><span style=color:#000;font-weight:700>)}</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#8f5902;font-style:italic>// default value</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>   </span><span style=color:#204a87;font-weight:700>go</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>func</span><span style=color:#000;font-weight:700>()</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -528,4 +1117,4 @@
 </span></span></span></code></pre></div><p>该函数理论上，对于每一个 UserId，会在 Map 里存储 6 字节的对象。而由于 main 函数每秒会调用 <code>AddSSH</code> 1000 次，即每秒泄漏 6KB 的内存。即便如此，我们就算程序运行一小时，也无非泄漏 6 _ 60 _ 60 = 21600KB = 21MB 的数据，不至于一分钟内就泄漏了 60MB。</p><p>但如果再进一步去细看 <code>append</code> 函数的细节，我们会发现它最终返回的那个切片对象，底层数组的引用，依然还是原始 <code>randBytes</code> 函数所创建的那个，而切片的部分引用，依然会导致原始对象不能够被完全释放。</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 May 8, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/dff8f175d96e832fb521f13246cce14399aefcdb>style: prettier lint fix (#1069) (dff8f175)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

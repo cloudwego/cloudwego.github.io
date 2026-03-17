@@ -13,7 +13,7 @@ TTHeader Streaming
 Transport protocol: TTHeader IDL Definition Language and Serialization Protocol: Thrift gRPC Streaming
 Transport protocol: gRPC IDL Definition Language and Serialization Protocol: Thrift / Protobuf The protocol selected here only affects code generated from IDL. Regardless of the protocol, the following usage is consistent.
 Usage Generate code Define IDL Thrift File echo.thrift :
-namespace go echo service TestService { Response PingPong(1: Request req) // PingPong normal method Response Echo (1: Request req) (streaming.mode="bidirectional"), Response EchoClient (1: Request req) (streaming.mode="client"), Response EchoServer (1: Request req) (streaming.mode="server"), } Generate code Please make sure that Kitex Tool has been upgraded to v0.13.0+:'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+namespace go echo service TestService { Response PingPong(1: Request req) // PingPong normal method Response Echo (1: Request req) (streaming.mode="bidirectional"), Response EchoClient (1: Request req) (streaming.mode="client"), Response EchoServer (1: Request req) (streaming.mode="server"), } Generate code Please make sure that Kitex Tool has been upgraded to v0.13.0+:'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -160,7 +160,269 @@ namespace go echo service TestService { Response PingPong(1: Request req) // Pin
 <label for=m-docskitexfaq-check><a href=/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-docskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/kitex/Tutorials/basic-feature/streamx/StreamX_Basic_Programming.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/kitex/Tutorials/basic-feature/streamx?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=StreamX%20Basic%20Programming" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#select-protocol>Select Protocol</a></li><li><a href=#usage>Usage</a><ul><li><a href=#generate-code>Generate code</a></li><li><a href=#initialization>Initialization</a></li><li><a href=#client-streaming>Client Streaming</a></li><li><a href=#server-streaming>Server Streaming</a></li><li><a href=#bidirectional-streaming>Bidirectional Streaming</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/>Basic Feature</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/streamx/>StreamX</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/streamx/streamx_basic_programming/>StreamX Basic Programming</a></li></ol></nav><div class=td-content><h1>StreamX Basic Programming</h1><header class=article-meta></header><h2 id=select-protocol>Select Protocol</h2><p>Current support:</p><ul><li><p><strong>TTHeader Streaming</strong></p><ul><li>Transport protocol: TTHeader</li><li>IDL Definition Language and Serialization Protocol: Thrift</li></ul></li><li><p><strong>gRPC Streaming</strong></p><ul><li>Transport protocol: gRPC</li><li>IDL Definition Language and Serialization Protocol: Thrift / Protobuf</li></ul></li></ul><p>The protocol selected here only affects code generated from IDL. Regardless of the protocol, the following usage is consistent.</p><h2 id=usage>Usage</h2><h3 id=generate-code>Generate code</h3><h4 id=define-idl>Define IDL</h4><h5 id=thrift>Thrift</h5><p>File <code>echo.thrift </code>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-thrift data-lang=thrift><span style=display:flex><span><span style=color:#204a87;font-weight:700>namespace</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>go</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>echo</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#select-protocol>Select Protocol</a></li><li><a href=#usage>Usage</a><ul><li><a href=#generate-code>Generate code</a></li><li><a href=#initialization>Initialization</a></li><li><a href=#client-streaming>Client Streaming</a></li><li><a href=#server-streaming>Server Streaming</a></li><li><a href=#bidirectional-streaming>Bidirectional Streaming</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/>Basic Feature</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/streamx/>StreamX</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/streamx/streamx_basic_programming/>StreamX Basic Programming</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="StreamX Basic Programming" data-url=https://www.cloudwego.io/docs/kitex/tutorials/basic-feature/streamx/streamx_basic_programming/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Select Protocol
+
+Current support:
+
+- **TTHeader Streaming**
+
+  - Transport protocol: TTHeader
+  - IDL Definition Language and Serialization Protocol: Thrift
+- **gRPC Streaming**
+
+  - Transport protocol: gRPC
+  - IDL Definition Language and Serialization Protocol: Thrift / Protobuf
+
+The protocol selected here only affects code generated from IDL. Regardless of the protocol, the following usage is consistent.
+
+## Usage
+
+### Generate code
+
+#### Define IDL
+
+##### Thrift
+
+File `echo.thrift `:
+
+```thrift
+namespace go echo
+
+service TestService {
+    Response PingPong(1: Request req) // PingPong normal method
+    
+    Response Echo (1: Request req) (streaming.mode="bidirectional"),
+    Response EchoClient (1: Request req) (streaming.mode="client"),
+    Response EchoServer (1: Request req) (streaming.mode="server"),
+}
+```
+
+#### Generate code
+Please make sure that Kitex Tool has been upgraded to v0.13.0+:
+```
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
+```
+
+To maintain compatibility with legacy stream-generated code, Command Line needs to add the `-streamx` flag.
+
+```
+kitex -streamx -module <go module> -service service echo.thrift
+```
+
+### Initialization
+
+#### Create Client
+
+```go
+import ".../kitex_gen/echo/testservice"
+import "github.com/cloudwego/kitex/client"
+
+cli, err := testservice.NewClient(
+    "a.b.c",
+    client.WithStreamOptions(
+        client.WithStreamRecvMiddleware(...),
+        client.WithStreamSendMiddleware(...),
+    ),
+)
+```
+
+#### Create Server
+
+```go
+import ".../kitex_gen/echo/testservice"
+import "github.com/cloudwego/kitex/server"
+
+svr := testservice.NewServer(
+    new(serviceImpl),
+    server.WithStreamOptions(
+        server.WithStreamRecvMiddleware(...),
+        server.WithStreamSendMiddleware(...),
+    ),
+)
+```
+
+### Client Streaming
+
+#### Usage scenarios
+
+The client needs to send multiple copies of data to the server, and the server can send a message to the client.
+
+```go
+------------------- [Client Streaming] -------------------
+--------------- (stream Req) returns (Res) ---------------
+client.Send(req)         === req ==>       server.Recv(req)
+                             ...
+client.Send(req)         === req ==>       server.Recv(req)
+
+client.CloseSend()       === EOF ==>       server.Recv(EOF)
+client.Recv(res)         <== res ===       server.SendAndClose(res)
+** OR
+client.CloseAndRecv(res) === EOF ==>       server.Recv(EOF)
+                         <== res ===       server.SendAndClose(res)
+```
+
+#### Client Usage
+
+- [**Must**] : The client must call the CloseAndRecv() or (CloseSend + Recv) method to inform the server that there is no new data to send.
+
+```go
+stream, err := cli.EchoClient(ctx)
+for i := 0; i < 3; i++ {
+    err = stream.Send(stream.Context(), req)
+}
+res, err = stream.CloseAndRecv(stream.Context())
+```
+
+#### Server usage
+
+- [**Must**] : The server must return a Response at the end of the handler, informing the client of the final result.
+
+```go
+
+func (si *serviceImpl) EchoClient(
+    ctx context.Context, stream echo.TestService_EchoClientServer
+) (err error) {
+    for {
+       req, err := stream.Recv(ctx)
+       if err == io.EOF {
+           res := new(Response)
+           return stream.SendAndClose(ctx, res)
+       }
+       if err != nil {
+          return nil, err
+       }
+    }
+}
+```
+
+### Server Streaming
+
+#### Usage scenarios
+
+Typical scenario: ChatGPT type business
+
+Client sends a request to Server, Server sends multiple returns to Client.
+
+```go
+------------------- [Server Streaming] -------------------
+---------- (Request) returns (stream Response) ----------
+client.Send(req)   === req ==>   server.Recv(req)
+client.Recv(res)   <== res ===   server.Send(req)
+                       ...
+client.Recv(res)   <== res ===   server.Send(req)
+client.Recv(EOF)   <== EOF ===   server handler return
+```
+
+#### Client Usage
+
+- [**Must**] : The client must check the io.EOF error and end the loop
+
+```go
+stream, err := cli.EchoServer(ctx, req)
+for {
+    res, err := stream.Recv(stream.Context())
+    if errors.Is(err, io.EOF) {
+       break
+    }
+}
+```
+
+#### Server usage
+
+```go
+func (si *serviceImpl) EchoServer(ctx context.Context, req *echo.Request, stream echo.TestService_EchoServerServer) error {
+    for i := 0; i < 3; i++ {
+       err := stream.Send(ctx, resp)
+       if err != nil {
+          return err
+       }
+    }
+    return nil
+}
+```
+
+### Bidirectional Streaming
+
+#### Usage scenarios
+
+Clients and servers may need to or may need to send multiple messages in the future.
+
+```go
+----------- [Bidirectional Streaming] -----------
+--- (stream Request) returns (stream Response) ---
+* goroutine 1 *
+client.Send(req)   === req ==>   server.Recv(req)
+                       ...
+client.Send(req)   === req ==>   server.Recv(req)
+client.CloseSend() === EOF ==>   server.Recv(EOF)
+
+* goroutine 2 *
+client.Recv(res)   <== res ===   server.Send(req)
+                       ...
+client.Recv(res)   <== res ===   server.Send(req)
+client.Recv(EOF)   <== EOF ===   server handler return
+```
+
+#### Client Usage
+
+- [**Must**] : client must call CloseSend after sending
+- [**Must**] : client must judge io.EOF and end the loop when Recv
+
+```go
+stream, err := cli.EchoBidi(ctx)
+var wg sync.WaitGroup
+wg.Add(2)
+go func() {
+    defer wg.Done()
+    for i := 0; i < round; i++ {
+       err := stream.Send(stream.Context(), req)
+    }
+    err = stream.CloseSend(stream.Context())
+}()
+go func() {
+    defer wg.Done()
+    for {
+       res, err := stream.Recv(stream.Context())
+       if errors.Is(err, io.EOF) {
+          break
+       }
+    }
+}()
+wg.Wait()
+```
+
+#### Server usage
+
+- [**Must**] : The server must determine io. EOF and end the loop when Recv
+
+```go
+func (si *serviceImpl) EchoBidi(ctx context.Context, stream echo.TestService_EchoBidiServer) error {
+    for {
+       req, err := stream.Recv(ctx)
+       if err == io.EOF {
+          return nil
+       }
+       if err != nil {
+          return err
+       }
+       err = stream.Send(ctx, resp)
+       if err != nil {
+          return err
+       }
+    }
+}
+```
+</script><h1>StreamX Basic Programming</h1><header class=article-meta></header><h2 id=select-protocol>Select Protocol</h2><p>Current support:</p><ul><li><p><strong>TTHeader Streaming</strong></p><ul><li>Transport protocol: TTHeader</li><li>IDL Definition Language and Serialization Protocol: Thrift</li></ul></li><li><p><strong>gRPC Streaming</strong></p><ul><li>Transport protocol: gRPC</li><li>IDL Definition Language and Serialization Protocol: Thrift / Protobuf</li></ul></li></ul><p>The protocol selected here only affects code generated from IDL. Regardless of the protocol, the following usage is consistent.</p><h2 id=usage>Usage</h2><h3 id=generate-code>Generate code</h3><h4 id=define-idl>Define IDL</h4><h5 id=thrift>Thrift</h5><p>File <code>echo.thrift </code>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-thrift data-lang=thrift><span style=display:flex><span><span style=color:#204a87;font-weight:700>namespace</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>go</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>echo</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>service</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>TestService</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>Response</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>PingPong</span><span style=color:#ce5c00;font-weight:700>(</span><span style=color:#0000cf;font-weight:700>1</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Request</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>req</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#8f5902;font-style:italic>// PingPong normal method
@@ -296,4 +558,4 @@ namespace go echo service TestService { Response PingPong(1: Request req) // Pin
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 6, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/1c992ba53a3563e92a1a8859f1211cf14bc2e7ef>docs: fix typos and update streamx documentation (#1506) (1c992ba5)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

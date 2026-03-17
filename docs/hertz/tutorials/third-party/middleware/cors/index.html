@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>CORS | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/cors/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="CORS"><meta property="og:description" content="Hertz provides implementation of CORS middleware."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2022-05-21T00:00:00+00:00"><meta property="article:modified_time" content="2025-02-06T11:34:20+08:00"><meta itemprop=name content="CORS"><meta itemprop=description content="Hertz provides implementation of CORS middleware."><meta itemprop=datePublished content="2022-05-21T00:00:00+00:00"><meta itemprop=dateModified content="2025-02-06T11:34:20+08:00"><meta itemprop=wordCount content="1015"><meta itemprop=keywords content="CORS"><meta name=twitter:card content="summary"><meta name=twitter:title content="CORS"><meta name=twitter:description content="Hertz provides implementation of CORS middleware."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>CORS | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/cors/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="CORS"><meta property="og:description" content="Hertz provides implementation of CORS middleware."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2022-05-21T00:00:00+00:00"><meta property="article:modified_time" content="2025-02-06T11:34:20+08:00"><meta itemprop=name content="CORS"><meta itemprop=description content="Hertz provides implementation of CORS middleware."><meta itemprop=datePublished content="2022-05-21T00:00:00+00:00"><meta itemprop=dateModified content="2025-02-06T11:34:20+08:00"><meta itemprop=wordCount content="1015"><meta itemprop=keywords content="CORS"><meta name=twitter:card content="summary"><meta name=twitter:title content="CORS"><meta name=twitter:description content="Hertz provides implementation of CORS middleware."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,255 @@
 <label for=m-docshertzreferenceversion-check><a href=/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshertzreferenceversion><span>Version Descriptions</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/hertz/tutorials/third-party/middleware/cors.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/hertz/tutorials/third-party/middleware?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=CORS" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#install>Install</a></li><li><a href=#example>Example</a><ul><li><a href=#preflight-request>Preflight request</a></li></ul></li><li><a href=#config>Config</a><ul><li><a href=#allowallorigins>AllowAllOrigins</a></li><li><a href=#alloworigins>AllowOrigins</a></li><li><a href=#alloworiginfunc>AllowOriginFunc</a></li><li><a href=#allowmethods>AllowMethods</a></li><li><a href=#allowheaders>AllowHeaders</a></li><li><a href=#exposeheaders>ExposeHeaders</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/>Third-Party</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/>Middleware</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/cors/>CORS</a></li></ol></nav><div class=td-content><h1>CORS</h1><div class=lead>Hertz provides implementation of CORS middleware.</div><header class=article-meta></header><p>The CORS (Cross-Origin Resource Sharing) mechanism allows a server to identify any origin other than its own so that browsers can access and load those resources.
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#install>Install</a></li><li><a href=#example>Example</a><ul><li><a href=#preflight-request>Preflight request</a></li></ul></li><li><a href=#config>Config</a><ul><li><a href=#allowallorigins>AllowAllOrigins</a></li><li><a href=#alloworigins>AllowOrigins</a></li><li><a href=#alloworiginfunc>AllowOriginFunc</a></li><li><a href=#allowmethods>AllowMethods</a></li><li><a href=#allowheaders>AllowHeaders</a></li><li><a href=#exposeheaders>ExposeHeaders</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/>Third-Party</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/>Middleware</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/cors/>CORS</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=CORS data-url=https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/cors/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+The CORS (Cross-Origin Resource Sharing) mechanism allows a server to identify any origin other than its own so that browsers can access and load those resources.
+This mechanism is also used to check whether the server allows the browser to send a real request by sending a "precheck" request through the browser.
+In the "precheck" request header, there are HTTP methods and headers that the real request will use.
+
+Hertz provides [implementation](https://github.com/hertz-contrib/cors) of CORS middleware. The implementation here refers to GIN's [cors](https://github.com/gin-contrib/cors).
+
+## Install
+
+```shell
+go get github.com/hertz-contrib/cors
+```
+
+## Example
+
+```go
+package main
+
+import (
+    "time"
+
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/hertz-contrib/cors"
+)
+
+func main() {
+    h := server.Default()
+    // CORS for https://foo.com and https://github.com origins, allowing:
+    // - PUT and PATCH methods
+    // - Origin header
+    // - Credentials share
+    // - Preflight requests cached for 12 hours
+    h.Use(cors.New(cors.Config{
+        AllowOrigins:     []string{"https://foo.com"},
+        AllowMethods:     []string{"PUT", "PATCH"},
+        AllowHeaders:     []string{"Origin"},
+        ExposeHeaders:    []string{"Content-Length"},
+        AllowCredentials: true,
+        AllowOriginFunc: func(origin string) bool {
+            return origin == "https://github.com"
+        },
+        MaxAge: 12 * time.Hour,
+    }))
+    h.Spin()
+}
+```
+
+### Preflight request
+
+For cross-origin access, in the case of a **simple request**, this is essentially adding an Origin field to the HTTP request header to describe where the source comes from, and the server can respond directly.
+
+For **non-simple** cross-origin access requests (e.g. request method is `PUT` or `PATCH`, `Content-Type` field type is `application/json`, etc.), an HTTP preflight request is sent to verify that the client has access to the server before formal communication directly. A preflight request is a browser-initiated action that uses the HTTP Method `OPTIONS`.
+
+**Note: Some of the** `hertz-cors` **configurations will only take effect when a preflight request occurs.**
+
+## Config
+
+Hertz allows clients to access resources across origins through the use of cors middleware. You can finely control the extent to which server-side resources are allowed to be accessed across origins by customizing the configuration parameters of the `Config` structure. And you can also choose the default configuration of hertz-cors to allow clients from any origin to access resources.
+
+Only part of the optional parameters are configured in the above **Example**, the full list of parameters for `Config` is as follows:
+
+| Parameter              | Introduction                                                                                                                                                                                       |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AllowAllOrigins        | The property used to allow clients from any origin to access server-side resources, the default value is `false`                                                                                   |
+| AllowOrigins           | The property used to set the list of origins a cross-domain request can be executed from, the default value is `[]`                                                                                |
+| AllowOriginFunc        | The property used to set a custom function to validate the origin, if this option is set, the content of `AllowOrigins` is ignored                                                                 |
+| AllowMethods           | The property used to set the list of methods the client is allowed to use with cross-domain requests (takes effect when a preflight request is received)                                           |
+| AllowHeaders           | The property used to set the list of **non-simple** headers the client is allowed to use with cross-domain requests, the default value is `[]` (takes effect when a preflight request is received) |
+| AllowCredentials       | The property indicates whether the request can include user credentials like cookies, HTTP authentication, or client-side SSL certificates, the default value is `false`                           |
+| ExposeHeaders          | The property used to indicate which headers are safe to expose to the API of a CORS API specification, the default value is `[]`                                                                   |
+| MaxAge                 | The property used to set how long (in seconds) the results of a preflight request can be cached                                                                                                    |
+| AllowWildcard          | The property used to allow to add of origins like `http://some-domain/*`, `https://api.*`, or `http://some.*.subdomain.com`, the default value is `false`                                          |
+| AllowBrowserExtensions | The property used to allow usage of popular browser extensions schemas, the default value is `false`                                                                                               |
+| AllowWebSockets        | The property used to allow usage of WebSocket protocol, the default value is `false`                                                                                                               |
+| AllowFiles             | The property used to allow usage of `file://` schema (dangerous!) use it only when you 100% sure it's needed, the default value is `false`                                                         |
+
+### AllowAllOrigins
+
+If the property value is true, all cross-domain requests will be allowed.
+
+When `AllowAllOrigins` is true, `AllowOriginFunc` and `AllowOrigins` must not be used, otherwise, conflicts will occur.
+
+### AllowOrigins
+
+The property set a list of origins that can be accessed cross-domain, any cross-domain requests that satisfies the matching logic can access resource (only one `*` is allowed within each origin).
+
+**Conflicts** with `AllowAllOrigins`, only one of which can be configured at a time.
+
+When used together with `AllowOriginFunc`, `AllowOriginFunc` takes precedence over `AllowOrigins`.
+
+If you want to use an origin with wildcards, the `AllowWildcard` parameter must also be set to `true`.
+
+Sample Code1:
+
+```go
+package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/hertz-contrib/cors"
+)
+
+func main() {
+    h := server.Default()
+    h.Use(cors.New(cors.Config{
+        AllowOrigins:     []string{"https://foo.com"},
+    }))
+    h.Spin()
+}
+```
+
+Sample Code2:
+
+```go
+package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/hertz-contrib/cors"
+)
+
+func main() {
+    h := server.Default()
+    h.Use(cors.New(cors.Config{
+        AllowWildcard: 	  true,
+        AllowOrigins:     []string{"http://some-domain/*"},
+    }))
+    h.Spin()
+}
+```
+
+### AllowOriginFunc
+
+It takes the origin as an argument and returns true if allowed or false otherwise.
+
+**Conflicts** with `AllowAllOrigins`, only one of which can be configured at a time.
+
+When used together with `AllowOrigins`, `AllowOriginFunc` takes precedence over `AllowOrigins`.
+
+Function signatures:
+
+```go
+func(origin string) bool
+```
+
+Sample Code:
+
+```go
+package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/hertz-contrib/cors"
+)
+
+func main() {
+    h := server.Default()
+    h.Use(cors.New(cors.Config{
+        AllowOriginFunc: func(origin string) bool {
+            return origin == "https://github.com"
+        },
+    }))
+    h.Spin()
+}
+```
+
+### AllowMethods
+
+This configuration takes effect only when a preflight request is received and is used to set the list of HTTP methods the client is allowed to use with cross-domain requests.
+
+If the request is a **simple request** initiated by GET or POST, no additional settings are required.
+
+Sample Code:
+
+```go
+package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/hertz-contrib/cors"
+)
+
+func main() {
+    h := server.Default()
+    h.Use(cors.New(cors.Config{
+        AllowWildcard:    true,
+        AllowMethods:     []string{"PUT", "PATCH"},
+    }))
+    h.Spin()
+}
+```
+
+### AllowHeaders
+
+This configuration takes effect only when a preflight request is received. The `Access-Control-Allow-Headers` field is required if the browser request includes the `Access-Control-Request-Headers` field. It is a comma-separated string indicating all the header fields supported by the server.
+
+Sample Code:
+
+```go
+package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/hertz-contrib/cors"
+)
+
+func main() {
+    h := server.Default()
+    h.Use(cors.New(cors.Config{
+        AllowHeaders:     []string{"Origin"},
+    }))
+    h.Spin()
+}
+```
+
+### ExposeHeaders
+
+The property indicates which headers are safe to expose to the API of a CORS API specification.
+
+Sample Code:
+
+```go
+package main
+
+import (
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/hertz-contrib/cors"
+)
+
+func main() {
+    h := server.Default()
+    h.Use(cors.New(cors.Config{
+        ExposeHeaders:    []string{"Content-Length"},
+    }))
+    h.Spin()
+}
+```
+
+As for usage, you may refer to hertz [cors](https://github.com/cloudwego/hertz-examples/blob/main/middleware/CORS)
+</script><h1>CORS</h1><div class=lead>Hertz provides implementation of CORS middleware.</div><header class=article-meta></header><p>The CORS (Cross-Origin Resource Sharing) mechanism allows a server to identify any origin other than its own so that browsers can access and load those resources.
 This mechanism is also used to check whether the server allows the browser to send a real request by sending a &ldquo;precheck&rdquo; request through the browser.
 In the &ldquo;precheck&rdquo; request header, there are HTTP methods and headers that the real request will use.</p><p>Hertz provides <a href=https://github.com/hertz-contrib/cors>implementation</a> of CORS middleware. The implementation here refers to GIN&rsquo;s <a href=https://github.com/gin-contrib/cors>cors</a>.</p><h2 id=install>Install</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>go get github.com/hertz-contrib/cors
 </span></span></code></pre></div><h2 id=example>Example</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>package</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>main</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -231,4 +479,4 @@ In the &ldquo;precheck&rdquo; request header, there are HTTP methods and headers
 </span></span></span></code></pre></div><p>As for usage, you may refer to hertz <a href=https://github.com/cloudwego/hertz-examples/blob/main/middleware/CORS>cors</a></p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified February 6, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/33649b70d827dbbf96d9bae034cafbb083c9eacd>refactor(Hertz): add third-party directory and update en doc (#1226) (33649b70)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

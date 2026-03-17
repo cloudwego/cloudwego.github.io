@@ -16,7 +16,7 @@ enum MapKey { A, B, C, D, E, F } struct Request { 1: required string Message (vt
 适用范围：struct/union 中的每个 field 。
 校验形式：用户主动校验。（可提供中间件，统一对所有参数/结果校验）
 IDL 示例：
-enum MapKey { A, B, C, D, E, F } struct Request { 1: required string Message (vt.max_size = "30", vt.prefix = "Debug") 2: i32 ID (vt.gt = "1000", vt.lt = "10000") 3: list<double> Values (vt.elem.gt = "0.25") 4: map<MapKey, binary> KeyValues (vt.key.defined_only = "true", vt.min_size = "1") } struct Response { 1: required string Message (vt.in = "Debug", vt.in = "Info", vt.in = "Warn", vt.in = "Error") } 安装 使用 Validator 插件前需要先进行安装，才可以使用，否则会报找不到 thrift-gen-validator 可执行文件错误（ exec: "thrift-gen-validator": executable file not found in $PATH）。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+enum MapKey { A, B, C, D, E, F } struct Request { 1: required string Message (vt.max_size = "30", vt.prefix = "Debug") 2: i32 ID (vt.gt = "1000", vt.lt = "10000") 3: list<double> Values (vt.elem.gt = "0.25") 4: map<MapKey, binary> KeyValues (vt.key.defined_only = "true", vt.min_size = "1") } struct Response { 1: required string Message (vt.in = "Debug", vt.in = "Info", vt.in = "Warn", vt.in = "Error") } 安装 使用 Validator 插件前需要先进行安装，才可以使用，否则会报找不到 thrift-gen-validator 可执行文件错误（ exec: "thrift-gen-validator": executable file not found in $PATH）。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -167,7 +167,281 @@ enum MapKey { A, B, C, D, E, F } struct Request { 1: required string Message (vt
 <label for=m-zhdocskitexfaq-check><a href=/zh/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/kitex/Tutorials/code-gen/validator.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/kitex/Tutorials/code-gen?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Thrift%20Validator" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#概述>概述</a></li><li><a href=#安装>安装</a></li><li><a href=#使用>使用</a></li><li><a href=#支持的校验能力>支持的校验能力</a><ul><li><a href=#数字类型>数字类型</a></li><li><a href=#stringbinary>string/binary</a></li><li><a href=#bool>bool</a></li><li><a href=#enum>enum</a></li><li><a href=#setlist>set/list</a></li><li><a href=#map>map</a></li><li><a href=#structunionexception>struct/union/exception</a></li><li><a href=#变量引用>变量引用</a></li><li><a href=#工具函数>工具函数</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/>代码生成</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/validator/>Thrift Validator</a></li></ol></nav><div class=td-content><h1>Thrift Validator</h1><header class=article-meta></header><h2 id=概述>概述</h2><p>Validator 是用于支持结构体校验能力的 thriftgo 插件。</p><p>在 IDL 中通过注解来描述约束，插件会根据注解给对应的 struct 生成 <code>IsValid() error </code>方法，生成在 xxx-validator.go 文件。</p><p>注解采用 <code>vt.{ConstraintType} = "Value"</code> 这种形式描述。</p><p>适用范围：struct/union 中的每个 field 。</p><p>校验形式：用户主动校验。（可提供中间件，统一对所有参数/结果校验）</p><p>IDL 示例：</p><pre tabindex=0><code>enum MapKey {
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#概述>概述</a></li><li><a href=#安装>安装</a></li><li><a href=#使用>使用</a></li><li><a href=#支持的校验能力>支持的校验能力</a><ul><li><a href=#数字类型>数字类型</a></li><li><a href=#stringbinary>string/binary</a></li><li><a href=#bool>bool</a></li><li><a href=#enum>enum</a></li><li><a href=#setlist>set/list</a></li><li><a href=#map>map</a></li><li><a href=#structunionexception>struct/union/exception</a></li><li><a href=#变量引用>变量引用</a></li><li><a href=#工具函数>工具函数</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/>代码生成</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/validator/>Thrift Validator</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Thrift Validator" data-url=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/validator/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 概述
+
+Validator 是用于支持结构体校验能力的 thriftgo 插件。
+
+在 IDL 中通过注解来描述约束，插件会根据注解给对应的 struct 生成 `IsValid() error ` 方法，生成在 xxx-validator.go 文件。
+
+注解采用 `vt.{ConstraintType} = "Value"` 这种形式描述。
+
+适用范围：struct/union 中的每个 field 。
+
+校验形式：用户主动校验。（可提供中间件，统一对所有参数/结果校验）
+
+IDL 示例：
+
+```
+enum MapKey {
+    A, B, C, D, E, F
+}
+
+struct Request {
+    1: required string Message (vt.max_size = "30", vt.prefix = "Debug")
+    2: i32 ID (vt.gt = "1000", vt.lt = "10000")
+    3: list<double> Values (vt.elem.gt = "0.25")
+    4: map<MapKey, binary> KeyValues (vt.key.defined_only = "true", vt.min_size = "1")
+}
+
+struct Response {
+    1: required string Message (vt.in = "Debug", vt.in = "Info", vt.in = "Warn", vt.in = "Error")
+}
+```
+
+## 安装
+
+使用 Validator 插件前需要先进行安装，才可以使用，否则会报找不到 `thrift-gen-validator` 可执行文件错误（ `exec: "thrift-gen-validator": executable file not found in $PATH`）。
+
+如果你已经安装好 Golang 和 Kitex 命令行工具，请执行如下命令安装 `thrift-gen-validator` 插件：
+
+```shell
+$ go install github.com/cloudwego/thrift-gen-validator@latest
+```
+
+执行完 `go install` 之后，会将编译后的 `thrift-gen-validator` 二进制文件安装到 `$GOPATH/bin` 下。
+
+可以执行下面的命令，验证是否安装成功。
+
+```shell
+$ cd $(go env GOPATH)/bin
+$ ls
+go1.20.1             goimports            hz                   thrift-gen-validator
+godotenv             golangci-lint        kitex                thriftgo
+$ cd ~/ && thrift-gen-validator --help
+Usage of thrift-gen-validator:
+  -version
+        Show the version of thrift-gen-validator
+(0x1232358,0x1370f70)
+```
+
+`cd ~/` 是为了验证在任意目录下都可以愉快地调用 `thrift-gen-validator`。如果在执行该命令时出现类似上述找不到 `thrift-gen-validator` 可执行文件错误，请检查 `$GOPATH` 是否被正确设置到 `$PATH` 中。
+
+关于 `thrift-gen-validator` 的安装及其他更多信息，可参阅 [thrift-gen-validator](https://github.com/cloudwego/thrift-gen-validator)
+
+## 使用
+
+以[快速开始](/zh/docs/kitex/getting-started/)里的 Kitex Hello 项目为例，进入示例仓库的 `hello` 目录，在 `hello.thrift` 中添加注解，例如我们对 `Request` 结构体的 `message` 字段进行约束，约束长度不超过8且要以 "kitex-" 前缀开头：
+
+```
+struct Request {
+	1: string message (vt.max_size = "8", vt.prefix = "kitex-")
+}
+```
+
+在生成 Kitex 代码时，加上 `--thrift-plugin validator` 参数，即可生成 validator 文件。
+
+```
+kitex --thrift-plugin validator -service a.b.c hello.thrift
+```
+
+执行后，可以看见新生成的 Validator：
+
+```
+├── kitex_gen
+    └── api
+        ├── hello
+        │   ├── client.go
+        │   ├── hello.go
+        │   ├── invoker.go
+        │   └── server.go
+        ├── hello.go
+  -->   ├── hello_validator.go
+        ├── k-consts.go
+        └── k-hello.go
+```
+
+其中对于 `Request` 结构体，新生成了 `IsValid()` 方法：
+
+```
+func (p *Request) IsValid() error {
+	if len(p.Message) > int(8) {
+		return fmt.Errorf("field Message max_len rule failed, current value: %d", len(p.Message))
+	}
+	_src := "kitex-"
+	if !strings.HasPrefix(p.Message, _src) {
+		return fmt.Errorf("field Message prefix rule failed, current value: %v", p.Message)
+	}
+	return nil
+}
+```
+
+在后续的使用中，调用 `IsValid()` 方法对结构体进行校验即可：
+
+```
+
+		req := &api.Request {
+			//....
+		}
+		err := req.IsValid()
+		if err != nil {
+			//invalid ....
+		}
+
+		//valid ...
+
+```
+
+## 支持的校验能力
+
+校验顺序以定义顺序为准， 'in' 和 'not_in' 这类可以定义多次的，以第一次出现的顺序为准。
+
+### 数字类型
+
+包括 i8，i16，i32，i64，double。
+
+1. const，必须为指定值。
+2. lt，le，gt，ge，分别表示小于，小于等于，大于，大于等于。
+3. in，not_in，分别表示可以使用的值和不可以使用的值，可多次指定，一次指定一个值。
+4. not_nil，该字段不能为空。（仅当字段为 optional 时合法）
+
+```Thrift
+struct NumericDemo {
+    1: double Value (vt.gt = "1000.1", vt.lt = "10000.1")
+    2: i8 Type (vt.in = "1", vt.in = "2", vt.in = "4")
+    3: i64 MagicNumber (vt.const = "0x5f3759df")
+}
+```
+
+### string/binary
+
+1. const，必须为指定值。
+2. min_size，max_size，最大长度，最小长度。
+3. pattern，正则匹配。
+4. prefix，suffix，contains，not_contains，限制前缀，限制后缀，必须包含，不能包含。
+5. in，not_in，分别表示可以使用的值和不可以使用的值，二者不能同时使用，可多次指定，一次指定一个值。
+6. not_nil，该字段不能为空。（仅当字段为 optional 时合法）
+
+```Thrift
+struct StringDemo {
+    1: string Uninitialized (vt.const = "烫烫烫")
+    2: string Name (vt.min_size = "6", vt.max_size = "12")
+    3: string SomeStuffs (vt.pattern = "[0-9A-Za-z]+")
+    4: string DebugInfo (vt.prefix = "[Debug]")
+    5: string PanicInfo (vt.contains = "panic")
+    6: string Editor (vt.in = "vscode", vt.in = "vim", vt.in = "goland")
+}
+```
+
+### bool
+
+1. const，必须为指定值。
+2. not_nil，该字段不能为空。（仅当字段为 optional 时合法）
+
+```Thrift
+struct BoolDemo {
+    1: bool AMD (vt.const = "true")
+    2: optional bool Nvidia (vt.not_nil = "false")
+}
+```
+
+### enum
+
+1. const，必须为指定值。
+2. defined_only，必须在 enum 中定义的值中。
+3. not_nil，该字段不能为空。（仅当字段为 optional 时合法）
+
+```Thrift
+enum Type {
+    Number, String, List, Map
+}
+
+struct EnumDemo {
+    1: Type AddressType (vt.const = "String")
+    2: Type ValueType (vt.defined_only = "true")
+    3: optional Type OptType (vt.not_nil = "true")
+}
+```
+
+### set/list
+
+1. min_size，max_size，最小长度，最大长度。
+2. elem，元素约束。
+
+```Thrift
+struct SetListDemo {
+    1: list<string> Persons (vt.min_size = "5", vt.max_size = "10")
+    2: set<double> HealthPoints (vt.elem.gt = "0")
+}
+```
+
+### map
+
+1. min_size，max_size，最小键值对数，最大键值对数。
+2. no_sparse，value 为指针时，不能为 nil 。
+3. key，value，键约束，值约束。
+
+```Thrift
+struct MapDemo {
+    1: map<i32, string> IdName (vt.min_size = "5", vt.max_size = "10")
+    2: map<i32, DemoTestRequest> Requests (vt.no_sparse = "true")
+    3: map<i32, double> Some, (vt.key.gt = "0", vt.value.lt = "1000")
+}
+```
+
+### struct/union/exception
+
+1. skip，跳过该 struct/union/exception 的递归校验。（作为单独字段时默认为 false，作为元素时默认为 true ）
+2. not_nil，该字段不能为空。
+
+```Thrift
+struct OuterRequest {
+    1: SomeStruct Struct (vt.skip = "true")
+    2: SomeUnion Union (vt.skip = "true")
+    3: SomeStruct NotNilStruct (vt.not_nil = "true")
+}
+```
+
+### 变量引用
+
+前置符 `$` 表示某个变量的引用，可用于**跨字段校验**：
+
+1. `$x` 代表名为 `x` 的变量，变量名为 `\[a-zA-Z0-9_]\`，其作用域规则为**当前结构体**。
+2. `$` 表示 validator 所处的当前字段。
+
+```Thrift
+struct Example {
+    1: string A (vt.max_size = "$C")
+    2: string B (vt.not_in = "$A")
+    3: i32 C
+}
+```
+
+### 工具函数
+
+前置符 `@` 表示内置的工具函数来计算校验值，目前支持的工具函数：
+
+1. `sprintf(fmt, $1, $2...)` 用于输出特定字符。
+2. `len($x)` 输出变量大小。（字符串长度、list 元素个数）
+
+```Thrift
+struct Example {
+    1: string A
+    2: list<string> B (vt.max_size = "@len($D)")
+    3: map<string,int) C
+    4: string D (vt.const = "@sprintf(\"%s_%s\", $A, \"mysuffix\")")
+}
+```
+</script><h1>Thrift Validator</h1><header class=article-meta></header><h2 id=概述>概述</h2><p>Validator 是用于支持结构体校验能力的 thriftgo 插件。</p><p>在 IDL 中通过注解来描述约束，插件会根据注解给对应的 struct 生成 <code>IsValid() error </code>方法，生成在 xxx-validator.go 文件。</p><p>注解采用 <code>vt.{ConstraintType} = "Value"</code> 这种形式描述。</p><p>适用范围：struct/union 中的每个 field 。</p><p>校验形式：用户主动校验。（可提供中间件，统一对所有参数/结果校验）</p><p>IDL 示例：</p><pre tabindex=0><code>enum MapKey {
     A, B, C, D, E, F
 }
 
@@ -280,4 +554,4 @@ struct Response {
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 May 8, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/dff8f175d96e832fb521f13246cce14399aefcdb>style: prettier lint fix (#1069) (dff8f175)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

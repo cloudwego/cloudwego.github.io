@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>hz 命令梳理 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/command/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="hz 命令梳理"><meta property="og:description" content="hz 命令梳理。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-02-21T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="hz 命令梳理"><meta itemprop=description content="hz 命令梳理。"><meta itemprop=datePublished content="2023-02-21T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="2010"><meta itemprop=keywords content="hz 命令梳理,New,Update,Model,Client"><meta name=twitter:card content="summary"><meta name=twitter:title content="hz 命令梳理"><meta name=twitter:description content="hz 命令梳理。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>hz 命令梳理 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/command/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="hz 命令梳理"><meta property="og:description" content="hz 命令梳理。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-02-21T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="hz 命令梳理"><meta itemprop=description content="hz 命令梳理。"><meta itemprop=datePublished content="2023-02-21T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="2010"><meta itemprop=keywords content="hz 命令梳理,New,Update,Model,Client"><meta name=twitter:card content="summary"><meta name=twitter:title content="hz 命令梳理"><meta name=twitter:description content="hz 命令梳理。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -110,7 +110,554 @@
 <label for=m-zhdocshertzreferenceversion-check><a href=/zh/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocshertzreferenceversion><span>版本说明</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/hertz/tutorials/toolkit/command.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/hertz/tutorials/toolkit?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=hz%20%e5%91%bd%e4%bb%a4%e6%a2%b3%e7%90%86" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#命令行参数说明>命令行参数说明</a><ul><li></li><li><a href=#new>New</a></li><li><a href=#update>Update</a></li><li><a href=#model>Model</a></li><li><a href=#client>Client</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/>hz 代码生成</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/command/>hz 命令梳理</a></li></ol></nav><div class=td-content><h1>hz 命令梳理</h1><div class=lead>hz 命令梳理。</div><header class=article-meta></header><h2 id=命令行参数说明>命令行参数说明</h2><h4 id=global>Global</h4><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-console data-lang=console><span style=display:flex><span><span style=color:#8f5902>$</span> hz --help
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#命令行参数说明>命令行参数说明</a><ul><li></li><li><a href=#new>New</a></li><li><a href=#update>Update</a></li><li><a href=#model>Model</a></li><li><a href=#client>Client</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/>hz 代码生成</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/command/>hz 命令梳理</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="hz 命令梳理" data-url=https://www.cloudwego.io/zh/docs/hertz/tutorials/toolkit/command/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 命令行参数说明
+
+#### Global
+
+```console
+$ hz --help
+NAME:
+   hz - A idl parser and code generator for Hertz projects
+
+USAGE:
+   hz [global options] command [command options] [arguments...]
+
+VERSION:
+   v0.x.x
+
+COMMANDS:
+   new      Generate a new Hertz project
+   update   Update an existing Hertz project
+   model    Generate model code only
+   client   Generate hertz client based on IDL
+   help, h  Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --verbose      turn on verbose mode (default: false)
+   --help, -h     show help (default: false)
+   --version, -v  print the version (default: false)
+```
+
+- new: 创建一个新的 Hertz 项目
+
+<!---->
+
+- update: 更新一个已存在的 Hertz 项目
+
+<!---->
+
+- model: 只生成 model 代码
+
+<!---->
+
+- client: 基于 IDL 生成 client 侧代码
+
+### New
+
+```console
+$ hz help new
+NAME:
+   hz new - Generate a new Hertz project
+
+USAGE:
+   hz new [command options] [arguments...]
+
+OPTIONS:
+   --idl value [ --idl value ]                                            Specify the IDL file path. (.thrift or .proto)
+   --service value                                                        Specify the service name.
+   --module value, --mod value                                            Specify the Go module name.
+   --out_dir value                                                        Specify the project path.
+   --handler_dir value                                                    Specify the handler relative path (based on "out_dir").
+   --model_dir value                                                      Specify the model relative path (based on "out_dir").
+   --router_dir value                                                     Specify the router relative path (based on "out_dir").
+   --client_dir value                                                     Specify the client path. If not specified, IDL generated path is used for 'client' command; no client code is generated for 'new' command
+   --use value                                                            Specify the model package to import for handler.
+   --proto_path value, -I value [ --proto_path value, -I value ]          Add an IDL search path for includes. (Valid only if idl is protobuf)
+   --thriftgo value, -t value [ --thriftgo value, -t value ]              Specify arguments for the thriftgo. ({flag}={value})
+   --protoc value, -p value [ --protoc value, -p value ]                  Specify arguments for the protoc. ({flag}={value})
+   --option_package value, -P value [ --option_package value, -P value ]  Specify the package path. ({include_path}={import_path})
+   --no_recurse                                                           Generate master model only. (default: false)
+   --force, -f                                                            Force new a project, which will overwrite the generated files (default: false)
+   --enable_extends                                                       Parse 'extends' for thrift IDL (default: false)
+   --json_enumstr                                                         Use string instead of num for json enums when idl is thrift. (default: false)
+   --unset_omitempty                                                      Remove 'omitempty' tag for generated struct. (default: false)
+   --pb_camel_json_tag                                                    Convert Name style for json tag to camel(Only works protobuf). (default: false)
+   --snake_tag                                                            Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
+   --rm_tag value [ --rm_tag value ]                                      Remove the specified tag
+   --exclude_file value, -E value [ --exclude_file value, -E value ]      Specify the files that do not need to be updated.
+   --customize_layout value                                               Specify the path for layout template.
+   --customize_layout_data_path value                                     Specify the path for layout template render data.
+   --customize_package value                                              Specify the path for package template.
+   --handler_by_method                                                    Generate a separate handler file for each method. (default: false)
+   --protoc-plugins value [ --protoc-plugins value ]                      Specify plugins for the protoc. ({plugin_name}:{options}:{out_dir})
+   --thrift-plugins value [ --thrift-plugins value ]                      Specify plugins for the thriftgo. ({plugin_name}:{options})
+   --help, -h                                                             show help (default: false)
+```
+
+- idl: 指定 idl 文件路径 (.thrift 或者 .proto)
+
+<!---->
+
+- service: 指定服务名，为之后做服务发现等功能预留
+
+<!---->
+
+- module/mod: 指定 go mod 的名字，非 GOPATH 下必须指定，GOPATH 下默认以相对于 GOPATH 的路径作为名字
+
+<!---->
+
+- out_dir: 指定项目生成路径，默认为当前路径
+
+<!---->
+
+- handler_dir: 指定 handler 的生成路径，默认为 "biz/handler" (相对路径，基于 out_dir)
+
+<!---->
+
+- model_dir: 指定 model 的生成路径，默认为 "biz/model" (相对路径，基于 out_dir)
+
+<!---->
+
+- router_dir: 指定 router 的生成路径，默认为 "biz/router" (相对路径，基于 out_dir)
+
+<!---->
+
+- client_dir: 指定 client 侧代码的生成路径，如果不指定则不生成；当前为每个 service 生成一个全局的 client，若要生成更完善的 client 侧代码请使用 [hz client](/zh/docs/hertz/tutorials/toolkit/more-feature/client/) 命令
+
+<!---->
+
+- use: 指定 handler 中 import model 包的位置，该参数适用于在生成 handler 代码之前已经生成过 model 代码的场景，使用该命令可直接 import 已有的 model 代码，无需再次生成
+
+<!---->
+
+- proto_path/I: 当 idl 为 protobuf 时，指定 idl 的搜索路径，同 protoc 的 -I 指令
+
+<!---->
+
+- thriftgo/t: 透传给 thriftgo 的选项 ({flag}={value})
+
+<!---->
+
+- protoc/p: 透传给 protoc 的选项 ({flag}={value})
+
+<!---->
+
+- option_package/P: 指定包的路径 ({include_path}={import_path})
+
+<!---->
+
+- no_recurse: 只生成主 idl 的 model 代码，默认为 false
+
+<!---->
+
+- force/f: 强制创建一个新的 hertz 项目，这将会覆盖已生成的文件
+
+<!---->
+
+- enable_extends: 解析 thrift idl 中的 extends
+
+<!---->
+
+- json_enumstr: 当 idl 为 thrift 时，json enums 使用 string 代替 num (透传给 thriftgo 的选项)
+
+<!---->
+
+- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 omitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional" 还是 "required" 决定
+
+<!---->
+
+- pb_camel_json_tag: 生成 model field 时将 json tag 的命名风格改为驼峰命名（仅作用于 protobuf）
+
+<!---->
+
+- snake_tag: tag 使用 snake_case 风格命名 (仅对 form、query、json 生效)
+
+<!---->
+
+- rm_tag value: 移除指定的 tag
+
+<!---->
+
+- exclude_file/E: 不需要更新的文件 (相对项目路径，支持多个)
+
+<!---->
+
+- customize_layout: 自定义项目 layout 模板，具体详见：[自定义模板使用](/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
+
+<!---->
+
+- customize_layout_data_path value: 自定义项目 layout 模板渲染参数，具体详见：[自定义模板使用](/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
+
+<!---->
+
+- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
+
+<!---->
+
+- handler_by_method: 为每一个方法生成一个单独的 handler 文件
+
+<!---->
+
+- protoc-plugins: 接入 protoc 相关的第三方生成代码插件，具体详见：[hz 接入第三方生成代码插件](/zh/docs/hertz/tutorials/toolkit/more-feature/plugin/)
+
+<!---->
+
+- thrift-plugins: 接入 thrift 相关的第三方生成代码插件，具体详见：[hz 接入第三方生成代码插件](/zh/docs/hertz/tutorials/toolkit/more-feature/plugin/)
+
+<!---->
+
+- help/h: 帮助命令
+
+### Update
+
+```console
+$ hz help update
+NAME:
+   hz update - Update an existing Hertz project
+
+USAGE:
+   hz update [command options] [arguments...]
+
+OPTIONS:
+   --idl value [ --idl value ]                                            Specify the IDL file path. (.thrift or .proto)
+   --module value, --mod value                                            Specify the Go module name.
+   --out_dir value                                                        Specify the project path.
+   --handler_dir value                                                    Specify the handler relative path (based on "out_dir").
+   --model_dir value                                                      Specify the model relative path (based on "out_dir").
+   --client_dir value                                                     Specify the client path. If not specified, IDL generated path is used for 'client' command; no client code is generated for 'new' command
+   --use value                                                            Specify the model package to import for handler.
+   --proto_path value, -I value [ --proto_path value, -I value ]          Add an IDL search path for includes. (Valid only if idl is protobuf)
+   --thriftgo value, -t value [ --thriftgo value, -t value ]              Specify arguments for the thriftgo. ({flag}={value})
+   --protoc value, -p value [ --protoc value, -p value ]                  Specify arguments for the protoc. ({flag}={value})
+   --option_package value, -P value [ --option_package value, -P value ]  Specify the package path. ({include_path}={import_path})
+   --no_recurse                                                           Generate master model only. (default: false)
+   --enable_extends                                                       Parse 'extends' for thrift IDL (default: false)
+   --json_enumstr                                                         Use string instead of num for json enums when idl is thrift. (default: false)
+   --unset_omitempty                                                      Remove 'omitempty' tag for generated struct. (default: false)
+   --pb_camel_json_tag                                                    Convert Name style for json tag to camel(Only works protobuf). (default: false)
+   --snake_tag                                                            Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
+   --rm_tag value [ --rm_tag value ]                                      Remove the specified tag
+   --exclude_file value, -E value [ --exclude_file value, -E value ]      Specify the files that do not need to be updated.
+   --customize_package value                                              Specify the path for package template.
+   --handler_by_method                                                    Generate a separate handler file for each method. (default: false)
+   --protoc-plugins value [ --protoc-plugins value ]                      Specify plugins for the protoc. ({plugin_name}:{options}:{out_dir})
+   --thrift-plugins value [ --thrift-plugins value ]                      Specify plugins for the thriftgo. ({plugin_name}:{options})
+   --help, -h                                                             show help (default: false)
+```
+
+- idl: idl 文件路径 (.thrift 或者 .proto)
+
+<!---->
+
+- module/mod: 指定 go mod 的名字，非 GOPATH 下必须指定，GOPATH 下默认以相对于 GOPATH 的路径作为名字
+
+<!---->
+
+- out_dir: 指定项目生成路径，默认为当前路径
+
+<!---->
+
+- handler_dir: 指定 handler 的生成路径，默认为 "biz/handler" (相对路径，基于 out_dir)；注意：如果对同一套 idl 进行 update，需要 handler_dir 的值与使用 new 的时候相同，否则会生成冗余的代码，需要用户自行删除。
+
+<!---->
+
+- model_dir: 指定 model 的生成路径，默认为 "biz/model" (相对路径，基于 out_dir)；注意：如果对同一套 idl 进行 update，需要 model_dir 的值与使用 new 的时候相同，否则会生成重复的 model 代码且导致 handler 引用不一致。
+
+<!---->
+
+- client_dir: 指定 client 侧代码的生成路径，如果不指定则不生成；当前为每个 service 生成一个全局的 client，若要生成更完善的 client 侧代码请使用 [hz client](/zh/docs/hertz/tutorials/toolkit/more-feature/client/) 命令。注意：如果对同一套 idl 进行 update，需要 client_dir 的值与使用 new 的时候相同，否则会生成冗余的代码，需要用户自行删除。
+
+<!---->
+
+- use: 指定 handler 中 import model 包的位置，该参数适用于在生成 handler 代码之前已经生成过 model 代码的场景，使用该命令可直接 import 已有的 model 代码，无需再次生成
+
+<!---->
+
+- proto_path/I: 当 idl 为 protobuf 时，指定 idl 的搜索路径，同 protoc 的 -I 指令
+
+<!---->
+
+- thriftgo/t: 透传给 thriftgo 的选项 ({flag}={value})
+
+<!---->
+
+- protoc/p: 透传给 protoc 的选项 ({flag}={value})
+
+<!---->
+
+- option_package/P: 指定包的路径，({include_path}={import_path})
+
+<!---->
+
+- no_recurse: 只生成主 idl 的 model 代码，默认为 false
+
+<!---->
+
+- enable_extends: 解析 thrift idl 中的 extends
+
+<!---->
+
+- json_enumstr: 当 idl 为 thrift 时，json enums 使用 string 代替 num (透传给 thriftgo 的选项)
+
+<!---->
+
+- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 mitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional" 还是 "required" 决定
+
+<!---->
+
+- pb_camel_json_tag: 生成 model field 时将 json tag 的命名风格改为驼峰命名（仅作用于 protobuf）
+
+<!---->
+
+- snake_tag: tag 使用 snake_case 风格命名 (仅对 form、query、json 生效)
+
+<!---->
+
+- rm_tag value: 移除指定的 tag
+
+<!---->
+
+- exclude_file/E: 不需要更新的文件 (相对项目路径，支持多个)
+
+<!---->
+
+- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](/zh/docs/hertz/tutorials/toolkit/more-feature/template/) 。注意：对于已经存在的 handler 文件会按照默认模板新增 handler 函数，对于还未存在的 handler 文件，则会按照自定义模板来生成 handler。
+
+<!---->
+
+- handler_by_method: 为每一个方法生成一个单独的 handler 文件
+
+<!---->
+
+- protoc-plugins: 接入 protoc 相关的第三方生成代码插件，具体详见：[hz 接入第三方生成代码插件](/zh/docs/hertz/tutorials/toolkit/more-feature/plugin/)
+
+<!---->
+
+- thrift-plugins: 接入 thrift 相关的第三方生成代码插件，具体详见：[hz 接入第三方生成代码插件](/zh/docs/hertz/tutorials/toolkit/more-feature/plugin/)
+
+<!---->
+
+- help/h: 帮助命令
+
+### Model
+
+```console
+$ hz help model
+NAME:
+   hz model - Generate model code only
+
+USAGE:
+   hz model [command options] [arguments...]
+
+OPTIONS:
+   --idl value [ --idl value ]                                        Specify the IDL file path. (.thrift or .proto)
+   --module value, --mod value                                        Specify the Go module name.
+   --out_dir value                                                    Specify the project path.
+   --model_dir value                                                  Specify the model relative path (based on "out_dir").
+   --proto_path value, -I value [ --proto_path value, -I value ]      Add an IDL search path for includes. (Valid only if idl is protobuf)
+   --thriftgo value, -t value [ --thriftgo value, -t value ]          Specify arguments for the thriftgo. ({flag}={value})
+   --protoc value, -p value [ --protoc value, -p value ]              Specify arguments for the protoc. ({flag}={value})
+   --no_recurse                                                       Generate master model only. (default: false)
+   --json_enumstr                                                     Use string instead of num for json enums when idl is thrift. (default: false)
+   --unset_omitempty                                                  Remove 'omitempty' tag for generated struct. (default: false)
+   --pb_camel_json_tag                                                Convert Name style for json tag to camel(Only works protobuf). (default: false)
+   --snake_tag                                                        Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
+   --rm_tag value [ --rm_tag value ]                                  Remove the specified tag
+   --exclude_file value, -E value [ --exclude_file value, -E value ]  Specify the files that do not need to be updated.
+   --help, -h                                                         show help (default: false)
+```
+
+- idl: idl 文件路径 (.thrift 或者 .proto)
+
+<!---->
+
+- module/mod: 指定 go mod 的名字，非 GOPATH 下必须指定，GOPATH 下默认以相对于 GOPATH 的路径作为名字
+
+<!---->
+
+- out_dir: 指定项目生成路径，默认为当前路径
+
+<!---->
+
+- model_dir: 指定 model 的生成路径，默认为 "biz/model" (相对路径，基于 out_dir)
+
+<!---->
+
+- proto_path/I: 当 idl 为 protobuf 时，指定 idl 的搜索路径，同 protoc 的 -I 指令
+
+<!---->
+
+- thriftgo/t: 透传给 thriftgo 的选项 ({flag}={value})
+
+<!---->
+
+- protoc/p: 透传给 protoc 的选项 ({flag}={value})
+
+<!---->
+
+- no_recurse: 只生成主 idl 的 model 代码，默认为 false
+
+<!---->
+
+- json_enumstr: 当 idl 为 thrift 时，json enums 使用 string 代替 num (透传给 thriftgo 的选项)
+
+<!---->
+
+- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 mitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional" 还是 "required" 决定
+
+<!---->
+
+- pb_camel_json_tag: 生成 model field 时将 json tag 的命名风格改为驼峰命名（仅作用于 protobuf）
+
+<!---->
+
+- snake_tag: tag 使用 snake_case 风格命名 (仅对 form、query、json 生效)
+
+<!---->
+
+- rm_tag value: 移除指定的 tag
+
+<!---->
+
+- exclude_file/E: 不需要更新的文件 (相对项目路径，支持多个)
+
+<!---->
+
+- help/h: 帮助命令
+
+### Client
+
+client 命令的示例及高级设置可参考 [hz client 代码生成](/zh/docs/hertz/tutorials/toolkit/more-feature/client/)。
+
+```console
+$ hz help client
+NAME:
+   hz client - Generate hertz client based on IDL
+
+USAGE:
+   hz client [command options] [arguments...]
+
+OPTIONS:
+   --idl value [ --idl value ]                                        Specify the IDL file path. (.thrift or .proto)
+   --module value, --mod value                                        Specify the Go module name.
+   --base_domain value                                                Specify the request domain.
+   --model_dir value                                                  Specify the model relative path (based on "out_dir").
+   --client_dir value                                                 Specify the client path. If not specified, IDL generated path is used for 'client' command; no client code is generated for 'new' command
+   --use value                                                        Specify the model package to import for handler.
+   --force_client_dir value                                           Specify the client path, and won't use namespaces as subpaths
+   --proto_path value, -I value [ --proto_path value, -I value ]      Add an IDL search path for includes. (Valid only if idl is protobuf)
+   --thriftgo value, -t value [ --thriftgo value, -t value ]          Specify arguments for the thriftgo. ({flag}={value})
+   --protoc value, -p value [ --protoc value, -p value ]              Specify arguments for the protoc. ({flag}={value})
+   --no_recurse                                                       Generate master model only. (default: false)
+   --enable_extends                                                   Parse 'extends' for thrift IDL (default: false)
+   --json_enumstr                                                     Use string instead of num for json enums when idl is thrift. (default: false)
+   --unset_omitempty                                                  Remove 'omitempty' tag for generated struct. (default: false)
+   --pb_camel_json_tag                                                Convert Name style for json tag to camel(Only works protobuf). (default: false)
+   --snake_tag                                                        Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
+   --rm_tag value [ --rm_tag value ]                                  Remove the specified tag
+   --exclude_file value, -E value [ --exclude_file value, -E value ]  Specify the files that do not need to be updated.
+   --customize_package value                                          Specify the path for package template.
+   --protoc-plugins value [ --protoc-plugins value ]                  Specify plugins for the protoc. ({plugin_name}:{options}:{out_dir})
+   --thrift-plugins value [ --thrift-plugins value ]                  Specify plugins for the thriftgo. ({plugin_name}:{options})
+   --help, -h                                                         show help (default: false)
+```
+
+- idl: idl 文件路径 (.thrift 或者 .proto)
+
+<!---->
+
+- module/mod: 指定 go mod 的名字，非 GOPATH 下必须指定，GOPATH 下默认以相对于 GOPATH 的路径作为名字
+
+<!---->
+
+- base_domain: 指定要访问的 domain，可以是域名、IP:PORT、service name(配合服务发现)，也可以在 IDL 中通过 [注解](/zh/docs/hertz/tutorials/toolkit/annotation/#hz-client) 声明
+
+<!---->
+
+- model_dir: 指定 model 的生成路径，默认为 "biz/model" (相对路径，基于 out_dir)
+
+<!---->
+
+- client_dir: 指定 hertz client 侧代码的生成路径，代码默认生成于 "{$MODULE}/{$MODEL_DIR}/{$namespace}/"，可使用该参数修改代码默认生成路径
+
+<!---->
+
+- use: 指定 hertz client 侧代码中 import model 包的位置，该参数适用于在生成 hertz client 侧代码之前已经生成过 model 代码的场景，使用该命令可直接 import 已有的 model 代码，无需再次生成
+
+<!---->
+
+- force_client_dir: 指定 client 侧代码的生成路径，且不使用 service_name 作为子路径，如代码默认生成的相对路径为 "hello_service/hello_service.go"、"hello_service/hertz_client.go"，使用该参数后变为 "hello_service.go"、"hertz_client.go"
+
+<!---->
+
+- proto_path/I: 当 idl 为 protobuf 时，指定 idl 的搜索路径，同 protoc 的 -I 指令
+
+<!---->
+
+- thriftgo/t: 透传给 thriftgo 的选项 ({flag}={value})
+
+<!---->
+
+- protoc/p: 透传给 protoc 的选项 ({flag}={value})
+
+<!---->
+
+- no_recurse: 只生成主 idl 的 model 代码，默认为 false
+
+<!---->
+
+- enable_extends: 解析 thrift idl 中的 extends
+
+<!---->
+
+- json_enumstr: 当 idl 为 thrift 时，json enums 使用 string 代替 num (透传给 thriftgo 的选项)
+
+<!---->
+
+- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 omitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional" 还是 "required" 决定
+
+<!---->
+
+- pb_camel_json_tag: 生成 model field 时将 json tag 的命名风格改为驼峰命名（仅作用于 protobuf）
+
+<!---->
+
+- snake_tag: tag 使用 snake_case 风格命名 (仅对 form、query、json 生效)
+
+<!---->
+
+- rm_tag value: 移除指定的 tag
+
+<!---->
+
+- exclude_file/E: 不需要更新的文件 (相对项目路径，支持多个)
+
+<!---->
+
+- customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：[自定义模板使用](/zh/docs/hertz/tutorials/toolkit/more-feature/template/)
+
+<!---->
+
+- protoc-plugins: 接入 protoc 相关的第三方生成代码插件，具体详见：[hz 接入第三方生成代码插件](/zh/docs/hertz/tutorials/toolkit/more-feature/plugin/)
+
+<!---->
+
+- thrift-plugins: 接入 thrift 相关的第三方生成代码插件，具体详见：[hz 接入第三方生成代码插件](/zh/docs/hertz/tutorials/toolkit/more-feature/plugin/)
+
+<!---->
+
+- help/h: 帮助命令
+</script><h1>hz 命令梳理</h1><div class=lead>hz 命令梳理。</div><header class=article-meta></header><h2 id=命令行参数说明>命令行参数说明</h2><h4 id=global>Global</h4><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-console data-lang=console><span style=display:flex><span><span style=color:#8f5902>$</span> hz --help
 </span></span><span style=display:flex><span><span style=color:#000;font-style:italic>NAME:
 </span></span></span><span style=display:flex><span><span style=color:#000;font-style:italic>   hz - A idl parser and code generator for Hertz projects
 </span></span></span><span style=display:flex><span><span style=color:#000;font-style:italic></span><span style=color:#a40000>
@@ -256,4 +803,4 @@
 </span></span></span></code></pre></div><ul><li>idl: idl 文件路径 (.thrift 或者 .proto)</li></ul><ul><li>module/mod: 指定 go mod 的名字，非 GOPATH 下必须指定，GOPATH 下默认以相对于 GOPATH 的路径作为名字</li></ul><ul><li>base_domain: 指定要访问的 domain，可以是域名、IP:PORT、service name(配合服务发现)，也可以在 IDL 中通过 <a href=/zh/docs/hertz/tutorials/toolkit/annotation/#hz-client>注解</a> 声明</li></ul><ul><li>model_dir: 指定 model 的生成路径，默认为 &ldquo;biz/model&rdquo; (相对路径，基于 out_dir)</li></ul><ul><li>client_dir: 指定 hertz client 侧代码的生成路径，代码默认生成于 &ldquo;{$MODULE}/{$MODEL_DIR}/{$namespace}/"，可使用该参数修改代码默认生成路径</li></ul><ul><li>use: 指定 hertz client 侧代码中 import model 包的位置，该参数适用于在生成 hertz client 侧代码之前已经生成过 model 代码的场景，使用该命令可直接 import 已有的 model 代码，无需再次生成</li></ul><ul><li>force_client_dir: 指定 client 侧代码的生成路径，且不使用 service_name 作为子路径，如代码默认生成的相对路径为 &ldquo;hello_service/hello_service.go&rdquo;、&ldquo;hello_service/hertz_client.go&rdquo;，使用该参数后变为 &ldquo;hello_service.go&rdquo;、&ldquo;hertz_client.go&rdquo;</li></ul><ul><li>proto_path/I: 当 idl 为 protobuf 时，指定 idl 的搜索路径，同 protoc 的 -I 指令</li></ul><ul><li>thriftgo/t: 透传给 thriftgo 的选项 ({flag}={value})</li></ul><ul><li>protoc/p: 透传给 protoc 的选项 ({flag}={value})</li></ul><ul><li>no_recurse: 只生成主 idl 的 model 代码，默认为 false</li></ul><ul><li>enable_extends: 解析 thrift idl 中的 extends</li></ul><ul><li>json_enumstr: 当 idl 为 thrift 时，json enums 使用 string 代替 num (透传给 thriftgo 的选项)</li></ul><ul><li>unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 omitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 &ldquo;optional&rdquo; 还是 &ldquo;required&rdquo; 决定</li></ul><ul><li>pb_camel_json_tag: 生成 model field 时将 json tag 的命名风格改为驼峰命名（仅作用于 protobuf）</li></ul><ul><li>snake_tag: tag 使用 snake_case 风格命名 (仅对 form、query、json 生效)</li></ul><ul><li>rm_tag value: 移除指定的 tag</li></ul><ul><li>exclude_file/E: 不需要更新的文件 (相对项目路径，支持多个)</li></ul><ul><li>customize_package: 自定义项目 package 相关模板，主要可针对 handler 模板进行定制化，具体详见：<a href=/zh/docs/hertz/tutorials/toolkit/more-feature/template/>自定义模板使用</a></li></ul><ul><li>protoc-plugins: 接入 protoc 相关的第三方生成代码插件，具体详见：<a href=/zh/docs/hertz/tutorials/toolkit/more-feature/plugin/>hz 接入第三方生成代码插件</a></li></ul><ul><li>thrift-plugins: 接入 thrift 相关的第三方生成代码插件，具体详见：<a href=/zh/docs/hertz/tutorials/toolkit/more-feature/plugin/>hz 接入第三方生成代码插件</a></li></ul><ul><li>help/h: 帮助命令</li></ul><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 May 8, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/dff8f175d96e832fb521f13246cce14399aefcdb>style: prettier lint fix (#1069) (dff8f175)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

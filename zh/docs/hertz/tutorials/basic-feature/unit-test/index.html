@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>单测 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/unit-test/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="单测"><meta property="og:description" content="Hertz 为用户提供的单元测试能力。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2022-05-23T00:00:00+00:00"><meta property="article:modified_time" content="2024-07-30T19:52:45+08:00"><meta itemprop=name content="单测"><meta itemprop=description content="Hertz 为用户提供的单元测试能力。"><meta itemprop=datePublished content="2022-05-23T00:00:00+00:00"><meta itemprop=dateModified content="2024-07-30T19:52:45+08:00"><meta itemprop=wordCount content="473"><meta itemprop=keywords content="单测"><meta name=twitter:card content="summary"><meta name=twitter:title content="单测"><meta name=twitter:description content="Hertz 为用户提供的单元测试能力。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>单测 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/unit-test/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="单测"><meta property="og:description" content="Hertz 为用户提供的单元测试能力。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2022-05-23T00:00:00+00:00"><meta property="article:modified_time" content="2024-07-30T19:52:45+08:00"><meta itemprop=name content="单测"><meta itemprop=description content="Hertz 为用户提供的单元测试能力。"><meta itemprop=datePublished content="2022-05-23T00:00:00+00:00"><meta itemprop=dateModified content="2024-07-30T19:52:45+08:00"><meta itemprop=wordCount content="473"><meta itemprop=keywords content="单测"><meta name=twitter:card content="summary"><meta name=twitter:title content="单测"><meta name=twitter:description content="Hertz 为用户提供的单元测试能力。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -110,7 +110,217 @@
 <label for=m-zhdocshertzreferenceversion-check><a href=/zh/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocshertzreferenceversion><span>版本说明</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/hertz/tutorials/basic-feature/unit-test.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/hertz/tutorials/basic-feature?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e5%8d%95%e6%b5%8b" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#创建请求上下文>创建请求上下文</a><ul><li><a href=#createutrequestcontext>CreateUtRequestContext</a></li></ul></li><li><a href=#发送请求>发送请求</a><ul><li><a href=#performrequest>PerformRequest</a></li></ul></li><li><a href=#接收响应>接收响应</a><ul><li><a href=#responserecorder-对象>ResponseRecorder 对象</a></li></ul></li><li><a href=#与业务-handler-配合使用>与业务 handler 配合使用</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/>基本特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/unit-test/>单测</a></li></ol></nav><div class=td-content><h1>单测</h1><div class=lead>Hertz 为用户提供的单元测试能力。</div><header class=article-meta></header><p>一个好的项目的构建离不开单元测试。为了帮助使用者构建出好的项目，hertz 当然也提供了单元测试的工具。</p><p>原理和 golang httptest 类似，都是不经过网络只执行 <code>ServeHTTP</code> 返回执行后的 response。</p><h2 id=创建请求上下文>创建请求上下文</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>CreateUtRequestContext</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>method</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>url</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>string</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>body</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>Body</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>headers</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000>Header</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>app</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>RequestContext</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#创建请求上下文>创建请求上下文</a><ul><li><a href=#createutrequestcontext>CreateUtRequestContext</a></li></ul></li><li><a href=#发送请求>发送请求</a><ul><li><a href=#performrequest>PerformRequest</a></li></ul></li><li><a href=#接收响应>接收响应</a><ul><li><a href=#responserecorder-对象>ResponseRecorder 对象</a></li></ul></li><li><a href=#与业务-handler-配合使用>与业务 handler 配合使用</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/>基本特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/unit-test/>单测</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=单测 data-url=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/unit-test/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+一个好的项目的构建离不开单元测试。为了帮助使用者构建出好的项目，hertz 当然也提供了单元测试的工具。
+
+原理和 golang httptest 类似，都是不经过网络只执行 `ServeHTTP` 返回执行后的 response。
+
+## 创建请求上下文
+
+```go
+func CreateUtRequestContext(method, url string, body *Body, headers ...Header) *app.RequestContext
+```
+
+### CreateUtRequestContext
+
+返回一个 `app.RequestContext` 对象，用于单元测试。
+
+函数签名：
+
+```go
+func CreateUtRequestContext(method, url string, body *Body, headers ...Header) *app.RequestContext
+```
+
+示例代码：
+
+```go
+import (
+	"bytes"
+	"testing"
+
+	"github.com/cloudwego/hertz/pkg/common/test/assert"
+	"github.com/cloudwego/hertz/pkg/common/ut"
+)
+
+func TestCreateUtRequestContext(t *testing.T) {
+	body := "1"
+	method := "PUT"
+	path := "/hey/dy"
+	headerKey := "Connection"
+	headerValue := "close"
+	c := ut.CreateUtRequestContext(method, path, &ut.Body{Body: bytes.NewBufferString(body), Len: len(body)},
+		ut.Header{Key: headerKey, Value: headerValue})
+
+	assert.DeepEqual(t, method, string(c.Method()))
+	assert.DeepEqual(t, path, string(c.Path()))
+	body1, err := c.Body()
+	assert.DeepEqual(t, nil, err)
+	assert.DeepEqual(t, body, string(body1))
+	assert.DeepEqual(t, headerValue, string(c.GetHeader(headerKey)))
+}
+```
+
+## 发送请求
+
+```go
+func PerformRequest(engine *route.Engine, method, url string, body *Body, headers ...Header) *ResponseRecorder
+```
+
+### PerformRequest
+
+`PerformRequest` 函数在没有网络传输的情况下向指定 engine 发送构造好的请求。
+
+url 可以是标准的相对路径也可以是绝对路径。
+
+如果想设置流式的请求体，可以通过 `server.WithStreamBody(true)` 将 engine.streamRequestBody 设置为 true 或者将 body 的 len 设置为 -1。
+
+该函数返回 [ResponseRecorder 对象](#responserecorder-对象)。
+
+函数签名：
+
+```go
+func PerformRequest(engine *route.Engine, method, url string, body *Body, headers ...Header) *ResponseRecorder
+```
+
+示例代码：
+
+```go
+import (
+   "bytes"
+   "context"
+   "testing"
+
+   "github.com/cloudwego/hertz/pkg/app"
+   "github.com/cloudwego/hertz/pkg/common/config"
+   "github.com/cloudwego/hertz/pkg/common/test/assert"
+   "github.com/cloudwego/hertz/pkg/common/ut"
+   "github.com/cloudwego/hertz/pkg/route"
+)
+
+func TestPerformRequest(t *testing.T) {
+   router := route.NewEngine(config.NewOptions([]config.Option{}))
+   router.GET("/hey/:user", func(ctx context.Context, c *app.RequestContext) {
+      user := c.Param("user")
+      assert.DeepEqual(t, "close", c.Request.Header.Get("Connection"))
+      c.Response.SetConnectionClose()
+      c.JSON(201, map[string]string{"hi": user})
+   })
+
+   w := ut.PerformRequest(router, "GET", "/hey/hertz", &ut.Body{bytes.NewBufferString("1"), 1},
+      ut.Header{"Connection", "close"})
+   resp := w.Result()
+   assert.DeepEqual(t, 201, resp.StatusCode())
+   assert.DeepEqual(t, "{\"hi\":\"hertz\"}", string(resp.Body()))
+}
+```
+
+## 接收响应
+
+在执行 [PerformRequest](#performrequest) 函数时，内部已经调用了 `NewRecorder`, `Header`, `Write`, `WriteHeader`, `Flush` 等函数，用户只需调用 `Result` 函数拿到返回的 `protocol.Response` 对象进行单测即可。
+
+### ResponseRecorder 对象
+
+用于记录 handler 的响应信息，内容如下：
+
+```go
+type ResponseRecorder struct {
+	// Code is the HTTP response code set by WriteHeader.
+	//
+	// Note that if a Handler never calls WriteHeader or Write,
+	// this might end up being 0, rather than the implicit
+	// http.StatusOK. To get the implicit value, use the Result
+	// method.
+	Code int
+
+	// header contains the headers explicitly set by the Handler.
+	// It is an internal detail.
+	header *protocol.ResponseHeader
+
+	// Body is the buffer to which the Handler's Write calls are sent.
+	// If nil, the Writes are silently discarded.
+	Body *bytes.Buffer
+
+	// Flushed is whether the Handler called Flush.
+	Flushed bool
+
+	result      *protocol.Response // cache of Result's return value
+	wroteHeader bool
+}
+```
+
+该对象提供的方法如下：
+
+| 函数签名                                                           | 说明                                                                                                            |
+| :----------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| `func NewRecorder() *ResponseRecorder`                             | 返回初始化后的 `ResponseRecorder` 对象                                                                          |
+| `func (rw *ResponseRecorder) Header() *protocol.ResponseHeader`    | 返回 `ResponseRecorder.header`                                                                                  |
+| `func (rw *ResponseRecorder) Write(buf []byte) (int, error)`       | 将 `[]byte` 类型的数据写入 `ResponseRecorder.Body`                                                              |
+| `func (rw *ResponseRecorder) WriteString(str string) (int, error)` | 将 `string` 类型的数据写入 `ResponseRecorder.Body`                                                              |
+| `func (rw *ResponseRecorder) WriteHeader(code int)`                | 设置 `ResponseRecorder.Code` 以及 `ResponseRecorder.header.SetStatusCode(code)`                                 |
+| `func (rw *ResponseRecorder) Flush()`                              | 实现了 `http.Flusher`，将 `ResponseRecorder.Flushed` 设置为 true                                                |
+| `func (rw *ResponseRecorder) Result() *protocol.Response`          | 返回 handler 生成的响应信息，至少包含 StatusCode, Header, Body 以及可选的 Trailer，未来将支持返回更多的响应信息 |
+
+## 与业务 handler 配合使用
+
+假如已经创建了 handler 以及一个函数 `Ping()`:
+
+```go
+
+package handler
+
+import (
+	"context"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+)
+
+// Ping .
+func Ping(ctx context.Context, c *app.RequestContext) {
+	c.JSON(200, utils.H{
+		"message": "pong",
+	})
+}
+```
+
+可以在单元测试中直接对 `Ping()` 函数进行测试：
+
+```go
+package handler
+
+import (
+	"bytes"
+	"testing"
+
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/test/assert"
+	"github.com/cloudwego/hertz/pkg/common/ut"
+)
+
+func TestPerformRequest(t *testing.T) {
+	h := server.Default()
+	h.GET("/ping", Ping)
+	w := ut.PerformRequest(h.Engine, "GET", "/ping", &ut.Body{bytes.NewBufferString("1"), 1},
+		ut.Header{"Connection", "close"})
+	resp := w.Result()
+	assert.DeepEqual(t, 201, resp.StatusCode())
+	assert.DeepEqual(t, "{\"message\":\"pong\"}", string(resp.Body()))
+}
+```
+
+之后对 `Ping()` 函数进行修改，单元测试文件不需要复制相同的业务逻辑。
+
+更多 examples 参考 [pkg/common/ut](https://github.com/cloudwego/hertz/tree/main/pkg/common/ut) 中的单测文件。
+</script><h1>单测</h1><div class=lead>Hertz 为用户提供的单元测试能力。</div><header class=article-meta></header><p>一个好的项目的构建离不开单元测试。为了帮助使用者构建出好的项目，hertz 当然也提供了单元测试的工具。</p><p>原理和 golang httptest 类似，都是不经过网络只执行 <code>ServeHTTP</code> 返回执行后的 response。</p><h2 id=创建请求上下文>创建请求上下文</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>CreateUtRequestContext</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>method</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>url</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>string</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>body</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>Body</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>headers</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000>Header</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>app</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>RequestContext</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span></code></pre></div><h3 id=createutrequestcontext>CreateUtRequestContext</h3><p>返回一个 <code>app.RequestContext</code> 对象，用于单元测试。</p><p>函数签名：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>CreateUtRequestContext</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>method</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>url</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>string</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>body</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>Body</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>headers</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000>Header</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>app</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>RequestContext</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span></code></pre></div><p>示例代码：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>import</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>	</span><span style=color:#4e9a06>&#34;bytes&#34;</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -227,4 +437,4 @@
 </span></span></span></code></pre></div><p>之后对 <code>Ping()</code> 函数进行修改，单元测试文件不需要复制相同的业务逻辑。</p><p>更多 examples 参考 <a href=https://github.com/cloudwego/hertz/tree/main/pkg/common/ut>pkg/common/ut</a> 中的单测文件。</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 July 30, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/03e698d928c335ff804c26068413f3293c9eb276>docs(hertz): function signature error (#1114) (03e698d9)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

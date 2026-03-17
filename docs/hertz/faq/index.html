@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>FAQ | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/faq/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="FAQ"><meta property="og:description" content="Hertz FAQ."><meta property="og:locale" content="en"><meta property="og:type" content="website"><meta itemprop=name content="FAQ"><meta itemprop=description content="Hertz FAQ."><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="748"><meta itemprop=keywords content="Memory Usage,Common Error Code,Context Guide,Numeric Precision Problem"><meta name=twitter:card content="summary"><meta name=twitter:title content="FAQ"><meta name=twitter:description content="Hertz FAQ."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>FAQ | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/faq/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="FAQ"><meta property="og:description" content="Hertz FAQ."><meta property="og:locale" content="en"><meta property="og:type" content="website"><meta itemprop=name content="FAQ"><meta itemprop=description content="Hertz FAQ."><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="748"><meta itemprop=keywords content="Memory Usage,Common Error Code,Context Guide,Numeric Precision Problem"><meta name=twitter:card content="summary"><meta name=twitter:title content="FAQ"><meta name=twitter:description content="Hertz FAQ."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,162 @@
 <label for=m-docshertzreferenceversion-check><a href=/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshertzreferenceversion><span>Version Descriptions</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/hertz/faq/_index.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/hertz/faq?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=FAQ" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#high-memory-usage>High Memory Usage</a><ul><li><a href=#connections-not-closing-due-to-client-non-standard-usage>Connections not Closing due to Client Non-standard Usage</a></li><li><a href=#vast-requestresponse>Vast Request/Response</a></li></ul></li><li><a href=#common-error-code-checking>Common Error Code Checking</a><ul><li><a href=#404>404</a></li><li><a href=#417>417</a></li><li><a href=#500>500</a></li></ul></li><li><a href=#context-guide>Context Guide</a><ul><li><a href=#description>Description</a></li><li><a href=#metadata-storage>Metadata Storage</a></li></ul></li><li><a href=#numeric-precision-problem>Numeric Precision Problem</a><ul><li><a href=#description-1>Description</a></li><li><a href=#solution>Solution</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/faq/>FAQ</a></li></ol></nav><div class=td-content><h1>FAQ</h1><div class=lead>Hertz FAQ.</div><header class=article-meta></header><h2 id=high-memory-usage>High Memory Usage</h2><h3 id=connections-not-closing-due-to-client-non-standard-usage>Connections not Closing due to Client Non-standard Usage</h3><p>If the client initiates a large number of connections without closing them, there will be a large waste of resources in extreme cases, which can cause high memory usage problems over time.</p><p><strong>Solution</strong></p><p>Configure <code>idleTimeout</code> reasonably. Hertz Server will close the connection to ensure the stability of the server after the timeout. The default configuration is 3 minutes.</p><h3 id=vast-requestresponse>Vast Request/Response</h3><ol><li>If the request and response are very large, the data will all enter the memory, causing great pressure on it, when stream and chunk are not used.</li><li>The streaming under the netpoll network library is a fake streaming. Since netpoll uses the LT trigger mode, it will trigger netpoll to read data when data arrives. The <code>Reader</code> interface is not implemented in terms of interface design. To enable streaming, Hertz encapsulates netpoll as a Reader, but the data still enters memory uncontrollably, so in a case of very vast streaming requests, memory pressure can result.</li></ol><p><strong>Solution</strong></p><p>For very vast requests cases, use a combination of streaming and go net.</p><h2 id=common-error-code-checking>Common Error Code Checking</h2><p>If the framework reports the following error codes, you can check it for possible causes. If there is an error code other than the following, the error code is not caused by the framework and needs to be located by the user to see whether it is set by itself or by some middleware.</p><h3 id=404>404</h3><ol><li>Access to the wrong port, commonly access to the debug port.<ol><li>Solution: Distinguish between listening port for framework service and listening port for debug server, the default is 8888.</li></ol></li><li>No routes matched<ol><li>Check whether all expected routes are registered correctly based on the startup log.</li><li>Check that the access method is correct.</li></ol></li></ol><h3 id=417>417</h3><p>The server returns <code>false</code> after executing the custom <code>ContinueHandler</code> (the server actively rejects the subsequent body of the 100 Continue).</p><h3 id=500>500</h3><ol><li>Throwing the panic in middleware or in <code>handlerFunc</code>.<ol><li>Solution: Locate specific problems with panic stack information.</li></ol></li><li>In the fs case, the path carries <code>/../</code>, and unexpected files may be accessed. The error log in server app log: <code>cannot serve path with '/../' at position %d due to security reasons: %q</code>.<ol><li>Solution: Check for illegal requests.</li></ol></li></ol><h2 id=context-guide>Context Guide</h2><h3 id=description>Description</h3><p>Hertz also provides a standard <code>context.Content</code> and a request context as input arguments to the function in the <code>HandleFunc</code> Design. The <code>handler/middleware</code> function signature is:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>HandlerFunc</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>func</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>c</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>RequestContext</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#high-memory-usage>High Memory Usage</a><ul><li><a href=#connections-not-closing-due-to-client-non-standard-usage>Connections not Closing due to Client Non-standard Usage</a></li><li><a href=#vast-requestresponse>Vast Request/Response</a></li></ul></li><li><a href=#common-error-code-checking>Common Error Code Checking</a><ul><li><a href=#404>404</a></li><li><a href=#417>417</a></li><li><a href=#500>500</a></li></ul></li><li><a href=#context-guide>Context Guide</a><ul><li><a href=#description>Description</a></li><li><a href=#metadata-storage>Metadata Storage</a></li></ul></li><li><a href=#numeric-precision-problem>Numeric Precision Problem</a><ul><li><a href=#description-1>Description</a></li><li><a href=#solution>Solution</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/faq/>FAQ</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=FAQ data-url=https://www.cloudwego.io/docs/hertz/faq/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## High Memory Usage
+
+### Connections not Closing due to Client Non-standard Usage
+
+If the client initiates a large number of connections without closing them, there will be a large waste of resources in extreme cases, which can cause high memory usage problems over time.
+
+**Solution**
+
+Configure `idleTimeout` reasonably. Hertz Server will close the connection to ensure the stability of the server after the timeout. The default configuration is 3 minutes.
+
+### Vast Request/Response
+
+1. If the request and response are very large, the data will all enter the memory, causing great pressure on it, when stream and chunk are not used.
+2. The streaming under the netpoll network library is a fake streaming. Since netpoll uses the LT trigger mode, it will trigger netpoll to read data when data arrives. The `Reader` interface is not implemented in terms of interface design. To enable streaming, Hertz encapsulates netpoll as a Reader, but the data still enters memory uncontrollably, so in a case of very vast streaming requests, memory pressure can result.
+
+**Solution**
+
+For very vast requests cases, use a combination of streaming and go net.
+
+## Common Error Code Checking
+
+If the framework reports the following error codes, you can check it for possible causes. If there is an error code other than the following, the error code is not caused by the framework and needs to be located by the user to see whether it is set by itself or by some middleware.
+
+### 404
+
+1. Access to the wrong port, commonly access to the debug port.
+   1. Solution: Distinguish between listening port for framework service and listening port for debug server, the default is 8888.
+2. No routes matched
+   1. Check whether all expected routes are registered correctly based on the startup log.
+   2. Check that the access method is correct.
+
+### 417
+
+The server returns `false` after executing the custom `ContinueHandler` (the server actively rejects the subsequent body of the 100 Continue).
+
+### 500
+
+1. Throwing the panic in middleware or in `handlerFunc`.
+   1. Solution: Locate specific problems with panic stack information.
+2. In the fs case, the path carries `/../`, and unexpected files may be accessed. The error log in server app log: `cannot serve path with '/../' at position %d due to security reasons: %q`.
+   1. Solution: Check for illegal requests.
+
+## Context Guide
+
+### Description
+
+Hertz also provides a standard `context.Content` and a request context as input arguments to the function in the `HandleFunc` Design. The `handler/middleware` function signature is:
+
+```go
+type HandlerFunc func(c context.Context, ctx *RequestContext)
+```
+
+### Metadata Storage
+
+Both contexts have the ability to store values, which is a simple principle for choosing which one to use: the life cycle of the stored value and the selected context to match.
+
+**Specifics**
+
+The `ctx` is primarily used to store request-level variables, which are recycled after the request ends. It is characterized by high query efficiency (the bottom is `map`), unsafe coroutines and the `context.Context` Interface is not implemented.
+`c` is passed as the context between middleware `/handler`. With all the semantics of `context.Content` and safe coroutine. All that requires the `context.Content` interface as input arguments, just pass `c` directly.
+
+In addition, Hertz also provides the `ctx.Copy()` interface to make it easier for businesses to obtain a copy of the safe coroutine if they are faced with cases where they must pass `ctx` asynchronously.
+
+## Numeric Precision Problem
+
+### Description
+
+1. JavaScript's numeric type will lose precision once the number exceeds the limit, which will lead to inconsistencies between the front and back end values.
+
+```javascript
+var s = '{"x":6855337641038665531}';
+var obj = JSON.parse(s);
+alert(obj.x);
+
+// Output 6855337641038666000
+```
+
+2. In the JSON specification, integers and floating-point types are not distinguished for numeric types.When using `json.Unmarshal` for JSON deserialization, if no data type is specified, `interface{}` is used as the receiving variable, and `float64` is used as the accepted type of the number by default. When the precision of the number exceedsWhen the precision range that float can represent, it will cause the problem of loss of precision.
+
+### Solution
+
+1. Use the `string` tag of the json standard package.
+
+```go
+package main
+
+import (
+    "context"
+
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+type User struct {
+    ID int `json:"id,string"`
+}
+
+func main() {
+    h := server.Default()
+
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        var u User
+        u.ID = 6855337641038665531
+        c.JSON(consts.StatusOK, u)
+    })
+
+    h.Spin()
+}
+```
+
+2. Using `json.Number`
+
+```go
+package main
+
+import (
+    "context"
+    "encoding/json"
+
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+type User struct {
+    ID json.Number `json:"id"`
+}
+
+func main() {
+    h := server.Default()
+
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        var u User
+        err := json.Unmarshal([]byte(`{"id":6855337641038665531}`), &u)
+        if err != nil {
+            panic(err)
+        }
+        c.JSON(consts.StatusOK, u)
+    })
+
+    h.Spin()
+}
+```
+</script><h1>FAQ</h1><div class=lead>Hertz FAQ.</div><header class=article-meta></header><h2 id=high-memory-usage>High Memory Usage</h2><h3 id=connections-not-closing-due-to-client-non-standard-usage>Connections not Closing due to Client Non-standard Usage</h3><p>If the client initiates a large number of connections without closing them, there will be a large waste of resources in extreme cases, which can cause high memory usage problems over time.</p><p><strong>Solution</strong></p><p>Configure <code>idleTimeout</code> reasonably. Hertz Server will close the connection to ensure the stability of the server after the timeout. The default configuration is 3 minutes.</p><h3 id=vast-requestresponse>Vast Request/Response</h3><ol><li>If the request and response are very large, the data will all enter the memory, causing great pressure on it, when stream and chunk are not used.</li><li>The streaming under the netpoll network library is a fake streaming. Since netpoll uses the LT trigger mode, it will trigger netpoll to read data when data arrives. The <code>Reader</code> interface is not implemented in terms of interface design. To enable streaming, Hertz encapsulates netpoll as a Reader, but the data still enters memory uncontrollably, so in a case of very vast streaming requests, memory pressure can result.</li></ol><p><strong>Solution</strong></p><p>For very vast requests cases, use a combination of streaming and go net.</p><h2 id=common-error-code-checking>Common Error Code Checking</h2><p>If the framework reports the following error codes, you can check it for possible causes. If there is an error code other than the following, the error code is not caused by the framework and needs to be located by the user to see whether it is set by itself or by some middleware.</p><h3 id=404>404</h3><ol><li>Access to the wrong port, commonly access to the debug port.<ol><li>Solution: Distinguish between listening port for framework service and listening port for debug server, the default is 8888.</li></ol></li><li>No routes matched<ol><li>Check whether all expected routes are registered correctly based on the startup log.</li><li>Check that the access method is correct.</li></ol></li></ol><h3 id=417>417</h3><p>The server returns <code>false</code> after executing the custom <code>ContinueHandler</code> (the server actively rejects the subsequent body of the 100 Continue).</p><h3 id=500>500</h3><ol><li>Throwing the panic in middleware or in <code>handlerFunc</code>.<ol><li>Solution: Locate specific problems with panic stack information.</li></ol></li><li>In the fs case, the path carries <code>/../</code>, and unexpected files may be accessed. The error log in server app log: <code>cannot serve path with '/../' at position %d due to security reasons: %q</code>.<ol><li>Solution: Check for illegal requests.</li></ol></li></ol><h2 id=context-guide>Context Guide</h2><h3 id=description>Description</h3><p>Hertz also provides a standard <code>context.Content</code> and a request context as input arguments to the function in the <code>HandleFunc</code> Design. The <code>handler/middleware</code> function signature is:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>HandlerFunc</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>func</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>c</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>RequestContext</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span></code></pre></div><h3 id=metadata-storage>Metadata Storage</h3><p>Both contexts have the ability to store values, which is a simple principle for choosing which one to use: the life cycle of the stored value and the selected context to match.</p><p><strong>Specifics</strong></p><p>The <code>ctx</code> is primarily used to store request-level variables, which are recycled after the request ends. It is characterized by high query efficiency (the bottom is <code>map</code>), unsafe coroutines and the <code>context.Context</code> Interface is not implemented.
 <code>c</code> is passed as the context between middleware <code>/handler</code>. With all the semantics of <code>context.Content</code> and safe coroutine. All that requires the <code>context.Content</code> interface as input arguments, just pass <code>c</code> directly.</p><p>In addition, Hertz also provides the <code>ctx.Copy()</code> interface to make it easier for businesses to obtain a copy of the safe coroutine if they are faced with cases where they must pass <code>ctx</code> asynchronously.</p><h2 id=numeric-precision-problem>Numeric Precision Problem</h2><h3 id=description-1>Description</h3><ol><li>JavaScript&rsquo;s numeric type will lose precision once the number exceeds the limit, which will lead to inconsistencies between the front and back end values.</li></ol><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=display:flex><span><span style=color:#204a87;font-weight:700>var</span> <span style=color:#000>s</span> <span style=color:#ce5c00;font-weight:700>=</span> <span style=color:#4e9a06>&#39;{&#34;x&#34;:6855337641038665531}&#39;</span><span style=color:#000;font-weight:700>;</span>
 </span></span><span style=display:flex><span><span style=color:#204a87;font-weight:700>var</span> <span style=color:#000>obj</span> <span style=color:#ce5c00;font-weight:700>=</span> <span style=color:#000>JSON</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>parse</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>s</span><span style=color:#000;font-weight:700>);</span>
@@ -172,4 +327,4 @@
 </span></span></span></code></pre></div><div class=section-index></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified May 8, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/dff8f175d96e832fb521f13246cce14399aefcdb>style: prettier lint fix (#1069) (dff8f175)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Getting Started | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/volo/motore/getting_started/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Getting Started"><meta property="og:description" content="This document introduces the core concepts of the Motore framework through a complete example to help you quickly understand Motore."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2025-11-24T16:04:16+08:00"><meta itemprop=name content="Getting Started"><meta itemprop=description content="This document introduces the core concepts of the Motore framework through a complete example to help you quickly understand Motore."><meta itemprop=dateModified content="2025-11-24T16:04:16+08:00"><meta itemprop=wordCount content="1722"><meta itemprop=keywords content="Motore,Volo,Rust,Middleware,Getting Started"><meta name=twitter:card content="summary"><meta name=twitter:title content="Getting Started"><meta name=twitter:description content="This document introduces the core concepts of the Motore framework through a complete example to help you quickly understand Motore."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Getting Started | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/volo/motore/getting_started/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Getting Started"><meta property="og:description" content="This document introduces the core concepts of the Motore framework through a complete example to help you quickly understand Motore."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2025-11-24T16:04:16+08:00"><meta itemprop=name content="Getting Started"><meta itemprop=description content="This document introduces the core concepts of the Motore framework through a complete example to help you quickly understand Motore."><meta itemprop=dateModified content="2025-11-24T16:04:16+08:00"><meta itemprop=wordCount content="1722"><meta itemprop=keywords content="Motore,Volo,Rust,Middleware,Getting Started"><meta name=twitter:card content="summary"><meta name=twitter:title content="Getting Started"><meta name=twitter:description content="This document introduces the core concepts of the Motore framework through a complete example to help you quickly understand Motore."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -38,7 +38,348 @@
 <label for=m-docsvolofaq-check><a href=/docs/volo/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-docsvolofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/volo/motore/getting_started.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/volo/motore?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Getting%20Started" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/volo/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#prepare-the-environment>Prepare the Environment</a></li><li><a href=#tutorial-text>Tutorial Text</a></li><li><a href=#what-youve-learned>What you&rsquo;ve learned</a></li><li><a href=#whats-next>What&rsquo;s Next?</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/>Volo</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/motore/>Motore</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/volo/motore/getting_started/>Getting Started</a></li></ol></nav><div class=td-content><h1>Getting Started</h1><div class=lead>This document introduces the core concepts of the Motore framework through a complete example to help you quickly understand Motore.</div><header class=article-meta></header><h2 id=prepare-the-environment>Prepare the Environment</h2><p>The tutorial text itself is runnable Rust code. You can read it directly, or you can copy and paste the tutorial text into the <code>src/main.rs</code> file of a new cargo package and view it in an IDE. This provides many benefits, such as seeing type hints from rust-analyzer, which enhances the tutorial experience.</p><p>Don&rsquo;t forget to add the dependencies required by the tutorial text to your <code>Cargo.toml</code> file:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span><span style=color:#000;font-weight:700>[</span><span style=color:#000>package</span><span style=color:#000;font-weight:700>]</span>
+<a href=https://github.com/cloudwego/volo/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#prepare-the-environment>Prepare the Environment</a></li><li><a href=#tutorial-text>Tutorial Text</a></li><li><a href=#what-youve-learned>What you&rsquo;ve learned</a></li><li><a href=#whats-next>What&rsquo;s Next?</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/>Volo</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/volo/motore/>Motore</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/volo/motore/getting_started/>Getting Started</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Getting Started" data-url=https://www.cloudwego.io/docs/volo/motore/getting_started/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>## Prepare the Environment
+
+The tutorial text itself is runnable Rust code. You can read it directly, or you can copy and paste the tutorial text into the `src/main.rs` file of a new cargo package and view it in an IDE. This provides many benefits, such as seeing type hints from rust-analyzer, which enhances the tutorial experience.
+
+Don't forget to add the dependencies required by the tutorial text to your `Cargo.toml` file:
+
+```toml
+[package]
+name = "hello-motore"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+motore = { version = "0"}
+
+# Motore depends on tokio, and we also need a tokio runtime to execute the main function
+tokio = { version = "1", features = ["full"] }
+```
+
+## Tutorial Text
+
+```rust
+/*
+ * Motore: A Tower-inspired asynchronous middleware abstraction library for Rust
+ *
+ * Core Concepts:
+ * 1. `Service`: Represents an asynchronous service (Request -> Response).
+ * 2. `Layer`: Represents middleware that wraps a `Service` and returns a new `Service`.
+ * 3. `Cx`: A mutable context that is passed through the entire call chain. You can use it to pass data throughout the call chain (such as database connections, tracing spans, user information, etc.). This is a major feature of Motore and one of the main differences from Tower.
+ */
+
+// -----------------------------------------------------------------------------
+// 1. Implement a `Service`
+// -----------------------------------------------------------------------------
+
+// First, let's define a context
+#[derive(Debug, Clone)]
+struct MyContext {
+    request_id: u32,
+    processing_steps: u32, // Example: a writable context state
+}
+
+use motore::service::Service;
+use std::convert::Infallible; 
+
+// This is our "string to uppercase" service
+struct ToUppercaseService;
+
+// --- Implement the Service trait for ToUppercaseService ---
+impl Service<MyContext, String> for ToUppercaseService {
+    type Response = String;
+    type Error = Infallible; // Infallible means this service will never fail
+
+    async fn call(&self, cx: &mut MyContext, req: String) -> Result<Self::Response, Self::Error> {
+        // --- Demonstrate modifying &mut Cx ---
+        cx.processing_steps += 1;
+        
+        println!("[ToUppercaseService] handling req id: {}, step: {}", cx.request_id, cx.processing_steps);
+        let res = Ok(req.to_uppercase());
+        println!("[ToUppercaseService] responding req id: {}, step: {}", cx.request_id, cx.processing_steps);
+        res
+    }
+}
+
+
+// -----------------------------------------------------------------------------
+// 2. Implement a `Layer`
+// -----------------------------------------------------------------------------
+
+// `Layer` (from `motore/src/layer/mod.rs`) is a factory
+// that takes an inner service `S` and returns a new, wrapped service `Self::Service`.
+/*
+pub trait Layer<S> {
+    /// The new Service type returned after wrapping
+    type Service;
+
+    /// Wraps the inner service S into a new service Self::Service
+    fn layer(self, inner: S) -> Self::Service;
+}
+*/
+
+// --- Implement a `Layer` (logging middleware) ---
+
+// This is the standard pattern for a Layer: "two structs"
+// 1. `LogLayer`: The Layer itself (the factory)
+#[derive(Clone)]
+struct LogLayer {
+    target: &'static str,
+}
+
+// 2. `LogService<S>`: The new Service returned by the Layer (the wrapper)
+#[derive(Clone)]
+struct LogService<S> {
+    inner: S, // The inner service
+    target: &'static str,
+}
+
+use motore::layer::Layer;
+// Implement the Layer trait for LogLayer
+impl<S> Layer<S> for LogLayer {
+    type Service = LogService<S>;
+
+    fn layer(self, inner: S) -> Self::Service {
+        // Return the new, wrapped Service
+        LogService {
+            inner,
+            target: self.target,
+        }
+    }
+}
+
+impl<Cx, Req, S> Service<Cx, Req> for LogService<S>
+where
+    // `S` must also be a Service and satisfy constraints like Send/Sync
+    S: Service<Cx, Req> + Send + Sync,
+    Cx: Send + 'static,
+    Req: Send + 'static,
+{
+    // The response and error types are usually the same as the inner service
+    type Response = S::Response;
+    type Error = S::Error;
+
+    async fn call(&self, cx: &mut Cx, req: Req) -> Result<Self::Response, Self::Error> {
+        // Execute logic before calling the inner service
+        println!("[LogLayer] target: {}, enter", self.target);
+        
+        // Call the inner service
+        let result = self.inner.call(cx, req).await;
+
+        // Execute logic after the inner service returns
+        match &result {
+            Ok(_) => println!("[LogLayer] target: {}, exit (Ok)", self.target),
+            Err(_) => println!("[LogLayer] target: {}, exit (Err)", self.target),
+        }
+        
+        result
+    }
+}
+
+// -----------------------------------------------------------------------------
+// 3. Extended Knowledge: How `async fn call` works
+// -----------------------------------------------------------------------------
+
+// The core `Service` trait in `motore` (defined in motore/src/service/mod.rs)
+// is actually defined like this:
+/*
+pub trait Service<Cx, Request> {
+    /// The response type returned when the service processes successfully
+    type Response;
+    /// The error type returned when the service fails to process
+    type Error;
+
+    /// Core method: process the request and return the response asynchronously
+    ///
+    /// Note this signature! It is *not* `async fn`.
+    /// It is a regular function that returns `impl Future`.
+    /// This syntax is known as "Return Position `impl Trait` in Trait" (RPITIT).
+    fn call(
+        &self,
+        cx: &mut Cx,
+        req: Request,
+    ) -> impl std::future::Future<Output = Result<Self::Response, Self::Error>> + Send;
+}
+*/
+
+// You might have noticed:
+// Why does the `Service` trait require the signature `fn call(...) -> impl Future`,
+// but what we wrote (in ToUppercaseService and LogService) was `async fn call`?
+// These two signatures are different, so why does it compile?
+
+// The answer is the `async fn in trait` (AFIT) feature.
+
+// With the AFIT feature, `async fn` in a trait is actually "syntactic sugar"
+// for `fn ... -> impl Future`.
+
+// When the Rust compiler sees you trying to implement a trait
+// that expects `fn call(...) -> impl Future` with `async fn call`,
+// it automatically performs this "syntactic sugar" conversion (the process is called desugaring).
+
+// **In summary:**
+// 1. Motore's `Service` trait is defined using RPITIT (`fn ... -> impl Future`).
+// 2. Rust's AFIT feature allows us to implement this trait directly using `async fn`.
+// 3. When writing services and middleware, we get both the convenience of `async/await` and the zero-cost abstractions of `impl Trait`.
+
+
+// -----------------------------------------------------------------------------
+// 4. Assembling Services and Middleware with `ServiceBuilder`
+// -----------------------------------------------------------------------------
+
+// `ServiceBuilder` (from `motore/src/builder.rs`)
+// allows you to stack multiple Layers onto a Service.
+
+use motore::builder::ServiceBuilder;
+use std::time::Duration;
+use motore::timeout::TimeoutLayer; // A Layer that comes with Motore
+
+async fn run_builder() {
+    // 1. Create a ServiceBuilder
+    let builder = ServiceBuilder::new()
+        // 2. Add Layers.
+        //    Request execution order: top to bottom
+        //    Response execution order: bottom to top
+        .layer(LogLayer { target: "Outer" })
+        .layer(TimeoutLayer::new(Some(Duration::from_secs(1))))
+        .layer(LogLayer { target: "Inner" });
+
+    // 3. Apply the Layer stack to an "innermost" service
+    //    Here we use `ToUppercaseService` as the core business service
+    let service = builder.service(ToUppercaseService);
+
+    // 4. Prepare the context and request
+    //    Note: processing_steps starts at 0
+    let mut cx = MyContext { request_id: 42, processing_steps: 0 };
+    let req = "hello motore".to_string();
+
+    // 5. Call it!
+    let res = service.call(&mut cx, req).await;
+
+    println!("\nFinal response: {:?}", res);
+    
+    /*
+     * Expected output:
+     *
+     * [LogLayer] target: Outer, enter
+     * [LogLayer] target: Inner, enter
+     * [ToUppercaseService] handling req id: 42, step: 1     <-- step becomes 1
+     * [ToUppercaseService] responding req id: 42, step: 1
+     * [LogLayer] target: Inner, exit (Ok)
+     * [LogLayer] target: Outer, exit (Ok)
+     *
+     * Final response: Ok("HELLO MOTORE")
+     */
+
+     // Finally, the original cx has been modified
+     println!("Final context steps: {}", cx.processing_steps); // Will print 1
+}
+
+// Fun fact: `ServiceBuilder` also implements the `Layer` trait, which means
+// you can nest one `ServiceBuilder` inside another `ServiceBuilder`'s `layer` method:
+// --- Suppose we have a bunch of middleware ---
+// struct LogLayer;
+// struct TimeoutLayer;
+// struct AuthLayer;
+// struct MetricsLayer;
+// struct MyCoreService;
+//
+// 1. We can create a reusable "authentication" middleware stack
+// let auth_stack = ServiceBuilder::new()
+//     .layer(MetricsLayer)
+//     .layer(AuthLayer);
+//
+// 2. Now, `auth_stack` is a `ServiceBuilder<...>`
+//    Since `ServiceBuilder` implements `Layer`,
+//    we can use the entire `auth_stack` as a single `Layer`!
+//
+// 3. Use `auth_stack` in our main `ServiceBuilder`
+// let final_service = ServiceBuilder::new()
+//     .layer(LogLayer)
+//     .layer(auth_stack) // <-- This step works precisely because `ServiceBuilder` implements `Layer`
+//     .layer(TimeoutLayer)
+//     .service(MyCoreService);
+
+// -----------------------------------------------------------------------------
+// 5. Helper Utility: `service_fn`
+// -----------------------------------------------------------------------------
+
+// Sometimes you don't want to create a new struct for a simple service.
+// `motore/src/service/service_fn.rs` provides `service_fn`, which can directly convert a compliant function into a `Service`.
+
+use motore::service::service_fn;
+
+async fn my_handler_func(cx: &mut MyContext, req: String) -> Result<String, Infallible> {
+    // --- Demonstrate modifying &mut Cx ---
+    cx.processing_steps += 10;
+
+    println!("[service_fn] handling req id: {}, step: {}", cx.request_id, cx.processing_steps);
+    Ok(req.to_lowercase())
+}
+
+
+#[tokio::main]
+async fn main() {
+    println!("\n--- Example 1: Running `run_builder` ---");
+
+    run_builder().await;
+
+    println!("\n--- Example 2: Running `service_fn` (standalone) ---");
+
+    // `service_fn` can convert a function or closure that matches the `async fn(&mut Cx, Req) -> Result<Res, Err>` signature
+    // directly into a `Service`.
+    let fn_service = service_fn(my_handler_func);
+
+    // Let's run it to prove it works
+    let mut cx1 = MyContext { request_id: 101, processing_steps: 0 };
+    let res1 = fn_service.call(&mut cx1, "HELLO WORLD".to_string()).await;
+    // Check the modified context
+    println!("service_fn response: {:?}, context steps: {}", res1, cx1.processing_steps); // prints 10
+
+
+    println!("\n--- Example 3: Running `service_fn` (in a Builder) ---");
+
+    // You can also use it in a ServiceBuilder:
+    let service_from_fn = ServiceBuilder::new()
+        .layer(LogLayer { target: "ServiceFn" })
+        .service_fn(my_handler_func); // shorthand for .service(service_fn(my_handler_func))
+
+    // Run it
+    let mut cx2 = MyContext { request_id: 202, processing_steps: 0 };
+    let res2 = service_from_fn.call(&mut cx2, "ANOTHER EXAMPLE".to_string()).await;
+    // Check the modified context
+    println!("service_from_fn response: {:?}, context steps: {}", res2, cx2.processing_steps); // prints 10
+}
+```
+
+## What you've learned
+
+-  Motore's core design: Service, Layer, and the mutable Cx context
+-  Rust's AFIT and RPITIT features, and their application in Motore
+-  How to assemble Services and Layers using `ServiceBuilder`
+
+## What's Next?
+
+Congratulations on getting this far! We have now learned the basic usage of Motore. We hope it will make your journey in the world of Volo much smoother.
+
+Next, you can check out some features of Motore that were not covered in this tutorial:
+
+1. The tutorial only mentioned `Service<Cx, Request>`, but Motore also provides some important `Service` variants: for example, [`UnaryService<Request>`](https://deepwiki.com/cloudwego/motore/2.1-service-trait#unaryservice-variant) without a context, and [`BoxService<Cx, T, U, E>`](https://deepwiki.com/cloudwego/motore/2.1-service-trait#type-erasure-with-boxservice) for type erasure.
+2. Motore provides more advanced tools for Layers and ServiceBuilder: for example, [layer_fn](https://deepwiki.com/cloudwego/motore/4.2-layer-combinators#layerfn-implementation) which is very similar to `service_fn`, [option_layer](https://deepwiki.com/cloudwego/motore/2.3-service-builder#conditional-layer-application) which supports `Option<Layer<...>>` (and the [`Either<A, B>` enum](https://deepwiki.com/cloudwego/motore/6-utilities#either-type) that supports this feature), and [map_err](https://deepwiki.com/cloudwego/motore/2.3-service-builder#convenience-methods-for-common-middleware) as a form of Layer.
+3. Through the `ServiceExt` Trait, Motore [provides](https://deepwiki.com/cloudwego/motore/4.1-service-combinators#serviceext-trait-and-combinator-overview) `Future`-like methods for `Service`, allowing you to call `.map_err()` and `.map_response()` on a Service.
+4. Bidirectional compatibility with the Tower ecosystem: Motore is not only inspired by `Tower`, but also [provides a complete **bidirectional** adaptation layer](https://deepwiki.com/cloudwego/motore/5.1-tower-integration) for it.
+5. Motore provides a dedicated [`MakeConnection<Address>` Trait](https://deepwiki.com/cloudwego/motore/6-utilities#makeconnection-trait) to abstract the creation of "connections".
+6. The Motore package [enables the `service_send` feature by default](https://deepwiki.com/cloudwego/motore/1.1-project-structure#feature-flag-configuration). It requires that all `Future`s returned by `Service` satisfy the `Send` constraint. `motore-macros` also checks this feature. If you disable it, Motore can be used in a single-threaded environment (e.g., `tokio::main(flavor = "current_thread")`) without the `Send` constraint.
+</script><h1>Getting Started</h1><div class=lead>This document introduces the core concepts of the Motore framework through a complete example to help you quickly understand Motore.</div><header class=article-meta></header><h2 id=prepare-the-environment>Prepare the Environment</h2><p>The tutorial text itself is runnable Rust code. You can read it directly, or you can copy and paste the tutorial text into the <code>src/main.rs</code> file of a new cargo package and view it in an IDE. This provides many benefits, such as seeing type hints from rust-analyzer, which enhances the tutorial experience.</p><p>Don&rsquo;t forget to add the dependencies required by the tutorial text to your <code>Cargo.toml</code> file:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span><span style=color:#000;font-weight:700>[</span><span style=color:#000>package</span><span style=color:#000;font-weight:700>]</span>
 </span></span><span style=display:flex><span><span style=color:#000>name</span> <span style=color:#000;font-weight:700>=</span> <span style=color:#4e9a06>&#34;hello-motore&#34;</span>
 </span></span><span style=display:flex><span><span style=color:#000>version</span> <span style=color:#000;font-weight:700>=</span> <span style=color:#4e9a06>&#34;0.1.0&#34;</span>
 </span></span><span style=display:flex><span><span style=color:#000>edition</span> <span style=color:#000;font-weight:700>=</span> <span style=color:#4e9a06>&#34;2024&#34;</span>
@@ -341,4 +682,4 @@
 </span></span></span></code></pre></div><h2 id=what-youve-learned>What you&rsquo;ve learned</h2><ul><li>Motore&rsquo;s core design: Service, Layer, and the mutable Cx context</li><li>Rust&rsquo;s AFIT and RPITIT features, and their application in Motore</li><li>How to assemble Services and Layers using <code>ServiceBuilder</code></li></ul><h2 id=whats-next>What&rsquo;s Next?</h2><p>Congratulations on getting this far! We have now learned the basic usage of Motore. We hope it will make your journey in the world of Volo much smoother.</p><p>Next, you can check out some features of Motore that were not covered in this tutorial:</p><ol><li>The tutorial only mentioned <code>Service&lt;Cx, Request></code>, but Motore also provides some important <code>Service</code> variants: for example, <a href=https://deepwiki.com/cloudwego/motore/2.1-service-trait#unaryservice-variant><code>UnaryService&lt;Request></code></a> without a context, and <a href=https://deepwiki.com/cloudwego/motore/2.1-service-trait#type-erasure-with-boxservice><code>BoxService&lt;Cx, T, U, E></code></a> for type erasure.</li><li>Motore provides more advanced tools for Layers and ServiceBuilder: for example, <a href=https://deepwiki.com/cloudwego/motore/4.2-layer-combinators#layerfn-implementation>layer_fn</a> which is very similar to <code>service_fn</code>, <a href=https://deepwiki.com/cloudwego/motore/2.3-service-builder#conditional-layer-application>option_layer</a> which supports <code>Option&lt;Layer&lt;...>></code> (and the <a href=https://deepwiki.com/cloudwego/motore/6-utilities#either-type><code>Either&lt;A, B></code> enum</a> that supports this feature), and <a href=https://deepwiki.com/cloudwego/motore/2.3-service-builder#convenience-methods-for-common-middleware>map_err</a> as a form of Layer.</li><li>Through the <code>ServiceExt</code> Trait, Motore <a href=https://deepwiki.com/cloudwego/motore/4.1-service-combinators#serviceext-trait-and-combinator-overview>provides</a> <code>Future</code>-like methods for <code>Service</code>, allowing you to call <code>.map_err()</code> and <code>.map_response()</code> on a Service.</li><li>Bidirectional compatibility with the Tower ecosystem: Motore is not only inspired by <code>Tower</code>, but also <a href=https://deepwiki.com/cloudwego/motore/5.1-tower-integration>provides a complete <strong>bidirectional</strong> adaptation layer</a> for it.</li><li>Motore provides a dedicated <a href=https://deepwiki.com/cloudwego/motore/6-utilities#makeconnection-trait><code>MakeConnection&lt;Address></code> Trait</a> to abstract the creation of &ldquo;connections&rdquo;.</li><li>The Motore package <a href=https://deepwiki.com/cloudwego/motore/1.1-project-structure#feature-flag-configuration>enables the <code>service_send</code> feature by default</a>. It requires that all <code>Future</code>s returned by <code>Service</code> satisfy the <code>Send</code> constraint. <code>motore-macros</code> also checks this feature. If you disable it, Motore can be used in a single-threaded environment (e.g., <code>tokio::main(flavor = "current_thread")</code>) without the <code>Send</code> constraint.</li></ol><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified November 24, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/1915951e2d485880a9aa0d1f9fd2c2a95ff9832d>docs(volo/motore): add some content (#1451) (1915951e)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

@@ -7,7 +7,7 @@ TTHeader 协议定义如下，通过 TTHeader 可以透传服务信息，便于�
 * TTHeader Protocol * +-------------2Byte--------------|-------------2Byte-------------+ * +----------------------------------------------------------------+ * | 0| LENGTH | * +----------------------------------------------------------------+ * | 0| HEADER MAGIC | FLAGS | * +----------------------------------------------------------------+ * | SEQUENCE NUMBER | * +----------------------------------------------------------------+ * | 0| Header Size(/32) | ... * +--------------------------------- * * Header is of variable size: * (and starts at offset 14) * * +----------------------------------------------------------------+ * | PROTOCOL ID |NUM TRANSFORMS . |TRANSFORM 0 ID (uint8)| * +----------------------------------------------------------------+ * | TRANSFORM 0 DATA ... * +----------------------------------------------------------------+ * | ... ... | * +----------------------------------------------------------------+ * | INFO 0 ID (uint8) | INFO 0 DATA ... * +----------------------------------------------------------------+ * | ... ... | * +----------------------------------------------------------------+ * | | * | PAYLOAD | * | | * +----------------------------------------------------------------+ Codec 定义 Codec 接口定义如下："><meta itemprop=datePublished content="2021-08-26T00:00:00+00:00"><meta itemprop=dateModified content="2024-03-04T19:22:05+08:00"><meta itemprop=wordCount content="336"><meta name=twitter:card content="summary"><meta name=twitter:title content="编解码 (协议) 扩展"><meta name=twitter:description content="Kitex 支持扩展协议，包括整体的 Codec 和 PayloadCodec。通常 RPC 协议中包含应用层传输协议和 Payload 协议，如 HTTP/HTTP2 属于应用层传输协议，基于 HTTP/HTTP2 可以承载不同格式和不同协议的 Payload。
 Kitex 默认支持内置的 TTHeader 传输协议，Payload 支持 Thrift、KitexProtobuf、gRPC。另外，Kitex 集成 netpoll-http2 支持 HTTP2，目前主要用于 gRPC，后续会考虑基于 HTTP2 支持 Thrift。
 TTHeader 协议定义如下，通过 TTHeader 可以透传服务信息，便于服务治理。
-* TTHeader Protocol * +-------------2Byte--------------|-------------2Byte-------------+ * +----------------------------------------------------------------+ * | 0| LENGTH | * +----------------------------------------------------------------+ * | 0| HEADER MAGIC | FLAGS | * +----------------------------------------------------------------+ * | SEQUENCE NUMBER | * +----------------------------------------------------------------+ * | 0| Header Size(/32) | ... * +--------------------------------- * * Header is of variable size: * (and starts at offset 14) * * +----------------------------------------------------------------+ * | PROTOCOL ID |NUM TRANSFORMS . |TRANSFORM 0 ID (uint8)| * +----------------------------------------------------------------+ * | TRANSFORM 0 DATA ... * +----------------------------------------------------------------+ * | ... ... | * +----------------------------------------------------------------+ * | INFO 0 ID (uint8) | INFO 0 DATA ... * +----------------------------------------------------------------+ * | ... ... | * +----------------------------------------------------------------+ * | | * | PAYLOAD | * | | * +----------------------------------------------------------------+ Codec 定义 Codec 接口定义如下："><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+* TTHeader Protocol * +-------------2Byte--------------|-------------2Byte-------------+ * +----------------------------------------------------------------+ * | 0| LENGTH | * +----------------------------------------------------------------+ * | 0| HEADER MAGIC | FLAGS | * +----------------------------------------------------------------+ * | SEQUENCE NUMBER | * +----------------------------------------------------------------+ * | 0| Header Size(/32) | ... * +--------------------------------- * * Header is of variable size: * (and starts at offset 14) * * +----------------------------------------------------------------+ * | PROTOCOL ID |NUM TRANSFORMS . |TRANSFORM 0 ID (uint8)| * +----------------------------------------------------------------+ * | TRANSFORM 0 DATA ... * +----------------------------------------------------------------+ * | ... ... | * +----------------------------------------------------------------+ * | INFO 0 ID (uint8) | INFO 0 DATA ... * +----------------------------------------------------------------+ * | ... ... | * +----------------------------------------------------------------+ * | | * | PAYLOAD | * | | * +----------------------------------------------------------------+ Codec 定义 Codec 接口定义如下："><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -158,7 +158,139 @@ TTHeader 协议定义如下，通过 TTHeader 可以透传服务信息，便于�
 <label for=m-zhdocskitexfaq-check><a href=/zh/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/kitex/Tutorials/framework-exten/codec.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/kitex/Tutorials/framework-exten?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e7%bc%96%e8%a7%a3%e7%a0%81%20%28%e5%8d%8f%e8%ae%ae%29%20%e6%89%a9%e5%b1%95" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#codec-定义>Codec 定义</a></li><li><a href=#payloadcodec-定义>PayloadCodec 定义</a></li><li><a href=#默认的-codec>默认的 Codec</a></li><li><a href=#指定自定义-codec-和-payloadcodec>指定自定义 Codec 和 PayloadCodec</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/>框架扩展</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/codec/>编解码 (协议) 扩展</a></li></ol></nav><div class=td-content><h1>编解码 (协议) 扩展</h1><header class=article-meta></header><p><img src=/img/docs/remote_module.png alt=remote_module></p><p>Kitex 支持扩展协议，包括整体的 Codec 和 PayloadCodec。通常 RPC 协议中包含应用层传输协议和 Payload 协议，如 HTTP/HTTP2 属于应用层传输协议，基于 HTTP/HTTP2 可以承载不同格式和不同协议的 Payload。</p><p>Kitex 默认支持内置的 TTHeader 传输协议，Payload 支持 Thrift、KitexProtobuf、gRPC。另外，Kitex 集成 <a href=https://github.com/cloudwego/netpoll-http2>netpoll-http2</a> 支持 HTTP2，目前主要用于 gRPC，后续会考虑基于 HTTP2 支持 Thrift。</p><p>TTHeader 协议定义如下，通过 TTHeader 可以透传服务信息，便于服务治理。</p><pre tabindex=0><code>*  TTHeader Protocol
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#codec-定义>Codec 定义</a></li><li><a href=#payloadcodec-定义>PayloadCodec 定义</a></li><li><a href=#默认的-codec>默认的 Codec</a></li><li><a href=#指定自定义-codec-和-payloadcodec>指定自定义 Codec 和 PayloadCodec</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/>框架扩展</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/codec/>编解码 (协议) 扩展</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="编解码 (协议) 扩展" data-url=https://www.cloudwego.io/zh/docs/kitex/tutorials/framework-exten/codec/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+![remote_module](/img/docs/remote_module.png)
+
+Kitex 支持扩展协议，包括整体的 Codec 和 PayloadCodec。通常 RPC 协议中包含应用层传输协议和 Payload 协议，如 HTTP/HTTP2 属于应用层传输协议，基于 HTTP/HTTP2 可以承载不同格式和不同协议的 Payload。
+
+Kitex 默认支持内置的 TTHeader 传输协议，Payload 支持 Thrift、KitexProtobuf、gRPC。另外，Kitex 集成 [netpoll-http2](https://github.com/cloudwego/netpoll-http2) 支持 HTTP2，目前主要用于 gRPC，后续会考虑基于 HTTP2 支持 Thrift。
+
+TTHeader 协议定义如下，通过 TTHeader 可以透传服务信息，便于服务治理。
+
+```
+*  TTHeader Protocol
+*  +-------------2Byte--------------|-------------2Byte-------------+
+*  +----------------------------------------------------------------+
+*  | 0|                          LENGTH                             |
+*  +----------------------------------------------------------------+
+*  | 0|       HEADER MAGIC          |            FLAGS              |
+*  +----------------------------------------------------------------+
+*  |                         SEQUENCE NUMBER                        |
+*  +----------------------------------------------------------------+
+*  | 0|     Header Size(/32)        | ...
+*  +---------------------------------
+*
+*  Header is of variable size:
+*  (and starts at offset 14)
+*
+*  +----------------------------------------------------------------+
+*  | PROTOCOL ID  |NUM TRANSFORMS . |TRANSFORM 0 ID (uint8)|
+*  +----------------------------------------------------------------+
+*  |  TRANSFORM 0 DATA ...
+*  +----------------------------------------------------------------+
+*  |         ...                              ...                   |
+*  +----------------------------------------------------------------+
+*  |        INFO 0 ID (uint8)      |       INFO 0  DATA ...
+*  +----------------------------------------------------------------+
+*  |         ...                              ...                   |
+*  +----------------------------------------------------------------+
+*  |                                                                |
+*  |                              PAYLOAD                           |
+*  |                                                                |
+*  +----------------------------------------------------------------+
+```
+
+## Codec 定义
+
+Codec 接口定义如下：
+
+```go
+// Codec is the abstraction of the codec layer of Kitex.
+type Codec interface {
+	Encode(ctx context.Context, msg Message, out ByteBuffer) error
+
+	Decode(ctx context.Context, msg Message, in ByteBuffer) error
+
+	Name() string
+}
+```
+
+Codec 是整体的编解码接口，结合需要支持的传输协议和 Payload 进行扩展，根据协议类型调用 PayloadCodec 接口，其中 Decode 需要进行协议探测判断传输协议和 Payload。Kitex 默认提供 defaultCodec 扩展实现。
+
+## PayloadCodec 定义
+
+PayloadCodec 接口定义如下：
+
+```go
+// PayloadCodec is used to marshal and unmarshal payload.
+type PayloadCodec interface {
+	Marshal(ctx context.Context, message Message, out ByteBuffer) error
+
+	Unmarshal(ctx context.Context, message Message, in ByteBuffer) error
+
+	Name() string
+}
+```
+
+Kitex 默认支持的 Payload 有 Thrift、Kitex Protobuf 以及 gRPC 协议。其中 Kitex Protobuf 是 Kitex 基于 Protobuf 定义的消息协议，协议定义与 Thrift Message 类似。
+
+特别地，Kitex 的泛化调用也是通过扩展 PayloadCodec 实现：
+
+![genericCodecExtension](/img/docs/generic_codec_extension.png)
+
+## 默认的 Codec
+
+如果用户不指定 Codec，则使用默认的内置 Codec。
+
+- 指定默认 Codec 的包大小限制，默认无限制
+  option: `codec.NewDefaultCodecWithSizeLimit`
+
+```go
+maxSizeBytes = 1024 * 1024 * 10 // 10 MB
+
+// server side
+svr := xxxservice.NewServer(handler, server.WithCodec(codec.NewDefaultCodecWithSizeLimit(maxSizeBytes)))
+
+// client side
+cli, err := xxxservice.NewClient(targetService, client.WithCodec(codec.NewDefaultCodecWithSizeLimit(maxSizeBytes)))
+```
+
+## 指定自定义 Codec 和 PayloadCodec
+
+通过 option 指定 Codec 和 PayloadCodec。
+
+- 指定 Codec
+  option: `WithCodec`
+
+```go
+// server side
+svr := xxxservice.NewServer(handler, server.WithCodec(yourCodec))
+
+// client side
+cli, err := xxxservice.NewClient(targetService, client.WithCodec(yourCodec))
+
+```
+
+- 指定 PayloadCodec
+  option: `WithPayloadCodec`
+
+```go
+// server side
+svr := xxxservice.NewServer(handler, server.WithPayloadCodec(yourPayloadCodec))
+
+// client side
+cli, err := xxxservice.NewClient(targetService, client.WithPayloadCodec(yourPayloadCodec))
+```
+</script><h1>编解码 (协议) 扩展</h1><header class=article-meta></header><p><img src=/img/docs/remote_module.png alt=remote_module></p><p>Kitex 支持扩展协议，包括整体的 Codec 和 PayloadCodec。通常 RPC 协议中包含应用层传输协议和 Payload 协议，如 HTTP/HTTP2 属于应用层传输协议，基于 HTTP/HTTP2 可以承载不同格式和不同协议的 Payload。</p><p>Kitex 默认支持内置的 TTHeader 传输协议，Payload 支持 Thrift、KitexProtobuf、gRPC。另外，Kitex 集成 <a href=https://github.com/cloudwego/netpoll-http2>netpoll-http2</a> 支持 HTTP2，目前主要用于 gRPC，后续会考虑基于 HTTP2 支持 Thrift。</p><p>TTHeader 协议定义如下，通过 TTHeader 可以透传服务信息，便于服务治理。</p><pre tabindex=0><code>*  TTHeader Protocol
 *  +-------------2Byte--------------|-------------2Byte-------------+
 *  +----------------------------------------------------------------+
 *  | 0|                          LENGTH                             |
@@ -227,4 +359,4 @@ option: <code>WithPayloadCodec</code></li></ul><div class=highlight><pre tabinde
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 March 4, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/ee37683de9864d42847c90ae6d21f22518933afe>docs: add implemented extension doc (#994) (ee37683d)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

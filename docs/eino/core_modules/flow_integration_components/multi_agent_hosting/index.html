@@ -10,7 +10,7 @@ func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host
 Example: a “journal assistant” that can write journal, read journal, and answer questions based on journal.
 Full sample: https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal
 Host:
-func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host, error) { chatModel, err := openai.NewChatModel(ctx, &amp;openai.ChatModelConfig{ BaseURL: baseURL, Model: modelName, ByAzure: true, APIKey: apiKey, }) if err != nil { return nil, err } return &amp;host.Host{ ChatModel: chatModel, SystemPrompt: "You can read and write journal on behalf of the user. When user asks a question, always answer with journal content.", }, nil } Write-journal specialist: after the host recognizes that the user’s intent is to write a journal, it hands off to this specialist to write the content to a file.'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host, error) { chatModel, err := openai.NewChatModel(ctx, &amp;openai.ChatModelConfig{ BaseURL: baseURL, Model: modelName, ByAzure: true, APIKey: apiKey, }) if err != nil { return nil, err } return &amp;host.Host{ ChatModel: chatModel, SystemPrompt: "You can read and write journal on behalf of the user. When user asks a question, always answer with journal content.", }, nil } Write-journal specialist: after the host recognizes that the user’s intent is to write a journal, it hands off to this specialist to write the content to a file.'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -116,7 +116,428 @@ func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/flow_integration_components/multi_agent_hosting.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/flow_integration_components?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino%20Tutorial:%20Host%20Multi-Agent" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#faq>FAQ</a><ul><li><a href=#no-streaming-when-host-outputs-directly>No streaming when Host outputs directly</a></li><li><a href=#host-selects-multiple-specialists>Host selects multiple Specialists</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/flow_integration_components/>Eino: Flow Integration</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/flow_integration_components/multi_agent_hosting/>Eino Tutorial: Host Multi-Agent</a></li></ol></nav><div class=td-content><h1>Eino Tutorial: Host Multi-Agent</h1><header class=article-meta></header><p>Host Multi-Agent is a pattern where a Host recognizes intent and hands off to a specialist agent to perform the actual generation. It only forwards requests, without generating subtasks.</p><p>Example: a &ldquo;journal assistant&rdquo; that can write journal, read journal, and answer questions based on journal.</p><p>Full sample: <a href=https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal>https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal</a></p><p>Host:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>newHost</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>baseURL</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>apiKey</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>modelName</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>string</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>host</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Host</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#faq>FAQ</a><ul><li><a href=#no-streaming-when-host-outputs-directly>No streaming when Host outputs directly</a></li><li><a href=#host-selects-multiple-specialists>Host selects multiple Specialists</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/flow_integration_components/>Eino: Flow Integration</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/flow_integration_components/multi_agent_hosting/>Eino Tutorial: Host Multi-Agent</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino Tutorial: Host Multi-Agent" data-url=https://www.cloudwego.io/docs/eino/core_modules/flow_integration_components/multi_agent_hosting/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+Host Multi-Agent is a pattern where a Host recognizes intent and hands off to a specialist agent to perform the actual generation. It only forwards requests, without generating subtasks.
+
+Example: a "journal assistant" that can write journal, read journal, and answer questions based on journal.
+
+Full sample: [https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal](https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal)
+
+Host:
+
+```go
+func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host, error) {
+    chatModel, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+       BaseURL: baseURL,
+       Model:   modelName,
+       ByAzure: true,
+       APIKey:  apiKey,
+    })
+    if err != nil {
+       return nil, err
+    }
+
+    return &host.Host{
+       ChatModel:    chatModel,
+       SystemPrompt: "You can read and write journal on behalf of the user. When user asks a question, always answer with journal content.",
+    }, nil
+}
+```
+
+Write-journal specialist: after the host recognizes that the user's intent is to write a journal, it hands off to this specialist to write the content to a file.
+
+```go
+func newWriteJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
+    chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
+       BaseURL: "http://localhost:11434",
+       Model:   "llama3-groq-tool-use",
+
+       Options: &api.Options{
+          Temperature: 0.000001,
+       },
+    })
+    if err != nil {
+       return nil, err
+    }
+
+    // use a chat model to rewrite user query to journal entry
+    // for example, the user query might be:
+    //
+    // write: I got up at 7:00 in the morning.
+    // 
+    // should be rewritten to:
+    //
+    // I got up at 7:00 in the morning.
+    chain := compose.NewChain[[]*schema.Message, *schema.Message]()
+    chain.AppendLambda(compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) ([]*schema.Message, error) {
+       systemMsg := &schema.Message{
+          Role:    schema._System_,
+          Content: "You are responsible for preparing the user query for insertion into journal. The user's query is expected to contain the actual text the user want to write to journal, as well as convey the intention that this query should be written to journal. You job is to remove that intention from the user query, while preserving as much as possible the user's original query, and output ONLY the text to be written into journal",
+       }
+       return append([]*schema.Message{systemMsg}, input...), nil
+    })).
+       AppendChatModel(chatModel).
+       AppendLambda(compose.InvokableLambda(func(ctx context.Context, input *schema.Message) (*schema.Message, error) {
+          err := appendJournal(input.Content)
+          if err != nil {
+             return nil, err
+          }
+          return &schema.Message{
+             Role:    schema._Assistant_,
+             Content: "Journal written successfully: " + input.Content,
+          }, nil
+       }))
+
+    r, err := chain.Compile(ctx)
+    if err != nil {
+       return nil, err
+    }
+
+    return &host.Specialist{
+       AgentMeta: host.AgentMeta{
+          Name:        "write_journal",
+          IntendedUse: "treat the user query as a sentence of a journal entry, append it to the right journal file",
+       },
+       Invokable: func(ctx context.Context, input []*schema.Message, opts ...agent.AgentOption) (*schema.Message, error) {
+          return r.Invoke(ctx, input, agent.GetComposeOptions(opts...)...)
+       },
+    }, nil
+}
+```
+
+Read-journal specialist: after the host recognizes that the user's intent is to read a journal, it hands off to this specialist to read the journal file content and output it line by line. This is a local function.
+
+```go
+func newReadJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
+    // create a new read journal specialist
+    return &host.Specialist{
+       AgentMeta: host.AgentMeta{
+          Name:        "view_journal_content",
+          IntendedUse: "let another agent view the content of the journal",
+       },
+       Streamable: func(ctx context.Context, input []*schema.Message, opts ...agent.AgentOption) (*schema.StreamReader[*schema.Message], error) {
+          now := time.Now()
+          dateStr := now.Format("2006-01-02")
+
+          journal, err := readJournal(dateStr)
+          if err != nil {
+             return nil, err
+          }
+
+          reader, writer := schema.Pipe[*schema.Message](0)
+          go func() {
+             scanner := bufio.NewScanner(journal)
+             scanner.Split(bufio.ScanLines)
+
+             for scanner.Scan() {
+                line := scanner.Text()
+                message := &schema.Message{
+                   Role:    schema._Assistant_,
+                   Content: line + "\n",
+                }
+                writer.Send(message, nil)
+             }
+
+             if err := scanner.Err(); err != nil {
+                writer.Send(nil, err)
+             }
+
+             writer.Close()
+          }()
+
+          return reader, nil
+       },
+    }, nil
+}
+```
+
+Answer-with-journal specialist: answers questions based on journal content.
+
+```go
+func newAnswerWithJournalSpecialist(ctx context.Context) (*host.Specialist, error) {
+    chatModel, err := ollama.NewChatModel(ctx, &ollama.ChatModelConfig{
+       BaseURL: "http://localhost:11434",
+       Model:   "llama3-groq-tool-use",
+
+       Options: &api.Options{
+          Temperature: 0.000001,
+       },
+    })
+    if err != nil {
+       return nil, err
+    }
+
+    // create a graph: load journal and user query -> chat template -> chat model -> answer
+
+    graph := compose.NewGraph[[]*schema.Message, *schema.Message]()
+
+    if err = graph.AddLambdaNode("journal_loader", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (string, error) {
+       now := time.Now()
+       dateStr := now.Format("2006-01-02")
+
+       return loadJournal(dateStr)
+    }), compose.WithOutputKey("journal")); err != nil {
+       return nil, err
+    }
+
+    if err = graph.AddLambdaNode("query_extractor", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (string, error) {
+       return input[len(input)-1].Content, nil
+    }), compose.WithOutputKey("query")); err != nil {
+       return nil, err
+    }
+
+    systemTpl := `Answer user's query based on journal content: {journal}'`
+    chatTpl := prompt.FromMessages(schema._FString_,
+       schema.SystemMessage(systemTpl),
+       schema.UserMessage("{query}"),
+    )
+    if err = graph.AddChatTemplateNode("template", chatTpl); err != nil {
+       return nil, err
+    }
+
+    if err = graph.AddChatModelNode("model", chatModel); err != nil {
+       return nil, err
+    }
+
+    if err = graph.AddEdge("journal_loader", "template"); err != nil {
+       return nil, err
+    }
+
+    if err = graph.AddEdge("query_extractor", "template"); err != nil {
+       return nil, err
+    }
+
+    if err = graph.AddEdge("template", "model"); err != nil {
+       return nil, err
+    }
+
+    if err = graph.AddEdge(compose._START_, "journal_loader"); err != nil {
+       return nil, err
+    }
+
+    if err = graph.AddEdge(compose._START_, "query_extractor"); err != nil {
+       return nil, err
+    }
+
+    if err = graph.AddEdge("model", compose._END_); err != nil {
+       return nil, err
+    }
+
+    r, err := graph.Compile(ctx)
+    if err != nil {
+       return nil, err
+    }
+
+    return &host.Specialist{
+       AgentMeta: host.AgentMeta{
+          Name:        "answer_with_journal",
+          IntendedUse: "load journal content and answer user's question with it",
+       },
+       Invokable: func(ctx context.Context, input []*schema.Message, opts ...agent.AgentOption) (*schema.Message, error) {
+          return r.Invoke(ctx, input, agent.GetComposeOptions(opts...)...)
+       },
+    }, nil
+}
+```
+
+Compose host multi-agent and run a CLI:
+
+```go
+func main() {
+    ctx := context.Background()
+    h, err := newHost(ctx)
+    if err != nil {
+       panic(err)
+    }
+
+    writer, err := newWriteJournalSpecialist(ctx)
+    if err != nil {
+       panic(err)
+    }
+
+    reader, err := newReadJournalSpecialist(ctx)
+    if err != nil {
+       panic(err)
+    }
+
+    answerer, err := newAnswerWithJournalSpecialist(ctx)
+    if err!= nil {
+        panic(err)
+    }
+
+    hostMA, err := host.NewMultiAgent(ctx, &host.MultiAgentConfig{
+       Host: *h,
+       Specialists: []*host.Specialist{
+          writer,
+          reader,
+          answerer,
+       },
+    })
+    if err != nil {
+       panic(err)
+    }
+
+    cb := &logCallback{}
+
+    for { // multi-turn conversation, loops until user enters "exit"
+       println("\n\nYou: ") // prompt for user input
+
+       var message string
+       scanner := bufio.NewScanner(os.Stdin) // read user input from CLI
+       for scanner.Scan() {
+          message += scanner.Text()
+          break
+       }
+
+       if err := scanner.Err(); err != nil {
+          panic(err)
+       }
+
+       if message == "exit" {
+          return
+       }
+
+       msg := &schema.Message{
+          Role:    schema._User_,
+          Content: message,
+       }
+
+       out, err := hostMA.Stream(ctx, []*schema.Message{msg}, host.WithAgentCallbacks(cb))
+       if err != nil {
+          panic(err)
+       }
+
+       defer out.Close()
+
+       println("\nAnswer:")
+
+       for {
+          msg, err := out.Recv()
+          if err != nil {
+             if err == io.EOF {
+                break
+             }
+          }
+
+          print(msg.Content)
+       }
+    }
+}
+```
+
+Console output example:
+
+```go
+You: 
+write journal: I got up at 7:00 in the morning
+
+HandOff to write_journal with argument {"reason":"I got up at 7:00 in the morning"}
+
+Answer:
+Journal written successfully: I got up at 7:00 in the morning
+
+You: 
+read journal
+
+HandOff to view_journal_content with argument {"reason":"User wants to read the journal content."}
+
+Answer:
+I got up at 7:00 in the morning
+
+
+You: 
+when did I get up in the morning?
+
+HandOff to answer_with_journal with argument {"reason":"To find out the user's morning wake-up times"}
+
+Answer:
+You got up at 7:00 in the morning.
+```
+
+## FAQ
+
+### No streaming when Host outputs directly
+
+Host Multi-Agent provides `StreamToolCallChecker` to determine whether Host outputs directly.
+
+Different providers in streaming mode may output tool calls differently: some output tool calls directly (e.g., OpenAI); some output text first then tool calls (e.g., Claude). Configure a checker accordingly.
+
+Optional. If not set, the default checks whether the first "non-empty chunk" contains a tool call:
+
+```go
+func firstChunkStreamToolCallChecker(_ context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
+
+    for {
+       msg, err := sr.Recv()
+       if err == io.EOF {
+          return false, nil
+       }
+       if err != nil {
+          return false, err
+       }
+
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
+
+       if len(msg.Content) == 0 { // skip empty chunks at the front
+          continue
+       }
+
+       return false, nil
+    }
+}
+```
+
+The default implementation is suitable for: models whose Tool Call Message contains only Tool Calls.
+
+The default implementation is NOT suitable for: cases where there are non-empty content chunks before the Tool Call output. In such cases, you need to define a custom tool call checker:
+
+```go
+toolCallChecker := func(ctx context.Context, sr *schema.StreamReader[*schema.Message]) (bool, error) {
+    defer sr.Close()
+    for {
+       msg, err := sr.Recv()
+       if err != nil {
+          if errors.Is(err, io.EOF) {
+             // finish
+             break
+          }
+
+          return false, err
+       }
+
+       if len(msg.ToolCalls) > 0 {
+          return true, nil
+       }
+    }
+    return false, nil
+}
+```
+
+The custom StreamToolCallChecker above may need to check **all chunks** for ToolCalls in extreme cases, which can cause the "streaming decision" effect to be lost. To preserve the "streaming decision" effect as much as possible, the recommendation is:
+
+> 💡
+> Try adding a prompt to constrain the model not to output additional text when calling tools, for example: "If you need to call a tool, output the tool directly, do not output text."
+>
+> Different models may be affected differently by prompts, so you need to adjust the prompt and verify the effect in actual use.
+
+### Host selects multiple Specialists
+
+Host selects Specialists in the form of Tool Calls, so it may select multiple Specialists simultaneously as a list of Tool Calls. In this case, Host Multi-Agent routes the request to all selected Specialists simultaneously, and after all Specialists complete, it summarizes multiple Messages into one Message through the Summarizer node as the final output of Host Multi-Agent.
+
+Users can configure a Summarizer by specifying a ChatModel and SystemPrompt to customize the Summarizer's behavior. If not specified, Host Multi-Agent will concatenate the Message Contents from multiple Specialists and return them.
+</script><h1>Eino Tutorial: Host Multi-Agent</h1><header class=article-meta></header><p>Host Multi-Agent is a pattern where a Host recognizes intent and hands off to a specialist agent to perform the actual generation. It only forwards requests, without generating subtasks.</p><p>Example: a &ldquo;journal assistant&rdquo; that can write journal, read journal, and answer questions based on journal.</p><p>Full sample: <a href=https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal>https://github.com/cloudwego/eino-examples/tree/main/flow/agent/multiagent/host/journal</a></p><p>Host:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>newHost</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>baseURL</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>apiKey</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>modelName</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>string</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>host</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Host</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>chatModel</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>err</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>:=</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>openai</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>NewChatModel</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>&amp;</span><span style=color:#000>openai</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>ChatModelConfig</span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>       </span><span style=color:#000>BaseURL</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>baseURL</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>       </span><span style=color:#000>Model</span><span style=color:#000;font-weight:700>:</span><span style=color:#f8f8f8;text-decoration:underline>   </span><span style=color:#000>modelName</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -463,4 +884,4 @@ func newHost(ctx context.Context, baseURL, apiKey, modelName string) (*host.Host
 Try adding a prompt to constrain the model not to output additional text when calling tools, for example: &ldquo;If you need to call a tool, output the tool directly, do not output text.&rdquo;</p><p>Different models may be affected differently by prompts, so you need to adjust the prompt and verify the effect in actual use.</p></blockquote><h3 id=host-selects-multiple-specialists>Host selects multiple Specialists</h3><p>Host selects Specialists in the form of Tool Calls, so it may select multiple Specialists simultaneously as a list of Tool Calls. In this case, Host Multi-Agent routes the request to all selected Specialists simultaneously, and after all Specialists complete, it summarizes multiple Messages into one Message through the Summarizer node as the final output of Host Multi-Agent.</p><p>Users can configure a Summarizer by specifying a ChatModel and SystemPrompt to customize the Summarizer&rsquo;s behavior. If not specified, Host Multi-Agent will concatenate the Message Contents from multiple Specialists and return them.</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified January 23, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/974162567cd8e90882d59205f3c2c8ea302c9bad>feat(eino): update zh and en docs (#1499) (97416256)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

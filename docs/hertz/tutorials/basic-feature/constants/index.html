@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Constants | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/constants/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Constants"><meta property="og:description" content="Constants defined in Hertz for user use."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-05-24T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="Constants"><meta itemprop=description content="Constants defined in Hertz for user use."><meta itemprop=datePublished content="2023-05-24T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="924"><meta itemprop=keywords content="Constants,HTTP method,HTTP MIME type,HTTP status code,HTTP Header,HTTP protocol version"><meta name=twitter:card content="summary"><meta name=twitter:title content="Constants"><meta name=twitter:description content="Constants defined in Hertz for user use."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Constants | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/constants/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Constants"><meta property="og:description" content="Constants defined in Hertz for user use."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-05-24T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="Constants"><meta itemprop=description content="Constants defined in Hertz for user use."><meta itemprop=datePublished content="2023-05-24T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="924"><meta itemprop=keywords content="Constants,HTTP method,HTTP MIME type,HTTP status code,HTTP Header,HTTP protocol version"><meta name=twitter:card content="summary"><meta name=twitter:title content="Constants"><meta name=twitter:description content="Constants defined in Hertz for user use."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,250 @@
 <label for=m-docshertzreferenceversion-check><a href=/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshertzreferenceversion><span>Version Descriptions</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/hertz/tutorials/basic-feature/constants.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/hertz/tutorials/basic-feature?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Constants" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><ul><li><a href=#http-method>HTTP method</a></li><li><a href=#http-mime-type>HTTP MIME type</a></li><li><a href=#http-status-code>HTTP status code</a></li><li><a href=#http-header>HTTP Header</a></li><li><a href=#http-protocol-version>HTTP protocol version</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/>Basic Feature</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/constants/>Constants</a></li></ol></nav><div class=td-content><h1>Constants</h1><div class=lead>Constants defined in Hertz for user use.</div><header class=article-meta></header><p>Hertz defines a set of constants for users to use, which are located in the <a href=https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/consts>github.com/cloudwego/hertz/pkg/protocol/consts</a>.</p><h3 id=http-method>HTTP method</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// HTTP methods were copied from net/http.</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><ul><li><a href=#http-method>HTTP method</a></li><li><a href=#http-mime-type>HTTP MIME type</a></li><li><a href=#http-status-code>HTTP status code</a></li><li><a href=#http-header>HTTP Header</a></li><li><a href=#http-protocol-version>HTTP protocol version</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/>Basic Feature</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/constants/>Constants</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=Constants data-url=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/constants/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+Hertz defines a set of constants for users to use, which are located in the [github.com/cloudwego/hertz/pkg/protocol/consts](https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/consts).
+
+### HTTP method
+
+```go
+// HTTP methods were copied from net/http.
+const (
+	MethodGet     = "GET"     // RFC 7231, 4.3.1
+	MethodHead    = "HEAD"    // RFC 7231, 4.3.2
+	MethodPost    = "POST"    // RFC 7231, 4.3.3
+	MethodPut     = "PUT"     // RFC 7231, 4.3.4
+	MethodPatch   = "PATCH"   // RFC 5789
+	MethodDelete  = "DELETE"  // RFC 7231, 4.3.5
+	MethodConnect = "CONNECT" // RFC 7231, 4.3.6
+	MethodOptions = "OPTIONS" // RFC 7231, 4.3.7
+	MethodTrace   = "TRACE"   // RFC 7231, 4.3.8
+)
+```
+
+### HTTP MIME type
+
+```go
+const (
+	// MIME text
+	MIMETextPlain             = "text/plain"
+	MIMETextPlainUTF8         = "text/plain; charset=utf-8"
+	MIMETextPlainISO88591     = "text/plain; charset=iso-8859-1"
+	MIMETextPlainFormatFlowed = "text/plain; format=flowed"
+	MIMETextPlainDelSpaceYes  = "text/plain; delsp=yes"
+	MiMETextPlainDelSpaceNo   = "text/plain; delsp=no"
+	MIMETextHtml              = "text/html"
+	MIMETextCss               = "text/css"
+	MIMETextJavascript        = "text/javascript"
+	// MIME application
+	MIMEApplicationOctetStream  = "application/octet-stream"
+	MIMEApplicationFlash        = "application/x-shockwave-flash"
+	MIMEApplicationHTMLForm     = "application/x-www-form-urlencoded"
+	MIMEApplicationHTMLFormUTF8 = "application/x-www-form-urlencoded; charset=UTF-8"
+	MIMEApplicationTar          = "application/x-tar"
+	MIMEApplicationGZip         = "application/gzip"
+	MIMEApplicationXGZip        = "application/x-gzip"
+	MIMEApplicationBZip2        = "application/bzip2"
+	MIMEApplicationXBZip2       = "application/x-bzip2"
+	MIMEApplicationShell        = "application/x-sh"
+	MIMEApplicationDownload     = "application/x-msdownload"
+	MIMEApplicationJSON         = "application/json"
+	MIMEApplicationJSONUTF8     = "application/json; charset=utf-8"
+	MIMEApplicationXML          = "application/xml"
+	MIMEApplicationXMLUTF8      = "application/xml; charset=utf-8"
+	MIMEApplicationZip          = "application/zip"
+	MIMEApplicationPdf          = "application/pdf"
+	MIMEApplicationWord         = "application/msword"
+	MIMEApplicationExcel        = "application/vnd.ms-excel"
+	MIMEApplicationPPT          = "application/vnd.ms-powerpoint"
+	MIMEApplicationOpenXMLWord  = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+	MIMEApplicationOpenXMLExcel = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+	MIMEApplicationOpenXMLPPT   = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+	// MIME image
+	MIMEImageJPEG         = "image/jpeg"
+	MIMEImagePNG          = "image/png"
+	MIMEImageGIF          = "image/gif"
+	MIMEImageBitmap       = "image/bmp"
+	MIMEImageWebP         = "image/webp"
+	MIMEImageIco          = "image/x-icon"
+	MIMEImageMicrosoftICO = "image/vnd.microsoft.icon"
+	MIMEImageTIFF         = "image/tiff"
+	MIMEImageSVG          = "image/svg+xml"
+	MIMEImagePhotoshop    = "image/vnd.adobe.photoshop"
+	// MIME audio
+	MIMEAudioBasic     = "audio/basic"
+	MIMEAudioL24       = "audio/L24"
+	MIMEAudioMP3       = "audio/mp3"
+	MIMEAudioMP4       = "audio/mp4"
+	MIMEAudioMPEG      = "audio/mpeg"
+	MIMEAudioOggVorbis = "audio/ogg"
+	MIMEAudioWAVE      = "audio/vnd.wave"
+	MIMEAudioWebM      = "audio/webm"
+	MIMEAudioAAC       = "audio/x-aac"
+	MIMEAudioAIFF      = "audio/x-aiff"
+	MIMEAudioMIDI      = "audio/x-midi"
+	MIMEAudioM3U       = "audio/x-mpegurl"
+	MIMEAudioRealAudio = "audio/x-pn-realaudio"
+	// MIME video
+	MIMEVideoMPEG          = "video/mpeg"
+	MIMEVideoOgg           = "video/ogg"
+	MIMEVideoMP4           = "video/mp4"
+	MIMEVideoQuickTime     = "video/quicktime"
+	MIMEVideoWinMediaVideo = "video/x-ms-wmv"
+	MIMEVideWebM           = "video/webm"
+	MIMEVideoFlashVideo    = "video/x-flv"
+	MIMEVideo3GPP          = "video/3gpp"
+	MIMEVideoAVI           = "video/x-msvideo"
+	MIMEVideoMatroska      = "video/x-matroska"
+)
+```
+
+### HTTP status code
+
+```go
+// HTTP status codes were stolen from net/http.
+const (
+   StatusContinue           = 100 // RFC 7231, 6.2.1
+   StatusSwitchingProtocols = 101 // RFC 7231, 6.2.2
+   StatusProcessing         = 102 // RFC 2518, 10.1
+   StatusOK                   = 200 // RFC 7231, 6.3.1
+   StatusCreated              = 201 // RFC 7231, 6.3.2
+   StatusAccepted             = 202 // RFC 7231, 6.3.3
+   StatusNonAuthoritativeInfo = 203 // RFC 7231, 6.3.4
+   StatusNoContent            = 204 // RFC 7231, 6.3.5
+   StatusResetContent         = 205 // RFC 7231, 6.3.6
+   StatusPartialContent       = 206 // RFC 7233, 4.1
+   StatusMultiStatus          = 207 // RFC 4918, 11.1
+   StatusAlreadyReported      = 208 // RFC 5842, 7.1
+   StatusIMUsed               = 226 // RFC 3229, 10.4.1
+   StatusMultipleChoices   = 300 // RFC 7231, 6.4.1
+   StatusMovedPermanently  = 301 // RFC 7231, 6.4.2
+   StatusFound             = 302 // RFC 7231, 6.4.3
+   StatusSeeOther          = 303 // RFC 7231, 6.4.4
+   StatusNotModified       = 304 // RFC 7232, 4.1
+   StatusUseProxy          = 305 // RFC 7231, 6.4.5
+   _                       = 306 // RFC 7231, 6.4.6 (Unused)
+   StatusTemporaryRedirect = 307 // RFC 7231, 6.4.7
+   StatusPermanentRedirect = 308 // RFC 7538, 3
+   StatusBadRequest                   = 400 // RFC 7231, 6.5.1
+   StatusUnauthorized                 = 401 // RFC 7235, 3.1
+   StatusPaymentRequired              = 402 // RFC 7231, 6.5.2
+   StatusForbidden                    = 403 // RFC 7231, 6.5.3
+   StatusNotFound                     = 404 // RFC 7231, 6.5.4
+   StatusMethodNotAllowed             = 405 // RFC 7231, 6.5.5
+   StatusNotAcceptable                = 406 // RFC 7231, 6.5.6
+   StatusProxyAuthRequired            = 407 // RFC 7235, 3.2
+   StatusRequestTimeout               = 408 // RFC 7231, 6.5.7
+   StatusConflict                     = 409 // RFC 7231, 6.5.8
+   StatusGone                         = 410 // RFC 7231, 6.5.9
+   StatusLengthRequired               = 411 // RFC 7231, 6.5.10
+   StatusPreconditionFailed           = 412 // RFC 7232, 4.2
+   StatusRequestEntityTooLarge        = 413 // RFC 7231, 6.5.11
+   StatusRequestURITooLong            = 414 // RFC 7231, 6.5.12
+   StatusUnsupportedMediaType         = 415 // RFC 7231, 6.5.13
+   StatusRequestedRangeNotSatisfiable = 416 // RFC 7233, 4.4
+   StatusExpectationFailed            = 417 // RFC 7231, 6.5.14
+   StatusTeapot                       = 418 // RFC 7168, 2.3.3
+   StatusUnprocessableEntity          = 422 // RFC 4918, 11.2
+   StatusLocked                       = 423 // RFC 4918, 11.3
+   StatusFailedDependency             = 424 // RFC 4918, 11.4
+   StatusUpgradeRequired              = 426 // RFC 7231, 6.5.15
+   StatusPreconditionRequired         = 428 // RFC 6585, 3
+   StatusTooManyRequests              = 429 // RFC 6585, 4
+   StatusRequestHeaderFieldsTooLarge  = 431 // RFC 6585, 5
+   StatusUnavailableForLegalReasons   = 451 // RFC 7725, 3
+   StatusInternalServerError           = 500 // RFC 7231, 6.6.1
+   StatusNotImplemented                = 501 // RFC 7231, 6.6.2
+   StatusBadGateway                    = 502 // RFC 7231, 6.6.3
+   StatusServiceUnavailable            = 503 // RFC 7231, 6.6.4
+   StatusGatewayTimeout                = 504 // RFC 7231, 6.6.5
+   StatusHTTPVersionNotSupported       = 505 // RFC 7231, 6.6.6
+   StatusVariantAlsoNegotiates         = 506 // RFC 2295, 8.1
+   StatusInsufficientStorage           = 507 // RFC 4918, 11.5
+   StatusLoopDetected                  = 508 // RFC 5842, 7.2
+   StatusNotExtended                   = 510 // RFC 2774, 7
+   StatusNetworkAuthenticationRequired = 511 // RFC 6585, 6
+)
+```
+
+### HTTP Header
+
+```go
+const (
+   HeaderDate = "Date"
+   HeaderIfModifiedSince = "If-Modified-Since"
+   HeaderLastModified    = "Last-Modified"
+   // Redirects
+   HeaderLocation = "Location"
+   // Transfer coding
+   HeaderTE               = "TE"
+   HeaderTrailer          = "Trailer"
+   HeaderTrailerLower     = "trailer"
+   HeaderTransferEncoding = "Transfer-Encoding"
+   // Controls
+   HeaderCookie         = "Cookie"
+   HeaderExpect         = "Expect"
+   HeaderMaxForwards    = "Max-Forwards"
+   HeaderSetCookie      = "Set-Cookie"
+   HeaderSetCookieLower = "set-cookie"
+   // Connection management
+   HeaderConnection      = "Connection"
+   HeaderKeepAlive       = "Keep-Alive"
+   HeaderProxyConnection = "Proxy-Connection"
+   // Authentication
+   HeaderAuthorization      = "Authorization"
+   HeaderProxyAuthenticate  = "Proxy-Authenticate"
+   HeaderProxyAuthorization = "Proxy-Authorization"
+   HeaderWWWAuthenticate    = "WWW-Authenticate"
+   // Range requests
+   HeaderAcceptRanges = "Accept-Ranges"
+   HeaderContentRange = "Content-Range"
+   HeaderIfRange      = "If-Range"
+   HeaderRange        = "Range"
+   // Response context
+   HeaderAllow       = "Allow"
+   HeaderServer      = "Server"
+   HeaderServerLower = "server"
+   // Request context
+   HeaderFrom           = "From"
+   HeaderHost           = "Host"
+   HeaderReferer        = "Referer"
+   HeaderReferrerPolicy = "Referrer-Policy"
+   HeaderUserAgent      = "User-Agent"
+   // Message body information
+   HeaderContentEncoding = "Content-Encoding"
+   HeaderContentLanguage = "Content-Language"
+   HeaderContentLength   = "Content-Length"
+   HeaderContentLocation = "Content-Location"
+   HeaderContentType     = "Content-Type"
+   // Content negotiation
+   HeaderAccept         = "Accept"
+   HeaderAcceptCharset  = "Accept-Charset"
+   HeaderAcceptEncoding = "Accept-Encoding"
+   HeaderAcceptLanguage = "Accept-Language"
+   HeaderAltSvc         = "Alt-Svc"
+)
+```
+
+### HTTP protocol version
+
+```go
+const(
+	// Protocol
+	HTTP11 = "HTTP/1.1"
+	HTTP10 = "HTTP/1.0"
+	HTTP20 = "HTTP/2.0"
+)
+```
+</script><h1>Constants</h1><div class=lead>Constants defined in Hertz for user use.</div><header class=article-meta></header><p>Hertz defines a set of constants for users to use, which are located in the <a href=https://github.com/cloudwego/hertz/tree/develop/pkg/protocol/consts>github.com/cloudwego/hertz/pkg/protocol/consts</a>.</p><h3 id=http-method>HTTP method</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// HTTP methods were copied from net/http.</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>const</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>	</span><span style=color:#000>MethodGet</span><span style=color:#f8f8f8;text-decoration:underline>     </span><span style=color:#000;font-weight:700>=</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#4e9a06>&#34;GET&#34;</span><span style=color:#f8f8f8;text-decoration:underline>     </span><span style=color:#8f5902;font-style:italic>// RFC 7231, 4.3.1</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>	</span><span style=color:#000>MethodHead</span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000;font-weight:700>=</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#4e9a06>&#34;HEAD&#34;</span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#8f5902;font-style:italic>// RFC 7231, 4.3.2</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -317,4 +560,4 @@
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified May 8, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/dff8f175d96e832fb521f13246cce14399aefcdb>style: prettier lint fix (#1069) (dff8f175)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

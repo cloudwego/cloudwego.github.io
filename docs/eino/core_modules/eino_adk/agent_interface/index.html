@@ -1,7 +1,7 @@
 <!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Eino ADK: Agent Abstraction | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_interface/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Eino ADK: Agent Abstraction"><meta property="og:description" content="Agent Definition Eino defines a basic interface for Agents. Any struct implementing this interface can be considered an Agent:
 // github.com/cloudwego/eino/adk/interface.go type Agent interface { Name(ctx context.Context) string Description(ctx context.Context) string Run(ctx context.Context, input *AgentInput, opts ...AgentRunOption) *AsyncIterator[*AgentEvent] } MethodDescription NameThe name of the Agent, serving as the Agent's identifier DescriptionDescription of the Agent's capabilities, mainly used for other Agents to understand and determine this Agent's responsibilities or functions RunThe core execution method of the Agent, returns an iterator through which callers can continuously receive events produced by the Agent AgentInput The Run method receives AgentInput as the Agent’s input:"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-02T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-02T21:50:06+08:00"><meta itemprop=name content="Eino ADK: Agent Abstraction"><meta itemprop=description content="Agent Definition Eino defines a basic interface for Agents. Any struct implementing this interface can be considered an Agent:
 // github.com/cloudwego/eino/adk/interface.go type Agent interface { Name(ctx context.Context) string Description(ctx context.Context) string Run(ctx context.Context, input *AgentInput, opts ...AgentRunOption) *AsyncIterator[*AgentEvent] } MethodDescription NameThe name of the Agent, serving as the Agent's identifier DescriptionDescription of the Agent's capabilities, mainly used for other Agents to understand and determine this Agent's responsibilities or functions RunThe core execution method of the Agent, returns an iterator through which callers can continuously receive events produced by the Agent AgentInput The Run method receives AgentInput as the Agent’s input:"><meta itemprop=datePublished content="2026-03-02T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-02T21:50:06+08:00"><meta itemprop=wordCount content="1847"><meta name=twitter:card content="summary"><meta name=twitter:title content="Eino ADK: Agent Abstraction"><meta name=twitter:description content="Agent Definition Eino defines a basic interface for Agents. Any struct implementing this interface can be considered an Agent:
-// github.com/cloudwego/eino/adk/interface.go type Agent interface { Name(ctx context.Context) string Description(ctx context.Context) string Run(ctx context.Context, input *AgentInput, opts ...AgentRunOption) *AsyncIterator[*AgentEvent] } MethodDescription NameThe name of the Agent, serving as the Agent's identifier DescriptionDescription of the Agent's capabilities, mainly used for other Agents to understand and determine this Agent's responsibilities or functions RunThe core execution method of the Agent, returns an iterator through which callers can continuously receive events produced by the Agent AgentInput The Run method receives AgentInput as the Agent’s input:"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+// github.com/cloudwego/eino/adk/interface.go type Agent interface { Name(ctx context.Context) string Description(ctx context.Context) string Run(ctx context.Context, input *AgentInput, opts ...AgentRunOption) *AsyncIterator[*AgentEvent] } MethodDescription NameThe name of the Agent, serving as the Agent's identifier DescriptionDescription of the Agent's capabilities, mainly used for other Agents to understand and determine this Agent's responsibilities or functions RunThe core execution method of the Agent, returns an iterator through which callers can continuously receive events produced by the Agent AgentInput The Run method receives AgentInput as the Agent’s input:"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,398 @@
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/eino_adk/agent_interface.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/eino_adk?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino%20ADK:%20Agent%20Abstraction" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#agentinput>AgentInput</a></li><li><a href=#agentrunoption>AgentRunOption</a></li><li><a href=#asynciterator>AsyncIterator</a></li><li><a href=#agentwithoptions>AgentWithOptions</a></li></ul><ul><li><a href=#agentname--runpath>AgentName & RunPath</a></li><li><a href=#agentoutput>AgentOutput</a></li><li><a href=#agentaction>AgentAction</a></li></ul><ul><li><a href=#api>API</a></li><li><a href=#usage-example>Usage Example</a></li><li><a href=#scope-of-effect>Scope of Effect</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino: ADK - Agent Development Kit</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_interface/>Eino ADK: Agent Abstraction</a></li></ol></nav><div class=td-content><h1>Eino ADK: Agent Abstraction</h1><header class=article-meta></header><h1 id=agent-definition>Agent Definition</h1><p>Eino defines a basic interface for Agents. Any struct implementing this interface can be considered an Agent:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// github.com/cloudwego/eino/adk/interface.go</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#agentinput>AgentInput</a></li><li><a href=#agentrunoption>AgentRunOption</a></li><li><a href=#asynciterator>AsyncIterator</a></li><li><a href=#agentwithoptions>AgentWithOptions</a></li></ul><ul><li><a href=#agentname--runpath>AgentName & RunPath</a></li><li><a href=#agentoutput>AgentOutput</a></li><li><a href=#agentaction>AgentAction</a></li></ul><ul><li><a href=#api>API</a></li><li><a href=#usage-example>Usage Example</a></li><li><a href=#scope-of-effect>Scope of Effect</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino: ADK - Agent Development Kit</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_interface/>Eino ADK: Agent Abstraction</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino ADK: Agent Abstraction" data-url=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_interface/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+# Agent Definition
+
+Eino defines a basic interface for Agents. Any struct implementing this interface can be considered an Agent:
+
+```go
+// github.com/cloudwego/eino/adk/interface.go
+
+type Agent interface {
+    Name(ctx context.Context) string
+    Description(ctx context.Context) string
+    Run(ctx context.Context, input *AgentInput, opts ...AgentRunOption) *AsyncIterator[*AgentEvent]
+}
+```
+
+<table>
+<tr><td>Method</td><td>Description</td></tr>
+<tr><td>Name</td><td>The name of the Agent, serving as the Agent's identifier</td></tr>
+<tr><td>Description</td><td>Description of the Agent's capabilities, mainly used for other Agents to understand and determine this Agent's responsibilities or functions</td></tr>
+<tr><td>Run</td><td>The core execution method of the Agent, returns an iterator through which callers can continuously receive events produced by the Agent</td></tr>
+</table>
+
+## AgentInput
+
+The Run method receives AgentInput as the Agent's input:
+
+```go
+type AgentInput struct {
+    Messages        []Message
+    EnableStreaming bool
+}
+
+type Message = *schema.Message
+```
+
+Agents typically have ChatModel as their core, so the Agent's input is defined as `Messages`, which is the same type as when calling Eino ChatModel. `Messages` can include user instructions, conversation history, background knowledge, sample data, or any other data you want to pass to the Agent. For example:
+
+```go
+import (
+    "github.com/cloudwego/eino/adk"
+    "github.com/cloudwego/eino/schema"
+)
+
+input := &adk.AgentInput{
+    Messages: []adk.Message{
+       schema.UserMessage("What's the capital of France?"),
+       schema.AssistantMessage("The capital of France is Paris.", nil),
+       schema.UserMessage("How far is it from London? "),
+    },
+}
+```
+
+`EnableStreaming` is used to **suggest** the output mode to the Agent, but it is not a mandatory constraint. Its core idea is to control the behavior of components that support both streaming and non-streaming output, such as ChatModel, while `EnableStreaming` does not affect components that only support one output method. Additionally, the `AgentOutput.IsStreaming` field indicates the actual output type. The runtime behavior is:
+
+- When `EnableStreaming=false`, components that can output both streaming and non-streaming will use the non-streaming mode that returns complete results at once.
+- When `EnableStreaming=true`, components within the Agent that can output streaming (such as ChatModel calls) should return results progressively as a stream. If a component naturally doesn't support streaming, it can still work in its original non-streaming way.
+
+As shown in the diagram below, ChatModel can output both streaming and non-streaming, while Tool can only output non-streaming:
+
+- When `EnableStream=false`, both output non-streaming
+- When `EnableStream=true`, ChatModel outputs streaming, Tool still outputs non-streaming because it doesn't have streaming capability.
+
+<a href="/img/eino/eino_adk_streaming.png" target="_blank"><img src="/img/eino/eino_adk_streaming.png" width="100%" /></a>
+
+## AgentRunOption
+
+`AgentRunOption` is defined by the Agent implementation and can modify Agent configuration or control Agent behavior at the request level.
+
+Eino ADK provides some commonly defined Options for users:
+
+- `WithSessionValues`: Set cross-Agent read/write data
+- `WithSkipTransferMessages`: When configured, if the Event is a Transfer to SubAgent, the messages in the Event will not be appended to History
+
+Eino ADK provides `WrapImplSpecificOptFn` and `GetImplSpecificOptions` methods for Agents to wrap and read custom `AgentRunOptions`.
+
+When using the `GetImplSpecificOptions` method to read `AgentRunOptions`, AgentRunOptions that don't match the required type (like options in the example) will be ignored.
+
+For example, you can define `WithModelName` to require the Agent to change the model being called at the request level:
+
+```go
+// github.com/cloudwego/eino/adk/call_option.go
+// func WrapImplSpecificOptFn[T any](optFn func(*T)) AgentRunOption
+// func GetImplSpecificOptions[T any](base *T, opts ...AgentRunOption) *T
+
+import "github.com/cloudwego/eino/adk"
+
+type options struct {
+    modelName string
+}
+
+func WithModelName(name string) adk.AgentRunOption {
+    return adk.WrapImplSpecificOptFn(func(t *options) {
+       t.modelName = name
+    })
+}
+
+func (m *MyAgent) Run(ctx context.Context, input *adk.AgentInput, opts ...adk.AgentRunOption) *adk.AsyncIterator[*adk.AgentEvent] {
+    o := &options{}
+    o = adk.GetImplSpecificOptions(o, opts...)
+    // run code...
+}
+```
+
+Additionally, AgentRunOption has a `DesignateAgent` method. Calling this method allows you to specify which Agent the Option takes effect on when calling a multi-Agent system:
+
+```go
+func genOpt() {
+    // Specify that the option only takes effect for agent_1 and agent_2
+    opt := adk.WithSessionValues(map[string]any{}).DesignateAgent("agent_1", "agent_2")
+}
+```
+
+## AsyncIterator
+
+`Agent.Run` returns an iterator `AsyncIterator[*AgentEvent]`:
+
+```go
+// github.com/cloudwego/eino/adk/utils.go
+
+type AsyncIterator[T any] struct {
+    ...
+}
+
+func (ai *AsyncIterator[T]) Next() (T, bool) {
+    ...
+}
+```
+
+It represents an asynchronous iterator (asynchronous means there is no synchronization control between production and consumption), allowing callers to consume a series of events produced by the Agent in an ordered, blocking manner.
+
+- `AsyncIterator` is a generic struct that can be used to iterate over any type of data. Currently in the Agent interface, the iterator type returned by the Run method is fixed as `AsyncIterator[*AgentEvent]`. This means that every element you get from this iterator will be a pointer to an `AgentEvent` object. `AgentEvent` will be explained in detail in the following sections.
+- The main way to interact with the iterator is by calling its `Next()` method. This method is **blocking** - each call to `Next()` will pause execution until one of the following two situations occurs:
+  - Agent produces a new `AgentEvent`: The `Next()` method returns this event, and the caller can immediately process it.
+  - Agent actively closes the iterator: When the Agent will no longer produce any new events (usually when the Agent finishes running), it closes the iterator. At this point, the `Next()` call will end blocking and return false in the second return value, telling the caller that iteration has ended.
+
+Typically, you need to use a for loop to process `AsyncIterator`:
+
+```go
+iter := myAgent.Run(xxx) // get AsyncIterator from Agent.Run
+
+for {
+    event, ok := iter.Next()
+    if !ok {
+        break
+    }
+    // handle event
+}
+```
+
+`AsyncIterator` can be created by `NewAsyncIteratorPair`, which returns another parameter `AsyncGenerator` for producing data:
+
+```go
+// github.com/cloudwego/eino/adk/utils.go
+
+func NewAsyncIteratorPair[T any]() (*AsyncIterator[T], *AsyncGenerator[T])
+```
+
+Agent.Run returns AsyncIterator to let callers receive a series of AgentEvents produced by the Agent in real-time. Therefore, Agent.Run typically runs the Agent in a Goroutine to immediately return the AsyncIterator for the caller to listen to:
+
+```go
+import "github.com/cloudwego/eino/adk"
+
+func (m *MyAgent) Run(ctx context.Context, input *adk.AgentInput, opts ...adk.AgentRunOption) *adk.AsyncIterator[*adk.AgentEvent] {
+    // handle input
+    iter, gen := adk.NewAsyncIteratorPair[*adk.AgentEvent]()
+    go func() {
+       defer func() {
+          // recover code
+          gen.Close()
+       }()
+       // agent run code
+       // gen.Send(event)
+    }()
+    return iter
+}
+```
+
+## AgentWithOptions
+
+Using the `AgentWithOptions` method allows you to make some general configurations in Eino ADK Agents.
+
+Unlike `AgentRunOption`, `AgentWithOptions` takes effect before running and does not support custom options.
+
+```go
+// github.com/cloudwego/eino/adk/flow.go
+func AgentWithOptions(ctx context.Context, agent Agent, opts ...AgentOption) Agent
+```
+
+Currently built-in supported configurations in Eino ADK include:
+
+- `WithDisallowTransferToParent`: Configures that this SubAgent is not allowed to Transfer to ParentAgent, which will trigger the SubAgent's `OnDisallowTransferToParent` callback method
+- `WithHistoryRewriter`: When configured, the Agent will rewrite the received context information through this method before execution
+
+# AgentEvent
+
+AgentEvent is the core event data structure produced by the Agent during its run. It contains the Agent's metadata, output, actions, and errors:
+
+```go
+// github.com/cloudwego/eino/adk/interface.go
+
+type AgentEvent struct {
+    AgentName string
+
+    RunPath []RunStep
+
+    Output *AgentOutput
+
+    Action *AgentAction
+
+    Err error
+}
+
+// EventFromMessage constructs a regular event
+func EventFromMessage(msg Message, msgStream MessageStream, role schema.RoleType, toolName string) *AgentEvent
+```
+
+## AgentName & RunPath
+
+The `AgentName` and `RunPath` fields are automatically filled by the framework. They provide important context information about the event source, which is crucial in complex systems composed of multiple Agents.
+
+```go
+type RunStep struct {
+    agentName string
+}
+```
+
+- `AgentName` indicates which Agent instance produced the current AgentEvent.
+- `RunPath` records the complete call chain to reach the current Agent. `RunPath` is a slice of `RunStep` that sequentially records all `AgentNames` from the initial entry Agent to the current Agent producing the event.
+
+## AgentOutput
+
+`AgentOutput` encapsulates the output produced by the Agent.
+
+Message output is set in the MessageOutput field, while other types of custom output are set in the CustomizedOutput field:
+
+```go
+// github.com/cloudwego/eino/adk/interface.go
+
+type AgentOutput struct {
+    MessageOutput *MessageVariant
+
+    CustomizedOutput any
+}
+
+type MessageVariant struct {
+    IsStreaming bool
+
+    Message       Message
+    MessageStream MessageStream
+    // message role: Assistant or Tool
+    Role schema.RoleType
+    // only used when Role is Tool
+    ToolName string
+}
+```
+
+The `MessageVariant` type of the `MessageOutput` field is a core data structure with main functions:
+
+1. Unified handling of streaming and non-streaming messages: `IsStreaming` is a flag. When true, it indicates the current `MessageVariant` contains a streaming message (read from MessageStream). When false, it indicates a non-streaming message (read from Message):
+
+   - Streaming: Returns a series of message fragments progressively over time, eventually forming a complete message (MessageStream).
+   - Non-streaming: Returns a complete message at once (Message).
+2. Convenient metadata access: The Message struct contains some important metadata, such as the message's Role (Assistant or Tool). To quickly identify message type and source, MessageVariant elevates these commonly used metadata to the top level:
+
+   - `Role`: The role of the message, Assistant / Tool
+   - `ToolName`: If the message role is Tool, this field directly provides the tool's name.
+
+The benefit of this is that when code needs to route or make decisions based on message type, it doesn't need to deeply parse the specific content of the Message object - it can directly get the needed information from MessageVariant's top-level fields, simplifying logic and improving code readability and efficiency.
+
+## AgentAction
+
+When an Agent produces an Event containing AgentAction, it can control multi-Agent collaboration, such as immediate exit, interrupt, jump, etc.:
+
+```go
+// github.com/cloudwego/eino/adk/interface.go
+
+type AgentAction struct {
+    Exit bool
+
+    Interrupted *InterruptInfo
+
+    TransferToAgent *TransferToAgentAction
+    
+    BreakLoop *BreakLoopAction
+
+    CustomizedAction any
+}
+
+type InterruptInfo struct {
+    Data any
+}
+
+type TransferToAgentAction struct {
+    DestAgentName string
+}
+```
+
+Eino ADK currently has four preset Actions:
+
+1. Exit: When an Agent produces an Exit Action, the Multi-Agent will exit immediately
+
+```go
+func NewExitAction() *AgentAction {
+    return &AgentAction{Exit: true}
+}
+```
+
+2. Transfer: When an Agent produces a Transfer Action, it will jump to the target Agent to run
+
+```go
+func NewTransferToAgentAction(destAgentName string) *AgentAction {
+    return &AgentAction{TransferToAgent: &TransferToAgentAction{DestAgentName: destAgentName}}
+}
+```
+
+3. Interrupt: When an Agent produces an Interrupt Action, it will interrupt the Runner's execution. Since interrupts can occur at any position and need to pass unique information when interrupting, the Action provides an `Interrupted` field for Agents to set custom data. When the Runner receives an Action with non-empty Interrupted, it considers an interrupt has occurred. The internal mechanism of Interrupt & Resume is relatively complex and will be elaborated in the [Eino ADK: Agent Runner] - [Eino ADK: Interrupt & Resume] section.
+
+```go
+// For example, when ChatModelAgent interrupts, it sends the following AgentEvent:
+h.Send(&AgentEvent{AgentName: h.agentName, Action: &AgentAction{
+    Interrupted: &InterruptInfo{
+       Data: &ChatModelAgentInterruptInfo{Data: data, Info: info},
+    },
+}})
+```
+
+4. Break Loop: When a child Agent of LoopAgent emits a BreakLoopAction, the corresponding LoopAgent will stop looping and exit normally.
+
+# Language Settings
+
+ADK provides a `SetLanguage` function to set the language for built-in prompts. This affects the language of prompts generated by all ADK built-in components and middleware. This capability was introduced in [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13) version.
+
+## API
+
+```go
+// Language represents the language setting for ADK built-in prompts
+type Language uint8
+
+const (
+    // LanguageEnglish represents English (default)
+    LanguageEnglish Language = iota
+    // LanguageChinese represents Chinese
+    LanguageChinese
+)
+
+// SetLanguage sets the language for ADK built-in prompts
+// The default language is English (if not explicitly set)
+func SetLanguage(lang Language) error
+```
+
+## Usage Example
+
+```go
+import "github.com/cloudwego/eino/adk"
+
+// Set to Chinese
+err := adk.SetLanguage(adk.LanguageChinese)
+if err != nil {
+    // Handle error
+}
+
+// Set to English (default)
+err = adk.SetLanguage(adk.LanguageEnglish)
+```
+
+## Scope of Effect
+
+Language settings affect the built-in prompts of the following components:
+
+<table>
+<tr><td>Component/Middleware</td><td>Affected Prompts</td></tr>
+<tr><td>FileSystem Middleware</td><td>File system tool descriptions, system prompts, execution tool prompts</td></tr>
+<tr><td>Reduction Middleware</td><td>Tool result truncation/cleanup prompt text</td></tr>
+<tr><td>Skill Middleware</td><td>Skill system prompts, skill tool descriptions</td></tr>
+<tr><td>ChatModelAgent</td><td>Built-in system prompts</td></tr>
+</table>
+
+> 💡
+> It is recommended to set the language during program initialization because the language setting takes effect globally. Changing the language at runtime may result in mixed-language prompts within the same session.
+
+> 💡
+> The language setting only affects ADK built-in prompts. Your custom prompts (such as Agent's Instruction) need to handle internationalization on your own.
+</script><h1>Eino ADK: Agent Abstraction</h1><header class=article-meta></header><h1 id=agent-definition>Agent Definition</h1><p>Eino defines a basic interface for Agents. Any struct implementing this interface can be considered an Agent:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// github.com/cloudwego/eino/adk/interface.go</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Agent</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>Name</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>string</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -293,4 +684,4 @@ It is recommended to set the language during program initialization because the 
 The language setting only affects ADK built-in prompts. Your custom prompts (such as Agent&rsquo;s Instruction) need to handle internationalization on your own.</p></blockquote><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 2, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/96139d4140c93a677eec194c2d34dffa3e2673dd>feat: sync eino docs (#1512) (96139d41)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

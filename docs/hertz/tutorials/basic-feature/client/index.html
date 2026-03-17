@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Client | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/client/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Client"><meta property="og:description" content="Hertz client related functions."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-07-25T00:00:00+00:00"><meta property="article:modified_time" content="2025-09-18T10:21:11+08:00"><meta itemprop=name content="Client"><meta itemprop=description content="Hertz client related functions."><meta itemprop=datePublished content="2023-07-25T00:00:00+00:00"><meta itemprop=dateModified content="2025-09-18T10:21:11+08:00"><meta itemprop=wordCount content="2891"><meta itemprop=keywords content="Client Config,Send Request,Request Timeout,Streaming,Middleware,Service Discovery"><meta name=twitter:card content="summary"><meta name=twitter:title content="Client"><meta name=twitter:description content="Hertz client related functions."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Client | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/client/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Client"><meta property="og:description" content="Hertz client related functions."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-07-25T00:00:00+00:00"><meta property="article:modified_time" content="2025-09-18T10:21:11+08:00"><meta itemprop=name content="Client"><meta itemprop=description content="Hertz client related functions."><meta itemprop=datePublished content="2023-07-25T00:00:00+00:00"><meta itemprop=dateModified content="2025-09-18T10:21:11+08:00"><meta itemprop=wordCount content="2891"><meta itemprop=keywords content="Client Config,Send Request,Request Timeout,Streaming,Middleware,Service Discovery"><meta name=twitter:card content="summary"><meta name=twitter:title content="Client"><meta name=twitter:description content="Hertz client related functions."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,811 @@
 <label for=m-docshertzreferenceversion-check><a href=/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshertzreferenceversion><span>Version Descriptions</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/hertz/tutorials/basic-feature/client.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/hertz/tutorials/basic-feature?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Client" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#quick-start>Quick Start</a></li><li><a href=#client-config>Client Config</a></li><li><a href=#client-request-config>Client Request Config</a></li><li><a href=#send-request>Send Request</a><ul><li><a href=#do>Do</a></li><li><a href=#doredirects>DoRedirects</a></li><li><a href=#get>Get</a></li><li><a href=#post>Post</a></li></ul></li><li><a href=#request-timeout>Request Timeout</a><ul><li><a href=#withrequesttimeout>WithRequestTimeout</a></li><li><a href=#dotimeout>DoTimeout</a></li><li><a href=#dodeadline>DoDeadline</a></li></ul></li><li><a href=#request-retry>Request Retry</a><ul><li><a href=#setretryiffunc>SetRetryIfFunc</a></li></ul></li><li><a href=#add-request-content>Add Request Content</a></li><li><a href=#upload-file>Upload File</a></li><li><a href=#streaming-read-response-content>Streaming Read Response Content</a></li><li><a href=#service-discovery>Service Discovery</a></li><li><a href=#tls>TLS</a></li><li><a href=#forward-proxy>Forward Proxy</a><ul><li><a href=#setproxy>SetProxy</a></li></ul></li><li><a href=#close-idle-connections>Close Idle Connections</a><ul><li><a href=#closeidleconnections>CloseIdleConnections</a></li></ul></li><li><a href=#get-dialer-name>Get Dialer Name</a><ul><li><a href=#getdialername>GetDialerName</a></li></ul></li><li><a href=#middleware>Middleware</a><ul><li><a href=#use>Use</a></li><li><a href=#useaslast>UseAsLast</a></li><li><a href=#takeoutlastmiddleware>TakeOutLastMiddleware</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/>Basic Feature</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/client/>Client</a></li></ol></nav><div class=td-content><h1>Client</h1><div class=lead>Hertz client related functions.</div><header class=article-meta></header><h2 id=quick-start>Quick Start</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>package</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>main</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#quick-start>Quick Start</a></li><li><a href=#client-config>Client Config</a></li><li><a href=#client-request-config>Client Request Config</a></li><li><a href=#send-request>Send Request</a><ul><li><a href=#do>Do</a></li><li><a href=#doredirects>DoRedirects</a></li><li><a href=#get>Get</a></li><li><a href=#post>Post</a></li></ul></li><li><a href=#request-timeout>Request Timeout</a><ul><li><a href=#withrequesttimeout>WithRequestTimeout</a></li><li><a href=#dotimeout>DoTimeout</a></li><li><a href=#dodeadline>DoDeadline</a></li></ul></li><li><a href=#request-retry>Request Retry</a><ul><li><a href=#setretryiffunc>SetRetryIfFunc</a></li></ul></li><li><a href=#add-request-content>Add Request Content</a></li><li><a href=#upload-file>Upload File</a></li><li><a href=#streaming-read-response-content>Streaming Read Response Content</a></li><li><a href=#service-discovery>Service Discovery</a></li><li><a href=#tls>TLS</a></li><li><a href=#forward-proxy>Forward Proxy</a><ul><li><a href=#setproxy>SetProxy</a></li></ul></li><li><a href=#close-idle-connections>Close Idle Connections</a><ul><li><a href=#closeidleconnections>CloseIdleConnections</a></li></ul></li><li><a href=#get-dialer-name>Get Dialer Name</a><ul><li><a href=#getdialername>GetDialerName</a></li></ul></li><li><a href=#middleware>Middleware</a><ul><li><a href=#use>Use</a></li><li><a href=#useaslast>UseAsLast</a></li><li><a href=#takeoutlastmiddleware>TakeOutLastMiddleware</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/>Basic Feature</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/client/>Client</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=Client data-url=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/client/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Quick Start
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+func performRequest() {
+	c, _ := client.NewClient()
+	req, resp := protocol.AcquireRequest(), protocol.AcquireResponse()
+	req.SetRequestURI("http://localhost:8080/hello")
+
+	req.SetMethod("GET")
+	_ = c.Do(context.Background(), req, resp)
+	fmt.Printf("get response: %s\n", resp.Body()) // status == 200 resp.Body() == []byte("hello hertz")
+}
+
+func main() {
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+		c.JSON(consts.StatusOK, "hello hertz")
+	})
+	go performRequest()
+	h.Spin()
+}
+```
+
+## Client Config
+
+| **Option**                        | **Default**    | **Description**                                                                                                                                         |
+| --------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WithDialTimeout                   | 1s             | dial timeout.                                                                                                                                           |
+| WithMaxConnsPerHost               | 512            | maximum number of connections per host which may be established.                                                                                        |
+| WithMaxIdleConnDuration           | 10s            | max idle connection duration, idle keep-alive connections are closed after this duration.                                                               |
+| WithMaxConnDuration               | 0s             | max connection duration, keep-alive connections are closed after this duration.                                                                         |
+| WithMaxConnWaitTimeout            | 0s             | maximum duration for waiting for a free connection.                                                                                                     |
+| WithKeepAlive                     | true           | determines whether use keep-alive connection, default use.                                                                                              |
+| WithClientReadTimeout             | 0s             | maximum duration for full response reading (including body).                                                                                            |
+| WithTLSConfig                     | nil            | tlsConfig to create a tls connection, for specific configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/tls/). |
+| WithDialer                        | network.Dialer | specific dialer.                                                                                                                                        |
+| WithResponseBodyStream            | false          | determine whether read body in stream or not, default not read in stream.                                                                               |
+| WithDisableHeaderNamesNormalizing | false          | whether disable header names normalizing, default not disabled, for example, cONTENT-lenGTH -> Content-Length.                                          |
+| WithName                          | ""             | set client name which used in User-Agent Header.                                                                                                        |
+| WithNoDefaultUserAgentHeader      | false          | whether default no User-Agent header, default with User-Agent header.                                                                                   |
+| WithDisablePathNormalizing        | false          | whether disable path normalizing, default specification path, for example, http://localhost:8080/hello/../ hello -> http://localhost:8080/hello.        |
+| WithRetryConfig                   | nil            | retry configuration, for specific configuration information, please refer to [retry](/docs/hertz/tutorials/basic-feature/retry/).                       |
+| WithWriteTimeout                  | 0s             | write timeout.                                                                                                                                          |
+| WithConnStateObserve              | nil, 5s        | set function to observe and record the connection status of HTTP client, as well as observe execution intervals.                                        |
+| WithDialFunc                      | network.Dialer | set dialer function.                                                                                                                                    |
+| WithHostClientConfigHook          | nil            | Set the hook function for re-configure the host client.                                                                                                 |
+
+Sample Code:
+
+```go
+func main() {
+	observeInterval := 10 * time.Second
+	stateFunc := func(state config.HostClientState) {
+		fmt.Printf("state=%v\n", state.ConnPoolState().Addr)
+	}
+	var customDialFunc network.DialFunc = func(addr string) (network.Conn, error) {
+		return nil, nil
+	}
+	c, err := client.NewClient(
+		client.WithDialTimeout(1*time.Second),
+		client.WithMaxConnsPerHost(1024),
+		client.WithMaxIdleConnDuration(10*time.Second),
+		client.WithMaxConnDuration(10*time.Second),
+		client.WithMaxConnWaitTimeout(10*time.Second),
+		client.WithKeepAlive(true),
+		client.WithClientReadTimeout(10*time.Second),
+		client.WithDialer(standard.NewDialer()),
+		client.WithResponseBodyStream(true),
+		client.WithDisableHeaderNamesNormalizing(true),
+		client.WithName("my-client"),
+		client.WithNoDefaultUserAgentHeader(true),
+		client.WithDisablePathNormalizing(true),
+		client.WithRetryConfig(
+			retry.WithMaxAttemptTimes(3),
+			retry.WithInitDelay(1000),
+			retry.WithMaxDelay(10000),
+			retry.WithDelayPolicy(retry.DefaultDelayPolicy),
+			retry.WithMaxJitter(1000),
+		),
+		client.WithWriteTimeout(10*time.Second),
+		client.WithConnStateObserve(stateFunc, observeInterval),
+		client.WithDialFunc(customDialFunc, netpoll.NewDialer()),
+		client.WithHostClientConfigHook(func(hc interface{}) error {
+			if hct, ok := hc.(*http1.HostClient); ok {
+				hct.Addr = "FOO.BAR:443"
+			}
+			return nil
+		})
+	)
+	if err != nil {
+		return
+	}
+
+	status, body, _ := c.Get(context.Background(), nil, "http://www.example.com")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+```
+
+## Client Request Config
+
+| **Option**         | **Default**             | **Description**                                                                                                                                                                                                       |
+| ------------------ | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WithDialTimeout    | 0s                      | Dial timeout time, **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**.                                                 |
+| WithReadTimeout    | 0s                      | The maximum duration of a complete read response (including body), **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**. |
+| WithWriteTimeout   | 0s                      | HTTP client write timeout, **this configuration item has a higher priority than the client configuration, which will overwrite the corresponding client configuration item**.                                         |
+| WithRequestTimeout | 0s                      | The timeout for a complete HTTP request.                                                                                                                                                                              |
+| WithTag            | make(map[string]string) | Set the tags field in the form of key-value, used in conjunction with service discovery, details can be found in [WithTag](/docs/hertz/tutorials/third-party/service_discovery/#withtag).                      |
+| WithSD             | false                   | Used in conjunction with service discovery, this request uses service discovery when true is passed, details can be found in [WithSD](/docs/hertz/tutorials/third-party/service_discovery/#withsd).            |
+
+Sample Code:
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetOptions(config.WithDialTimeout(1*time.Second),
+		config.WithReadTimeout(3*time.Second),
+		config.WithWriteTimeout(3*time.Second),
+		config.WithReadTimeout(5*time.Second),
+		config.WithSD(true),
+		config.WithTag("tag", "tag"))
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://www.example.com")
+	err = cli.Do(context.Background(), req, res)
+	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
+}
+```
+
+## Send Request
+
+```go
+func (c *Client) Do(ctx context.Context, req *protocol.Request, resp *protocol.Response) error
+func (c *Client) DoRedirects(ctx context.Context, req *protocol.Request, resp *protocol.Response, maxRedirectsCount int) error
+func (c *Client) Get(ctx context.Context, dst []byte, url string, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
+func (c *Client) Post(ctx context.Context, dst []byte, url string, postArgs *protocol.Args, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
+```
+
+### Do
+
+The `Do` function executes the given http request and populates the given http response. The request must contain at least one non-zero RequestURI containing the full URL or a non-zero Host header + RequestURI.
+
+This function does not follow redirects. Please use the [Get](#get) function, [DoRedirects](#doredirects) function, or [Post](#post) function to follow the redirection.
+
+If resp is nil, the response will be ignored. If all DefaultMaxConnsPerHost connections against the requesting host are busy, an `ErrNoFreeConns` error will be returned. In performance-critical code, it is recommended that req and resp be obtained via AcquireRequest and AcquireResponse.
+
+Function Signature:
+
+```go
+func (c *Client) Do(ctx context.Context, req *protocol.Request, resp *protocol.Response) error
+```
+
+Sample Code:
+
+```go
+func main() {
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8080/ping")
+
+	err = c.Do(context.Background(), req, res)
+	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
+	// resp.Body() == []byte("pong") err == <nil>
+}
+```
+
+### DoRedirects
+
+The `DoRedirects` function executes the given http request and populates the given http response, following a maximum of maxRedirectsCount redirects. When the number of redirects exceeds maxRedirectsCount, an `ErrTooManyRedirects` error is returned.
+
+Function Signature:
+
+```go
+func (c *Client) DoRedirects(ctx context.Context, req *protocol.Request, resp *protocol.Response, maxRedirectsCount int) error
+```
+
+Sample Code:
+
+```go
+func main() {
+	// hertz server
+	// http://localhost:8080/redirect ctx.Redirect(consts.StatusMovedPermanently, []byte("/redirect2"))
+	// http://localhost:8080/redirect2 ctx.Redirect(consts.StatusMovedPermanently, []byte("/redirect3"))
+	// http://localhost:8080/redirect3 ctx.String(consts.StatusOK, "pong")
+
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8080/redirect")
+
+	err = c.DoRedirects(context.Background(), req, res, 1)
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("") err.Error() == "too many redirects detected when doing the request"
+
+	err = c.DoRedirects(context.Background(), req, res, 2)
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
+}
+```
+
+### Get
+
+The `Get` function returns the status code of the URL and the response body. The contents of dst will be replaced by the body and returned, if the dst is too small a new slice will be allocated.
+
+The function will automatically follow the redirect.
+
+Function Signature:
+
+```go
+func (c *Client) Get(ctx context.Context, dst []byte, url string, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
+```
+
+Sample Code:
+
+```go
+func main() {
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	status, body, err := c.Get(context.Background(), nil, "http://localhost:8080/ping")
+	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+	// status == 200 res.Body() == []byte("pong") err == <nil>
+}
+```
+
+### Post
+
+The `Post` function sends a POST request to the specified URL using the given POST parameters. The contents of dst will be replaced by the body and returned, if the dst is too small a new slice will be allocated.
+
+The function will automatically follow the redirect.
+
+If postArgs is nil, then an empty POST request body is sent.
+
+Function Signature:
+
+```go
+func (c *Client) Post(ctx context.Context, dst []byte, url string, postArgs *protocol.Args, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
+```
+
+Sample Code:
+
+```go
+func main() {
+	// hertz server:http://localhost:8080/hello ctx.String(consts.StatusOK, "hello %s", ctx.PostForm("name"))
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	var postArgs protocol.Args
+	postArgs.Set("name", "cloudwego") // Set post args
+	status, body, err := c.Post(context.Background(), nil, "http://localhost:8080/hello", &postArgs)
+	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+	// status == 200 res.Body() == []byte("hello cloudwego") err == <nil>
+}
+```
+
+## Request Timeout
+
+> Note: Do, DoRedirects, Get, Post, and other request functions can set the request timeout time through WithRequestTimeout. The DoTimeout and DoDeadline functions set the request timeout time through parameter passing. Both modify the `RequestOptions.requestTimeout` field, so there is no need to use the WithRequestTimeout function when using the DoTimeout and DoDeadline functions, the request timeout time is based on the last setting.
+
+```go
+func WithRequestTimeout(t time.Duration) RequestOption
+func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
+func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
+```
+
+### WithRequestTimeout
+
+Although the `Do`, `DoRedirects`, `Get`, `Post` function cannot set the request timeout by passing parameters, it can be set through the `WithRequestTimeout` configuration item in the [Client Request Configuration](#client-request-config).
+
+Sample Code:
+
+```go
+func main() {
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	// Do
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetOptions(config.WithRequestTimeout(5 * time.Second))
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8888/get")
+	err = c.Do(context.Background(), req, res)
+
+	// DoRedirects
+	err = c.DoRedirects(context.Background(), req, res, 5)
+
+	// Get
+	_, _, err = c.Get(context.Background(), nil, "http://localhost:8888/get", config.WithRequestTimeout(5*time.Second))
+
+	// Post
+	postArgs := &protocol.Args{}
+	_, _, err = c.Post(context.Background(), nil, "http://localhost:8888/post", postArgs, config.WithRequestTimeout(5*time.Second))
+}
+```
+
+### DoTimeout
+
+The `DoTimeout` function executes the given request and waits for a response within the given timeout period.
+
+This function does not follow redirects. Please use the [Get](#get) function, [DoRedirects](#doredirects) function, or [Post](#post) function to follow the redirection.
+
+If resp is nil, the response is ignored. If the response is not received within the given timeout period, an `errTimeout error` is returned.
+
+Function Signature:
+
+```go
+func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
+```
+
+Sample Code:
+
+```go
+func main() {
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong") biz handler time: 1.5s
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8080/ping")
+
+	err = c.DoTimeout(context.Background(), req, res, time.Second*3)
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
+
+	err = c.DoTimeout(context.Background(), req, res, time.Second)
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("") err.Error() == "timeout"
+}
+```
+
+### DoDeadline
+
+`DoDeadline` executes the given request and waits for the response until the given deadline.
+
+This function does not follow redirects. Please use the [Get](#get) function, [DoRedirects](#doredirects) function, or [Post](#post) function to follow the redirection.
+
+If resp is nil, the response is ignored. If the response is not received by the given deadline, an `errTimeout error` is returned.
+
+Function Signature:
+
+```go
+func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
+```
+
+Sample Code:
+
+```go
+func main() {
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong") biz handler time: 1.5s
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8080/ping")
+
+	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(3*time.Second))
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
+
+	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(1*time.Second))
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("") err.Error() == "timeout"
+}
+```
+
+## Request Retry
+
+```go
+func (c *Client) SetRetryIfFunc(retryIf client.RetryIfFunc)
+```
+
+### SetRetryIfFunc
+
+The `SetRetryIfFunc` method is used to customize the conditions under which retry occurs. (For more information, please refer to [retry-condition-configuration](/docs/hertz/tutorials/basic-feature/retry/#retry-condition-configuration))
+
+Function Signature:
+
+```go
+func (c *Client) SetRetryIfFunc(retryIf client.RetryIfFunc)
+```
+
+Sample Code:
+
+```go
+func main() {
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	var customRetryIfFunc = func(req *protocol.Request, resp *protocol.Response, err error) bool {
+		return true
+	}
+	c.SetRetryIfFunc(customRetryIfFunc)
+	status2, body2, _ := c.Get(context.Background(), nil, "http://www.example.com")
+	fmt.Printf("status=%v body=%v\n", status2, string(body2))
+}
+```
+
+## Add Request Content
+
+Hertz's client can add various forms of request content in HTTP requests, such as `query` parameters, `www url encoded`, `multipart/form data`, and `JSON`.
+
+Sample Code:
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	req := &protocol.Request{}
+	res := &protocol.Response{}
+
+	// Use SetQueryString to set query parameters
+	req.Reset()
+	req.Header.SetMethod(consts.MethodPost)
+	req.SetRequestURI("http://127.0.0.1:8080/v1/bind")
+	req.SetQueryString("query=query&q=q1&q=q2&vd=1")
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+
+	// Send "www-url-encoded" request
+	req.Reset()
+	req.Header.SetMethod(consts.MethodPost)
+	req.SetRequestURI("http://127.0.0.1:8080/v1/bind?query=query&q=q1&q=q2&vd=1")
+	req.SetFormData(map[string]string{
+		"form": "test form",
+	})
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+
+	// Send "multipart/form-data" request
+	req.Reset()
+	req.Header.SetMethod(consts.MethodPost)
+	req.SetRequestURI("http://127.0.0.1:8080/v1/bind?query=query&q=q1&q=q2&vd=1")
+	req.SetMultipartFormData(map[string]string{
+		"form": "test form",
+	})
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+
+	// Send "Json" request
+	req.Reset()
+	req.Header.SetMethod(consts.MethodPost)
+	req.Header.SetContentTypeBytes([]byte("application/json"))
+	req.SetRequestURI("http://127.0.0.1:8080/v1/bind?query=query&q=q1&q=q2&vd=1")
+	data := struct {
+		Json string `json:"json"`
+	}{
+		"test json",
+	}
+	jsonByte, _ := json.Marshal(data)
+	req.SetBody(jsonByte)
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+}
+```
+
+## Upload File
+
+Hertz's client supports uploading files to the server.
+
+Sample Code:
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	req := &protocol.Request{}
+	res := &protocol.Response{}
+	req.SetMethod(consts.MethodPost)
+	req.SetRequestURI("http://127.0.0.1:8080/singleFile")
+	req.SetFile("file", "your file path")
+
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+	fmt.Println(err, string(res.Body()))
+}
+```
+
+## Streaming Read Response Content
+
+Hertz's client supports streaming read HTTP response content.
+
+Since the client has the problem of multiplexing connections, if streaming is used, the connection will be handled by the user(`resp.BodyStream()` is encapsulated by connection) once streaming is used. There are some differences in the management of connections in the above case:
+
+1. If the user doesn't close the connection, the connection will eventually be closed by the GC without causing a connection leak. However, due to the need to wait for 2 Round-Trip Time to close the connection, in the case of high concurrency, the consequence is that there will be too many open files and creating a new connection will be impossible.
+
+2. Users can recycle the connection by calling the relevant interface. After recycling, the connection will be put into the connection pool for reuse, so as to achieve higher resource utilization and better performance. The following methods will recycle the connection. Warning: Recycling can only be done once.
+   1. Explicit call: `protocol.ReleaseResponse(), resp.Reset(), resp.ResetBody()`.
+   1. Implicit call: The server side will also recycle the response. If the client and server use the same response, there is no need to explicitly call the recycling method
+
+Sample Code:
+
+```go
+func main() {
+	c, _ := client.NewClient(client.WithResponseBodyStream(true))
+	req := &protocol.Request{}
+	resp := &protocol.Response{}
+	defer func() {
+		protocol.ReleaseRequest(req)
+		protocol.ReleaseResponse(resp)
+	}()
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://127.0.0.1:8080/streamWrite")
+	err := c.Do(context.Background(), req, resp)
+	if err != nil {
+		return
+	}
+	bodyStream := resp.BodyStream()
+	p := make([]byte, resp.Header.ContentLength()/2)
+	_, err = bodyStream.Read(p)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	left, _ := ioutil.ReadAll(bodyStream)
+	fmt.Println(string(p), string(left))
+}
+```
+
+## Service Discovery
+
+The Hertz client supports finding target servers through service discovery.
+
+Hertz supports custom service discovery modules. For more information, please refer to [service-discovery-extension](/docs/hertz/tutorials/framework-exten/service_discovery/#service-discovery-extension).
+
+The relevant content of the service discovery center that Hertz has currently accessed can be found in [Service Registration and Service Discovery Extensions](/docs/hertz/tutorials/framework-exten/service_discovery/).
+
+## TLS
+
+The network library `netpoll` used by Hertz client by default does not support TLS. If you want to configure TLS to access https addresses, you should use the Standard library.
+
+For TLS related configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/tls/).
+
+Sample Code:
+
+```go
+func main() {
+	clientCfg := &tls.Config{
+		InsecureSkipVerify: true,
+	}
+	c, err := client.NewClient(
+		client.WithTLSConfig(clientCfg),
+		client.WithDialer(standard.NewDialer()),
+	)
+	if err != nil {
+		return
+	}
+
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("https://www.example.com")
+
+	err = c.Do(context.Background(), req, res)
+	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
+}
+```
+
+## Forward Proxy
+
+```go
+func (c *Client) SetProxy(p protocol.Proxy)
+```
+
+### SetProxy
+
+`SetProxy` is used to set the client proxy. (For more information, please refer to [retry-condition-configuration](/docs/hertz/tutorials/basic-feature/proxy/#forward-proxy))
+
+> Note: Multiple proxies cannot be set for the same client. If you need to use another proxy, please create another client and set a proxy for it.
+
+Sample Code:
+
+```go
+func (c *Client) SetProxy(p protocol.Proxy)
+```
+
+Function Signature:
+
+```go
+func main() {
+	// Proxy address
+	proxyURL := "http://<__user_name__>:<__password__>@<__proxy_addr__>:<__proxy_port__>"
+
+	parsedProxyURL := protocol.ParseURI(proxyURL)
+	client, err := client.NewClient(client.WithDialer(standard.NewDialer()))
+	if err != nil {
+		return
+	}
+	client.SetProxy(protocol.ProxyURI(parsedProxyURL))
+	upstreamURL := "http://google.com"
+	_, body, _ := client.Get(context.Background(), nil, upstreamURL)
+	fmt.Println(string(body))
+}
+```
+
+## Close Idle Connections
+
+```go
+func (c *Client) CloseIdleConnections()
+```
+
+### CloseIdleConnections
+
+The `CloseIdleConnections` method is used to close any `keep-alive` connections that are in an idle state. These connections may have been established by a previous request, but have been idle for some time now. This method does not break any connections that are currently in use.
+
+Function Signature:
+
+```go
+func (c *Client) CloseIdleConnections()
+```
+
+Sample Code:
+
+```go
+func main() {
+    c, err := client.NewClient()
+    if err != nil {
+        return
+    }
+    status, body, _ := c.Get(context.Background(), nil, "http://www.example.com")
+    fmt.Printf("status=%v body=%v\n", status, string(body))
+
+    // close idle connections
+    c.CloseIdleConnections()
+}
+```
+
+## Get Dialer Name
+
+```go
+func (c *Client) GetDialerName() (dName string, err error)
+```
+
+### GetDialerName
+
+The `GetDialerName` method is used to get the name of the dialer currently used by the client. If the dialer name cannot be retrieved, `unknown` is returned.
+
+Function Signature:
+
+```go
+func (c *Client) GetDialerName() (dName string, err error)
+```
+
+Sample Code:
+
+```go
+func main() {
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	// get dialer name
+	dName, err := c.GetDialerName()
+	if err != nil {
+		fmt.Printf("GetDialerName failed: %v", err)
+		return
+	}
+	fmt.Printf("dialer name=%v\n", dName)
+	// dName == "standard"
+}
+```
+
+## Middleware
+
+```go
+func (c *Client) Use(mws ...Middleware)
+func (c *Client) UseAsLast(mw Middleware) error
+func (c *Client) TakeOutLastMiddleware() Middleware
+```
+
+### Use
+
+Use the `Use` method to add a middleware to the current client. (For more information, please refer to [client-side-middleware](/docs/hertz/tutorials/basic-feature/middleware/#client-side-middleware))
+
+Function Signature:
+
+```go
+func (c *Client) Use(mws ...Middleware)
+```
+
+### UseAsLast
+
+The `UseAsLast` function adds the middleware to the end of the client middleware chain.
+
+If the client middleware chain has already set the last middleware before, the `UseAsLast` function will return an `errorLastMiddlewareExist` error. Therefore, to ensure that the last middleware in the client middleware chain is empty, you can first use the [TakeOutLastMiddleware](#takeoutlastmiddleware) function to clear the last middleware in the client middleware chain.
+
+> Note: The `UseAsLast` function sets the middleware in `ctx.lastMiddleware`, while the middleware chain set using the [Use](#use) function is stored in `ctx.mws`. The two functions are relatively independent. `ctx.lastMiddleware` is executed only at the end of the client middleware chain. Therefore, the `UseAsLast` function can be called before or after the [Use](#use) function.
+
+Function Signature:
+
+```go
+func (c *Client) UseAsLast(mw Middleware) error
+```
+
+Sample Code:
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	client.Use(MyMiddleware)
+	client.UseAsLast(LastMiddleware)
+	req := &protocol.Request{}
+	res := &protocol.Response{}
+	req.SetRequestURI("http://www.example.com")
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+}
+```
+
+### TakeOutLastMiddleware
+
+The `TakeOutLastMiddleware` function returns the last middleware set in the [UseAsLast](#useaslast) function and clears it. If it is not set, it returns `nil`.
+
+Function Signature:
+
+```go
+func (c *Client) TakeOutLastMiddleware() Middleware
+```
+
+Sample Code:
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	client.Use(MyMiddleware)
+	client.UseAsLast(LastMiddleware)
+	req := &protocol.Request{}
+	res := &protocol.Response{}
+	req.SetRequestURI("http://www.example.com")
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+	middleware := client.TakeOutLastMiddleware() // middleware == LastMiddleware
+	middleware = client.TakeOutLastMiddleware() // middleware == nil
+}
+```
+</script><h1>Client</h1><div class=lead>Hertz client related functions.</div><header class=article-meta></header><h2 id=quick-start>Quick Start</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>package</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>main</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>import</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>	</span><span style=color:#4e9a06>&#34;context&#34;</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -554,4 +1358,4 @@
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified September 18, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/627de0dd129bad8d6d278450b6a0bfa3a555afee>docs(hertz): fix doc about client Get and Post (#1419) (627de0dd)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

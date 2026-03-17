@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>超时控制 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/timeout/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="超时控制"><meta property="og:description" content="Kitex 中共有几种「超时」：客户端连接超时(Connection Timeout)、客户端请求超时(RPC Timeout)、服务端读写超时(Read/Write Timeout)、服务端退出超时(Exit Wait Timeout)。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-09-19T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="超时控制"><meta itemprop=description content="Kitex 中共有几种「超时」：客户端连接超时(Connection Timeout)、客户端请求超时(RPC Timeout)、服务端读写超时(Read/Write Timeout)、服务端退出超时(Exit Wait Timeout)。"><meta itemprop=datePublished content="2023-09-19T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="397"><meta itemprop=keywords content="Kitex,超时"><meta name=twitter:card content="summary"><meta name=twitter:title content="超时控制"><meta name=twitter:description content="Kitex 中共有几种「超时」：客户端连接超时(Connection Timeout)、客户端请求超时(RPC Timeout)、服务端读写超时(Read/Write Timeout)、服务端退出超时(Exit Wait Timeout)。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>超时控制 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/timeout/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="超时控制"><meta property="og:description" content="Kitex 中共有几种「超时」：客户端连接超时(Connection Timeout)、客户端请求超时(RPC Timeout)、服务端读写超时(Read/Write Timeout)、服务端退出超时(Exit Wait Timeout)。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-09-19T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-08T11:35:39+08:00"><meta itemprop=name content="超时控制"><meta itemprop=description content="Kitex 中共有几种「超时」：客户端连接超时(Connection Timeout)、客户端请求超时(RPC Timeout)、服务端读写超时(Read/Write Timeout)、服务端退出超时(Exit Wait Timeout)。"><meta itemprop=datePublished content="2023-09-19T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-08T11:35:39+08:00"><meta itemprop=wordCount content="397"><meta itemprop=keywords content="Kitex,超时"><meta name=twitter:card content="summary"><meta name=twitter:title content="超时控制"><meta name=twitter:description content="Kitex 中共有几种「超时」：客户端连接超时(Connection Timeout)、客户端请求超时(RPC Timeout)、服务端读写超时(Read/Write Timeout)、服务端退出超时(Exit Wait Timeout)。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -149,7 +149,262 @@
 <label for=m-zhdocskitexfaq-check><a href=/zh/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/kitex/Tutorials/service-governance/timeout.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/kitex/Tutorials/service-governance?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e8%b6%85%e6%97%b6%e6%8e%a7%e5%88%b6" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#使用方式>使用方式</a><ul><li><a href=#客户端超时client>客户端超时（Client）</a></li><li><a href=#服务端超时-server>服务端超时 (Server)</a></li></ul></li><li><a href=#qa>Q&amp;A</a><ul><li><a href=#q-readwritetimeoutserver-端执行时间超过默认的-5s是否也会报超时>Q: ReadWriteTimeout，server 端执行时间超过默认的 5s，是否也会报超时？</a></li><li><a href=#q-服务端支持-handler-执行超时配置吗>Q: 服务端支持 handler 执行超时配置吗？</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/>治理特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/timeout/>超时控制</a></li></ol></nav><div class=td-content><h1>超时控制</h1><div class=lead>Kitex 中共有几种「超时」：客户端连接超时(Connection Timeout)、客户端请求超时(RPC Timeout)、服务端读写超时(Read/Write Timeout)、服务端退出超时(Exit Wait Timeout)。</div><header class=article-meta></header><h2 id=使用方式>使用方式</h2><h3 id=客户端超时client>客户端超时（Client）</h3><h4 id=配置项>配置项</h4><h5 id=连接超时conntimeout-default50ms>连接超时：ConnTimeout (default=50ms)</h5><p>说明：</p><ol><li>建立一条新连接的最大等待时间；</li><li>可设置为任意值（无上限）；如未设置，默认值为 50ms；</li><li>如经常遇到 dial timeout 可考虑调大该值，及使用长连接池（详见 client.WithLongConnection）。</li></ol><h5 id=请求超时rpctimeout-default0-不限时>请求超时：RPCTimeout (default=0, 不限时)</h5><p>说明：</p><ol><li>限制一次 rpc 调用的最大用时；如超时，返回 <code>kerrors.ErrRPCTimeout</code>；</li><li>可指定任意值（无上限）；如未指定，默认为 0，表示不限制等待时间；</li><li>超时默认不会重试。</li></ol><h4 id=配置方式>配置方式</h4><h5 id=代码配置---client-optionclient-粒度配置>代码配置 - Client Option（Client 粒度配置）</h5><p>在初始化 client 时传入：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>import</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#4e9a06>&#34;github.com/cloudwego/kitex/client&#34;</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#使用方式>使用方式</a><ul><li><a href=#客户端超时client>客户端超时（Client）</a></li><li><a href=#服务端超时-server>服务端超时 (Server)</a></li></ul></li><li><a href=#qa>Q&amp;A</a><ul><li><a href=#q-readwritetimeoutserver-端执行时间超过默认的-5s是否也会报超时>Q: ReadWriteTimeout，server 端执行时间超过默认的 5s，是否也会报超时？</a></li><li><a href=#q-服务端支持-handler-执行超时配置吗>Q: 服务端支持 handler 执行超时配置吗？</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/>治理特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/timeout/>超时控制</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=超时控制 data-url=https://www.cloudwego.io/zh/docs/kitex/tutorials/service-governance/timeout/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 使用方式
+
+### 客户端超时（Client）
+
+#### 配置项
+
+##### 连接超时：ConnTimeout (default=50ms)
+
+说明：
+
+1. 建立一条新连接的最大等待时间；
+2. 可设置为任意值（无上限）；如未设置，默认值为 50ms；
+3. 如经常遇到 dial timeout 可考虑调大该值，及使用长连接池（详见 client.WithLongConnection）。
+
+##### 请求超时：RPCTimeout (default=0, 不限时)
+
+说明：
+
+1. 限制一次 rpc 调用的最大用时；如超时，返回 `kerrors.ErrRPCTimeout`；
+2. 可指定任意值（无上限）；如未指定，默认为 0，表示不限制等待时间；
+3. 超时默认不会重试。
+
+#### 配置方式
+
+##### 代码配置 - Client Option（Client 粒度配置）
+
+在初始化 client 时传入：
+
+```go
+import "github.com/cloudwego/kitex/client"
+
+cli, err := xxx.NewClient(targetService,
+    client.WithConnectTimeout(100 * time.Millisecond),
+    client.WithRPCTimeout(2 * time.Second))
+```
+
+注：两个配置项可以按需独立配置。
+
+##### 代码配置 - Call Option（请求粒度配置，优先级高于 client option）
+
+发起请求时传入：
+
+```go
+import "github.com/cloudwego/kitex/client/callopt"
+
+rsp, err := cli.YourMethod(ctx, req,
+    callopt.WithConnectTimeout(100 * time.Millisecond))
+    callopt.WithRPCTimeout(2 * time.Second))
+```
+
+注：两个配置项可以按需独立配置。
+
+##### 动态配置 - TimeoutProvider（优先级低于前述 Option）
+
+适用于需要动态配置的场景，每次请求前，Client 会调用 `TimeoutProvider 获取 RPCTimeout 和 ConnectionTimeout。
+
+在初始化 client 时传入用户自定义的 `rpcinfo.TimeoutProvider`：
+
+```go
+import (
+    "github.com/cloudwego/kitex/client"
+    "github.com/cloudwego/kitex/pkg/rpcinfo"
+)
+
+type UserTimeoutProvider struct {}
+
+func (UserTimeoutProvider) Timeouts(ri rpcinfo.RPCInfo) rpcinfo.Timeouts {
+    // 需返回 RPCTimeout、ConnectTimeout
+    // ReadWriteTimeout 实际未被使用，建议返回值与 RPCTimeout 相同
+}
+
+opt := client.WithTimeoutProvider(&UserTimeoutProvider{})
+cli, err := xxx.NewClient(targetService, opt)
+```
+
+##### 配置中心扩展
+
+可用的配置中心扩展：
+
+- [config-nacos](https://github.com/kitex-contrib/config-nacos): 使用 Nacos 作为配置中心，支持超时、重试、熔断、服务端限流
+
+#### 超时错误
+
+##### 请求超时(kerrors.ErrRPCTimeout)
+
+在请求超时的情况下，Client 收到的 Error 为：
+
+```go
+&kerrors.DetailedError {
+    basic: kerrors.ErrRPCTimeout,
+    cause: errors.New("timeout=100ms, to=ServerName, method=MethodName, location=kitex.rpcTimeoutMW, remote=0.0.0.0:8888"),
+}
+```
+
+可使用 `kerrors.IsTimeoutError(err)` 来判断是否是超时错误。
+
+##### 错误拆分
+
+> 适用于 github.com/cloudwego/kitex >= v0.5.2
+
+默认情况下，ErrRPCTimeout 可能有几种原因：
+
+1. Kitex client 设置超时时间，导致请求超时
+2. 业务代码主动调用 ctx.Cancel()
+3. 业务在 context 里设置了比当前配置更短的 timeout
+
+某些业务场景需要区分这些原因，例如同时发出多个请求，只要有一个请求成功，其他请求就会被 cancel，但这不是 RPC 或业务错误，希望区分这类结果，以免引起报警。
+
+考虑到前向兼容，该配置默认关闭，需要在代码中主动设置：
+
+```go
+import "github.com/cloudwego/kitex/pkg/rpctimeout"
+
+rpctimeout.EnableGlobalNeedFineGrainedErrCode()
+```
+
+开启前后区别如下：
+
+| Scenarios                                           | Disabled              | Enabled                             |
+| --------------------------------------------------- | --------------------- | ----------------------------------- |
+| kitex 设置的超时到期                                | kerrors.ErrRPCTimeout | kerrors.ErrRPCTimeout               |
+| 业务主动调用 ctx.Cancel()                           | (同上)                | kerrors.ErrCanceledByBusiness       |
+| 业务代码设置的超时到期（比kitex配置更短的 timeout） | (同上)                | kerrors.ErrTimeoutByBusiness (\*注) |
+
+\*注：考虑到 go 的 timer 有误差，在超时发生时，会判断 actualDDL + 50ms < Kitex's DDL，满足条件才会返回该错误码，否则仍返回 103。
+
+例如 Kitex 设置 1s 超时：
+
+- 如果实际 <950ms 就超时返回，说明大概率是业务代码里设置了 timer
+- 如果实际 >= 1s 才超时返回，说明大概率是 Kitex 设置的 timer
+- 如果在 950ms ~ 1s 之间超时，由于无法精确判断，目前保守地判定为 Kitex 设置的 timer
+
+该阈值 (50ms) 在 Kitex >= 0.7.1 可通过如下方式修改：
+
+```go
+rpctimeout.SetBusinessTimeoutThreshold(10 * time.Millisecond)
+```
+
+### 服务端超时 (Server)
+
+#### 配置项
+
+##### ReadWriteTimeout (default=5s)
+
+说明：
+
+1. 在连接上读写数据所能忍受的最大等待时间，主要为防止异常连接卡住协程；
+2. 不是 Handler 执行超时时间；
+3. 只在 server 端生效，一般无需关心。
+
+举例：client 端数据分多次发送，如果发送间隔过长，会触发 server 端读等待超时；这时需考虑调大 ReadWriteTimeout。
+
+##### ExitWaitTime（default=5s）
+
+说明：
+
+1. Server 在收到退出信号时的等待时间；
+2. 如果超过该等待时间，Server 将会强制结束所有在处理的请求（客户端会收到错误）。
+
+##### EnableContextTimeout
+
+> github.com/cloudwego/kitex >= v0.9.0
+
+(针对非 Streaming API）如果从请求的 TTHeader 中读到了 timeout，则写入 server 请求的 ctx 。
+
+具体用法请参考后文示例代码。
+
+说明：
+
+- Streaming API：已默认开启（通过另外的实现）
+  - 含 GRPC/Protobuf 和 Thrift Streaming
+  - client 的 `ctx.Deadline()` 会通过 `grpc_timeout` header 发送给 server，写入 server 的 ctx
+- 非 Streaming API：默认未开启
+  - 在 client 端需启用 TTHeader Transport 和 ClientTTHeaderMetaHandler，并通过 client/callopt `WithRPCTimeout` option 指定 RPC 超时时间
+  - 在 server 端需启用此 Option 及 ServerTTHeaderMetaHandler，才能从请求的 TTHeader 中读取到 RPCTimeout
+    - 如果业务代码有需要，可用 `rpcinfo.GetRPCInfo(ctx).Config().RPCTimeout()` 获得这个值
+
+#### 配置方式
+
+##### 代码配置 - Server Option
+
+###### WithReadWriteTimeout
+
+在初始化 Server 时指定：
+
+```go
+import "github.com/cloudwego/kitex/server"
+
+svr := yourservice.NewServer(handler,
+    server.WithReadWriteTimeout(5 * time.Second),
+)
+```
+
+###### WithExitWaitTime
+
+在初始化 Server 时指定：
+
+```go
+import "github.com/cloudwego/kitex/server"
+
+svr := yourservice.NewServer(handler,
+    server.WithExitWaitTime(5 * time.Second),
+)
+```
+
+###### WithEnableContextTimeout
+
+该 Option 需配合 TTHeader 使用，详见下方示例代码。
+
+Client
+
+- 指定 Transport Protocol 为 TTHeader
+- 启用 [transmeta.ClientTTHeaderHandler](https://github.com/cloudwego/kitex/blob/v0.9.0/pkg/transmeta/ttheader.go#L45)
+- 通过 client.WithRPCTimeout （或者在请求时使用 callopt.WithRPCTimeout）指定超时
+
+```go
+cli := yourservice.MustNewClient(
+    serverName,
+    client.WithTransportProtocol(transport.TTHeader),
+    client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
+    client.WithRPCTimeout(time.Second),
+)
+```
+
+Server
+
+- 指定该 Option
+- 启用 [transmeta.ServerTTHeaderHandler](https://github.com/cloudwego/kitex/blob/v0.9.0/pkg/transmeta/ttheader.go#L46)
+
+```
+svr := yourservice.NewServer(handler,
+    server.WithMetaHandler(transmeta.ServerTTHeaderHandler),
+    server.WithEnableContextTimeout(true),
+)
+```
+
+## Q&A
+
+### Q: ReadWriteTimeout，server 端执行时间超过默认的 5s，是否也会报超时？
+
+这是服务端解码时等待包的超时时间，与服务端 handler 的执行没有关系（服务端handler执行时，已经完成解码）
+
+### Q: 服务端支持 handler 执行超时配置吗？
+
+目前服务端不支持 handler 执行超时，只支持读写超时。
+</script><h1>超时控制</h1><div class=lead>Kitex 中共有几种「超时」：客户端连接超时(Connection Timeout)、客户端请求超时(RPC Timeout)、服务端读写超时(Read/Write Timeout)、服务端退出超时(Exit Wait Timeout)。</div><header class=article-meta></header><h2 id=使用方式>使用方式</h2><h3 id=客户端超时client>客户端超时（Client）</h3><h4 id=配置项>配置项</h4><h5 id=连接超时conntimeout-default50ms>连接超时：ConnTimeout (default=50ms)</h5><p>说明：</p><ol><li>建立一条新连接的最大等待时间；</li><li>可设置为任意值（无上限）；如未设置，默认值为 50ms；</li><li>如经常遇到 dial timeout 可考虑调大该值，及使用长连接池（详见 client.WithLongConnection）。</li></ol><h5 id=请求超时rpctimeout-default0-不限时>请求超时：RPCTimeout (default=0, 不限时)</h5><p>说明：</p><ol><li>限制一次 rpc 调用的最大用时；如超时，返回 <code>kerrors.ErrRPCTimeout</code>；</li><li>可指定任意值（无上限）；如未指定，默认为 0，表示不限制等待时间；</li><li>超时默认不会重试。</li></ol><h4 id=配置方式>配置方式</h4><h5 id=代码配置---client-optionclient-粒度配置>代码配置 - Client Option（Client 粒度配置）</h5><p>在初始化 client 时传入：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>import</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#4e9a06>&#34;github.com/cloudwego/kitex/client&#34;</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#000>cli</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>err</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>:=</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>xxx</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>NewClient</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>targetService</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>client</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>WithConnectTimeout</span><span style=color:#000;font-weight:700>(</span><span style=color:#0000cf;font-weight:700>100</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>time</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Millisecond</span><span style=color:#000;font-weight:700>),</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -204,4 +459,4 @@
 </code></pre><h2 id=qa>Q&amp;A</h2><h3 id=q-readwritetimeoutserver-端执行时间超过默认的-5s是否也会报超时>Q: ReadWriteTimeout，server 端执行时间超过默认的 5s，是否也会报超时？</h3><p>这是服务端解码时等待包的超时时间，与服务端 handler 的执行没有关系（服务端handler执行时，已经完成解码）</p><h3 id=q-服务端支持-handler-执行超时配置吗>Q: 服务端支持 handler 执行超时配置吗？</h3><p>目前服务端不支持 handler 执行超时，只支持读写超时。</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 May 8, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/dff8f175d96e832fb521f13246cce14399aefcdb>style: prettier lint fix (#1069) (dff8f175)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

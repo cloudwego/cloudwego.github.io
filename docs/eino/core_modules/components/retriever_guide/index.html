@@ -4,7 +4,7 @@ type Retriever interface { Retrieve(ctx context.Context, query string, opts ...O
 Vector similarity-based document retrieval Keyword-based document search Knowledge base question answering systems (RAG) Component Definition Interface Definition Code location: eino/components/retriever/interface.go
 type Retriever interface { Retrieve(ctx context.Context, query string, opts ...Option) ([]*schema.Document, error) } Retrieve Method Function: Retrieve relevant documents based on a query Parameters: ctx: Context object for passing request-level information and the Callback Manager query: Query string opts: Retrieval options for configuring retrieval behavior Returns: []*schema.Document: List of retrieved documents error: Error information during retrieval Document Struct type Document struct { // ID is the unique identifier of the document ID string // Content is the content of the document Content string // MetaData is used to store document metadata MetaData map[string]any } Common Options The Retriever component uses RetrieverOption to define optional parameters. Below are the common options that Retriever components need to implement. Additionally, each specific implementation can define its own specific Options, wrapped into the unified RetrieverOption type using the WrapRetrieverImplSpecificOptFn function."><meta itemprop=datePublished content="2026-01-30T00:00:00+00:00"><meta itemprop=dateModified content="2026-01-30T14:12:38+08:00"><meta itemprop=wordCount content="1339"><meta name=twitter:card content="summary"><meta name=twitter:title content="Eino: Retriever Guide"><meta name=twitter:description content="Introduction The Retriever component is used to retrieve documents from various data sources. Its main function is to retrieve the most relevant documents from a document library based on a user’s query. This component is particularly useful in the following scenarios:
 Vector similarity-based document retrieval Keyword-based document search Knowledge base question answering systems (RAG) Component Definition Interface Definition Code location: eino/components/retriever/interface.go
-type Retriever interface { Retrieve(ctx context.Context, query string, opts ...Option) ([]*schema.Document, error) } Retrieve Method Function: Retrieve relevant documents based on a query Parameters: ctx: Context object for passing request-level information and the Callback Manager query: Query string opts: Retrieval options for configuring retrieval behavior Returns: []*schema.Document: List of retrieved documents error: Error information during retrieval Document Struct type Document struct { // ID is the unique identifier of the document ID string // Content is the content of the document Content string // MetaData is used to store document metadata MetaData map[string]any } Common Options The Retriever component uses RetrieverOption to define optional parameters. Below are the common options that Retriever components need to implement. Additionally, each specific implementation can define its own specific Options, wrapped into the unified RetrieverOption type using the WrapRetrieverImplSpecificOptFn function."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+type Retriever interface { Retrieve(ctx context.Context, query string, opts ...Option) ([]*schema.Document, error) } Retrieve Method Function: Retrieve relevant documents based on a query Parameters: ctx: Context object for passing request-level information and the Callback Manager query: Query string opts: Retrieval options for configuring retrieval behavior Returns: []*schema.Document: List of retrieved documents error: Error information during retrieval Document Struct type Document struct { // ID is the unique identifier of the document ID string // Content is the content of the document Content string // MetaData is used to store document metadata MetaData map[string]any } Common Options The Retriever component uses RetrieverOption to define optional parameters. Below are the common options that Retriever components need to implement. Additionally, each specific implementation can define its own specific Options, wrapped into the unified RetrieverOption type using the WrapRetrieverImplSpecificOptFn function."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -110,7 +110,455 @@ type Retriever interface { Retrieve(ctx context.Context, query string, opts ...O
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/components/retriever_guide.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/components?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino:%20Retriever%20Guide" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction><strong>Introduction</strong></a></li><li><a href=#component-definition><strong>Component Definition</strong></a><ul><li><a href=#interface-definition><strong>Interface Definition</strong></a></li><li><a href=#document-struct><strong>Document Struct</strong></a></li><li><a href=#common-options><strong>Common Options</strong></a></li></ul></li><li><a href=#usage><strong>Usage</strong></a><ul><li><a href=#standalone-usage><strong>Standalone Usage</strong></a></li><li><a href=#usage-in-orchestration><strong>Usage in Orchestration</strong></a></li></ul></li><li><a href=#option-and-callback-usage><strong>Option and Callback Usage</strong></a><ul><li><a href=#callback-usage-example><strong>Callback Usage Example</strong></a></li></ul></li><li><a href=#existing-implementations><strong>Existing Implementations</strong></a></li><li><a href=#implementation-reference><strong>Implementation Reference</strong></a><ul><li><a href=#option-mechanism><strong>Option Mechanism</strong></a></li><li><a href=#callback-handling><strong>Callback Handling</strong></a></li><li><a href=#complete-implementation-example><strong>Complete Implementation Example</strong></a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/components/>Eino: Components</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/components/retriever_guide/>Eino: Retriever Guide</a></li></ol></nav><div class=td-content><h1>Eino: Retriever Guide</h1><header class=article-meta></header><h2 id=introduction><strong>Introduction</strong></h2><p>The Retriever component is used to retrieve documents from various data sources. Its main function is to retrieve the most relevant documents from a document library based on a user&rsquo;s query. This component is particularly useful in the following scenarios:</p><ul><li>Vector similarity-based document retrieval</li><li>Keyword-based document search</li><li>Knowledge base question answering systems (RAG)</li></ul><h2 id=component-definition><strong>Component Definition</strong></h2><h3 id=interface-definition><strong>Interface Definition</strong></h3><blockquote><p>Code location: eino/components/retriever/interface.go</p></blockquote><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Retriever</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction><strong>Introduction</strong></a></li><li><a href=#component-definition><strong>Component Definition</strong></a><ul><li><a href=#interface-definition><strong>Interface Definition</strong></a></li><li><a href=#document-struct><strong>Document Struct</strong></a></li><li><a href=#common-options><strong>Common Options</strong></a></li></ul></li><li><a href=#usage><strong>Usage</strong></a><ul><li><a href=#standalone-usage><strong>Standalone Usage</strong></a></li><li><a href=#usage-in-orchestration><strong>Usage in Orchestration</strong></a></li></ul></li><li><a href=#option-and-callback-usage><strong>Option and Callback Usage</strong></a><ul><li><a href=#callback-usage-example><strong>Callback Usage Example</strong></a></li></ul></li><li><a href=#existing-implementations><strong>Existing Implementations</strong></a></li><li><a href=#implementation-reference><strong>Implementation Reference</strong></a><ul><li><a href=#option-mechanism><strong>Option Mechanism</strong></a></li><li><a href=#callback-handling><strong>Callback Handling</strong></a></li><li><a href=#complete-implementation-example><strong>Complete Implementation Example</strong></a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/components/>Eino: Components</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/components/retriever_guide/>Eino: Retriever Guide</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino: Retriever Guide" data-url=https://www.cloudwego.io/docs/eino/core_modules/components/retriever_guide/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## **Introduction**
+
+The Retriever component is used to retrieve documents from various data sources. Its main function is to retrieve the most relevant documents from a document library based on a user's query. This component is particularly useful in the following scenarios:
+
+- Vector similarity-based document retrieval
+- Keyword-based document search
+- Knowledge base question answering systems (RAG)
+
+## **Component Definition**
+
+### **Interface Definition**
+
+> Code location: eino/components/retriever/interface.go
+
+```go
+type Retriever interface {
+    Retrieve(ctx context.Context, query string, opts ...Option) ([]*schema.Document, error)
+}
+```
+
+#### **Retrieve Method**
+
+- Function: Retrieve relevant documents based on a query
+- Parameters:
+  - ctx: Context object for passing request-level information and the Callback Manager
+  - query: Query string
+  - opts: Retrieval options for configuring retrieval behavior
+- Returns:
+  - `[]*schema.Document`: List of retrieved documents
+  - error: Error information during retrieval
+
+### **Document Struct**
+
+```go
+type Document struct {
+    // ID is the unique identifier of the document
+    ID string
+    // Content is the content of the document
+    Content string
+    // MetaData is used to store document metadata
+    MetaData map[string]any
+}
+```
+
+### **Common Options**
+
+The Retriever component uses RetrieverOption to define optional parameters. Below are the common options that Retriever components need to implement. Additionally, each specific implementation can define its own specific Options, wrapped into the unified RetrieverOption type using the WrapRetrieverImplSpecificOptFn function.
+
+```go
+type Options struct {
+    // Index is the index used by the retriever; different retrievers may interpret this differently
+    Index *string
+    
+    // SubIndex is the sub-index used by the retriever; different retrievers may interpret this differently
+    SubIndex *string
+    
+    // TopK is the maximum number of documents to retrieve
+    TopK *int
+    
+    // ScoreThreshold is the similarity threshold for documents, e.g., 0.5 means the document's similarity score must be greater than 0.5
+    ScoreThreshold *float64
+    
+    // Embedding is the component used to generate query vectors
+    Embedding embedding.Embedder
+    
+    // DSLInfo is the DSL information used for retrieval, only used in viking-type retrievers
+    DSLInfo map[string]interface{}
+}
+```
+
+Options can be set using the following methods:
+
+```go
+// Set index
+WithIndex(index string) Option
+
+// Set sub-index
+WithSubIndex(subIndex string) Option
+
+// Set maximum number of documents to retrieve
+WithTopK(topK int) Option
+
+// Set similarity threshold
+WithScoreThreshold(threshold float64) Option
+
+// Set vector generation component
+WithEmbedding(emb embedding.Embedder) Option
+
+// Set DSL information (only for viking-type retrievers)
+WithDSLInfo(dsl map[string]any) Option
+```
+
+## **Usage**
+
+### **Standalone Usage**
+
+#### VikingDB Example
+
+> Code location: eino-ext/components/retriever/volc_vikingdb/examples/builtin_embedding
+
+```go
+import (
+    "github.com/cloudwego/eino/components/retriever"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+
+    "github.com/cloudwego/eino-ext/components/retriever/volc_vikingdb"
+)
+
+collectionName := "eino_test"
+indexName := "test_index_1"
+
+/*
+ * In the following example, a dataset (collection) named eino_test is pre-created,
+ * and an hnsw-hybrid index named test_index_1 is built on this dataset.
+ * Dataset field configuration:
+ * Field Name       Field Type       Vector Dimension
+ * ID               string
+ * vector           vector           1024
+ * sparse_vector    sparse_vector
+ * content          string
+ * extra_field_1    string
+ *
+ * Component usage notes:
+ * 1. The field names and types for ID / vector / sparse_vector / content must match the above configuration
+ * 2. The vector dimension must match the output dimension of the model specified by ModelName
+ * 3. Some models do not output sparse vectors; in that case, set UseSparse to false, and the collection may omit the sparse_vector field
+ */
+
+cfg := &volc_vikingdb.RetrieverConfig{
+    // https://api-vikingdb.volces.com (North China)
+    // https://api-vikingdb.mlp.cn-shanghai.volces.com (East China)
+    // https://api-vikingdb.mlp.ap-mya.byteplus.com (Overseas - Johor)
+    Host:              "api-vikingdb.volces.com",
+    Region:            "cn-beijing",
+    AK:                ak,
+    SK:                sk,
+    Scheme:            "https",
+    ConnectionTimeout: 0,
+    Collection:        collectionName,
+    Index:             indexName,
+    EmbeddingConfig: volc_vikingdb.EmbeddingConfig{
+       UseBuiltin:  true,
+       ModelName:   "bge-m3",
+       UseSparse:   true,
+       DenseWeight: 0.4,
+    },
+    Partition:      "", // Corresponds to the index's [sub-index partition field]; leave empty if not set
+    TopK:           of(10),
+    ScoreThreshold: of(0.1),
+    FilterDSL:      nil, // Corresponds to the index's [scalar filter field]; leave nil if not set; see https://www.volcengine.com/docs/84313/1254609
+}
+
+volcRetriever, _ := volc_vikingdb.NewRetriever(ctx, cfg)
+
+
+query := "tourist attraction"
+docs, _ := volcRetriever.Retrieve(ctx, query)
+
+log.Printf("vikingDB retrieve success, query=%v, docs=%v", query, docs)
+```
+
+#### Milvus Example
+
+```go
+import (
+        "github.com/cloudwego/eino-ext/components/retriever/milvus2"
+        "github.com/cloudwego/eino-ext/components/retriever/milvus2/search_mode"
+)
+
+// Create retriever
+retriever, err := milvus2.NewRetriever(ctx, &milvus2.RetrieverConfig{
+        ClientConfig: &milvusclient.ClientConfig{
+                Address:  addr,
+                Username: username,
+                Password: password,
+        },
+        Collection: "my_collection",
+        TopK:       10,
+        SearchMode: search_mode.NewApproximate(milvus2.COSINE),
+        Embedding:  emb,
+})
+
+// Retrieve documents
+documents, err := retriever.Retrieve(ctx, "search query")
+```
+
+#### ElasticSearch 7 Example
+
+```go
+import (
+        "github.com/cloudwego/eino/schema"
+        elasticsearch "github.com/elastic/go-elasticsearch/v7"
+
+        "github.com/cloudwego/eino-ext/components/retriever/es7"
+        "github.com/cloudwego/eino-ext/components/retriever/es7/search_mode"
+)
+
+client, _ := elasticsearch.NewClient(elasticsearch.Config{
+        Addresses: []string{"http://localhost:9200"},
+        Username:  username,
+        Password:  password,
+})
+
+// Create retriever with dense vector similarity search
+retriever, _ := es7.NewRetriever(ctx, &es7.RetrieverConfig{
+        Client:     client,
+        Index:      "my_index",
+        TopK:       10,
+        SearchMode: search_mode.DenseVectorSimilarity(search_mode.DenseVectorSimilarityTypeCosineSimilarity, "content_vector"),
+        Embedding:  emb,
+})
+
+// Retrieve documents
+docs, _ := retriever.Retrieve(ctx, "search query")
+```
+
+#### OpenSearch 2 Example
+
+```go
+package main
+
+import (
+        "github.com/cloudwego/eino/schema"
+        opensearch "github.com/opensearch-project/opensearch-go/v2"
+
+        "github.com/cloudwego/eino-ext/components/retriever/opensearch2"
+        "github.com/cloudwego/eino-ext/components/retriever/opensearch2/search_mode"
+)
+
+client, err := opensearch.NewClient(opensearch.Config{
+        Addresses: []string{"http://localhost:9200"},
+})
+
+// Create retriever component
+retriever, _ := opensearch2.NewRetriever(ctx, &opensearch2.RetrieverConfig{
+        Client: client,
+        Index:  "your_index_name",
+        TopK:   5,
+        // Select search mode
+        SearchMode: search_mode.Approximate(&search_mode.ApproximateConfig{
+                VectorField: "content_vector",
+                K:           5,
+        }),
+        ResultParser: func(ctx context.Context, hit map[string]interface{}) (*schema.Document, error) {
+                // Parse hit map to Document
+                id, _ := hit["_id"].(string)
+                source := hit["_source"].(map[string]interface{})
+                content, _ := source["content"].(string)
+                return &schema.Document{ID: id, Content: content}, nil
+        },
+        Embedding: emb,
+})
+
+// Retrieve documents
+docs, err := retriever.Retrieve(ctx, "search query")
+```
+
+### **Usage in Orchestration**
+
+```go
+// In Chain
+chain := compose.NewChain[string, []*schema.Document]()
+chain.AppendRetriever(retriever)
+
+// In Graph
+graph := compose.NewGraph[string, []*schema.Document]()
+graph.AddRetrieverNode("retriever_node", retriever)
+```
+
+## **Option and Callback Usage**
+
+### **Callback Usage Example**
+
+> Code location: eino-ext/components/retriever/volc_vikingdb/examples/builtin_embedding
+
+```go
+import (
+    "github.com/cloudwego/eino/callbacks"
+    "github.com/cloudwego/eino/components/retriever"
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+    callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
+    "github.com/cloudwego/eino-ext/components/retriever/volc_vikingdb"
+)
+
+// Create callback handler
+handler := &callbacksHelper.RetrieverCallbackHandler{
+    OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *retriever.CallbackInput) context.Context {
+       log.Printf("input access, content: %s\n", input.Query)
+       return ctx
+    },
+    OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *retriever.CallbackOutput) context.Context {
+       log.Printf("output finished, len: %v\n", len(output.Docs))
+       return ctx
+    },
+    // OnError
+}
+
+// Use callback handler
+helper := callbacksHelper.NewHandlerHelper().
+    Retriever(handler).
+    Handler()
+
+chain := compose.NewChain[string, []*schema.Document]()
+chain.AppendRetriever(volcRetriever)
+
+// Use at runtime
+run, _ := chain.Compile(ctx)
+
+outDocs, _ := run.Invoke(ctx, query, compose.WithCallbacks(helper))
+
+log.Printf("vikingDB retrieve success, query=%v, docs=%v", query, outDocs)
+```
+
+## **Existing Implementations**
+
+- Volc VikingDB Retriever: Retrieval implementation based on Volcano Engine VikingDB [Retriever - VikingDB](/docs/eino/ecosystem_integration/retriever/retriever_volc_vikingdb)
+- Milvus v2.5+ Retriever: Vector database retriever based on Milvus [Retriever - Milvus 2 (v2.5+)](/docs/eino/ecosystem_integration/retriever/retriever_milvusv2)
+- Milvus v2.4- Retriever: Vector database retriever based on Milvus [Retriever - Milvus (v2.4-)](/docs/eino/ecosystem_integration/retriever/retriever_milvus)
+- Elasticsearch 8 Retriever: General search engine retriever based on ES8 [Retriever - Elasticsearch 8](/docs/eino/ecosystem_integration/retriever/retriever_es8)
+- ElasticSearch 7 Retriever: General search engine retriever based on ES7 [Retriever - Elasticsearch 7](/docs/eino/ecosystem_integration/retriever/retriever_elasticsearch7)
+- OpenSearch 3 Retriever: General search engine retriever based on OpenSearch 3 [Retriever - OpenSearch 3](/docs/eino/ecosystem_integration/retriever/retriever_opensearch3)
+- OpenSearch 2 Retriever: General search engine retriever based on OpenSearch 2 [Retriever - OpenSearch 2](/docs/eino/ecosystem_integration/retriever/retriever_opensearch2)
+
+## **Implementation Reference**
+
+When implementing a custom Retriever component, pay attention to the following points:
+
+1. Handle the option mechanism properly, including common options.
+2. Handle callbacks properly.
+3. Inject specific metadata for use by downstream nodes.
+
+### **Option Mechanism**
+
+The Retriever component provides a set of common options that implementations need to handle correctly:
+
+```go
+// Use GetCommonOptions to handle common options
+func (r *MyRetriever) Retrieve(ctx context.Context, query string, opts ...retriever.Option) ([]*schema.Document, error) {
+    // 1. Initialize and read options
+    options := &retriever.Options{ // Can set default values
+        Index: &r.index,
+        TopK: &r.topK,
+        Embedding: r.embedder,
+    }
+    options = retriever.GetCommonOptions(options, opts...)
+    
+    // ...
+}
+```
+
+### **Callback Handling**
+
+Retriever implementations need to trigger callbacks at appropriate times. The following structs are defined by the retriever component:
+
+```go
+// Define callback input/output
+type CallbackInput struct {
+    Query string
+    TopK int
+    Filter string
+    ScoreThreshold *float64
+    Extra map[string]any
+}
+
+type CallbackOutput struct {
+    Docs []*schema.Document
+    Extra map[string]any
+}
+```
+
+### **Complete Implementation Example**
+
+```go
+type MyRetriever struct {
+    embedder embedding.Embedder
+    index string
+    topK int
+}
+
+func NewMyRetriever(config *MyRetrieverConfig) (*MyRetriever, error) {
+    return &MyRetriever{
+        embedder: config.Embedder,
+        index: config.Index,
+        topK: config.DefaultTopK,
+    }, nil
+}
+
+func (r *MyRetriever) Retrieve(ctx context.Context, query string, opts ...retriever.Option) ([]*schema.Document, error) {
+    // 1. Handle options
+    options := &retriever.Options{
+        Index: &r.index,
+        TopK: &r.topK,
+        Embedding: r.embedder,
+    }
+    options = retriever.GetCommonOptions(options, opts...)
+    
+    // 2. Get callback manager
+    cm := callbacks.ManagerFromContext(ctx)
+    
+    // 3. Callback before retrieval starts
+    ctx = cm.OnStart(ctx, info, &retriever.CallbackInput{
+        Query: query,
+        TopK: *options.TopK,
+    })
+    
+    // 4. Execute retrieval logic
+    docs, err := r.doRetrieve(ctx, query, options)
+    
+    // 5. Handle error and completion callbacks
+    if err != nil {
+        ctx = cm.OnError(ctx, info, err)
+        return nil, err
+    }
+    
+    ctx = cm.OnEnd(ctx, info, &retriever.CallbackOutput{
+        Docs: docs,
+    })
+    
+    return docs, nil
+}
+
+func (r *MyRetriever) doRetrieve(ctx context.Context, query string, opts *retriever.Options) ([]*schema.Document, error) {
+    // 1. If Embedding is set, generate vector representation of the query (note common option logic handling)
+    var queryVector []float64
+    if opts.Embedding != nil {
+        vectors, err := opts.Embedding.EmbedStrings(ctx, []string{query})
+        if err != nil {
+            return nil, err
+        }
+        queryVector = vectors[0]
+    }
+    
+    // 2. Other logic
+    return docs, nil
+}
+```
+</script><h1>Eino: Retriever Guide</h1><header class=article-meta></header><h2 id=introduction><strong>Introduction</strong></h2><p>The Retriever component is used to retrieve documents from various data sources. Its main function is to retrieve the most relevant documents from a document library based on a user&rsquo;s query. This component is particularly useful in the following scenarios:</p><ul><li>Vector similarity-based document retrieval</li><li>Keyword-based document search</li><li>Knowledge base question answering systems (RAG)</li></ul><h2 id=component-definition><strong>Component Definition</strong></h2><h3 id=interface-definition><strong>Interface Definition</strong></h3><blockquote><p>Code location: eino/components/retriever/interface.go</p></blockquote><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Retriever</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>Retrieve</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>query</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>string</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>opts</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000>Option</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>([]</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Document</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#000;font-weight:700>}</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span></code></pre></div><h4 id=retrieve-method><strong>Retrieve Method</strong></h4><ul><li>Function: Retrieve relevant documents based on a query</li><li>Parameters:<ul><li>ctx: Context object for passing request-level information and the Callback Manager</li><li>query: Query string</li><li>opts: Retrieval options for configuring retrieval behavior</li></ul></li><li>Returns:<ul><li><code>[]*schema.Document</code>: List of retrieved documents</li><li>error: Error information during retrieval</li></ul></li></ul><h3 id=document-struct><strong>Document Struct</strong></h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Document</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>struct</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -430,4 +878,4 @@ type Retriever interface { Retrieve(ctx context.Context, query string, opts ...O
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified January 30, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/ce65333bca8a7061a79dd4323748fc43fcdd117e>feat(eino): update docs and optimize mermaid rendering (#1501) (ce65333b)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

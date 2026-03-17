@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Sentry | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/sentry/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Sentry"><meta property="og:description" content="Hertz integrates with the Sentry-Go SDK by using the middleware hertzsentry."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2022-11-25T00:00:00+00:00"><meta property="article:modified_time" content="2025-04-08T19:48:55+08:00"><meta itemprop=name content="Sentry"><meta itemprop=description content="Hertz integrates with the Sentry-Go SDK by using the middleware hertzsentry."><meta itemprop=datePublished content="2022-11-25T00:00:00+00:00"><meta itemprop=dateModified content="2025-04-08T19:48:55+08:00"><meta itemprop=wordCount content="594"><meta itemprop=keywords content="Sentry,real-time error monitoring"><meta name=twitter:card content="summary"><meta name=twitter:title content="Sentry"><meta name=twitter:description content="Hertz integrates with the Sentry-Go SDK by using the middleware hertzsentry."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Sentry | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/sentry/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Sentry"><meta property="og:description" content="Hertz integrates with the Sentry-Go SDK by using the middleware hertzsentry."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2022-11-25T00:00:00+00:00"><meta property="article:modified_time" content="2025-04-08T19:48:55+08:00"><meta itemprop=name content="Sentry"><meta itemprop=description content="Hertz integrates with the Sentry-Go SDK by using the middleware hertzsentry."><meta itemprop=datePublished content="2022-11-25T00:00:00+00:00"><meta itemprop=dateModified content="2025-04-08T19:48:55+08:00"><meta itemprop=wordCount content="594"><meta itemprop=keywords content="Sentry,real-time error monitoring"><meta name=twitter:card content="summary"><meta name=twitter:title content="Sentry"><meta name=twitter:description content="Hertz integrates with the Sentry-Go SDK by using the middleware hertzsentry."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,132 @@
 <label for=m-docshertzreferenceversion-check><a href=/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshertzreferenceversion><span>Version Descriptions</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/hertz/tutorials/third-party/middleware/sentry.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/hertz/tutorials/third-party/middleware?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Sentry" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#install>Install</a></li><li><a href=#example>Example</a></li><li><a href=#config>Config</a><ul><li><a href=#flushgo-sentry>Flush（Go-Sentry）</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/>Third-Party</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/>Middleware</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/sentry/>Sentry</a></li></ol></nav><div class=td-content><h1>Sentry</h1><div class=lead>Hertz integrates with the Sentry-Go SDK by using the middleware hertzsentry.</div><header class=article-meta></header><p>Sentry is an open-source real-time error monitoring project that supports many platforms, including web front-end, server-side, mobile, and game-side. Hertz integrates with the <a href=https://docs.sentry.io/platforms/go/>Sentry-Go</a> SDK by using the middleware <a href=https://github.com/hertz-contrib/hertzsentry>hertzsentry</a>. It provides several unified interfaces to help users get access to the sentry hub and report error messages.</p><p>Note: Information reporting is still implemented using Sentry&rsquo;s Go SDK.</p><p>This project refers to <a href=https://github.com/gofiber/contrib/tree/main/fibersentry>fibersentry</a>.</p><h2 id=install>Install</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>go get github.com/hertz-contrib/hertzsentry
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#install>Install</a></li><li><a href=#example>Example</a></li><li><a href=#config>Config</a><ul><li><a href=#flushgo-sentry>Flush（Go-Sentry）</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/>Third-Party</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/>Middleware</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/sentry/>Sentry</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=Sentry data-url=https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/sentry/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+Sentry is an open-source real-time error monitoring project that supports many platforms, including web front-end, server-side, mobile, and game-side. Hertz integrates with the [Sentry-Go](https://docs.sentry.io/platforms/go/) SDK by using the middleware [hertzsentry](https://github.com/hertz-contrib/hertzsentry). It provides several unified interfaces to help users get access to the sentry hub and report error messages.
+
+Note: Information reporting is still implemented using Sentry's Go SDK.
+
+This project refers to [fibersentry](https://github.com/gofiber/contrib/tree/main/fibersentry).
+
+## Install
+
+```shell
+go get github.com/hertz-contrib/hertzsentry
+```
+
+## Example
+
+```go
+package main
+
+import (
+    "context"
+    "log"
+
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/getsentry/sentry-go"
+    "github.com/hertz-contrib/hertzsentry"
+)
+
+var yourDsn = ""
+
+func main()  {
+    // set interval to 0 means using fs-watching mechanism.
+    h := server.Default(server.WithAutoReloadRender(true, 0))
+
+    // init sentry
+    if err := sentry.Init(sentry.ClientOptions{
+        // The DSN to use. If the DSN is not set, the client is effectively disabled.
+        Dsn: yourDsn,
+        // Before send callback.
+        BeforeSend: func(event *sentry.Event, hint *sentry.EventHint) *sentry.Event {
+            return event
+        },
+        // In debug mode, the debug information is printed to stdout to help you understand what
+        // sentry is doing.
+        Debug: true,
+        // Configures whether SDK should generate and attach stacktraces to pure capture message calls.
+        AttachStacktrace: true,
+    }); err != nil {
+        log.Fatal("sentry init failed")
+    }
+
+    // use sentry middleware and config with your requirements.
+    // attention! you should use sentry handler after recovery.Recovery()
+    h.Use(hertzsentry.NewSentry(
+        hertzsentry.WithSendRequest(true),
+        hertzsentry.WithRePanic(true),
+    ))
+
+    h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+        // use GetHubFromContext to get the hub
+        if hub := hertzsentry.GetHubFromContext(c); hub != nil {
+            hub.WithScope(func(scope *sentry.Scope) {
+                scope.SetTag("hertz", "CloudWeGo Hertz")
+                scope.SetLevel(sentry.LevelDebug)
+                hub.CaptureMessage("Just for debug")
+            })
+        }
+        c.SetStatusCode(0)
+    })
+
+    h.Spin()
+}
+```
+
+## Config
+
+Hertz integrates the functionality of Sentry-Go through the use of middleware. The `hertzsentry.options` structure defines the configuration information for hertzsentry and provides a default configuration that can be customized by the user according to the business scenario.
+
+| Parameter       | Introduction                                                                                                                                                                                                                                                                                                   |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| rePanic         | Used to configure whether Sentry should panic again after recovery; set to true if the Recover middleware is used, the default is false.                                                                                                                                                                       |
+| waitForDelivery | Used to configure whether the request should be blocked and the buffer emptied before continuing to process the response (**only asynchronous transfers really have an operation to empty the buffer**). If using Recover middleware, it is safe to skip this option or set it to false, the default is false. |
+| sendRequest     | Used to configure whether the current request headers should be added when capturing sentry events, the default is false.                                                                                                                                                                                      |
+| sendBody        | Used to configure whether to add the current request body information when capturing sentry events, the default is false.                                                                                                                                                                                      |
+| timeout         | Used to configure the timeout for sentry event delivery requests, the default is 2 seconds.                                                                                                                                                                                                                    |
+
+### Flush（Go-Sentry）
+
+Go-Sentry can choose to send the captured information asynchronously or synchronously, with Flush used to empty the cache when asynchronous is selected. **No concept of cache when sending synchronously**, returns true directly.
+
+When Flush is triggered it waits until the underlying transport has sent all events to the Sentry server, returning true, but waits up to a given timeout and returns false if the timeout is reached, in which case some events may not be sent. (The buffer will be emptied in both cases)
+
+Flush should be called before terminating the program to avoid inadvertently discarding events.
+
+Do not call Flush indiscriminately after each CaptureEvent, CaptureException or CaptureMessage call. Instead, to have the SDK send events synchronously over the network, configure it to use HTTPSyncTransport.
+
+Function signatures:
+
+```go
+func (hub *Hub) Flush(timeout time.Duration) bool
+```
+
+The internal call logic for Flush is as follows:
+
+```go
+func (hub *Hub) Flush(timeout time.Duration) bool {
+    client := hub.Client()
+
+    if client == nil {
+        return false
+    }
+
+    // The client's transfer pattern is asynchronous or synchronous (Go-Sentry initialization parameters must be pre-configured)
+    return client.Flush(timeout)
+}
+```
+</script><h1>Sentry</h1><div class=lead>Hertz integrates with the Sentry-Go SDK by using the middleware hertzsentry.</div><header class=article-meta></header><p>Sentry is an open-source real-time error monitoring project that supports many platforms, including web front-end, server-side, mobile, and game-side. Hertz integrates with the <a href=https://docs.sentry.io/platforms/go/>Sentry-Go</a> SDK by using the middleware <a href=https://github.com/hertz-contrib/hertzsentry>hertzsentry</a>. It provides several unified interfaces to help users get access to the sentry hub and report error messages.</p><p>Note: Information reporting is still implemented using Sentry&rsquo;s Go SDK.</p><p>This project refers to <a href=https://github.com/gofiber/contrib/tree/main/fibersentry>fibersentry</a>.</p><h2 id=install>Install</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>go get github.com/hertz-contrib/hertzsentry
 </span></span></code></pre></div><h2 id=example>Example</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>package</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>main</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>import</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -178,4 +303,4 @@
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified April 8, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/7f771b2eace04ebf751c13d806186150c02d3056>fix(hertz): wrong function signature (#1298) (7f771b2e)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

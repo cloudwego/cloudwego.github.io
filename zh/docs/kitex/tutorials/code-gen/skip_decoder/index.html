@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>SkipDecoder | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/skip_decoder/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="SkipDecoder"><meta property="og:description" content="开启 SkipDecoder ，突破 Frugal 与 FastCodec 的协议限制，精简代码产物"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-06-20T00:00:00+00:00"><meta property="article:modified_time" content="2024-06-21T13:54:27+08:00"><meta itemprop=name content="SkipDecoder"><meta itemprop=description content="开启 SkipDecoder ，突破 Frugal 与 FastCodec 的协议限制，精简代码产物"><meta itemprop=datePublished content="2024-06-20T00:00:00+00:00"><meta itemprop=dateModified content="2024-06-21T13:54:27+08:00"><meta itemprop=wordCount content="288"><meta itemprop=keywords content="SkipDecoder,精简产物"><meta name=twitter:card content="summary"><meta name=twitter:title content="SkipDecoder"><meta name=twitter:description content="开启 SkipDecoder ，突破 Frugal 与 FastCodec 的协议限制，精简代码产物"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>SkipDecoder | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/skip_decoder/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="SkipDecoder"><meta property="og:description" content="开启 SkipDecoder ，突破 Frugal 与 FastCodec 的协议限制，精简代码产物"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-06-20T00:00:00+00:00"><meta property="article:modified_time" content="2024-06-21T13:54:27+08:00"><meta itemprop=name content="SkipDecoder"><meta itemprop=description content="开启 SkipDecoder ，突破 Frugal 与 FastCodec 的协议限制，精简代码产物"><meta itemprop=datePublished content="2024-06-20T00:00:00+00:00"><meta itemprop=dateModified content="2024-06-21T13:54:27+08:00"><meta itemprop=wordCount content="288"><meta itemprop=keywords content="SkipDecoder,精简产物"><meta name=twitter:card content="summary"><meta name=twitter:title content="SkipDecoder"><meta name=twitter:description content="开启 SkipDecoder ，突破 Frugal 与 FastCodec 的协议限制，精简代码产物"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -149,7 +149,185 @@
 <label for=m-zhdocskitexfaq-check><a href=/zh/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/kitex/Tutorials/code-gen/skip_decoder.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/kitex/Tutorials/code-gen?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=SkipDecoder" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#背景>背景</a></li><li><a href=#原理介绍>原理介绍</a></li><li><a href=#裁剪效果>裁剪效果</a></li><li><a href=#使用>使用</a></li><li><a href=#注意>注意</a></li><li><a href=#性能>性能</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/>代码生成</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/skip_decoder/>SkipDecoder</a></li></ol></nav><div class=td-content><h1>SkipDecoder</h1><div class=lead>开启 SkipDecoder ，突破 Frugal 与 FastCodec 的协议限制，精简代码产物</div><header class=article-meta></header><h2 id=背景>背景</h2><p>对于 Thrift 序列化协议，当前为了更好的性能基本都搭配 Thrift Framed 传输协议(e.g. TTHeader, TTHeaderFramed) 使用 FastCodec 或者 Frugal。但为了兼容少量使用 Thrift Buffered 传输协议的服务，Kitex 仍然会生成符合官方接口要求的 Apache Thrift Codec 代码。(详情请参考 <a href=https://github.com/apache/thrift/blob/master/doc/specs/thrift-rpc.md#framed-vs-unframed-transport>Framed 与 Buffered</a>)</p><p>这部分代码体积庞大，平均占比接近百分之四十，但是使用场景却很少。移除这部分产物能有效地提高 IDE 加载速度和编译速度。</p><p>当前 thriftgo(>= v0.3.7)可以使用<code>-thrift no_default_serdes</code>来减少这部分的代码生成：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kitex -thrift no_default_serdes path/to/idl
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#背景>背景</a></li><li><a href=#原理介绍>原理介绍</a></li><li><a href=#裁剪效果>裁剪效果</a></li><li><a href=#使用>使用</a></li><li><a href=#注意>注意</a></li><li><a href=#性能>性能</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/>代码生成</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/skip_decoder/>SkipDecoder</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=SkipDecoder data-url=https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/skip_decoder/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 背景
+
+对于 Thrift 序列化协议，当前为了更好的性能基本都搭配 Thrift Framed 传输协议(e.g. TTHeader, TTHeaderFramed) 使用 FastCodec 或者 Frugal。但为了兼容少量使用 Thrift Buffered 传输协议的服务，Kitex 仍然会生成符合官方接口要求的 Apache Thrift Codec 代码。(详情请参考 [Framed 与 Buffered](https://github.com/apache/thrift/blob/master/doc/specs/thrift-rpc.md#framed-vs-unframed-transport))
+
+这部分代码体积庞大，平均占比接近百分之四十，但是使用场景却很少。移除这部分产物能有效地提高 IDE 加载速度和编译速度。
+
+当前 thriftgo(>= v0.3.7)可以使用`-thrift no_default_serdes`来减少这部分的代码生成：
+
+```shell
+kitex -thrift no_default_serdes path/to/idl
+```
+
+为了在移除掉这部分代码的同时，可以兼容 Thrift Buffered 协议，我们在 **Kitex v1.16.0** 推出了 SkipDecoder 用于达成这一目标。
+
+## 原理介绍
+
+Thrift Buffered 协议在 Header 中并没有表明 Payload 的长度，因此并不能直接将 Payload 截取出来交由 FastCodec 或 Frugal 处理。
+
+那么我们可以很自然地想到，如果在解析 Thrift Buffered 协议时，逐字节地解析 Payload，从而将完整的 Payload 喂给 FastCodec 和 Frugal，就能完全避免使用 Apache Thrift Codec。而这正是 SkipDecoder 的原理。
+
+以下是在 Thrift Buffered 协议场景下，使用 SkipDecoder 和不使用 SkipDecoder 的流程对比：
+
+![img](/img/docs/skip_decoder_process_comparison.png)
+
+## 裁剪效果
+
+以某个很复杂的 IDL 为例。
+
+裁剪前：
+
+```
+117M    kitex_gen
+```
+
+裁剪后：
+
+```
+74M    kitex_gen
+```
+
+可裁剪 36% 的生成代码，接近 40%，效果显著。
+
+## 使用
+
+1.  使用 `-thrift no_default_serdes` 移除 Apache Thrift Codec ，重新生成代码
+
+    ```shell
+    kitex -thrift no_default_serdes path/to/your/idl
+    ```
+
+    该功能需要 thriftgo 版本 >= 0.3.7，推荐使用最新版本。
+
+2.  配置开启 SkipDecoder
+
+    请明确在第一步中生成的代码用于什么目的：
+
+- 用于构造 Client 调用下游服务
+
+  - 配合 FastCodec
+  
+    ```go
+    import (
+        "github.com/cloudwego/kitex/pkg/remote/codec/thrift"
+        "demo/kitex_gen/kitex/samples/echo/echoservice"
+    )
+    
+    func main() {
+        cli := echoservice.MustNewClient("kitex.samples.echo", 
+            client.WithPayloadCodec(thrift.NewThriftCodecWithConfig(thrift.FastRead|thrift.FastWrite|thrift.EnableSkipDecoder)),
+        )
+    }
+    ```
+    
+  - 配合 Frugal
+  
+    ```go
+    import (
+        "github.com/cloudwego/kitex/pkg/remote/codec/thrift"
+        "demo/kitex_gen/kitex/samples/echo/echoservice"
+    )
+    
+    func main() {
+        cli := echoservice.MustNewClient("kitex.samples.echo", 
+            client.WithPayloadCodec(thrift.NewThriftCodecWithConfig(thrift.FrugalRead|thrift.FrugalWrite|thrift.EnableSkipDecoder)),
+        )
+    }
+    ```
+    
+- 用于构造 Server 供上游调用
+
+  - 配合 FastCodec
+  
+    ```go
+    import (
+        "github.com/cloudwego/kitex/pkg/remote/codec/thrift"
+        "demo/kitex_gen/kitex/samples/echo/echoservice"
+    )
+    
+    func main() {
+        srv := echoservice.NewServer(handler,
+            server.WithPayloadCodec(thrift.NewThriftCodecWithConfig(thrift.FastWrite|thrift.FastRead|thrift.EnableSkipDecoder)),
+        )
+    }
+    ```
+    
+  - 配合 Frugal
+  
+    ```go
+    import (
+        "github.com/cloudwego/kitex/pkg/remote/codec/thrift"
+        "demo/kitex_gen/kitex/samples/echo/echoservice"
+    )
+    
+    func main() {
+        srv := echoservice.NewServer(handler,
+            server.WithPayloadCodec(thrift.NewThriftCodecWithConfig(thrift.FrugalWrite|thrift.FrugalRead|thrift.EnableSkipDecoder)),
+        )
+    }
+    ```
+    
+## 注意
+
+1.  `-thrift no_default_serdes` 请务必配合 SkipDecoder 使用
+
+- 上游使用了 `-thrift no_default_serdes`，则上游需开启 SkipDecoder
+
+- 下游使用了 `-thrift no_default_serdes`，则下游需开启 SkipDecoder
+
+    若减少了 Apache Thrift Codec 代码生成，但却没有开启 SkipDecoder，会造成无法反序列化
+
+2.  为了方便识别在开启 SkipDecoder 后可能出现的问题，对错误信息做了特殊处理
+
+- SkipDecoder 解析完整 Payload 期间
+
+    若这个流程出现错误，会包含以下错误信息：
+
+    ```
+    caught in SkipDecoder NextStruct phase
+    ```
+
+- SkipDecoder 解析完 Payload 后，交给 FastCodec/Frugal 解码
+
+    若这个流程出现错误，会包含以下错误信息：
+
+- 使用 FastCodec
+
+    ```
+    caught in FastCodec using SkipDecoder Buffer
+    ```
+
+- 使用 Frugal
+
+    ```
+    caught in Frugal using SkipDecoder Buffer
+    ```
+
+## 性能
+
+在SkipDecoder + FastCodec 场景下，反序列化与 Apache Thrift Codec 相比吞吐提升 10%。
+
+```
+Benchmark_Unmarshal_apache/small                     3763096         294.4 ns/op    1980.61 MB/s
+Benchmark_Unmarshal_apache/medium                     145512          7525 ns/op    2327.89 MB/s
+Benchmark_Unmarshal_apache/large                        6244        190503 ns/op    2329.64 MB/s
+Benchmark_Unmarshal_fastcodec_skip/small             4549530         255.3 ns/op    2283.58 MB/s
+Benchmark_Unmarshal_fastcodec_skip/medium             186720          6269 ns/op    2794.32 MB/s
+Benchmark_Unmarshal_fastcodec_skip/large                7424        161485 ns/op    2748.27 MB/s
+```
+</script><h1>SkipDecoder</h1><div class=lead>开启 SkipDecoder ，突破 Frugal 与 FastCodec 的协议限制，精简代码产物</div><header class=article-meta></header><h2 id=背景>背景</h2><p>对于 Thrift 序列化协议，当前为了更好的性能基本都搭配 Thrift Framed 传输协议(e.g. TTHeader, TTHeaderFramed) 使用 FastCodec 或者 Frugal。但为了兼容少量使用 Thrift Buffered 传输协议的服务，Kitex 仍然会生成符合官方接口要求的 Apache Thrift Codec 代码。(详情请参考 <a href=https://github.com/apache/thrift/blob/master/doc/specs/thrift-rpc.md#framed-vs-unframed-transport>Framed 与 Buffered</a>)</p><p>这部分代码体积庞大，平均占比接近百分之四十，但是使用场景却很少。移除这部分产物能有效地提高 IDE 加载速度和编译速度。</p><p>当前 thriftgo(>= v0.3.7)可以使用<code>-thrift no_default_serdes</code>来减少这部分的代码生成：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kitex -thrift no_default_serdes path/to/idl
 </span></span></code></pre></div><p>为了在移除掉这部分代码的同时，可以兼容 Thrift Buffered 协议，我们在 <strong>Kitex v1.16.0</strong> 推出了 SkipDecoder 用于达成这一目标。</p><h2 id=原理介绍>原理介绍</h2><p>Thrift Buffered 协议在 Header 中并没有表明 Payload 的长度，因此并不能直接将 Payload 截取出来交由 FastCodec 或 Frugal 处理。</p><p>那么我们可以很自然地想到，如果在解析 Thrift Buffered 协议时，逐字节地解析 Payload，从而将完整的 Payload 喂给 FastCodec 和 Frugal，就能完全避免使用 Apache Thrift Codec。而这正是 SkipDecoder 的原理。</p><p>以下是在 Thrift Buffered 协议场景下，使用 SkipDecoder 和不使用 SkipDecoder 的流程对比：</p><p><img src=/img/docs/skip_decoder_process_comparison.png alt=img></p><h2 id=裁剪效果>裁剪效果</h2><p>以某个很复杂的 IDL 为例。</p><p>裁剪前：</p><pre tabindex=0><code>117M    kitex_gen
 </code></pre><p>裁剪后：</p><pre tabindex=0><code>74M    kitex_gen
 </code></pre><p>可裁剪 36% 的生成代码，接近 40%，效果显著。</p><h2 id=使用>使用</h2><ol><li><p>使用 <code>-thrift no_default_serdes</code> 移除 Apache Thrift Codec ，重新生成代码</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kitex -thrift no_default_serdes path/to/your/idl
@@ -205,4 +383,4 @@ Benchmark_Unmarshal_fastcodec_skip/large                7424        161485 ns/op
 </code></pre><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 June 21, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/ea25d8363257b0c9d71b4355505d35600c4d4163>docs: support SkipDecoder (#1094) (ea25d836)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

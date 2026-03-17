@@ -10,7 +10,7 @@ package main import "github.com/cloudwego/netpoll" func main() { listener, err :
 1. 使用 Server 这里 是一个简单的 server 例子，接下来我们会解释它是如何构建的。
 1.1 创建 Listener 首先我们需要一个 Listener，它可以是 net.Listener 或者 netpoll.Listener，两者都可以，依据你的代码情况自由选择。 创建 Listener 的过程如下：
 package main import "net" func main() { listener, err := net.Listen(network, address) if err != nil { panic("create net listener failed") } ... } 或者
-package main import "github.com/cloudwego/netpoll" func main() { listener, err := netpoll.CreateListener(network, address) if err != nil { panic("create netpoll listener failed") } ... } 1.2 创建 EventLoop EventLoop 是一个事件驱动的调度器，一个真正的 NIO Server，负责连接管理、事件调度等。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+package main import "github.com/cloudwego/netpoll" func main() { listener, err := netpoll.CreateListener(network, address) if err != nil { panic("create netpoll listener failed") } ... } 1.2 创建 EventLoop EventLoop 是一个事件驱动的调度器，一个真正的 NIO Server，负责连接管理、事件调度等。'><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -28,7 +28,312 @@ package main import "github.com/cloudwego/netpoll" func main() { listener, err :
 <label for=m-zhdocsnetpollcaution-check><a href=/zh/docs/netpoll/caution/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocsnetpollcaution><span>注意事项</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/netpoll/Getting%20started/_index.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/netpoll/Getting%20started?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e5%bf%ab%e9%80%9f%e5%bc%80%e5%a7%8b" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/netpoll/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#1-使用-server>1. 使用 Server</a><ul><li><a href=#11-创建-listener>1.1 创建 Listener</a></li><li><a href=#12-创建-eventloop>1.2 创建 EventLoop</a></li><li><a href=#13-运行-server>1.3 运行 Server</a></li><li><a href=#14-关闭-server>1.4 关闭 Server</a></li></ul></li><li><a href=#2-使用-dialer>2. 使用 Dialer</a><ul><li><a href=#21-快速方式>2.1 快速方式</a></li><li><a href=#22-创建-dialer>2.2 创建 Dialer</a></li></ul></li><li><a href=#3-使用-nocopy-api>3. 使用 Nocopy API</a><ul><li><a href=#31-简单用法>3.1 简单用法</a></li><li><a href=#32-高阶用法>3.2 高阶用法</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/netpoll/>Netpoll</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/netpoll/getting-started/>快速开始</a></li></ol></nav><div class=td-content><h1>快速开始</h1><header class=article-meta></header><blockquote><p>本教程通过一些简单的<a href=https://github.com/cloudwego/netpoll-examples>示例</a>帮助您开始使用 <a href=https://github.com/cloudwego/netpoll>Netpoll</a>，包括如何使用 <a href=/zh/docs/netpoll/getting-started/#1-%e4%bd%bf%e7%94%a8-server>Server</a>、<a href=/zh/docs/netpoll/getting-started/#2-%e4%bd%bf%e7%94%a8-dialer>Client</a> 和 <a href=/zh/docs/netpoll/getting-started/#3-%e4%bd%bf%e7%94%a8-nocopy-api>nocopy API</a>。</p></blockquote><h2 id=1-使用-server>1. 使用 Server</h2><p><a href=https://github.com/cloudwego/netpoll-examples/blob/main/echo/server.go>这里</a> 是一个简单的 server 例子，接下来我们会解释它是如何构建的。</p><h3 id=11-创建-listener>1.1 创建 Listener</h3><p>首先我们需要一个 <code>Listener</code>，它可以是 <code>net.Listener</code> 或者 <code>netpoll.Listener</code>，两者都可以，依据你的代码情况自由选择。
+<a href=https://github.com/cloudwego/netpoll/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#1-使用-server>1. 使用 Server</a><ul><li><a href=#11-创建-listener>1.1 创建 Listener</a></li><li><a href=#12-创建-eventloop>1.2 创建 EventLoop</a></li><li><a href=#13-运行-server>1.3 运行 Server</a></li><li><a href=#14-关闭-server>1.4 关闭 Server</a></li></ul></li><li><a href=#2-使用-dialer>2. 使用 Dialer</a><ul><li><a href=#21-快速方式>2.1 快速方式</a></li><li><a href=#22-创建-dialer>2.2 创建 Dialer</a></li></ul></li><li><a href=#3-使用-nocopy-api>3. 使用 Nocopy API</a><ul><li><a href=#31-简单用法>3.1 简单用法</a></li><li><a href=#32-高阶用法>3.2 高阶用法</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/netpoll/>Netpoll</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/netpoll/getting-started/>快速开始</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=快速开始 data-url=https://www.cloudwego.io/zh/docs/netpoll/getting-started/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+> 本教程通过一些简单的[示例][Examples]帮助您开始使用 [Netpoll][Netpoll]，包括如何使用 [Server](#1-使用-server)、[Client](#2-使用-dialer) 和 [nocopy API](#3-使用-nocopy-api)。
+
+## 1. 使用 Server
+
+[这里][server-example] 是一个简单的 server 例子，接下来我们会解释它是如何构建的。
+
+### 1.1 创建 Listener
+
+首先我们需要一个 `Listener`，它可以是 `net.Listener` 或者 `netpoll.Listener`，两者都可以，依据你的代码情况自由选择。
+创建 `Listener` 的过程如下：
+
+```go
+package main
+
+import "net"
+
+func main() {
+	listener, err := net.Listen(network, address)
+	if err != nil {
+		panic("create net listener failed")
+	}
+	...
+}
+```
+
+或者
+
+```go
+package main
+
+import "github.com/cloudwego/netpoll"
+
+func main() {
+	listener, err := netpoll.CreateListener(network, address)
+	if err != nil {
+		panic("create netpoll listener failed")
+	}
+	...
+}
+```
+
+### 1.2 创建 EventLoop
+
+`EventLoop` 是一个事件驱动的调度器，一个真正的 NIO Server，负责连接管理、事件调度等。
+
+参数说明:
+
+- `OnRequest` 和 `OnConnect` 是用户应该自己实现来处理业务逻辑的接口。 [注释][eventloop.go] 详细描述了它的行为。
+- `Option` 用于自定义 `EventLoop` 创建时的配置，下面的例子展示了它的用法。更多详情请参考 [options][netpoll_options.go] 。
+
+创建过程如下：
+
+```go
+package main
+
+import (
+	"time"
+	"github.com/cloudwego/netpoll"
+)
+
+var eventLoop netpoll.EventLoop
+
+func main() {
+	...
+	eventLoop, _ = netpoll.NewEventLoop(
+		handle,
+		netpoll.WithOnPrepare(prepare),
+		netpoll.WithOnConnect(connect),
+		netpoll.WithReadTimeout(time.Second),
+	)
+	...
+}
+```
+
+### 1.3 运行 Server
+
+`EventLoop` 通过绑定 `Listener` 来提供服务，如下所示。`Serve` 方法为阻塞式调用，直到发生 `panic` 等错误，或者由用户主动调用 `Shutdown` 时触发退出。
+
+```go
+package main
+
+import (
+	"github.com/cloudwego/netpoll"
+)
+
+var eventLoop netpoll.EventLoop
+
+func main() {
+	...
+	// start listen loop ...
+	eventLoop.Serve(listener)
+}
+```
+
+### 1.4 关闭 Server
+
+`EventLoop` 提供了 `Shutdown` 功能，用于优雅地停止服务器。用法如下：
+
+```go
+package main
+
+import (
+	"context"
+	"time"
+	"github.com/cloudwego/netpoll"
+)
+
+var eventLoop netpoll.EventLoop
+
+func main() {
+	// stop server ...
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	eventLoop.Shutdown(ctx)
+}
+```
+
+## 2. 使用 Dialer
+
+[Netpoll][Netpoll] 也支持在 Client 端使用，提供了 `Dialer`，类似于 `net.Dialer`。同样的，[这里][client-example] 展示了一个简单的 Client 端示例，接下来我们详细介绍一下：
+
+### 2.1 快速方式
+
+与 [Net][net] 类似，[Netpoll][Netpoll] 提供了几个用于直接建立连接的公共方法，可以直接调用。 如：
+
+```go
+DialConnection(network, address string, timeout time.Duration) (connection Connection, err error)
+
+DialTCP(ctx context.Context, network string, laddr, raddr *TCPAddr) (*TCPConnection, error)
+
+DialUnix(network string, laddr, raddr *UnixAddr) (*UnixConnection, error)
+```
+
+### 2.2 创建 Dialer
+
+[Netpoll][Netpoll] 还定义了`Dialer` 接口。 用法如下：（通常推荐使用上一节的快速方式）
+
+```go
+package main
+
+import (
+	"github.com/cloudwego/netpoll"
+)
+
+func main() {
+	// Dial a connection with Dialer.
+	dialer := netpoll.NewDialer()
+	conn, err := dialer.DialConnection(network, address, timeout)
+	if err != nil {
+		panic("dial netpoll connection failed")
+	}
+	...
+}
+```
+
+## 3. 使用 Nocopy API
+
+`Connection` 提供了 Nocopy API —— `Reader` 和 `Writer`，以避免频繁复制。下面介绍一下它们的简单用法。
+
+```go
+package main
+
+type Connection interface {
+	// Recommended nocopy APIs
+	Reader() Reader
+	Writer() Writer
+	... // see code comments for more details
+}
+```
+
+### 3.1 简单用法
+
+Nocopy API 设计为两步操作。
+
+使用 `Reader` 时，通过 `Next`、`Peek`、`ReadString` 等方法读取数据后，还需要主动调用 `Release` 方法释放 buffer（`Nocopy` 读取 buffer 的原地址，所以您必须主动再次确认 buffer 已经不再使用）。
+
+同样，使用 `Writer` 时，首先需要分配一个 `[]byte` 来写入数据，然后调用 `Flush` 确认所有数据都已经写入。`Writer` 还提供了丰富的 API 来分配 buffer，例如 `Malloc`、`WriteString` 等。
+
+下面是一些简单的读写数据的例子。 更多详情请参考 [说明][nocopy.go] 。
+
+```go
+package main
+
+import (
+	"github.com/cloudwego/netpoll"
+)
+
+func main() {
+	var conn netpoll.Connection
+	var reader, writer = conn.Reader(), conn.Writer()
+
+	// reading
+	buf, _ := reader.Next(n)
+	... parse the read data ...
+	reader.Release()
+
+	// writing
+	var write_data []byte
+	... make the write data ...
+	alloc, _ := writer.Malloc(len(write_data))
+	copy(alloc, write_data) // write data
+	writer.Flush()
+}
+```
+
+### 3.2 高阶用法
+
+如果你想使用单个连接来发送（或接收）多组数据（如连接多路复用），那么你将面临数据打包和分包。在 [net][net] 上，这种工作一般都是通过复制来完成的。一个例子如下：
+
+```go
+package main
+
+import (
+	"net"
+)
+
+func main() {
+	var conn net.Conn
+	var buf = make([]byte, 8192)
+
+	// reading
+	for {
+		n, _ := conn.Read(buf)
+		... unpacking & handling ...
+		var i int
+		for i = 0; i <= n-pkgsize; i += pkgsize {
+			pkg := append([]byte{}, buf[i:i+pkgsize]...)
+			go func() {
+				... handling pkg ...
+			}
+		}
+		buf = append(buf[:0], buf[i:n]...)
+	}
+
+	// writing
+	var write_datas <-chan []byte
+	... packing write ...
+	for {
+		pkg := <-write_datas
+		conn.Write(pkg)
+	}
+}
+```
+
+但是，[Netpoll][Netpoll] 不需要这样做，nocopy APIs 支持对 buffer 进行原地址操作（原地址组包和分包），并通过引用计数实现资源的自动回收和重用。
+
+示例如下（使用方法 `Reader.Slice` 和 `Writer.Append`）：
+
+```go
+package main
+
+import (
+	"github.com/cloudwego/netpoll"
+)
+
+func main() {
+	var conn netpoll.Connection
+
+	// reading
+	reader := conn.Reader()
+	for {
+		... unpacking & handling ...
+		pkg, _ := reader.Slice(pkgsize)
+		go func() {
+			... handling pkg ...
+			pkg.Release()
+		}
+	}
+
+	// writing
+	var write_datas <-chan netpoll.Writer
+	... packing write ...
+	writer := conn.Writer()
+	for {
+		select {
+		case pkg := <-write_datas:
+			writer.Append(pkg)
+		default:
+			if writer.MallocLen() > 0 {
+				writer.Flush()
+			}
+		}
+	}
+}
+```
+
+[Netpoll]: https://github.com/cloudwego/netpoll
+[net]: https://github.com/golang/go/tree/master/src/net
+[gopool]: https://github.com/bytedance/gopkg/tree/develop/util/gopool
+[Examples]: https://github.com/cloudwego/netpoll-examples
+[server-example]: https://github.com/cloudwego/netpoll-examples/blob/main/echo/server.go
+[client-example]: https://github.com/cloudwego/netpoll-examples/blob/main/echo/client.go
+[netpoll_options.go]: https://github.com/cloudwego/netpoll/blob/main/netpoll_options.go
+[nocopy.go]: https://github.com/cloudwego/netpoll/blob/main/nocopy.go
+[eventloop.go]: https://github.com/cloudwego/netpoll/blob/main/eventloop.go
+</script><h1>快速开始</h1><header class=article-meta></header><blockquote><p>本教程通过一些简单的<a href=https://github.com/cloudwego/netpoll-examples>示例</a>帮助您开始使用 <a href=https://github.com/cloudwego/netpoll>Netpoll</a>，包括如何使用 <a href=/zh/docs/netpoll/getting-started/#1-%e4%bd%bf%e7%94%a8-server>Server</a>、<a href=/zh/docs/netpoll/getting-started/#2-%e4%bd%bf%e7%94%a8-dialer>Client</a> 和 <a href=/zh/docs/netpoll/getting-started/#3-%e4%bd%bf%e7%94%a8-nocopy-api>nocopy API</a>。</p></blockquote><h2 id=1-使用-server>1. 使用 Server</h2><p><a href=https://github.com/cloudwego/netpoll-examples/blob/main/echo/server.go>这里</a> 是一个简单的 server 例子，接下来我们会解释它是如何构建的。</p><h3 id=11-创建-listener>1.1 创建 Listener</h3><p>首先我们需要一个 <code>Listener</code>，它可以是 <code>net.Listener</code> 或者 <code>netpoll.Listener</code>，两者都可以，依据你的代码情况自由选择。
 创建 <code>Listener</code> 的过程如下：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>package</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>main</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>import</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#4e9a06>&#34;net&#34;</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -219,4 +524,4 @@ package main import "github.com/cloudwego/netpoll" func main() { listener, err :
 </span></span></span></code></pre></div><div class=section-index></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 May 8, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/dff8f175d96e832fb521f13246cce14399aefcdb>style: prettier lint fix (#1069) (dff8f175)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

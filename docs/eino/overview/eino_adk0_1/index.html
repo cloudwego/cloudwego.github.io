@@ -1,7 +1,7 @@
 <!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/overview/eino_adk0_1/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch"><meta property="og:description" content="Preface As large language models break through the bottleneck of “understanding and generation”, Agents rapidly become the mainstream form of AI deployment. From intelligent customer service to automated office work, almost all scenarios require Agents to bridge LLM capabilities and execute specific tasks.
 But pain points emerge with technological evolution. Some teams struggle to connect LLMs with business systems, causing Agents to only “talk empty”; some suffer from missing state management, making Agents frequently “lose memory” during task execution. Complex interaction flows further increase development difficulty."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-01-20T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-02T21:50:06+08:00"><meta itemprop=name content="Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch"><meta itemprop=description content="Preface As large language models break through the bottleneck of “understanding and generation”, Agents rapidly become the mainstream form of AI deployment. From intelligent customer service to automated office work, almost all scenarios require Agents to bridge LLM capabilities and execute specific tasks.
 But pain points emerge with technological evolution. Some teams struggle to connect LLMs with business systems, causing Agents to only “talk empty”; some suffer from missing state management, making Agents frequently “lose memory” during task execution. Complex interaction flows further increase development difficulty."><meta itemprop=datePublished content="2026-01-20T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-02T21:50:06+08:00"><meta itemprop=wordCount content="3992"><meta name=twitter:card content="summary"><meta name=twitter:title content="Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch"><meta name=twitter:description content="Preface As large language models break through the bottleneck of “understanding and generation”, Agents rapidly become the mainstream form of AI deployment. From intelligent customer service to automated office work, almost all scenarios require Agents to bridge LLM capabilities and execute specific tasks.
-But pain points emerge with technological evolution. Some teams struggle to connect LLMs with business systems, causing Agents to only “talk empty”; some suffer from missing state management, making Agents frequently “lose memory” during task execution. Complex interaction flows further increase development difficulty."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+But pain points emerge with technological evolution. Some teams struggle to connect LLMs with business systems, causing Agents to only “talk empty”; some suffer from missing state management, making Agents frequently “lose memory” during task execution. Complex interaction flows further increase development difficulty."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,579 @@ But pain points emerge with technological evolution. Some teams struggle to conn
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/overview/eino_adk0_1.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/overview?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino%20ADK:%20Master%20AI%20Agent%20Core%20Design%20Patterns,%20Build%20Agent%20Systems%20from%20Scratch" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#-what-is-an-agent>🙋 What is an Agent?</a></li><li><a href=#-what-is-eino-adk>🙋‍♂️ What is Eino ADK?</a></li></ul><ul><li><a href=#-chatmodelagent-the-brain-for-intelligent-decisions>🧠 ChatModelAgent: The Brain for Intelligent Decisions</a></li><li><a href=#-workflowagents-precision-pipelines>🎭 WorkflowAgents: Precision Pipelines</a></li><li><a href=#-pre-built-multi-agent-patterns>🛠️ Pre-built Multi-Agent Patterns</a><ul><li></li></ul></li></ul><ul><li><a href=#-unified-agent-abstraction>🎯 Unified Agent Abstraction</a></li><li><a href=#-asynchronous-event-driven-architecture>⚡ Asynchronous Event-Driven Architecture</a></li><li><a href=#-flexible-collaboration-mechanisms>🤝 Flexible Collaboration Mechanisms</a></li><li><a href=#-interrupt-and-resume-mechanism>🔄 <strong>Interrupt and Resume Mechanism</strong></a></li></ul><ul><li><a href=#installation>Installation</a></li><li><a href=#project-development-manager-agent>Project Development Manager Agent</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/overview/>Eino: Overview</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/overview/eino_adk0_1/>Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch</a></li></ol></nav><div class=td-content><h1>Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch</h1><header class=article-meta></header><h1 id=preface>Preface</h1><p>As large language models break through the bottleneck of &ldquo;understanding and generation&rdquo;, Agents rapidly become the mainstream form of AI deployment. From intelligent customer service to automated office work, almost all scenarios require Agents to bridge LLM capabilities and execute specific tasks.</p><p>But pain points emerge with technological evolution. Some teams struggle to connect LLMs with business systems, causing Agents to only &ldquo;talk empty&rdquo;; some suffer from missing state management, making Agents frequently &ldquo;lose memory&rdquo; during task execution. Complex interaction flows further increase development difficulty.</p><p>For this reason, <strong>Eino ADK (Agent Development Kit) was created to provide Go developers with a complete, flexible, and powerful agent development framework</strong>, directly addressing core challenges in traditional development.</p><h2 id=-what-is-an-agent>🙋 What is an Agent?</h2><p>An Agent represents an independent, executable intelligent task unit that can learn autonomously, adapt, and make decisions. Main capabilities include:</p><ul><li><strong>Reasoning</strong>: Agents can analyze data, identify patterns, use logic and available information to draw conclusions, make inferences, and solve problems.</li><li><strong>Action</strong>: Agents take actions or execute tasks based on decisions, plans, or external inputs to achieve goals.</li><li><strong>Observation</strong>: Agents autonomously collect relevant information (such as computer vision, natural language processing, or sensor data analysis) to understand context and lay the foundation for informed decision-making.</li><li><strong>Planning</strong>: Agents can determine necessary steps, evaluate potential actions, and select the best course of action based on available information and expected outcomes.</li><li><strong>Collaboration</strong>: Agents can effectively collaborate with others (whether humans or other AI agents) in complex and dynamic environments.</li></ul><p>You can think of it as an &ldquo;intelligent entity&rdquo; that can understand instructions, execute tasks, and provide responses. Any scenario requiring interaction with large language models (LLMs) can be abstracted as an Agent. For example:</p><ul><li>An Agent for querying weather information.</li><li>An Agent for scheduling meetings.</li><li>An Agent capable of answering domain-specific knowledge questions.</li></ul><h2 id=-what-is-eino-adk>🙋‍♂️ What is Eino ADK?</h2><p><a href=https://github.com/cloudwego/eino>Eino ADK</a> is an Agent and Multi-Agent development framework designed specifically for the Go language, with design references from <a href=https://google.github.io/adk-docs/agents/>Google-ADK</a>&rsquo;s definitions of Agents and collaboration mechanisms.</p><p>It&rsquo;s not just a tool library, but a complete agent development system: through unified abstract interfaces, flexible composition patterns, and powerful collaboration mechanisms, it breaks down complex AI applications into independent, composable agent units, allowing developers to build complex agent systems like assembling LEGO blocks:</p><ul><li><strong>Less glue code</strong>: Unified interfaces and event streams make complex task decomposition more natural.</li><li><strong>Fast orchestration</strong>: Preset patterns + workflows assemble pipelines in minutes.</li><li><strong>More controllable</strong>: Interruptible, resumable, auditable - Agent collaboration process is &ldquo;visible&rdquo;.</li></ul><p>Whether you&rsquo;re a newcomer to AI applications or an experienced developer, ADK can provide you with suitable tools and patterns. Its design philosophy is &ldquo;simple things are simple to do, complex things are also achievable&rdquo; - letting developers focus on implementing business logic without worrying about underlying technical complexity.</p><h1 id=core-building-blocks>Core Building Blocks</h1><h2 id=-chatmodelagent-the-brain-for-intelligent-decisions>🧠 ChatModelAgent: The Brain for Intelligent Decisions</h2><p><code>ChatModelAgent</code> is the most important pre-built component in ADK. It encapsulates the interaction logic with large language models and implements the classic <a href=https://react-lm.github.io/>ReAct</a> (Reason-Act-Observe) pattern. The running process is:</p><ol><li>Call LLM (Reason)</li><li>LLM returns tool call request (Action)</li><li>ChatModelAgent executes tool (Act)</li><li>Return tool results to LLM (Observation), continue generating with previous context until the model determines no Tool call is needed, then end.</li></ol><p><a href=/img/eino/eino_adk_chatmodel_agent.png target=_blank><img src=/img/eino/eino_adk_chatmodel_agent.png width=100%></a></p><p>The core of the ReAct pattern is the closed loop of &ldquo;<strong>Think → Act → Observe → Think again</strong>&rdquo;, solving the pain points of traditional Agents&rsquo; &ldquo;blind action&rdquo; or &ldquo;disconnect between reasoning and action&rdquo;. Here are some possible practical scenarios:</p><ul><li><strong>Industry Track Analysis</strong>: Using the ReAct pattern avoids information overload from collecting all information at once, focusing on core issues through step-by-step reasoning; using data to verify thinking rather than relying on intuition for decisions, the process is explainable, improving the accuracy of generated reports.<ul><li><strong>Think-1</strong>: To judge track potential, need 4 types of information: &ldquo;policy support strength, industry growth rate, leading company profitability, supply chain bottlenecks&rdquo;.</li><li><strong>Act-1</strong>: Call API to get overall industry financial report data</li><li><strong>Think-2</strong>: Analyze data, determine high industry growth + policy endorsement, but rising upstream prices may squeeze mid-to-downstream profits, need further verification of impact</li><li><strong>Act-2</strong>: Call API to get supply/demand, industry research reports and other detailed data</li><li><strong>Think-3</strong>: Integrate conclusions to generate analysis report, attach key data sources</li></ul></li><li><strong>IT Fault Operations</strong>: Using the ReAct pattern gradually narrows down the problem scope, avoiding blind operations; each step has evidence, convenient for secondary verification by operations engineers before implementing solutions, providing a basis for subsequent review and preventive measures.<ul><li><strong>Think-1</strong>: Clarify common causes of failure, e.g., common causes of downtime are &ldquo;CPU overload, insufficient memory, full disk, service crash&rdquo;, need to check basic monitoring data first</li><li><strong>Act-1</strong>: Call &ldquo;Monitoring System API&rdquo; to query server metrics data</li><li><strong>Think-2</strong>: Determine main cause, e.g., if CPU utilization is abnormal, further investigate which processes have high CPU usage</li><li><strong>Act-2</strong>: Use &ldquo;Process Management Tool&rdquo; to check TOP processes, see if there are abnormal services</li><li><strong>Think-3</strong>: Found logging service abnormal, possibly &ldquo;log files too large&rdquo; or &ldquo;configuration error&rdquo;, need to further check logging service configuration and log file size</li><li><strong>Act-3</strong>: Execute bash commands, found log files too large, also rotation not enabled in configuration, no maximum log size set</li><li><strong>Think-4</strong>: Provide feasible solutions to operations engineer: clean logs, modify configuration to enable rotation, restart logging service and application</li></ul></li></ul><p><code>ChatModelAgent</code> leverages the powerful capabilities of LLM for reasoning, understanding natural language, making decisions, generating responses, and tool interaction, <strong>acting as the &ldquo;thinking&rdquo; part of agent applications</strong>. You can quickly build a <code>ChatModelAgent</code> with <code>ReAct</code> capability using ADK:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>import</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>github</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>com</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>cloudwego</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>eino</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>adk</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#-what-is-an-agent>🙋 What is an Agent?</a></li><li><a href=#-what-is-eino-adk>🙋‍♂️ What is Eino ADK?</a></li></ul><ul><li><a href=#-chatmodelagent-the-brain-for-intelligent-decisions>🧠 ChatModelAgent: The Brain for Intelligent Decisions</a></li><li><a href=#-workflowagents-precision-pipelines>🎭 WorkflowAgents: Precision Pipelines</a></li><li><a href=#-pre-built-multi-agent-patterns>🛠️ Pre-built Multi-Agent Patterns</a><ul><li></li></ul></li></ul><ul><li><a href=#-unified-agent-abstraction>🎯 Unified Agent Abstraction</a></li><li><a href=#-asynchronous-event-driven-architecture>⚡ Asynchronous Event-Driven Architecture</a></li><li><a href=#-flexible-collaboration-mechanisms>🤝 Flexible Collaboration Mechanisms</a></li><li><a href=#-interrupt-and-resume-mechanism>🔄 <strong>Interrupt and Resume Mechanism</strong></a></li></ul><ul><li><a href=#installation>Installation</a></li><li><a href=#project-development-manager-agent>Project Development Manager Agent</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/overview/>Eino: Overview</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/overview/eino_adk0_1/>Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch" data-url=https://www.cloudwego.io/docs/eino/overview/eino_adk0_1/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+# Preface
+
+As large language models break through the bottleneck of "understanding and generation", Agents rapidly become the mainstream form of AI deployment. From intelligent customer service to automated office work, almost all scenarios require Agents to bridge LLM capabilities and execute specific tasks.
+
+But pain points emerge with technological evolution. Some teams struggle to connect LLMs with business systems, causing Agents to only "talk empty"; some suffer from missing state management, making Agents frequently "lose memory" during task execution. Complex interaction flows further increase development difficulty.
+
+For this reason, **Eino ADK (Agent Development Kit) was created to provide Go developers with a complete, flexible, and powerful agent development framework**, directly addressing core challenges in traditional development.
+
+## 🙋 What is an Agent?
+
+An Agent represents an independent, executable intelligent task unit that can learn autonomously, adapt, and make decisions. Main capabilities include:
+
+- **Reasoning**: Agents can analyze data, identify patterns, use logic and available information to draw conclusions, make inferences, and solve problems.
+- **Action**: Agents take actions or execute tasks based on decisions, plans, or external inputs to achieve goals.
+- **Observation**: Agents autonomously collect relevant information (such as computer vision, natural language processing, or sensor data analysis) to understand context and lay the foundation for informed decision-making.
+- **Planning**: Agents can determine necessary steps, evaluate potential actions, and select the best course of action based on available information and expected outcomes.
+- **Collaboration**: Agents can effectively collaborate with others (whether humans or other AI agents) in complex and dynamic environments.
+
+You can think of it as an "intelligent entity" that can understand instructions, execute tasks, and provide responses. Any scenario requiring interaction with large language models (LLMs) can be abstracted as an Agent. For example:
+
+- An Agent for querying weather information.
+- An Agent for scheduling meetings.
+- An Agent capable of answering domain-specific knowledge questions.
+
+## 🙋‍♂️ What is Eino ADK?
+
+[Eino ADK](https://github.com/cloudwego/eino) is an Agent and Multi-Agent development framework designed specifically for the Go language, with design references from [Google-ADK](https://google.github.io/adk-docs/agents/)'s definitions of Agents and collaboration mechanisms.
+
+It's not just a tool library, but a complete agent development system: through unified abstract interfaces, flexible composition patterns, and powerful collaboration mechanisms, it breaks down complex AI applications into independent, composable agent units, allowing developers to build complex agent systems like assembling LEGO blocks:
+
+- **Less glue code**: Unified interfaces and event streams make complex task decomposition more natural.
+- **Fast orchestration**: Preset patterns + workflows assemble pipelines in minutes.
+- **More controllable**: Interruptible, resumable, auditable - Agent collaboration process is "visible".
+
+Whether you're a newcomer to AI applications or an experienced developer, ADK can provide you with suitable tools and patterns. Its design philosophy is "simple things are simple to do, complex things are also achievable" - letting developers focus on implementing business logic without worrying about underlying technical complexity.
+
+# Core Building Blocks
+
+## 🧠 ChatModelAgent: The Brain for Intelligent Decisions
+
+`ChatModelAgent` is the most important pre-built component in ADK. It encapsulates the interaction logic with large language models and implements the classic [ReAct](https://react-lm.github.io/) (Reason-Act-Observe) pattern. The running process is:
+
+1. Call LLM (Reason)
+2. LLM returns tool call request (Action)
+3. ChatModelAgent executes tool (Act)
+4. Return tool results to LLM (Observation), continue generating with previous context until the model determines no Tool call is needed, then end.
+
+<a href="/img/eino/eino_adk_chatmodel_agent.png" target="_blank"><img src="/img/eino/eino_adk_chatmodel_agent.png" width="100%" /></a>
+
+The core of the ReAct pattern is the closed loop of "**Think → Act → Observe → Think again**", solving the pain points of traditional Agents' "blind action" or "disconnect between reasoning and action". Here are some possible practical scenarios:
+
+- **Industry Track Analysis**: Using the ReAct pattern avoids information overload from collecting all information at once, focusing on core issues through step-by-step reasoning; using data to verify thinking rather than relying on intuition for decisions, the process is explainable, improving the accuracy of generated reports.
+  - **Think-1**: To judge track potential, need 4 types of information: "policy support strength, industry growth rate, leading company profitability, supply chain bottlenecks".
+  - **Act-1**: Call API to get overall industry financial report data
+  - **Think-2**: Analyze data, determine high industry growth + policy endorsement, but rising upstream prices may squeeze mid-to-downstream profits, need further verification of impact
+  - **Act-2**: Call API to get supply/demand, industry research reports and other detailed data
+  - **Think-3**: Integrate conclusions to generate analysis report, attach key data sources
+- **IT Fault Operations**: Using the ReAct pattern gradually narrows down the problem scope, avoiding blind operations; each step has evidence, convenient for secondary verification by operations engineers before implementing solutions, providing a basis for subsequent review and preventive measures.
+  - **Think-1**: Clarify common causes of failure, e.g., common causes of downtime are "CPU overload, insufficient memory, full disk, service crash", need to check basic monitoring data first
+  - **Act-1**: Call "Monitoring System API" to query server metrics data
+  - **Think-2**: Determine main cause, e.g., if CPU utilization is abnormal, further investigate which processes have high CPU usage
+  - **Act-2**: Use "Process Management Tool" to check TOP processes, see if there are abnormal services
+  - **Think-3**: Found logging service abnormal, possibly "log files too large" or "configuration error", need to further check logging service configuration and log file size
+  - **Act-3**: Execute bash commands, found log files too large, also rotation not enabled in configuration, no maximum log size set
+  - **Think-4**: Provide feasible solutions to operations engineer: clean logs, modify configuration to enable rotation, restart logging service and application
+
+`ChatModelAgent` leverages the powerful capabilities of LLM for reasoning, understanding natural language, making decisions, generating responses, and tool interaction, **acting as the "thinking" part of agent applications**. You can quickly build a `ChatModelAgent` with `ReAct` capability using ADK:
+
+```go
+import github.com/cloudwego/eino/adk
+
+// Create a ReAct ChatModelAgent with multiple tools
+chatAgent := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+    Name:        "intelligent_assistant",
+    Description: "An intelligent assistant capable of using multiple tools to solve complex problems",
+    Instruction: "You are a professional assistant who can use the provided tools to help users solve problems",
+    Model:       openaiModel,
+    ToolsConfig: adk.ToolsConfig{
+        Tools: []tool.BaseTool{
+            searchTool,
+            calculatorTool,
+            weatherTool,
+        },
+    }
+})
+```
+
+## 🎭 WorkflowAgents: Precision Pipelines
+
+Eino ADK provides WorkflowAgents patterns dedicated to coordinating sub-Agent execution flows, used to manage Agent running modes through predefined logic, producing deterministic execution processes, helping achieve **predictable and controllable multi-Agent collaboration methods**. You can arrange and combine the following patterns as needed, combined with `ChatModelAgent` to construct complete workflow pipelines that meet your needs:
+
+- **Sequential Agent**: Executes Agents registered in the configuration in order once and then ends, following these principles:
+  - **Linear execution**: Strictly follows the order of the SubAgents array.
+  - **Output passing**: Each Agent in the configuration can obtain the complete input of Sequential Agent and outputs of preceding Agents.
+  - **Supports early exit**: If any sub-Agent produces an exit/interrupt action, the entire Sequential flow terminates immediately.
+- Possible practical scenarios include:
+  - **Data ETL**: `ExtractAgent` (extract order data from MySQL) → `TransformAgent` (clean null values, format dates) → `LoadAgent` (load to data warehouse)
+  - **CI/CD Pipeline**: `CodeCloneAgent` (pull code from repository) → `UnitTestAgent` (run unit tests, return error and analysis report on test case failure) → `CompileAgent` (compile code) → `DeployAgent` (deploy to target environment)
+
+```go
+import github.com/cloudwego/eino/adk
+
+// Execute in sequence: plan research -> search materials -> write report
+sequential := adk.NewSequentialAgent(ctx, &adk.SequentialAgentConfig{
+    Name: "research_pipeline",
+    SubAgents: []adk.Agent{
+        planAgent,    // Plan research
+        searchAgent,  // Search materials
+        writeAgent,   // Write report
+    },
+})
+```
+
+<a href="/img/eino/eino_adk_sequential.png" target="_blank"><img src="/img/eino/eino_adk_sequential.png" width="100%" /></a>
+
+- **Parallel Agent**: Executes Agents registered in the configuration concurrently, ends after all Agents complete, following these principles:
+  - **Concurrent execution**: All sub-Agents start simultaneously, running in parallel in independent goroutines.
+  - **Shared input**: All sub-Agents receive the same initial input when calling Parallel Agent.
+  - **Wait and aggregate results**: Internally uses sync.WaitGroup to wait for all sub-Agents to complete, collects all sub-Agent execution results and outputs to `AsyncIterator` in order received.
+- Possible practical scenarios include:
+  - **Multi-source data collection**: `MySQLCollector` (collect user table) + `PostgreSQLCollector` (collect order table) + `MongoDBCollector` (collect product reviews)
+  - **Multi-channel push**: `WeChatPushAgent` (push to WeChat official account) + `SMSPushAgent` (send SMS) + `AppPushAgent` (push to APP)
+
+```go
+import github.com/cloudwego/eino/adk
+
+// Concurrent execution: sentiment analysis + keyword extraction + content summary
+parallel := adk.NewParallelAgent(ctx, &adk.ParallelAgentConfig{
+    Name: "multi_analysis",
+    SubAgents: []adk.Agent{
+        sentimentAgent,  // Sentiment analysis
+        keywordAgent,    // Keyword extraction
+        summaryAgent,    // Content summary
+    },
+})
+```
+
+<a href="/img/eino/eino_adk_parallel.png" target="_blank"><img src="/img/eino/eino_adk_parallel.png" width="100%" /></a>
+
+- **Loop Agent**: Executes Agents registered in the configuration in order and loops multiple times, following these principles:
+  - **Loop execution**: Repeatedly executes the SubAgents sequence, each loop is a complete Sequential execution process.
+  - **Result accumulation**: Results from each iteration accumulate, later iteration inputs can access all historical information.
+  - **Conditional exit**: Supports terminating the loop by outputting an event containing `ExitAction` or reaching max iterations, configuring `MaxIterations=0` means infinite loop.
+- Possible practical scenarios include:
+  - **Data synchronization**: `CheckUpdateAgent` (check source database increments) → `IncrementalSyncAgent` (sync incremental data) → `VerifySyncAgent` (verify consistency)
+  - **Stress testing**: `StartClientAgent` (start test client) → `SendRequestsAgent` (send requests) → `CollectMetricsAgent` (collect performance metrics)
+
+```go
+import github.com/cloudwego/eino/adk
+
+// Loop 5 times, each sequence: analyze current state -> propose improvement plan -> verify improvement effect
+loop := adk.NewLoopAgent(ctx, &adk.LoopAgentConfig{
+    Name: "iterative_optimization",
+    SubAgents: []adk.Agent{
+        analyzeAgent,  // Analyze current state
+        improveAgent,  // Propose improvement plan
+        validateAgent, // Verify improvement effect
+    },
+    MaxIterations: 5,
+})
+```
+
+<a href="/img/eino/eino_adk_loop_controller.png" target="_blank"><img src="/img/eino/eino_adk_loop_controller.png" width="100%" /></a>
+
+## 🛠️ Pre-built Multi-Agent Patterns
+
+Eino ADK, based on best engineering practices accumulated from daily Multi-Agent collaboration, provides users with **two pre-built Multi-Agent patterns**, ready to use out of the box without designing collaboration logic from scratch, covering two core scenarios: "centralized coordination" and "structured problem solving", efficiently supporting intelligent collaboration for complex tasks.
+
+#### 🎯 Supervisor Pattern: Centralized Coordination
+
+Supervisor Agent is a centralized Multi-Agent collaboration pattern provided by ADK, designed to provide solutions for general scenarios of centralized decision-making and distributed execution. It consists of one Supervisor Agent and multiple SubAgents, where:
+
+- Supervisor Agent is responsible for task allocation, result aggregation after sub-Agent completion, and next-step decisions.
+- Sub-Agents focus on executing specific tasks and automatically return task control to the Supervisor upon completion.
+
+<a href="/img/eino/eino_adk_supervisor_flow.png" target="_blank"><img src="/img/eino/eino_adk_supervisor_flow.png" width="100%" /></a>
+
+The Supervisor pattern has the following characteristics:
+
+- **Centralized control**: Supervisor uniformly manages sub-Agents, can dynamically adjust task allocation based on input and sub-Agent execution results.
+- **Deterministic callback**: Sub-Agents return running results to the Supervisor Agent after completion, avoiding collaboration flow interruption.
+- **Loose coupling extension**: Sub-Agents can be independently developed, tested, and replaced, convenient for expansion and maintenance.
+
+The hierarchical structure of the Supervisor pattern is well-suited for scenarios of **dynamically coordinating multiple specialized Agents to complete complex tasks**, such as:
+
+- **Research project management**: Supervisor assigns research, experimentation, and report writing tasks to different sub-Agents.
+- **Customer service flow**: Supervisor routes to technical support, after-sales, or sales sub-Agents based on user issue type.
+
+```go
+import github.com/cloudwego/eino/adk/prebuilt/supervisor
+
+// Research project management: create a supervisor pattern multi-agent
+// Contains research, experimentation, report sub-Agents
+supervisor, err := supervisor.New(ctx, &supervisor.Config{
+    SupervisorAgent: supervisorAgent,
+    SubAgents: []adk.Agent{
+        researchAgent,
+        experimentationAgent,
+        reportAgent,
+    },
+})
+```
+
+#### 🎯 Plan-Execute Pattern: Structured Problem Solving
+
+Plan-Execute Agent is an ADK-provided Multi-Agent collaboration pattern based on the "plan-execute-reflect" paradigm (referencing the paper **Plan-and-Solve Prompting**), designed to solve problems of step-by-step decomposition, execution, and dynamic adjustment for complex tasks. Through collaborative work of three core agents - Planner, Executor, and Replanner - it achieves structured planning, tool call execution, progress evaluation, and dynamic replanning, ultimately achieving user goals, where:
+
+- **Planner**: Based on user goals, generates an initial task plan with detailed, structured steps
+- **Executor**: Executes the first step in the current plan
+- **Replanner**: Evaluates execution progress, decides whether to correct the plan and continue with Executor, or end the task
+
+<a href="/img/eino/eino_adk_plan_execute_replan_detail.png" target="_blank"><img src="/img/eino/eino_adk_plan_execute_replan_detail.png" width="100%" /></a>
+
+The Plan-Execute pattern has the following characteristics:
+
+- **Clear layered architecture**: By decomposing tasks into planning, execution, and reflection/replanning phases, forming a clearly layered cognitive process, reflecting the closed-loop cognitive strategy of "think first, then act, then adjust based on feedback", achieving good results in various scenarios.
+- **Dynamic iterative optimization**: Replanner judges in real-time whether the task is complete or needs plan adjustment based on execution results and current progress, supporting dynamic replanning. This mechanism effectively solves the bottleneck of traditional single planning being unable to cope with environmental changes and task uncertainty, improving system robustness and flexibility.
+- **Clear responsibilities and loose coupling**: The Plan-Execute pattern works through collaboration of multiple agents, supporting independent development, testing, and replacement. Modular design facilitates extension and maintenance, following engineering best practices.
+- **Good extensibility**: Not dependent on specific language models, tools, or Agents, convenient for integrating diverse external resources, meeting different application scenario requirements.
+
+The "Plan → Execute → Replan" closed-loop structure of the Plan-Execute pattern is well-suited for **complex task scenarios requiring multi-step reasoning, dynamic adjustment, and tool integration**, such as:
+
+- **Complex research analysis**: Decompose research problems through planning, execute multiple rounds of data retrieval and calculation, dynamically adjust research direction and hypotheses, improving analysis depth and accuracy.
+- **Automated workflow management**: Decompose complex business processes into structured steps, combine multiple tools (such as database queries, API calls, computation engines) for step-by-step execution, and dynamically optimize processes based on execution results.
+- **Multi-step problem solving**: Suitable for scenarios requiring step-by-step reasoning and multi-tool collaboration, such as legal consulting, technical diagnosis, strategy formulation, ensuring feedback and adjustment at each execution step.
+- **Intelligent assistant task execution**: Support intelligent assistants to plan task steps based on user goals, call external tools to complete specific operations, and adjust subsequent plans based on replanning thinking combined with user feedback, improving task completion integrity and accuracy.
+
+```go
+import github.com/cloudwego/eino/adk/prebuilt/planexecute
+
+// Plan-Execute pattern research assistant
+researchAssistant := planexecute.New(ctx, &planexecute.Config{
+    Planner: adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+        Name: "research_planner",
+        Instruction: "Formulate detailed research plan, including literature research, data collection, analysis methods, etc.",
+        Model: gpt4Model,
+    }),
+    Executor: adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
+        Name: "research_executor",
+        ToolsConfig: adk.ToolsConfig{
+            Tools: []tool.BaseTool{
+                scholarSearchTool,
+                dataAnalysisTool,
+                citationTool,
+            },
+        },
+    }),
+    Replanner: replannerAgent,
+})
+```
+
+#### 🎯 DeepAgents Pattern: Planning-Driven Centralized Collaboration
+
+DeepAgents is a Multi-Agent pattern under unified coordination of a Main Agent. The Main Agent runs in a ReAct flow with tool-calling capable ChatModel:
+
+- Break down user goals into structured todos and track progress through WriteTodos
+- Select and call corresponding SubAgents to execute subtasks through unified entry TaskTool; main/sub agent contexts are isolated to avoid intermediate steps polluting the main flow.
+- Aggregate results returned by sub-agents; call WriteTodos again if necessary to update progress or replan until completion.
+
+<a href="/img/eino/eino_adk_deep_agents_overview.png" target="_blank"><img src="/img/eino/eino_adk_deep_agents_overview.png" width="100%" /></a>
+
+The DeepAgents pattern has the following characteristics:
+
+- **Strengthened task decomposition and progress management**: Form clear subtasks and milestones through WriteTodos, making complex goals decomposable and trackable.
+- **More robust context isolation**: Sub-agents execute in "clean" context, main agent only aggregates results, reducing interference from redundant thought chains and tool call traces on the main flow.
+- **Unified delegation entry, easy to extend**: TaskTool abstracts all sub-agent and tool capabilities into a unified calling surface, convenient for adding or replacing specialized sub-agents.
+- **Flexible closed-loop between planning and execution**: Planning can be called as a tool on demand; unnecessary planning can be skipped for simple tasks, reducing LLM call costs and time.
+- **Boundaries and tradeoffs**: Over-decomposition increases call counts and costs; higher requirements for subtask division and prompt optimization, model needs stable tool-calling and planning capabilities.
+
+The core value of DeepAgent lies in automating workflows requiring multi-step, multi-role collaboration. It's not just a single-function executor, but a "project manager" with deep thinking, planning, and dynamic adjustment capabilities, suitable scenarios include:
+
+- **Multi-role collaboration complex business flows**: Centered on R&D, testing, release, legal, operations multi-role collaboration, centrally delegate subtasks and uniformly aggregate; set checkpoints and rollback strategies at each stage, progress is visible and retryable.
+- **Staged management of long processes**: Planning decomposes cleaning, validation, lineage analysis, quality inspection steps, sub-agents run in isolated contexts; only rerun relevant stages on exceptions, products are uniformly reconciled and aggregated.
+- **Execution environments requiring strict context isolation**: Unified entry collects materials and requests, TaskTool routes legal, risk control, finance subtasks separately; clear boundaries between subtasks that are invisible to each other, progress and traces are auditable, failures can be retried without affecting other stages.
+
+```go
+import github.com/cloudwego/eino/adk/prebuilt/deep
+
+agent, err := deep.New(ctx, &deep.Config{
+    Name:      "deep-agent",
+    ChatModel: gpt4Model,
+    SubAgents: []adk.Agent{
+       LegalAgent,
+       RiskControlAgent,
+       FinanceAgent,
+    },
+    MaxIteration: 100,
+})
+```
+
+# Foundation Design
+
+## 🎯 Unified Agent Abstraction
+
+The core of ADK is a simple yet powerful `Agent` interface:
+
+```go
+type Agent interface {
+    Name(ctx context.Context) string
+    Description(ctx context.Context) string
+    Run(ctx context.Context, input *AgentInput, options ...AgentRunOption) *AsyncIterator[*AgentEvent]
+}
+```
+
+Each Agent has a clear identity (Name), clear responsibilities (Description), and standardized execution method (Run), providing the foundation for discovery and invocation between Agents. Whether it's a simple Q&A bot or a complex multi-step task processing system, it can be implemented through this unified interface.
+
+## ⚡ Asynchronous Event-Driven Architecture
+
+ADK adopts an asynchronous event stream design, implementing non-blocking event processing through `AsyncIterator[*AgentEvent]`, and running Agents through the `Runner` framework:
+
+- **Real-time response**: `AgentEvent` contains specific node outputs during Agent execution (Agent replies, tool processing results, etc.), users can immediately see the Agent's thinking process and intermediate results.
+- **Execution tracking**: `AgentEvent` additionally carries state modification actions and running trajectory, convenient for development debugging and understanding Agent behavior.
+- **Automatic flow control**: The framework automatically handles interrupt, jump, and exit behaviors through `Runner`, requiring no additional user intervention.
+
+## 🤝 Flexible Collaboration Mechanisms
+
+Eino ADK supports Agents within the same system to collaborate in multiple ways (exchange data or trigger runs):
+
+- **Shared Session**: KV storage that persists during a single run, used to support cross-Agent state management and data sharing.
+
+```go
+// Get all SessionValues
+func GetSessionValues(ctx context.Context) map[string]any
+
+// Get a value from SessionValues by key, second return value is false if key doesn't exist, otherwise true
+func GetSessionValue(ctx context.Context, key string) (any, bool)
+
+// Add SessionValues
+func AddSessionValue(ctx context.Context, key string, value any)
+
+// Batch add SessionValues
+func AddSessionValues(ctx context.Context, kvs map[string]any)
+```
+
+- **Transfer**: Hand off task to sub-Agent for continued processing, carrying this Agent's output result context. Suitable for scenarios where agent functions can clearly divide boundaries and hierarchies, commonly combined with ChatModelAgent, using LLM generation results for dynamic routing. Structurally, two Agents collaborating in this way are called parent and child Agents:
+
+<a href="/img/eino/eino_adk_transfer.png" target="_blank"><img src="/img/eino/eino_adk_transfer.png" width="100%" /></a>
+
+```go
+// Set parent-child Agent relationship
+func SetSubAgents(ctx context.Context, agent Agent, subAgents []Agent) (Agent, error)
+
+// Specify target Agent name, construct Transfer Event
+func NewTransferToAgentAction(destAgentName string) *AgentAction
+```
+
+- **Explicit invocation (ToolCall)**: Call Agent as a tool. Suitable for scenarios where Agent running only needs clear parameters rather than complete running context, commonly combined with ChatModelAgent, running as a tool and returning results to ChatModel for continued processing. Additionally, ToolCall also supports calling ordinary tools constructed according to tool interface that don't contain Agents.
+
+<a href="/img/eino/eino_adk_agent_as_tool.png" target="_blank"><img src="/img/eino/eino_adk_agent_as_tool.png" width="100%" /></a>
+
+```go
+// Convert Agent to Tool
+func NewAgentTool(_ context.Context, agent Agent, options ...AgentToolOption) tool.BaseTool
+```
+
+## 🔄 **Interrupt and Resume Mechanism**
+
+Eino ADK provides runtime interrupt and resume functionality, allowing a running Agent to actively interrupt and save its current state, and resume execution from the interruption point in the future. This feature assists development in scenarios of long waiting, pausable, or requiring external input (Human in the loop).
+
+- During Agent internal running, proactively notify `Runner` to interrupt running by throwing `Event` containing `Interrupt Action`, and allow carrying additional information for caller to read and use.
+- `Runner` records current running state through `CheckPointStore` registered at initialization
+- When ready to run again, restart the Agent running from the breakpoint through the `Resume` method carrying new information needed for resume
+
+```go
+// 1. Create Runner supporting breakpoint resume
+runner := adk.NewRunner(ctx, adk.RunnerConfig{
+    Agent:           complexAgent,
+    CheckPointStore: memoryStore, // Memory state storage
+})
+
+// 2. Start execution
+iter := runner.Query(ctx, "recommend a book to me", adk.WithCheckPointID("1"))
+for {
+    event, ok := iter.Next()
+    if !ok {
+       break
+    }
+    if event.Err != nil {
+       log.Fatal(event.Err)
+    }
+    if event.Action != nil {
+        // 3. Interrupt event thrown internally by Agent
+        if event.Action.Interrupted != nil {
+           ii, _ := json.MarshalIndent(event.Action.Interrupted.Data, "", "\t")
+           fmt.Printf("action: interrupted\n")
+           fmt.Printf("interrupt snapshot: %v", string(ii))
+        }
+    }
+}
+
+// 4. Receive user input from stdin
+scanner := bufio.NewScanner(os.Stdin)
+fmt.Print("\nyour input here: ")
+scanner.Scan()
+fmt.Println()
+nInput := scanner.Text()
+
+// 5. Resume execution from breakpoint carrying user input information
+iter, err := runner.Resume(ctx, "1", adk.WithToolOptions([]tool.Option{subagents.WithNewInput(nInput)}))
+```
+
+# Quick Start
+
+## Installation
+
+```go
+go get github.com/cloudwego/eino@latest
+```
+
+## Project Development Manager Agent
+
+The following example uses Eino ADK to build a project development manager agent, targeting multi-faceted management collaboration scenarios:
+
+- Project Manager Agent: Project manager agent, using Supervisor pattern overall, with the following Agent functions:
+  - `ResearchAgent`: Research Agent, responsible for research and generating feasible solutions, supports receiving additional context information from users after interruption to improve research solution generation accuracy.
+  - `CodeAgent`: Coding Agent, uses knowledge base tools to recall relevant knowledge as reference, generating high-quality code.
+  - `ReviewAgent`: Review Agent, uses sequential workflow orchestration of problem analysis, evaluation generation, and evaluation validation steps to review research results/coding results, giving reasonable evaluations for project manager decision-making.
+  - `ProjectManagerAgent`: Project manager Agent, routes and coordinates multiple sub-agents responsible for different dimensions of work based on dynamic user input.
+- Possible work scenarios for this Agent:
+  - **Implementing a project from scratch**: Project manager starts from requirements, works through research, coding, and review Agents, finally completing project delivery.
+  - **Improving existing projects**: Project manager gets points needing improvement from review Agent, hands to coding Agent for implementation, then hands to review Agent for reviewing modified code.
+  - **Conducting technical research**: Project manager requests research Agent to generate technical research report, then review Agent gives review opinions. Caller decides subsequent actions combining returned technical research report and review opinions.
+
+<a href="/img/eino/eino_adk_project_manager.png" target="_blank"><img src="/img/eino/eino_adk_project_manager.png" width="100%" /></a>
+
+The design of this example covers most concepts introduced in the article, you can review the various design concepts mentioned earlier based on the example. Additionally, consider how to complete writing this example in ordinary development mode, ADK's advantages become immediately apparent:
+
+<table>
+<tr><td>Design Point</td><td>Traditional Development Mode</td><td>Development Based on Eino ADK</td></tr>
+<tr><td>Agent abstraction</td><td>No unified definition, poor team collaboration efficiency, high later maintenance cost</td><td>Unified definition, independent responsibilities, clean code, convenient for separate Agent development</td></tr>
+<tr><td>Input/Output</td><td>No unified definition, chaotic I/O, running process can only be manually logged, not conducive to debugging</td><td>Unified definition, all event-driven, running process exposed through iterator, what you see is what you get</td></tr>
+<tr><td>Agent collaboration</td><td>Manually pass context through code</td><td>Framework automatically passes context</td></tr>
+<tr><td>Interrupt/Resume capability</td><td>Need to implement from scratch, solving serialization/deserialization, state storage/recovery issues</td><td>Only need to register CheckPointStore in Runner to provide breakpoint data storage medium</td></tr>
+<tr><td>Agent patterns</td><td>Need to implement from scratch</td><td>Multiple mature patterns available out of the box</td></tr>
+</table>
+
+Core code as follows, complete code see [source code](https://github.com/cloudwego/eino-examples/tree/main/adk/multiagent/integration-project-manager) provided in Eino-Examples project:
+
+```go
+func main() {
+    ctx := context.Background()
+
+    // Init chat model for agents
+    tcm, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
+       APIKey:  os.Getenv("OPENAI_API_KEY"),
+       Model:   os.Getenv("OPENAI_MODEL"),
+       BaseURL: os.Getenv("OPENAI_BASE_URL"),
+       ByAzure: func() bool {
+          return os.Getenv("OPENAI_BY_AZURE") == "true"
+       }(),
+    })
+    if err != nil {
+       log.Fatal(err)
+    }
+
+    // Init research agent
+    researchAgent, err := agents.NewResearchAgent(ctx, tcm)
+    if err != nil {
+       log.Fatal(err)
+    }
+
+    // Init code agent
+    codeAgent, err := agents.NewCodeAgent(ctx, tcm)
+    if err != nil {
+       log.Fatal(err)
+    }
+
+    // Init technical agent
+    reviewAgent, err := agents.NewReviewAgent(ctx, tcm)
+    if err != nil {
+       log.Fatal(err)
+    }
+
+    // Init project manager agent
+    s, err := agents.NewProjectManagerAgent(ctx, tcm)
+    if err != nil {
+       log.Fatal(err)
+    }
+
+    // Combine agents into ADK supervisor pattern
+    // Supervisor: project manager
+    // Sub-agents: researcher / coder / reviewer
+    supervisorAgent, err := supervisor.New(ctx, &supervisor.Config{
+       Supervisor: s,
+       SubAgents:  []adk.Agent{researchAgent, codeAgent, reviewAgent},
+    })
+    if err != nil {
+       log.Fatal(err)
+    }
+
+    // Init Agent runner
+    runner := adk.NewRunner(ctx, adk.RunnerConfig{
+       Agent:           supervisorAgent,
+       EnableStreaming: true,                // enable stream output
+       CheckPointStore: newInMemoryStore(),  // enable checkpoint for interrupt & resume
+    })
+
+    // Replace it with your own query
+    query := "please generate a simple ai chat project with python."
+    checkpointID := "1"
+
+    // Start runner with a new checkpoint id
+    iter := runner.Query(ctx, query, adk.WithCheckPointID(checkpointID))
+    interrupted := false
+    for {
+       event, ok := iter.Next()
+       if !ok {
+          break
+       }
+       if event.Err != nil {
+          log.Fatal(event.Err)
+       }
+       if event.Action != nil && event.Action.Interrupted != nil {
+          interrupted = true
+       }
+       prints.Event(event)
+    }
+
+    if !interrupted {
+       return
+    }
+    
+    // interrupt and ask for additional user context
+    scanner := bufio.NewScanner(os.Stdin)
+    fmt.Print("\ninput additional context for web search: ")
+    scanner.Scan()
+    fmt.Println()
+    nInput := scanner.Text()
+
+    // Resume by checkpoint id, with additional user context injection
+    iter, err = runner.Resume(ctx, checkpointID, adk.WithToolOptions([]tool.Option{agents.WithNewInput(nInput)}))
+    if err != nil {
+       log.Fatal(err)
+    }
+    for {
+       event, ok := iter.Next()
+       if !ok {
+          break
+       }
+       if event.Err != nil {
+          log.Fatal(event.Err)
+       }
+       prints.Event(event)
+    }
+}
+```
+
+# Conclusion
+
+Eino ADK is not just a development framework, but a complete agent development ecosystem. Through unified abstractions, flexible composition, and powerful collaboration mechanisms, it enables Go developers to easily build various AI applications from simple chatbots to complex multi-agent systems.
+
+> 💡
+> **Start your agent development journey now**
+>
+> - 📚 View more documentation: [Eino ADK Documentation](https://www.cloudwego.io/docs/eino/core_modules/eino_adk/)
+> - 🛠️ Browse ADK source code: [Eino ADK Source](https://github.com/cloudwego/eino/tree/main/adk)
+> - 💡 Explore all examples: [Eino ADK Examples](https://github.com/cloudwego/eino-examples/tree/main/adk)
+> - 🤝 Join the developer community: Exchange experiences and best practices with other developers
+>
+> Eino ADK makes agent development simple yet powerful!
+
+<a href="/img/eino/eino_adk_user_group.png" target="_blank"><img src="/img/eino/eino_adk_user_group.png" width="100%" /></a>
+</script><h1>Eino ADK: Master AI Agent Core Design Patterns, Build Agent Systems from Scratch</h1><header class=article-meta></header><h1 id=preface>Preface</h1><p>As large language models break through the bottleneck of &ldquo;understanding and generation&rdquo;, Agents rapidly become the mainstream form of AI deployment. From intelligent customer service to automated office work, almost all scenarios require Agents to bridge LLM capabilities and execute specific tasks.</p><p>But pain points emerge with technological evolution. Some teams struggle to connect LLMs with business systems, causing Agents to only &ldquo;talk empty&rdquo;; some suffer from missing state management, making Agents frequently &ldquo;lose memory&rdquo; during task execution. Complex interaction flows further increase development difficulty.</p><p>For this reason, <strong>Eino ADK (Agent Development Kit) was created to provide Go developers with a complete, flexible, and powerful agent development framework</strong>, directly addressing core challenges in traditional development.</p><h2 id=-what-is-an-agent>🙋 What is an Agent?</h2><p>An Agent represents an independent, executable intelligent task unit that can learn autonomously, adapt, and make decisions. Main capabilities include:</p><ul><li><strong>Reasoning</strong>: Agents can analyze data, identify patterns, use logic and available information to draw conclusions, make inferences, and solve problems.</li><li><strong>Action</strong>: Agents take actions or execute tasks based on decisions, plans, or external inputs to achieve goals.</li><li><strong>Observation</strong>: Agents autonomously collect relevant information (such as computer vision, natural language processing, or sensor data analysis) to understand context and lay the foundation for informed decision-making.</li><li><strong>Planning</strong>: Agents can determine necessary steps, evaluate potential actions, and select the best course of action based on available information and expected outcomes.</li><li><strong>Collaboration</strong>: Agents can effectively collaborate with others (whether humans or other AI agents) in complex and dynamic environments.</li></ul><p>You can think of it as an &ldquo;intelligent entity&rdquo; that can understand instructions, execute tasks, and provide responses. Any scenario requiring interaction with large language models (LLMs) can be abstracted as an Agent. For example:</p><ul><li>An Agent for querying weather information.</li><li>An Agent for scheduling meetings.</li><li>An Agent capable of answering domain-specific knowledge questions.</li></ul><h2 id=-what-is-eino-adk>🙋‍♂️ What is Eino ADK?</h2><p><a href=https://github.com/cloudwego/eino>Eino ADK</a> is an Agent and Multi-Agent development framework designed specifically for the Go language, with design references from <a href=https://google.github.io/adk-docs/agents/>Google-ADK</a>&rsquo;s definitions of Agents and collaboration mechanisms.</p><p>It&rsquo;s not just a tool library, but a complete agent development system: through unified abstract interfaces, flexible composition patterns, and powerful collaboration mechanisms, it breaks down complex AI applications into independent, composable agent units, allowing developers to build complex agent systems like assembling LEGO blocks:</p><ul><li><strong>Less glue code</strong>: Unified interfaces and event streams make complex task decomposition more natural.</li><li><strong>Fast orchestration</strong>: Preset patterns + workflows assemble pipelines in minutes.</li><li><strong>More controllable</strong>: Interruptible, resumable, auditable - Agent collaboration process is &ldquo;visible&rdquo;.</li></ul><p>Whether you&rsquo;re a newcomer to AI applications or an experienced developer, ADK can provide you with suitable tools and patterns. Its design philosophy is &ldquo;simple things are simple to do, complex things are also achievable&rdquo; - letting developers focus on implementing business logic without worrying about underlying technical complexity.</p><h1 id=core-building-blocks>Core Building Blocks</h1><h2 id=-chatmodelagent-the-brain-for-intelligent-decisions>🧠 ChatModelAgent: The Brain for Intelligent Decisions</h2><p><code>ChatModelAgent</code> is the most important pre-built component in ADK. It encapsulates the interaction logic with large language models and implements the classic <a href=https://react-lm.github.io/>ReAct</a> (Reason-Act-Observe) pattern. The running process is:</p><ol><li>Call LLM (Reason)</li><li>LLM returns tool call request (Action)</li><li>ChatModelAgent executes tool (Act)</li><li>Return tool results to LLM (Observation), continue generating with previous context until the model determines no Tool call is needed, then end.</li></ol><p><a href=/img/eino/eino_adk_chatmodel_agent.png target=_blank><img src=/img/eino/eino_adk_chatmodel_agent.png width=100%></a></p><p>The core of the ReAct pattern is the closed loop of &ldquo;<strong>Think → Act → Observe → Think again</strong>&rdquo;, solving the pain points of traditional Agents&rsquo; &ldquo;blind action&rdquo; or &ldquo;disconnect between reasoning and action&rdquo;. Here are some possible practical scenarios:</p><ul><li><strong>Industry Track Analysis</strong>: Using the ReAct pattern avoids information overload from collecting all information at once, focusing on core issues through step-by-step reasoning; using data to verify thinking rather than relying on intuition for decisions, the process is explainable, improving the accuracy of generated reports.<ul><li><strong>Think-1</strong>: To judge track potential, need 4 types of information: &ldquo;policy support strength, industry growth rate, leading company profitability, supply chain bottlenecks&rdquo;.</li><li><strong>Act-1</strong>: Call API to get overall industry financial report data</li><li><strong>Think-2</strong>: Analyze data, determine high industry growth + policy endorsement, but rising upstream prices may squeeze mid-to-downstream profits, need further verification of impact</li><li><strong>Act-2</strong>: Call API to get supply/demand, industry research reports and other detailed data</li><li><strong>Think-3</strong>: Integrate conclusions to generate analysis report, attach key data sources</li></ul></li><li><strong>IT Fault Operations</strong>: Using the ReAct pattern gradually narrows down the problem scope, avoiding blind operations; each step has evidence, convenient for secondary verification by operations engineers before implementing solutions, providing a basis for subsequent review and preventive measures.<ul><li><strong>Think-1</strong>: Clarify common causes of failure, e.g., common causes of downtime are &ldquo;CPU overload, insufficient memory, full disk, service crash&rdquo;, need to check basic monitoring data first</li><li><strong>Act-1</strong>: Call &ldquo;Monitoring System API&rdquo; to query server metrics data</li><li><strong>Think-2</strong>: Determine main cause, e.g., if CPU utilization is abnormal, further investigate which processes have high CPU usage</li><li><strong>Act-2</strong>: Use &ldquo;Process Management Tool&rdquo; to check TOP processes, see if there are abnormal services</li><li><strong>Think-3</strong>: Found logging service abnormal, possibly &ldquo;log files too large&rdquo; or &ldquo;configuration error&rdquo;, need to further check logging service configuration and log file size</li><li><strong>Act-3</strong>: Execute bash commands, found log files too large, also rotation not enabled in configuration, no maximum log size set</li><li><strong>Think-4</strong>: Provide feasible solutions to operations engineer: clean logs, modify configuration to enable rotation, restart logging service and application</li></ul></li></ul><p><code>ChatModelAgent</code> leverages the powerful capabilities of LLM for reasoning, understanding natural language, making decisions, generating responses, and tool interaction, <strong>acting as the &ldquo;thinking&rdquo; part of agent applications</strong>. You can quickly build a <code>ChatModelAgent</code> with <code>ReAct</code> capability using ADK:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>import</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>github</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>com</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>cloudwego</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>eino</span><span style=color:#ce5c00;font-weight:700>/</span><span style=color:#000>adk</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#8f5902;font-style:italic>// Create a ReAct ChatModelAgent with multiple tools</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#000>chatAgent</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>:=</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>adk</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>NewChatModelAgent</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>&amp;</span><span style=color:#000>adk</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>ChatModelAgentConfig</span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -371,4 +943,4 @@ But pain points emerge with technological evolution. Some teams struggle to conn
 <strong>Start your agent development journey now</strong></p><ul><li>📚 View more documentation: <a href=https://www.cloudwego.io/docs/eino/core_modules/eino_adk/>Eino ADK Documentation</a></li><li>🛠️ Browse ADK source code: <a href=https://github.com/cloudwego/eino/tree/main/adk>Eino ADK Source</a></li><li>💡 Explore all examples: <a href=https://github.com/cloudwego/eino-examples/tree/main/adk>Eino ADK Examples</a></li><li>🤝 Join the developer community: Exchange experiences and best practices with other developers</li></ul><p>Eino ADK makes agent development simple yet powerful!</p></blockquote><p><a href=/img/eino/eino_adk_user_group.png target=_blank><img src=/img/eino/eino_adk_user_group.png width=100%></a></p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 2, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/96139d4140c93a677eec194c2d34dffa3e2673dd>feat: sync eino docs (#1512) (96139d41)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

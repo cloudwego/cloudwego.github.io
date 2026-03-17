@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>泛化调用接入 dynamicgo 指南 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="泛化调用接入 dynamicgo 指南"><meta property="og:description" content="泛化调用接入 dynamicgo 指南；高性能泛化调用实现"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-12-17T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-30T14:12:43+08:00"><meta itemprop=name content="泛化调用接入 dynamicgo 指南"><meta itemprop=description content="泛化调用接入 dynamicgo 指南；高性能泛化调用实现"><meta itemprop=datePublished content="2023-12-17T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-30T14:12:43+08:00"><meta itemprop=wordCount content="1090"><meta itemprop=keywords content="generic-call,dynamicgo"><meta name=twitter:card content="summary"><meta name=twitter:title content="泛化调用接入 dynamicgo 指南"><meta name=twitter:description content="泛化调用接入 dynamicgo 指南；高性能泛化调用实现"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>泛化调用接入 dynamicgo 指南 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="泛化调用接入 dynamicgo 指南"><meta property="og:description" content="泛化调用接入 dynamicgo 指南；高性能泛化调用实现"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-12-17T00:00:00+00:00"><meta property="article:modified_time" content="2024-05-30T14:12:43+08:00"><meta itemprop=name content="泛化调用接入 dynamicgo 指南"><meta itemprop=description content="泛化调用接入 dynamicgo 指南；高性能泛化调用实现"><meta itemprop=datePublished content="2023-12-17T00:00:00+00:00"><meta itemprop=dateModified content="2024-05-30T14:12:43+08:00"><meta itemprop=wordCount content="1090"><meta itemprop=keywords content="generic-call,dynamicgo"><meta name=twitter:card content="summary"><meta name=twitter:title content="泛化调用接入 dynamicgo 指南"><meta name=twitter:description content="泛化调用接入 dynamicgo 指南；高性能泛化调用实现"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -149,7 +149,336 @@
 <label for=m-zhdocskitexfaq-check><a href=/zh/docs/kitex/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocskitexfaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/kitex/Tutorials/advanced-feature/generic-call/generic-call-dynamicgo.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/kitex/Tutorials/advanced-feature/generic-call?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e6%b3%9b%e5%8c%96%e8%b0%83%e7%94%a8%e6%8e%a5%e5%85%a5%20dynamicgo%20%e6%8c%87%e5%8d%97" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#背景>背景</a></li><li><a href=#新旧方式的使用差异>新旧方式的使用差异</a><ul><li><a href=#descriptor>Descriptor</a></li><li><a href=#call-options>Call options</a></li></ul></li><li><a href=#break-change>Break Change</a></li><li><a href=#fallback>Fallback</a></li><li><a href=#json-泛化调用示例>JSON 泛化调用示例</a><ul><li><a href=#客户端使用>客户端使用</a></li><li><a href=#服务端使用>服务端使用</a></li></ul></li><li><a href=#http-通用调用数据格式json示例>HTTP 通用调用（数据格式：json）示例</a><ul><li><a href=#客户端使用-1>客户端使用</a></li></ul></li><li><a href=#性能测试>性能测试</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/>高级特性</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/>泛化调用</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/>泛化调用接入 dynamicgo 指南</a></li></ol></nav><div class=td-content><h1>泛化调用接入 dynamicgo 指南</h1><div class=lead>泛化调用接入 dynamicgo 指南；高性能泛化调用实现</div><header class=article-meta></header><h2 id=背景>背景</h2><p><a href=https://github.com/cloudwego/dynamicgo>Dynamicgo</a> 提供了高效的 thrift 数据处理。Kitex 通过集成 Dynamicgo 实现了更高性能的 JSON/HTTP 泛化调用。</p><p>注意：当前<strong>仅支持用于 JSON 泛化调用和 JSON 格式的 HTTP 泛化调用（数据格式：json）</strong>。</p><h2 id=新旧方式的使用差异>新旧方式的使用差异</h2><p>用法与原始 Kitex 泛化调用基本相同，但有以下区别。</p><h3 id=descriptor>Descriptor</h3><ul><li><p>Descriptor provider</p><ul><li>Thrift idl provider
+<a href=https://github.com/cloudwego/kitex/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#背景>背景</a></li><li><a href=#新旧方式的使用差异>新旧方式的使用差异</a><ul><li><a href=#descriptor>Descriptor</a></li><li><a href=#call-options>Call options</a></li></ul></li><li><a href=#break-change>Break Change</a></li><li><a href=#fallback>Fallback</a></li><li><a href=#json-泛化调用示例>JSON 泛化调用示例</a><ul><li><a href=#客户端使用>客户端使用</a></li><li><a href=#服务端使用>服务端使用</a></li></ul></li><li><a href=#http-通用调用数据格式json示例>HTTP 通用调用（数据格式：json）示例</a><ul><li><a href=#客户端使用-1>客户端使用</a></li></ul></li><li><a href=#性能测试>性能测试</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/>Kitex</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/>指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/>高级特性</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/>泛化调用</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/>泛化调用接入 dynamicgo 指南</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="泛化调用接入 dynamicgo 指南" data-url=https://www.cloudwego.io/zh/docs/kitex/tutorials/advanced-feature/generic-call/generic-call-dynamicgo/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 背景
+
+[Dynamicgo](https://github.com/cloudwego/dynamicgo) 提供了高效的 thrift 数据处理。Kitex 通过集成 Dynamicgo 实现了更高性能的 JSON/HTTP 泛化调用。
+
+注意：当前**仅支持用于 JSON 泛化调用和 JSON 格式的 HTTP 泛化调用（数据格式：json）**。
+
+## 新旧方式的使用差异
+
+用法与原始 Kitex 泛化调用基本相同，但有以下区别。
+
+### Descriptor
+
+- Descriptor provider
+
+  - Thrift idl provider
+    在 Kitex 的原始方式中，我们有一些函数（例如 `NewThriftFileProvider`）来解析 idl 并返回 `DescriptorProvider`，其中包括 `ServiceDescriptor` 的通道。
+    在新的方式中，由于 dynamicgo 使用的 `Descriptor` 与 `Kitex/generic` 不同，我们提供了 3 个新函数来解析 idl 并返回 dynamicgo 的 `ServiceDescriptor`。
+    - `NewThriftFileProviderWithDynamicGo(path string, includeDirs ...string)`：创建 thriftFileProvider，它从给定的路径实现 DescriptorProvider 并包含目录
+    - `NewThriftContentProviderWithDynamicGo(main string, includes map[string]string)`：创建 ThriftContentProvider 它实现了 DescriptorProvider 与动态从内容
+      - 您可以 IDL 与旧方法相同的方法 `UpdateIDL`
+    - `NewThriftContentWithAbsIncludePathProviderWithDynamicGo(mainIDLPath string，includes map[string]string）`：创建 ThriftContentWithAbsIncludePathProvider 实现 DescriptorProvider（absinclude path）和从 content
+      - 您可以与旧方法相同的方法更新 IDL
+
+- Provider option
+
+  - `GetProviderOption` 是一个接口，其中包含一个 func `Option（）` 来获取 `ProviderOption`。ProviderOption 有一个 bool 字段 `DynamicGoEnable`，它指示是否启用了 Dynamicgo。
+  - 上面提到的三个 idl parse 函数返回的 provider 实现了 `GetProviderOption`。基本上，当用户调用三个 idl parse 函数中的一个时，`DynamicGoExpected` 将为 true，但如果在函数内部获取 Dynamicgo 的 provider 失败，则为 false。
+
+### Call options
+
+- Dynamicgo conv 选项
+  Dynamicgo 需要设置自己的转换[选项](https://github.com/cloudwego/dynamicgo/blob/main/conv/api.go#L50)：`conv. Options`。json/超文本传输协议泛化调用的默认 `conv.Options` 如下：
+
+```go
+DefaultJSONDynamicgoConvOpts = conv.Options{
+   WriteRequireField: true,
+   WriteDefaultField: true,
+}
+
+DefaultHTTPDynamicgoConvOpts = conv.Options{
+   EnableHttpMapping:     true,
+   EnableValueMapping:    true,
+   WriteRequireField:     true,
+   WriteDefaultField:     true,
+   OmitHttpMappingErrors: true,
+   NoBase64Binary:        true,
+   UseKitexHttpEncoding:  true,
+}
+```
+
+&emsp;&emsp;如果您想使用自定义的 `conv. Options`，可以通过下面的选项进行设置：
+
+&emsp;&emsp;- `WithCustomDynamicgoConvOpts(optsconv. Options）`：自定义的 json/超文本传输协议的 conv 选项
+
+- 仅用于 HTTP 泛化调用的选项
+  在 Kitex 原始超文本传输协议泛化调用（数据格式：json）中，resp body 的类型为 `map[string]interface{}`，存储在 `HTTPResponse.Body` 中。然而，在带有 Dynamicgo 的超文本传输协议泛化调用（数据格式：json）中，**resp body 的类型将是 json 字符串，它存储在** `HTTPResponse.RawBody` **中**。
+  我们提供了一个函数 `UseRawBodyForHTTPResp(enablebool）`，以便您可以根据自己的偏好选择响应类型。使用 rawbody 将大幅提升性能，推荐使用。
+
+## Break Change
+
+- Thrift Exception 信息
+
+  - JSON 泛化调用
+    原始泛化调用和使用 Dynamicgo 的泛化调用在 thrift 异常字段的错误信息上存在差异。原始泛化调用返回一个 map 字符串作为 thrift 异常字段的错误信息，但是使用 Dynamicgo 的泛化调用返回一个 json 字符串。例如：
+    - 先前：`remote or network error[remote]:  map[string]interface {}{"code":400, "msg":"this is an exception"}`
+    - 使用 Dynamicgo：`remote or network error[remote]:  {"code":400,"msg":"this is an exception"}`
+  - HTTP generic call （TODO）
+    HTTP 的泛化调用不支持 thrift 异常字段处理。
+
+- 类型转换
+
+  - Bool <> string：在 Kitex 的原始方式中，即使 IDL 声明为 bool 类型的字段值为字符串（例如"true"），它也可以被编码，但是 Dynamicgo 在编码过程中会产生错误。
+
+## Fallback
+
+由于当前 dynamicgo 仅支持 x86-64 环境，因此仅在以下条件下才会激活使用 Dynamicgo 的泛化调用。
+
+- CPU 架构：amd64 && go 版本 >=go1.16
+- JSON 泛化
+
+  - `ProviderOption.DynamicGoEnable` 值为 true
+  - 在服务器端：客户端使用 json 泛化调用，或者客户端不使用 json 泛化调用但传输协议**不是** PurePayload。
+
+- HTTP 泛化
+
+  - `ProviderOption.DynamicGoEnable` 值为 true
+  - `UseRawBodyForHTTPResp(enablebool）` 已启用
+
+**如果不满足这些条件，将 fallback 到原来的泛化调用实现。**
+
+| **开启条件** | 宿主机环境                  | 选项                                                                                                                                       |
+| ------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| **json**     | CPU 架构：amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true<br>- 客户端使用 泛化调用，或者其传输协议使用的是 TTHeader、Framed、TTHeaderFramed 中的一种 |
+| http         | CPU 架构：amd64 && go>=1.16 | - `ProviderOption` 的 `DynamicGoEnable` 为 true <br>- `UseRawBodyForHTTPResp(true）` **启用（可选）**                                      |
+
+## JSON 泛化调用示例
+
+[完整代码](https://github.com/cloudwego/Kitex/blob/develop/pkg/generic/json_test/generic_test.go#L80)
+
+### 客户端使用
+
+- 请求
+
+类型：JSON 字符串
+
+- 回应
+
+类型：JSON 字符串
+
+<u>如果使用默认的 Dynamicog 选项，则不需要修改 Kitex JSON 泛化调用代码。</u>
+
+```go
+package main
+
+import (
+    "github.com/cloudwego/Kitex/pkg/generic"
+     bgeneric "github.com/cloudwego/Kitex/client/genericclient"
+)
+
+func main() {
+    // Local file idl parsing
+    // YOUR_IDL_PATH: thrift file path ex.) ./idl/example.thrift
+    // includeDirs: Specify the include paths, by default the relative path of the current file is used to find the include
+    p, err := generic.NewThriftFileProviderWithDynamicGo("./YOUR_IDL_PATH")
+    if err != nil {
+        panic(err)
+    }
+    // Constructing generic call of JSON request and response types
+    g, err := generic.JSONThriftGeneric(p)
+    // Set generic option for dynamicgo if needed
+    //  var dopts []generic.Option
+    //  dopts = append(dopts, generic.WithCustomDynamicgoConvOpts(conv.Options{your conv options}))
+    //  g, err := generic.JSONThriftGeneric(p, dopts...)
+    if err != nil {
+        panic(err)
+    }
+    cli, err := bgeneric.NewClient("psm", g, opts...)
+    if err != nil {
+        panic(err)
+    }
+    // 'ExampleMethod' method name must be included in the idl definition
+    resp, err := cli.GenericCall(ctx, "ExampleMethod", "{\"Msg\": \"hello\"}")
+    // resp is a JSON string
+}
+```
+
+### 服务端使用
+
+- 请求
+
+类型：JSON 字符串
+
+- 回应
+
+类型：JSON 字符串
+
+<u>如果使用默认的 Dynamicog 选项，则不需要修改 Kitex JSON 泛化调用代码。</u>
+
+```go
+package main
+
+import (
+    "github.com/cloudwego/Kitex/pkg/generic"
+    bgeneric "github.com/cloudwego/Kitex/server/genericserver"
+)
+
+func main() {
+    // Local file idl parsing
+    // YOUR_IDL_PATH: thrift file path ex.) ./idl/example.thrift
+    p, err := generic.NewThriftFileProviderWithDynamicGo("./YOUR_IDL_PATH")
+    if err != nil {
+        panic(err)
+    }
+    // Constructing generic call of JSON request and response types
+    g, err := generic.JSONThriftGeneric(p)
+    // Set generic option for dynamicgo if needed
+    //  var dopts []generic.Option
+    //  dopts = append(dopts, generic.WithCustomDynamicgoConvOpts(conv.Options{your conv options}))
+    //  g, err := generic.JSONThriftGeneric(p, dopts...)
+    if err != nil {
+        panic(err)
+    }
+    svc := bgeneric.NewServer(new(GenericServiceImpl), g, opts...)
+    if err != nil {
+        panic(err)
+    }
+    err := svr.Run()
+    if err != nil {
+        panic(err)
+    }
+    // resp is a JSON string
+}
+
+type GenericServiceImpl struct {
+}
+
+func (g *GenericServiceImpl) GenericCall(ctx context.Context, method string, request interface{}) (response interface{}, err error) {
+        // use jsoniter or other json parse sdk to assert request
+        m := request.(string)
+        fmt.Printf("Recv: %v\n", m)
+        return  "{\"Msg\": \"world\"}", nil
+}
+```
+
+## HTTP 通用调用（数据格式：json）示例
+
+[完整代码](https://github.com/cloudwego/Kitex/blob/develop/pkg/generic/http_test/generic_test.go#L96)
+
+### 客户端使用
+
+**HTTP 泛化调用仅支持客户端。**
+
+- 请求
+
+类型：\*generic.HTTPRequest
+
+- 回应
+
+类型：\*generic.HTTPResponse
+
+```go
+package main
+
+import (
+    bgeneric "github.com/cloudwego/Kitex/client/genericclient"
+    "github.com/cloudwego/Kitex/pkg/generic"
+)
+
+func main() {
+    // Local file idl parsing
+    // YOUR_IDL_PATH: thrift file path ex.) ./idl/example.thrift
+    // includeDirs: Specify the include paths, by default the relative path of the current file is used to find the include
+    p, err := generic.NewThriftFileProviderWithDynamicGo("./YOUR_IDL_PATH")
+    if err != nil {
+        panic(err)
+    }
+    // Set generic option for dynamicgo
+    var dopts []generic.Option
+    dopts = append(dopts, generic.UseRawBodyForHTTPResp(true))
+    // Constructing generic call of http
+    g, err := generic.HTTPThriftGeneric(p, dopts...)
+    if err != nil {
+        panic(err)
+    }
+    cli, err := bgeneric.NewClient("psm", g, opts...)
+    if err != nil {
+        panic(err)
+    }
+
+    // Construct the request, or get it from ginex
+    body := map[string]interface{}{
+                "text": "text",
+                "some": map[string]interface{}{
+                        "id":   1,
+                        "text": "text",
+                },
+                "req_items_map": map[string]interface{}{
+                        "1": map[string]interface{}{
+                                "id":   1,
+                                "text": "text",
+                        },
+                },
+        }
+    data, err := json.Marshal(body)
+    if err != nil {
+        panic(err)
+    }
+    url := "http://example.com/life/client/1/1?v_int64=1&req_items=item1,item2,itme3&cids=1,2,3&vids=1,2,3"
+    req, err := http.NewRequest(http.MethodGet, url, bytes.NewBuffer(data))
+    if err != nil {
+        panic(err)
+    }
+    req.Header.Set("token", "1")
+    customReq, err := generic.FromHTTPRequest(req) // Considering that the business may use third-party http request, you can construct your own conversion function
+    // customReq *generic.HttpRequest
+    // Since the method for http generic is obtained from the http request via the bam rule, just fill in the blanks
+
+    resp, err := cli.GenericCall(ctx, "", customReq)
+    realResp := resp.(*generic.HttpResponse)
+    realResp.Write(w) // Write back to ResponseWriter for http gateway
+
+     // The body will be stored in RawBody of HTTPResponse as []byte type.
+    // Without using dynamicgo, the body will be stored in Body of HTTPResponse as map[string]interface{} type.
+    node, err := sonic.Get(gr.RawBody, "msg")
+    val, err := node.String() // get the value of "msg"
+    println(val == base64.StdEncoding.EncodeToString([]byte(mockMyMsg))) // true
+    _, ok := gr.Body["msg"]
+    println(ok) // false
+}
+```
+
+## 性能测试
+
+以下测试结果使用多个嵌套复杂结构作为性能测试的 payload，并发控制在 100，请求总数 2000000，服务器分配 4 核 `Intel（R）Xeon（R）Gold 5118CPU@2.30GHz`。Go 版本为 go1.17.11，cpu 架构为 linux/amd64。
+
+“original”是指传统的泛化调用，“dynamicgo”是指使用 dynamicgo 泛化调用，“fallback”是指不满足启用 dynamicgo 条件的泛化调用（=普通泛化调用）。
+
+[Source code](https://github.com/cloudwego/Kitex-benchmark/pull/59)
+
+| **Type of generic call** | **Data size** | **Version** | **TPS**   | **TP99** | **TP999** | **Server CPU AVG** | **Client CPU AVG** | **Throughput differences (compare to original**) |
+| ------------------------ | ------------- | ----------- | --------- | -------- | --------- | ------------------ | ------------------ | ------------------------------------------------ |
+| **json generic**         | 1K            | original    | 14305.05  | 25.86ms  | 61.17ms   | 393.06             | 517.37             | 0%                                               |
+|                          |               | dynamicgo   | 26282.09  | 12.27ms  | 48.45ms   | 394.00             | 521.83             | +84%                                             |
+|                          |               | fallback    | 14371.31  | 25.67ms  | 60.38ms   | 392.70             | 523.19             | +0.5%                                            |
+|                          | 5K            | original    | 4523.32   | 76.38ms  | 113.14ms  | 393.06             | 517.37             | 0%                                               |
+|                          |               | dynamicgo   | 13877.92  | 22.48ms  | 56.97ms   | 395.30             | 546.33             | +207%                                            |
+|                          |               | fallback    | 4528.60   | 75.84ms  | 111.34ms  | 392.70             | 523.19             | +0.1%                                            |
+|                          | 10K           | original    | 2595.68   | 130.63ms | 190.90ms  | 394.18             | 523.92             | 0%                                               |
+|                          |               | dynamicgo   | 9180.51   | 34.99ms  | 83.01ms   | 396.12             | 555.33             | +254%                                            |
+|                          |               | fallback    | 2600.34   | 130.81ms | 189.28ms  | 393.98             | 531.17             | +0.2%                                            |
+| **http generic**         | 1K            | original    | 74563.40  | 5.75ms   | 9.42ms    | 281.82             | 1487.58            | 0%                                               |
+|                          |               | dynamicgo   | 113614.37 | 2.70ms   | 5.64ms    | 373.70             | 1015.46            | +52%                                             |
+|                          |               | fallback    | 74741.62  | 5.69ms   | 9.45ms    | 283.28             | 1493.95            | +0.2%                                            |
+|                          | 5K            | original    | 16442.08  | 57.39ms  | 91.49ms   | 168.52             | 1508.09            | 0%                                               |
+|                          |               | dynamicgo   | 48715.66  | 5.90ms   | 11.36ms   | 391.27             | 1140.84            | +196%                                            |
+|                          |               | fallback    | 16457.00  | 58.37ms  | 90.48ms   | 165.49             | 1509.61            | +0.1%                                            |
+|                          | 10K           | original    | 8002.70   | 97.59ms  | 149.83ms  | 149.53             | 1524.45            | 0%                                               |
+|                          |               | dynamicgo   | 26857.57  | 9.47ms   | 21.94ms   | 394.42             | 1138.70            | +236%                                            |
+|                          |               | fallback    | 8019.39   | 97.11ms  | 149.50ms  | 148.03             | 1527.77            | +0.2%                                            |
+</script><h1>泛化调用接入 dynamicgo 指南</h1><div class=lead>泛化调用接入 dynamicgo 指南；高性能泛化调用实现</div><header class=article-meta></header><h2 id=背景>背景</h2><p><a href=https://github.com/cloudwego/dynamicgo>Dynamicgo</a> 提供了高效的 thrift 数据处理。Kitex 通过集成 Dynamicgo 实现了更高性能的 JSON/HTTP 泛化调用。</p><p>注意：当前<strong>仅支持用于 JSON 泛化调用和 JSON 格式的 HTTP 泛化调用（数据格式：json）</strong>。</p><h2 id=新旧方式的使用差异>新旧方式的使用差异</h2><p>用法与原始 Kitex 泛化调用基本相同，但有以下区别。</p><h3 id=descriptor>Descriptor</h3><ul><li><p>Descriptor provider</p><ul><li>Thrift idl provider
 在 Kitex 的原始方式中，我们有一些函数（例如 <code>NewThriftFileProvider</code>）来解析 idl 并返回 <code>DescriptorProvider</code>，其中包括 <code>ServiceDescriptor</code> 的通道。
 在新的方式中，由于 dynamicgo 使用的 <code>Descriptor</code> 与 <code>Kitex/generic</code> 不同，我们提供了 3 个新函数来解析 idl 并返回 dynamicgo 的 <code>ServiceDescriptor</code>。<ul><li><code>NewThriftFileProviderWithDynamicGo(path string, includeDirs ...string)</code>：创建 thriftFileProvider，它从给定的路径实现 DescriptorProvider 并包含目录</li><li><code>NewThriftContentProviderWithDynamicGo(main string, includes map[string]string)</code>：创建 ThriftContentProvider 它实现了 DescriptorProvider 与动态从内容<ul><li>您可以 IDL 与旧方法相同的方法 <code>UpdateIDL</code></li></ul></li><li><code>NewThriftContentWithAbsIncludePathProviderWithDynamicGo(mainIDLPath string，includes map[string]string）</code>：创建 ThriftContentWithAbsIncludePathProvider 实现 DescriptorProvider（absinclude path）和从 content<ul><li>您可以与旧方法相同的方法更新 IDL</li></ul></li></ul></li></ul></li><li><p>Provider option</p><ul><li><code>GetProviderOption</code> 是一个接口，其中包含一个 func <code>Option（）</code> 来获取 <code>ProviderOption</code>。ProviderOption 有一个 bool 字段 <code>DynamicGoEnable</code>，它指示是否启用了 Dynamicgo。</li><li>上面提到的三个 idl parse 函数返回的 provider 实现了 <code>GetProviderOption</code>。基本上，当用户调用三个 idl parse 函数中的一个时，<code>DynamicGoExpected</code> 将为 true，但如果在函数内部获取 Dynamicgo 的 provider 失败，则为 false。</li></ul></li></ul><h3 id=call-options>Call options</h3><ul><li>Dynamicgo conv 选项
 Dynamicgo 需要设置自己的转换<a href=https://github.com/cloudwego/dynamicgo/blob/main/conv/api.go#L50>选项</a>：<code>conv. Options</code>。json/超文本传输协议泛化调用的默认 <code>conv.Options</code> 如下：</li></ul><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#000>DefaultJSONDynamicgoConvOpts</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>=</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>conv</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Options</span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -316,4 +645,4 @@ HTTP 的泛化调用不支持 thrift 异常字段处理。</li></ul></li><li><p>
 </span></span></span></code></pre></div><h2 id=性能测试>性能测试</h2><p>以下测试结果使用多个嵌套复杂结构作为性能测试的 payload，并发控制在 100，请求总数 2000000，服务器分配 4 核 <code>Intel（R）Xeon（R）Gold 5118CPU@2.30GHz</code>。Go 版本为 go1.17.11，cpu 架构为 linux/amd64。</p><p>“original”是指传统的泛化调用，“dynamicgo”是指使用 dynamicgo 泛化调用，“fallback”是指不满足启用 dynamicgo 条件的泛化调用（=普通泛化调用）。</p><p><a href=https://github.com/cloudwego/Kitex-benchmark/pull/59>Source code</a></p><table><thead><tr><th><strong>Type of generic call</strong></th><th><strong>Data size</strong></th><th><strong>Version</strong></th><th><strong>TPS</strong></th><th><strong>TP99</strong></th><th><strong>TP999</strong></th><th><strong>Server CPU AVG</strong></th><th><strong>Client CPU AVG</strong></th><th><strong>Throughput differences (compare to original</strong>)</th></tr></thead><tbody><tr><td><strong>json generic</strong></td><td>1K</td><td>original</td><td>14305.05</td><td>25.86ms</td><td>61.17ms</td><td>393.06</td><td>517.37</td><td>0%</td></tr><tr><td></td><td></td><td>dynamicgo</td><td>26282.09</td><td>12.27ms</td><td>48.45ms</td><td>394.00</td><td>521.83</td><td>+84%</td></tr><tr><td></td><td></td><td>fallback</td><td>14371.31</td><td>25.67ms</td><td>60.38ms</td><td>392.70</td><td>523.19</td><td>+0.5%</td></tr><tr><td></td><td>5K</td><td>original</td><td>4523.32</td><td>76.38ms</td><td>113.14ms</td><td>393.06</td><td>517.37</td><td>0%</td></tr><tr><td></td><td></td><td>dynamicgo</td><td>13877.92</td><td>22.48ms</td><td>56.97ms</td><td>395.30</td><td>546.33</td><td>+207%</td></tr><tr><td></td><td></td><td>fallback</td><td>4528.60</td><td>75.84ms</td><td>111.34ms</td><td>392.70</td><td>523.19</td><td>+0.1%</td></tr><tr><td></td><td>10K</td><td>original</td><td>2595.68</td><td>130.63ms</td><td>190.90ms</td><td>394.18</td><td>523.92</td><td>0%</td></tr><tr><td></td><td></td><td>dynamicgo</td><td>9180.51</td><td>34.99ms</td><td>83.01ms</td><td>396.12</td><td>555.33</td><td>+254%</td></tr><tr><td></td><td></td><td>fallback</td><td>2600.34</td><td>130.81ms</td><td>189.28ms</td><td>393.98</td><td>531.17</td><td>+0.2%</td></tr><tr><td><strong>http generic</strong></td><td>1K</td><td>original</td><td>74563.40</td><td>5.75ms</td><td>9.42ms</td><td>281.82</td><td>1487.58</td><td>0%</td></tr><tr><td></td><td></td><td>dynamicgo</td><td>113614.37</td><td>2.70ms</td><td>5.64ms</td><td>373.70</td><td>1015.46</td><td>+52%</td></tr><tr><td></td><td></td><td>fallback</td><td>74741.62</td><td>5.69ms</td><td>9.45ms</td><td>283.28</td><td>1493.95</td><td>+0.2%</td></tr><tr><td></td><td>5K</td><td>original</td><td>16442.08</td><td>57.39ms</td><td>91.49ms</td><td>168.52</td><td>1508.09</td><td>0%</td></tr><tr><td></td><td></td><td>dynamicgo</td><td>48715.66</td><td>5.90ms</td><td>11.36ms</td><td>391.27</td><td>1140.84</td><td>+196%</td></tr><tr><td></td><td></td><td>fallback</td><td>16457.00</td><td>58.37ms</td><td>90.48ms</td><td>165.49</td><td>1509.61</td><td>+0.1%</td></tr><tr><td></td><td>10K</td><td>original</td><td>8002.70</td><td>97.59ms</td><td>149.83ms</td><td>149.53</td><td>1524.45</td><td>0%</td></tr><tr><td></td><td></td><td>dynamicgo</td><td>26857.57</td><td>9.47ms</td><td>21.94ms</td><td>394.42</td><td>1138.70</td><td>+236%</td></tr><tr><td></td><td></td><td>fallback</td><td>8019.39</td><td>97.11ms</td><td>149.50ms</td><td>148.03</td><td>1527.77</td><td>+0.2%</td></tr></tbody></table><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 May 30, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/150b3d4c8ab82114147612abe7e79ca2c6015ff6>Allow custom registry to get the actual address for registering (#1061) (150b3d4c)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

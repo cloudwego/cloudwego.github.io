@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>路由 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/volo/volo-http/tutorials/route/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="路由"><meta property="og:description" content="Volo-HTTP 提供的路由功能"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-09-02T00:00:00+00:00"><meta property="article:modified_time" content="2024-11-04T10:49:12+08:00"><meta itemprop=name content="路由"><meta itemprop=description content="Volo-HTTP 提供的路由功能"><meta itemprop=datePublished content="2024-09-02T00:00:00+00:00"><meta itemprop=dateModified content="2024-11-04T10:49:12+08:00"><meta itemprop=wordCount content="709"><meta itemprop=keywords content="路由,路由组,静态路由,参数路由,路由优先级"><meta name=twitter:card content="summary"><meta name=twitter:title content="路由"><meta name=twitter:description content="Volo-HTTP 提供的路由功能"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>路由 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/volo/volo-http/tutorials/route/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="路由"><meta property="og:description" content="Volo-HTTP 提供的路由功能"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2024-09-02T00:00:00+00:00"><meta property="article:modified_time" content="2024-11-04T10:49:12+08:00"><meta itemprop=name content="路由"><meta itemprop=description content="Volo-HTTP 提供的路由功能"><meta itemprop=datePublished content="2024-09-02T00:00:00+00:00"><meta itemprop=dateModified content="2024-11-04T10:49:12+08:00"><meta itemprop=wordCount content="709"><meta itemprop=keywords content="路由,路由组,静态路由,参数路由,路由优先级"><meta name=twitter:card content="summary"><meta name=twitter:title content="路由"><meta name=twitter:description content="Volo-HTTP 提供的路由功能"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -41,7 +41,410 @@
 <label for=m-zhdocsvolofaq-check><a href=/zh/docs/volo/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__section" id=m-zhdocsvolofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/volo/volo-http/tutorials/route.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/volo/volo-http/tutorials?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e8%b7%af%e7%94%b1" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/volo/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#路由注册>路由注册</a></li><li><a href=#路由方法>路由方法</a></li><li><a href=#路由类型>路由类型</a><ul><li><a href=#静态路由>静态路由</a></li><li><a href=#命名参数路由>命名参数路由</a></li><li><a href=#通配参数路由>通配参数路由</a></li><li><a href=#路由参数取值>路由参数取值</a></li></ul></li><li><a href=#路由组>路由组</a></li><li><a href=#fallback>fallback</a><ul><li><a href=#url>url</a></li><li><a href=#method>method</a></li></ul></li><li><a href=#使用-service-作为路由>使用 <code>Service</code> 作为路由</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/volo/>Volo</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/volo/volo-http/>Volo-HTTP</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/volo/volo-http/tutorials/>开发指南</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/volo/volo-http/tutorials/route/>路由</a></li></ol></nav><div class=td-content><h1>路由</h1><div class=lead>Volo-HTTP 提供的路由功能</div><header class=article-meta></header><h2 id=路由注册>路由注册</h2><p>路由的 handler 可以使用 <code>get</code>, <code>post</code> 等函数创建。</p><p>在 <code>volo_http::route</code> 包中可导入对应函数， 如 <code>get</code> 则通过 <code>volo_http::route::get</code> 导入</p><p>首先, 我们需要一个简单的 handler:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#204a87;font-weight:700>async</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>fn</span> <span style=color:#000>foo_handler</span><span style=color:#000;font-weight:700>()</span><span style=color:#f8f8f8;text-decoration:underline> </span>-&gt; <span style=color:#204a87;font-weight:700>&amp;</span><span style=color:#204a87>&#39;static</span> <span style=color:#204a87;font-weight:700>str</span> <span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/volo/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#路由注册>路由注册</a></li><li><a href=#路由方法>路由方法</a></li><li><a href=#路由类型>路由类型</a><ul><li><a href=#静态路由>静态路由</a></li><li><a href=#命名参数路由>命名参数路由</a></li><li><a href=#通配参数路由>通配参数路由</a></li><li><a href=#路由参数取值>路由参数取值</a></li></ul></li><li><a href=#路由组>路由组</a></li><li><a href=#fallback>fallback</a><ul><li><a href=#url>url</a></li><li><a href=#method>method</a></li></ul></li><li><a href=#使用-service-作为路由>使用 <code>Service</code> 作为路由</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/volo/>Volo</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/volo/volo-http/>Volo-HTTP</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/volo/volo-http/tutorials/>开发指南</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/volo/volo-http/tutorials/route/>路由</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=路由 data-url=https://www.cloudwego.io/zh/docs/volo/volo-http/tutorials/route/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 路由注册
+
+路由的 handler 可以使用 `get`, `post` 等函数创建。
+
+在 `volo_http::route` 包中可导入对应函数， 如 `get` 则通过 `volo_http::route::get` 导入
+
+首先, 我们需要一个简单的 handler:
+
+```rust
+async fn foo_handler() -> &'static str {
+    "Hello, World!\n"
+}
+```
+
+每条路由都需要对应一个相对路径 (path) 和一个方法 (method) 。这里我们以路由到 `"/foo"` 路径的 GET 方法为例,
+
+可以通过以下的方式，在创建一个 `Router` 后使用 `route` 方法创建:
+
+```rust
+use volo_http::server::route::{get, Router};
+
+pub fn test_router() -> Router {
+    Router::new().route("/foo", get(foo_handler))
+}
+```
+
+可以对 `get` 得到的 `MethodRouter` 进行链式调用，为其设置其他 method 的 handler:
+
+```rust
+use volo_http::server::route::{get, Router};
+
+pub fn test_router() -> Router {
+    Router::new()
+        .route("/foo", get(foo_handoer).post(foo_handler))
+}
+```
+
+也可以通过对 `Router` 的链式调用来创建更多的路由规则:
+
+```rust
+use volo_http::server::route::{get, Router};
+
+pub fn test_router() -> Router {
+    Router::new()
+        .route("/foo", get(foo_handler))
+        .route("/bar", post(bar_handler))
+}
+```
+
+创建完成后, 可以将该路由 `merge` 到主路由中:
+
+```rust
+use std::net::SocketAddr;
+use std::time::Duration;
+use volo::net::Address;
+use volo_http::{Router, Server};
+
+#[volo::main]
+async fn main() {
+    let app = Router::new()
+        .merge(example_router())
+        .merge(test_router())
+        .layer(TimeoutLayer::new(Duration::from_secs(1), timeout_handler));
+
+    let addr = "[::]:8080".parse::<SocketAddr>().unwarp();
+    let addr = Address::from(addr);
+
+    Server::new(app).run(addr).await.unwarp();
+}
+```
+
+## 路由方法
+
+使用如 `use volo_http::server::route::get` 导入路由为 GET 的方法
+
+目前支持的路由方法有:
+
+- `options`
+- `get`
+- `post`
+- `put`
+- `delete`
+- `head`
+- `trace`
+- `connect`
+- `trace`
+
+## 路由类型
+
+`Volo-HTTP` 支持丰富的路由类型用于实现复杂的路由匹配功能，包括静态路由、动态路由 (命名参数、通配参数) 。
+
+路由的优先级: 静态路由 > 命名参数路由 > 通配参数路由
+
+### 静态路由
+
+```rust
+use volo_http::server::route::{get, Router};
+
+async fn index_handler() -> &'static str {
+    "Hello, World"
+}
+
+async fn index_router() -> Router {
+    Router::new().route("/", get(index));
+}
+```
+
+### 命名参数路由
+
+Volo-HTTP 支持使用 `{id}` 这样的命名参数设置路由, 并且命名参数只匹配单个路径段
+
+如果设置 `/user/{id}` 路由，则匹配情况如下:
+
+| **路径**              | **是否匹配** | **参数值** |
+|:--------------------|:--------:|:-------:|
+| `/user/100`         |    匹配    |   100   |
+| `/user/101/profile` |   不匹配    |    -    |
+| `/user/`            |   不匹配    |    -    |
+
+当然 Volo-HTTP 也是支持多个命名参数的，如 `/{platform}/user/{id}`
+
+**代码示例**:
+
+```rust
+use volo::FastStr;
+use volo_http::server::{
+    param::PathParamsMap,
+    route::{get, Router},
+};
+
+async fn param_handler(map: PathParamsMap) -> FastStr {
+    // 注意: 生产环境下不推荐使用 `unwarp` 方法, 这里仅供作为教程使用
+    map.get("id").unwarp().clone()
+}
+
+async fn param_router() -> Router {
+    Router::new().route("/user/{id}", get(param_handler))
+}
+```
+
+### 通配参数路由
+
+Volo-HTTP 支持使用 `*path` 这样的通配参数设置路由, 并且通配参数回匹配所有内容。
+
+**注意: 通配参数需放在路由的末尾。**
+
+如果我们设置 `/src/{*path}` 路由，匹配情况如下：
+
+| **路径**                    | **是否匹配** |      **参数值**       |
+|:--------------------------|:--------:|:------------------:|
+| `/src/`                   |   不匹配    |         -          |
+| `/src/somefile.rs`        |    匹配    |    somefile.rs     | 
+| `/src/subdir/somefile.rs` |    匹配    | subdir/somefile.rs |
+
+**代码示例**:
+
+```rust
+use volo::FastStr;
+use volo_http::server::{
+    param::PathParamsMap,
+    route::{get, Router},
+};
+
+async fn param_handler(map: PathParamsMap) -> FastStr {
+    // 注意: 生产环境下不推荐使用 `unwarp` 方法, 这里仅供作为教程使用
+    map.get("path").unwarp().clone()
+}
+
+async fn param_router() -> Router {
+    Router::new().route("/src/{*path}", get(param_handler))
+}
+```
+
+### 路由参数取值
+
+- `PathParamsMap`
+
+  提供一个路由参数的 `AHashmap`
+
+  ```rust
+  use volo_http::param::PathParamsMap;
+
+  async fn param_handler(map: PathParamsMap) -> FastStr {
+      // 注意: 生产环境下不推荐使用 `unwarp` 方法, 这里仅供作为教程使用
+      map.get("id").unwarp().clone()
+  }
+  ```
+
+- `PathParams`
+  
+  用户可使用模式匹配特性自定义路由参数取值
+
+  ```rust
+  use volo_http::param::PathParams;
+
+  async fn param_handler(PathParams(id): PathParams<String>) -> String {
+      id
+  }
+  ```
+
+## 路由组
+
+Volo-HTTP 提供了路由 `nest` 的能力, 用于支持**路由分组**的功能。
+
+```rust
+impl<B, E> Router<B, E> {
+    /*...*/
+    pub fn nest<U>(self, uri: U, router: Router<B, E>) -> Self
+    where
+        U: AsRef<str>,
+    {
+        self.nest_route(uri.as_ref().to_owned(), Route::new(router))
+    }
+}
+```
+
+我们可使用给定的 url 前缀路径来作为给定路由的路由前缀, 然后并合并到当前的路由中
+
+```rust
+use volo_http::server::{
+    param::PathParams,
+    route::{get, Router},
+};
+
+async fn hello_world() -> &'static str {
+    "Hello, World"
+}
+
+async fn get_tid(PathParams(tid): PathParams<String>) -> String {
+    tid
+}
+
+async fn get_uid_and_tid(PathParams((uid, tid)): PathParams<(String, String)>) -> String {
+    format!("uid: {uid}, tid: {tid}")
+}
+
+async fn user_router() -> Router {
+    Router::new()
+        .route("/name", get(hello_world))
+        .route("/post/{tid}", get(get_uid_and_tid));
+}
+
+async fn post_router() -> Router {
+    Router::new()
+        .route("/name", get(hello_world))
+        .route("/{tid}", get(get_tid));
+}
+
+async fn router() -> Router {
+    Router::new()
+        .nest("/user/{uid}", user_router())
+        .nest("/post", post_router())
+    // 这里的路由路径如下:
+    // /user/{uid}/name
+    // /user/{uid}/post/{tid}
+    // /post/name
+    // /post/{tid}
+}
+```
+
+## fallback
+
+Volo-HTTP 提供了 fallback 功能用于处理请求 url 或 method 不匹配的情况，**默认 fallback** 会返回状态码 `404 Not Found`。
+
+**注意**：
+- 调用 `merge` 方法中的路由中由于不能确定覆盖哪一个 **router fallback**, 因此只能设置一个 **router fallback**，否则会在调用 `merge` 方法时产生 **panic**；
+
+- 调用 `nest` 方法时不会对 `fallback` 进行覆盖。
+
+### url
+
+**代码示例**:
+
+```rust
+async fn index_handler() -> &'static str {
+    "Hello, World"
+}
+
+async fn fallback_handler() -> (http::StatusCode, &'static str) {
+  (http::StatusCode::NOT_FOUND, "404 Not Found")
+}
+
+async fn router() -> Router {
+    Router::new()
+        .route("/", get(index_handler))
+        .fallback(fallback_handler)
+}
+```
+
+### method
+
+```rust
+async fn index_handler() -> &'static str {
+    "Hello, World"
+}
+
+async fn fallback_handler() -> (http::StatusCode, &'static str) {
+  (http::StatusCode::METHOD_NOT_ALLOWED, "method not matched")
+    
+}
+
+async fn router() -> Router {
+    Router::new()
+        .route("/", get(index_handler).fallback(fallback_handler))
+}
+```
+
+## 使用 `Service` 作为路由
+
+路由可以使用传统的 `Service` 实现, 上文中提到的使用 handler 的方式也会转化为 `Service` 来运行,
+但需要通过 `get_service` 来为 GET 方法创建路由:
+
+```rust
+use std::convert::Infallible;
+
+use volo_http::{
+    context::ServerContext,
+    request::ServerRequest,
+    response::ServerResponse,
+    server::{
+        route::{get_service, Router},
+        IntoResponse,
+    },
+};
+use motore::Service;
+
+#[derive(Clone)]
+pub struct JsonGetService;
+
+impl Service<ServerContext, ServerRequest> for JsonGetService {
+    type Response = ServerResponse;
+    type Error = Infallible;
+
+    async fn call(
+        &self,
+        _cx: &mut ServerContext,
+        _req: ServerRequest,
+    ) -> Result<Self::Response, Self::Error> {
+        Ok(json_get().await.into_response())
+    }
+}
+
+pub fn json_test_router() -> Router {
+    Router::new()
+        /* ...... */
+        .route(
+            "/json/get_srv",
+            get_service(JsonGetService),
+        )
+}
+```
+
+对于这种比较简单的 `Service`，也可以不定义结构体，通过 `service_fn` 直接使用函数实现：
+
+```rust
+use std::convert::Infallible;
+
+use volo_http::{
+    context::ServerContext,
+    json::Json,
+    request::ServerRequest,
+    response::ServerResponse,
+    server::{
+        route::{post_service, Router},
+        IntoResponse,
+    },
+};
+use motore::{service::service_fn, Service};
+
+async fn json_post_srv(
+    cx: &mut ServerContext,
+    req: ServerRequest,
+) -> Result<ServerResponse, Infallible> {
+    let (parts, body) = req.into_parts();
+    let data = match Json::<Person>::from_request(cx, parts, body).await {
+        Ok(data) => data,
+        Err(_) => {
+            return Ok("Invalid data!".into_response());
+        }
+    };
+    Ok(json_post(Some(data)).await.into_response())
+}
+
+pub fn json_test_router() -> Router {
+    Router::new()
+        /* ...... */
+        .route(
+            "/json/post_srv",
+            post_service(service_fn(json_post_srv)),
+        )
+}
+```
+
+最终运行的效果预期与 `json_get` 和 `json_post` 一致</script><h1>路由</h1><div class=lead>Volo-HTTP 提供的路由功能</div><header class=article-meta></header><h2 id=路由注册>路由注册</h2><p>路由的 handler 可以使用 <code>get</code>, <code>post</code> 等函数创建。</p><p>在 <code>volo_http::route</code> 包中可导入对应函数， 如 <code>get</code> 则通过 <code>volo_http::route::get</code> 导入</p><p>首先, 我们需要一个简单的 handler:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#204a87;font-weight:700>async</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>fn</span> <span style=color:#000>foo_handler</span><span style=color:#000;font-weight:700>()</span><span style=color:#f8f8f8;text-decoration:underline> </span>-&gt; <span style=color:#204a87;font-weight:700>&amp;</span><span style=color:#204a87>&#39;static</span> <span style=color:#204a87;font-weight:700>str</span> <span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#4e9a06>&#34;Hello, World!</span><span style=color:#4e9a06>\n</span><span style=color:#4e9a06>&#34;</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#000;font-weight:700>}</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span></code></pre></div><p>每条路由都需要对应一个相对路径 (path) 和一个方法 (method) 。这里我们以路由到 <code>"/foo"</code> 路径的 GET 方法为例,</p><p>可以通过以下的方式，在创建一个 <code>Router</code> 后使用 <code>route</code> 方法创建:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#204a87;font-weight:700>use</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>volo_http</span>::<span style=color:#000>server</span>::<span style=color:#000>route</span>::<span style=color:#000;font-weight:700>{</span><span style=color:#000>get</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>Router</span><span style=color:#000;font-weight:700>};</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -278,4 +681,4 @@
 </span></span></span></code></pre></div><p>最终运行的效果预期与 <code>json_get</code> 和 <code>json_post</code> 一致</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 November 4, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/484565a5d3d66f730d7d8ebaad8c59e006186e96>docs: fix volo http fallback (#1164) (484565a5)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

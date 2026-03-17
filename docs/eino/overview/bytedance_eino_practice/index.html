@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>ByteDance LLM Application Go Framework — Eino in Practice | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/overview/bytedance_eino_practice/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="ByteDance LLM Application Go Framework — Eino in Practice"><meta property="og:description" content="Preface Building LLM-powered applications is like coaching a football team: components are players, orchestration is the strategy, and data is the ball flowing through the team. Eino is ByteDance’s open-source framework for LLM application development — stable core, flexible extensions, full tooling, and battle-tested in real apps like Doubao and TikTok. Picking up Eino feels like inheriting a strong team: even a new coach can lead a meaningful game quickly."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-03T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-03T12:09:36+08:00"><meta itemprop=name content="ByteDance LLM Application Go Framework — Eino in Practice"><meta itemprop=description content="Preface Building LLM-powered applications is like coaching a football team: components are players, orchestration is the strategy, and data is the ball flowing through the team. Eino is ByteDance’s open-source framework for LLM application development — stable core, flexible extensions, full tooling, and battle-tested in real apps like Doubao and TikTok. Picking up Eino feels like inheriting a strong team: even a new coach can lead a meaningful game quickly."><meta itemprop=datePublished content="2026-03-03T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-03T12:09:36+08:00"><meta itemprop=wordCount content="1342"><meta name=twitter:card content="summary"><meta name=twitter:title content="ByteDance LLM Application Go Framework — Eino in Practice"><meta name=twitter:description content="Preface Building LLM-powered applications is like coaching a football team: components are players, orchestration is the strategy, and data is the ball flowing through the team. Eino is ByteDance’s open-source framework for LLM application development — stable core, flexible extensions, full tooling, and battle-tested in real apps like Doubao and TikTok. Picking up Eino feels like inheriting a strong team: even a new coach can lead a meaningful game quickly."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>ByteDance LLM Application Go Framework — Eino in Practice | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/overview/bytedance_eino_practice/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="ByteDance LLM Application Go Framework — Eino in Practice"><meta property="og:description" content="Preface Building LLM-powered applications is like coaching a football team: components are players, orchestration is the strategy, and data is the ball flowing through the team. Eino is ByteDance’s open-source framework for LLM application development — stable core, flexible extensions, full tooling, and battle-tested in real apps like Doubao and TikTok. Picking up Eino feels like inheriting a strong team: even a new coach can lead a meaningful game quickly."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-03T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-03T12:09:36+08:00"><meta itemprop=name content="ByteDance LLM Application Go Framework — Eino in Practice"><meta itemprop=description content="Preface Building LLM-powered applications is like coaching a football team: components are players, orchestration is the strategy, and data is the ball flowing through the team. Eino is ByteDance’s open-source framework for LLM application development — stable core, flexible extensions, full tooling, and battle-tested in real apps like Doubao and TikTok. Picking up Eino feels like inheriting a strong team: even a new coach can lead a meaningful game quickly."><meta itemprop=datePublished content="2026-03-03T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-03T12:09:36+08:00"><meta itemprop=wordCount content="1342"><meta name=twitter:card content="summary"><meta name=twitter:title content="ByteDance LLM Application Go Framework — Eino in Practice"><meta name=twitter:description content="Preface Building LLM-powered applications is like coaching a football team: components are players, orchestration is the strategy, and data is the ball flowing through the team. Eino is ByteDance’s open-source framework for LLM application development — stable core, flexible extensions, full tooling, and battle-tested in real apps like Doubao and TikTok. Picking up Eino feels like inheriting a strong team: even a new coach can lead a meaningful game quickly."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -104,7 +104,418 @@
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/overview/bytedance_eino_practice.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/overview?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=ByteDance%20LLM%20Application%20Go%20Framework%20%e2%80%94%20Eino%20in%20Practice" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#preface>Preface</a></li><li><a href=#meet-the-players>Meet the Players</a></li><li><a href=#plan-the-strategy>Plan the Strategy</a></li><li><a href=#operational-tools>Operational Tools</a></li><li><a href=#streaming-mastery>Streaming Mastery</a></li><li><a href=#a-scrimmage--eino-assistant>A Scrimmage — Eino Assistant</a><ul><li><a href=#workflow>Workflow</a></li><li><a href=#required-tools>Required Tools</a></li><li><a href=#indexing-the-knowledge-base>Indexing the Knowledge Base</a></li><li><a href=#eino-agent-1>Eino Agent</a></li></ul></li><li><a href=#related-links>Related Links</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/overview/>Eino: Overview</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/overview/bytedance_eino_practice/>ByteDance LLM Application Go Framework — Eino in Practice</a></li></ol></nav><div class=td-content><h1>ByteDance LLM Application Go Framework — Eino in Practice</h1><header class=article-meta></header><h2 id=preface>Preface</h2><p>Building LLM-powered applications is like coaching a football team: <strong>components</strong> are players, <strong>orchestration</strong> is the strategy, and <strong>data</strong> is the ball flowing through the team. Eino is ByteDance’s open-source framework for LLM application development — stable core, flexible extensions, full tooling, and battle-tested in real apps like Doubao and TikTok. Picking up Eino feels like inheriting a strong team: even a new coach can lead a meaningful game quickly.</p><p>Let’s kick off the ramp-up journey.</p><h2 id=meet-the-players>Meet the Players</h2><p>Eino applications are built from versatile components:</p><table><tr><td>Component</td><td>Purpose</td></tr><tr><td>ChatModel</td><td>Interact with LLM: input `Message[]`, output `Message`</td></tr><tr><td>Tool</td><td>Interact with the world: execute actions based on model output</td></tr><tr><td>Retriever</td><td>Fetch context so answers are grounded</td></tr><tr><td>ChatTemplate</td><td>Convert external input into prompt messages</td></tr><tr><td>Document Loader</td><td>Load text</td></tr><tr><td>Document Transformer</td><td>Transform text</td></tr><tr><td>Indexer</td><td>Store and index documents for retrieval</td></tr><tr><td>Embedding</td><td>Shared dependency of Retriever/Indexer: text → vector</td></tr><tr><td>Lambda</td><td>Custom function</td></tr></table><p>Each abstraction defines input/output types, options, and method signatures:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>ChatModel</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#preface>Preface</a></li><li><a href=#meet-the-players>Meet the Players</a></li><li><a href=#plan-the-strategy>Plan the Strategy</a></li><li><a href=#operational-tools>Operational Tools</a></li><li><a href=#streaming-mastery>Streaming Mastery</a></li><li><a href=#a-scrimmage--eino-assistant>A Scrimmage — Eino Assistant</a><ul><li><a href=#workflow>Workflow</a></li><li><a href=#required-tools>Required Tools</a></li><li><a href=#indexing-the-knowledge-base>Indexing the Knowledge Base</a></li><li><a href=#eino-agent-1>Eino Agent</a></li></ul></li><li><a href=#related-links>Related Links</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/overview/>Eino: Overview</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/overview/bytedance_eino_practice/>ByteDance LLM Application Go Framework — Eino in Practice</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="ByteDance LLM Application Go Framework — Eino in Practice" data-url=https://www.cloudwego.io/docs/eino/overview/bytedance_eino_practice/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Preface
+
+Building LLM-powered applications is like coaching a football team: **components** are players, **orchestration** is the strategy, and **data** is the ball flowing through the team. Eino is ByteDance’s open-source framework for LLM application development — stable core, flexible extensions, full tooling, and battle-tested in real apps like Doubao and TikTok. Picking up Eino feels like inheriting a strong team: even a new coach can lead a meaningful game quickly.
+
+Let’s kick off the ramp-up journey.
+
+## Meet the Players
+
+Eino applications are built from versatile components:
+
+<table>
+<tr><td>Component</td><td>Purpose</td></tr>
+<tr><td>ChatModel</td><td>Interact with LLM: input `Message[]`, output `Message`</td></tr>
+<tr><td>Tool</td><td>Interact with the world: execute actions based on model output</td></tr>
+<tr><td>Retriever</td><td>Fetch context so answers are grounded</td></tr>
+<tr><td>ChatTemplate</td><td>Convert external input into prompt messages</td></tr>
+<tr><td>Document Loader</td><td>Load text</td></tr>
+<tr><td>Document Transformer</td><td>Transform text</td></tr>
+<tr><td>Indexer</td><td>Store and index documents for retrieval</td></tr>
+<tr><td>Embedding</td><td>Shared dependency of Retriever/Indexer: text → vector</td></tr>
+<tr><td>Lambda</td><td>Custom function</td></tr>
+</table>
+
+Each abstraction defines input/output types, options, and method signatures:
+
+```go
+type ChatModel interface {
+    Generate(ctx context.Context, input []*schema.Message, opts ...Option) (*schema.Message, error)
+    Stream(ctx context.Context, input []*schema.Message, opts ...Option) (*schema.StreamReader[*schema.Message], error)
+    BindTools(tools []*schema.ToolInfo) error
+}
+```
+
+Implementations make them concrete:
+
+<table>
+<tr><td>Component</td><td>Official implementations</td></tr>
+<tr><td>ChatModel</td><td>OpenAI, Claude, Gemini, Ark, Ollama...</td></tr>
+<tr><td>Tool</td><td>Google Search, DuckDuckGo...</td></tr>
+<tr><td>Retriever</td><td>ElasticSearch, Volc VikingDB...</td></tr>
+<tr><td>ChatTemplate</td><td>DefaultChatTemplate...</td></tr>
+<tr><td>Document Loader</td><td>WebURL, Amazon S3, File...</td></tr>
+<tr><td>Document Transformer</td><td>HTMLSplitter, ScoreReranker...</td></tr>
+<tr><td>Indexer</td><td>ElasticSearch, Volc VikingDB...</td></tr>
+<tr><td>Embedding</td><td>OpenAI, Ark...</td></tr>
+<tr><td>Lambda</td><td>JSONMessageParser...</td></tr>
+</table>
+
+Decide the abstraction first (“we need a forward”), then pick an implementation (“who plays forward”). Components can be used standalone, but Eino shines when components are orchestrated.
+
+## Plan the Strategy
+
+In Eino, each component becomes a **Node**; 1→1 connections are **Edges**; N→1 conditional flow is a **Branch**. Orchestration supports rich business logic:
+
+<table>
+<tr><td>Style</td><td>Use cases</td></tr>
+<tr><td>Chain</td><td>Simple forward-only DAG; ideal for linear flows</td></tr>
+<tr><td>Graph</td><td>Directed (cyclic or acyclic) graphs for maximal flexibility</td></tr>
+</table>
+
+Chain: simple `ChatTemplate → ChatModel` chain.
+
+<a href="/img/eino/simple_template_and_chatmodel.png" target="_blank"><img src="/img/eino/simple_template_and_chatmodel.png" width="80%" /></a>
+
+```go
+chain, _ := NewChain[map[string]any, *Message]().
+           AppendChatTemplate(prompt).
+           AppendChatModel(model).
+           Compile(ctx)
+chain.Invoke(ctx, map[string]any{"query": "what's your name?"})
+```
+
+Graph: an agent that makes at most one tool call.
+
+<a href="/img/eino/eino_practice_graph_tool_call.png" target="_blank"><img src="/img/eino/eino_practice_graph_tool_call.png" width="100%" /></a>
+
+```go
+graph := NewGraph[map[string]any, *schema.Message]()
+_ = graph.AddChatTemplateNode("node_template", chatTpl)
+_ = graph.AddChatModelNode("node_model", chatModel)
+_ = graph.AddToolsNode("node_tools", toolsNode)
+_ = graph.AddLambdaNode("node_converter", takeOne)
+_ = graph.AddEdge(START, "node_template")
+_ = graph.AddEdge("node_template", "node_model")
+_ = graph.AddBranch("node_model", branch)
+_ = graph.AddEdge("node_tools", "node_converter")
+_ = graph.AddEdge("node_converter", END)
+compiledGraph, err := graph.Compile(ctx)
+out, err := compiledGraph.Invoke(ctx, map[string]any{"query":"Beijing's weather this weekend"})
+```
+
+## Operational Tools
+
+Callbacks capture node start/end (and stream variants) for cross-cutting concerns like logging, tracing, metrics:
+
+```go
+handler := NewHandlerBuilder().
+  OnStartFn(func(ctx context.Context, info *RunInfo, input CallbackInput) context.Context {
+      log.Printf("onStart, runInfo: %v, input: %v", info, input); return ctx }).
+  OnEndFn(func(ctx context.Context, info *RunInfo, output CallbackOutput) context.Context {
+      log.Printf("onEnd, runInfo: %v, out: %v", info, output); return ctx }).
+  Build()
+compiledGraph.Invoke(ctx, input, WithCallbacks(handler))
+```
+
+Call options target all nodes, nodes of a specific type, or a specific node:
+
+```go
+compiledGraph.Invoke(ctx, input, WithCallbacks(handler))
+compiledGraph.Invoke(ctx, input, WithChatModelOption(model.WithTemperature(0.5)))
+compiledGraph.Invoke(ctx, input, WithCallbacks(handler).DesignateNode("node_1"))
+```
+
+## Streaming Mastery
+
+Some components output streams (fragments of a final value), others consume streams. Components implement the paradigms that match real business semantics:
+
+```go
+// ChatModel supports Invoke and Stream
+type ChatModel interface {
+    Generate(ctx context.Context, input []*Message, opts ...Option) (*Message, error)
+    Stream(ctx context.Context, input []*Message, opts ...Option) (*schema.StreamReader[*Message], error)
+}
+
+// Lambda can implement any of the four
+type Invoke[I, O, TOption any] func(ctx context.Context, input I, opts ...TOption) (O, error)
+type Stream[I, O, TOption any] func(ctx context.Context, input I, opts ...TOption) (*schema.StreamReader[O], error)
+type Collect[I, O, TOption any] func(ctx context.Context, input *schema.StreamReader[I], opts ...TOption) (O, error)
+type Transform[I, O, TOption any] func(ctx context.Context, input *schema.StreamReader[I], opts ...TOption) (*schema.StreamReader[O], error)
+```
+
+Orchestration automatically handles:
+
+1) Concat streams when downstream only accepts non-streaming.
+2) Box non-streaming values into single-frame streams when downstream expects streaming.
+3) Merge/copy streams as needed.
+
+## A Scrimmage — Eino Assistant
+
+Goal: retrieve from a knowledge base and use tools as needed. Tools:
+
+- DuckDuckGo search
+- EinoTool (repo/docs metadata)
+- GitClone (clone repo)
+- TaskManager (add/view/delete tasks)
+- OpenURL (open links/files)
+
+<iframe height="400px" width="100%" src="https://player.bilibili.com/player.html?autoplay=0&bvid=BV1VZNRenEDs&t=0.4" ></iframe>
+
+Two parts:
+
+- Knowledge Indexing: split/encode Markdown docs into vectors
+- Eino Agent: decide actions, call tools, iterate until the goal is met
+
+### Workflow
+
+#### Knowledge Indexing
+
+<a href="/img/eino/eino_practice_index_flow.png" target="_blank"><img src="/img/eino/eino_practice_index_flow.png" width="50%" /></a>
+
+#### Eino Agent
+
+<a href="/img/eino/eino_practice_agent_graph.png" target="_blank"><img src="/img/eino/eino_practice_agent_graph.png" width="60%" /></a>
+
+### Required Tools
+
+<table>
+<tr><td>Tooling</td><td>Required</td><td>Purpose</td><td>References</td></tr>
+<tr><td>Eino</td><td>Yes</td><td>Go-first LLM framework plus components and orchestration</td><td><li>https://github.com/cloudwego/eino</li><li>https://github.com/cloudwego/eino-ext</li><li><a href="https://www.cloudwego.io/docs/eino/">Eino User Manual</a></li></td></tr>
+<tr><td>EinoDev (GoLand/VS Code)</td><td>No</td><td>Visual orchestration and debugging</td><td><li><a href="/docs/eino/core_modules/devops/ide_plugin_guide/">Installation</a></li><li><a href="/docs/eino/core_modules/devops/visual_orchestration_plugin_guide/">Orchestration Guide</a></li></td></tr>
+<tr><td>Volc Doubao (model/embedding)</td><td>Yes</td><td>Chat model and embedding for indexing</td><td><a href="https://console.volcengine.com/ark">Doubao Console</a></td></tr>
+<tr><td>Docker</td><td>No</td><td>Deploy RedisSearch (or install manually)</td><td><a href="https://docs.docker.com/get-started/">Docker Docs</a></td></tr>
+<tr><td>Eino Assistant Sample</td><td>Yes</td><td>Complete sample code</td><td><a href="https://github.com/cloudwego/eino-examples/tree/main/quickstart/eino_assistant">Sample repo</a></td></tr>
+</table>
+
+### Indexing the Knowledge Base
+
+> Sample repository path: https://github.com/cloudwego/eino-examples/tree/main/quickstart/eino_assistant
+>
+> Below, paths are relative to this directory
+
+Build a CLI that recursively traverses Markdown files, splits them by headings, vectorizes each chunk with Doubao embedding, and stores vectors in Redis VectorStore.
+
+> Command-line tool directory: `cmd/knowledgeindexing`
+>
+> Markdown docs directory: `cmd/knowledgeindexing/eino-docs`
+
+Use EinoDev (GoLand/VS Code) to visually compose the core workflow, then generate code into `eino_assistant/eino/knowledgeindexing`. After generation, complete the constructors for each component and call `BuildKnowledgeIndexing` in your business code to build and use the Eino Graph instance.
+
+#### Model Resources
+
+Volcengine Ark hosts Doubao models. Register resources (ample free quota available):
+
+- Create `doubao-embedding-large` for indexing
+- Create `doubao-pro-4k` for chat/agent reasoning
+- Console: https://console.volcengine.com/ark
+
+<a href="/img/eino/model_create.gif" target="_blank"><img src="/img/eino/model_create.gif" width="100%" /></a>
+
+#### Start Redis Stack
+
+Use Redis Stack as the vector database. The sample provides a quick Docker setup:
+
+- `eino-examples/quickstart/eino_assistant/docker-compose.yml`
+- Initial Redis data under `eino-examples/quickstart/eino_assistant/data`
+
+Start with the official Redis Stack image:
+
+```bash
+# Switch to eino_assistant
+cd xxx/eino-examples/quickstart/eino_assistant
+
+docker-compose up -d
+```
+
+<a href="/img/eino/redis_start_up.gif" target="_blank"><img src="/img/eino/redis_start_up.gif" width="100%" /></a>
+
+- After startup, open `http://127.0.0.1:8001` for the Redis Stack web UI
+
+#### Visual Orchestration
+
+> Visual orchestration lowers the learning curve and speeds up development. Experienced users can skip and build directly with Eino APIs.
+
+1) Install EinoDev and open the Eino Workflow panel
+   - Installation: `/docs/eino/core_modules/devops/ide_plugin_guide`
+
+   - Graph name: `KnowledgeIndexing`
+   - Node trigger mode: triggered after all predecessor nodes are executed
+   - Input type: `document.Source`
+   - Input type import path: `github.com/cloudwego/eino/components/document`
+   - Output type: `[]string`
+   - Others: empty
+
+   <a href="/img/eino/eino_practice_debug_panel.png" target="_blank"><img src="/img/eino/eino_practice_debug_panel.png" width="100%" /></a>
+
+2) Select the needed components per the indexing flow:
+   - `document/loader/file`: load files from URI into `schema.Document[]`
+   - `document/transformer/splitter/markdown`: split content into suitable chunk sizes
+   - `indexer/redis`: store raw text and index fields in Redis Vector DB
+   - `embedding/ark`: compute embeddings via Ark
+
+3) Compose the topology and click “Generate Code” to a target directory
+   - Generate to: `eino_assistant/eino/knowledgeindexing`
+   - You can copy the graph schema from `eino/knowledge_indexing.json`
+
+   <table><tbody><tr>
+   <td>
+      <a href="/img/eino/eino_practice_indexing_graph.png" target="_blank"><img src="/img/eino/eino_practice_indexing_graph.png" width="100%" /></a>
+   </td><td>
+      <a href="/img/eino/eino_practice_indexing_show_codes.png" target="_blank"><img src="/img/eino/eino_practice_indexing_show_codes.png" width="100%" /></a>
+   </td></tr></tbody></table>
+
+4) Complete each component’s constructor with the required configuration
+
+   <table><tbody><tr>
+   <td>
+      <a href="/img/eino/eino_practice_indexing_config.png" target="_blank"><img src="/img/eino/eino_practice_indexing_config.png" width="100%" /></a>
+   </td><td>
+      <a href="/img/eino/eino_practice_indexing_index_config.png" target="_blank"><img src="/img/eino/eino_practice_indexing_index_config.png" width="100%" /></a>
+   </td></tr></tbody></table>
+
+5) Call `BuildKnowledgeIndexing` from your business code
+
+#### Polish the Code
+
+Generated code may need manual review. The core function is `BuildKnowledgeIndexing()`. Wrap it in a CLI that reads model configuration from environment variables, initializes the graph config, scans the Markdown directory, and performs indexing.
+
+> See: `cmd/knowledgeindexing/main.go`
+
+<a href="/img/eino/eino_practice_indexing_new_runner.png" target="_blank"><img src="/img/eino/eino_practice_indexing_new_runner.png" width="100%" /></a>
+
+#### Run
+
+> The sample already ships with part of the Eino docs pre-indexed in Redis.
+
+1) Populate `.env` with `ARK_EMBEDDING_MODEL` and `ARK_API_KEY`, then:
+
+```bash
+cd xxx/eino-examples/quickstart/eino_assistant
+
+# Load env vars (model info, tracing platform info)
+source .env
+
+# The sample Markdown lives in cmd/knowledgeindexing/eino-docs.
+# Because the code uses the relative path "eino-docs", run from cmd/knowledgeindexing
+cd cmd/knowledgeindexing
+go run main.go
+```
+
+<a href="/img/eino/knowledgeindexing.gif" target="_blank"><img src="/img/eino/knowledgeindexing.gif" width="100%" /></a>
+
+2) After success, open the Redis web UI to inspect the indexed vectors:
+
+> `http://127.0.0.1:8001`
+
+<a href="/img/eino/redis_keys.jpeg" target="_blank"><img src="/img/eino/redis_keys.jpeg" width="100%" /></a>
+
+### Eino Agent
+
+> Sample repository path: https://github.com/cloudwego/eino-examples/tree/main/quickstart/eino_assistant
+
+Build a typical RAG ReAct agent that retrieves context from Redis VectorStore, answers user questions, and executes actions such as task management, repo cloning, and opening links.
+
+#### Model Resources
+
+Reuse `doubao-embedding-large` and `doubao-pro-4k` created earlier.
+
+#### Start RedisSearch
+
+Reuse the Redis Stack from the indexing section.
+
+#### Visual Orchestration
+
+<iframe height="400px" width="100%" src="https://player.bilibili.com/player.html?autoplay=0&bvid=BV15ZNRenEUf&t=1.2" ></iframe>
+
+1) In EinoDev → Eino Workflow, create a canvas:
+   - Graph name: `EinoAgent`
+   - Node trigger mode: trigger when any predecessor finishes
+   - Input type name: `*UserMessage`
+   - Input package path: ""
+   - Output type name: `*schema.Message`
+   - Output import path: `github.com/cloudwego/eino/schema`
+   - Others: empty
+
+2) Choose components:
+   - `lambda`: wrap `func(ctx context.Context, input I) (O, error)` as nodes
+     - Convert `*UserMessage` → `map[string]any` for ChatTemplate
+     - Convert `*UserMessage` → query string for RedisRetriever
+   - `retriever/redis`: retrieve `schema.Document[]` by semantic similarity
+   - `prompt/chatTemplate`: construct prompts from string templates with substitutions
+   - `flow/agent/react`: decide next actions with tools and ChatModel
+   - `model/ark`: Doubao chat model for ReAct reasoning
+   - Tools: DuckDuckGo, EinoTool, GitClone, TaskManager, OpenURL
+
+3) Generate code to `eino/einoagent`; you can copy from `eino/eino_agent.json`
+
+   <table><tbody><tr>
+   <td>
+      <a href="/img/eino/eino_practice_graph.png" target="_blank"><img src="/img/eino/eino_practice_graph.png" width="100%" /></a>
+   </td><td>
+      <a href="/img/eino/eino_practice_agent_graph_codes.png" target="_blank"><img src="/img/eino/eino_practice_agent_graph_codes.png" width="100%" /></a>
+   </td></tr></tbody></table>
+
+4) Complete constructors with required configuration
+
+   <table><tbody><tr>
+   <td>
+      <a href="/img/eino/eino_practice_agent_lambda.png" target="_blank"><img src="/img/eino/eino_practice_agent_lambda.png" width="100%" /></a>
+   </td><td>
+      <a href="/img/eino/eino_practice_agent_model_config.png" target="_blank"><img src="/img/eino/eino_practice_agent_model_config.png" width="100%" /></a>
+   </td></tr></tbody></table>
+
+5) Call `BuildEinoAgent` from your business code
+
+#### Polish the Code
+
+`BuildEinoAgent` constructs a graph that, given user input and history, retrieves context from the knowledge base and iteratively decides whether to call a tool or produce the final answer.
+
+Wrap the agent as an HTTP service:
+
+<a href="/img/eino/eino_practice_agent_runner.png" target="_blank"><img src="/img/eino/eino_practice_agent_runner.png" width="100%" /></a>
+
+#### Run
+
+```bash
+cd eino-examples/eino_assistant
+
+# Load env vars (model info, tracing platform info)
+source .env
+
+# Run from eino_assistant to use the embedded data directory
+go run cmd/einoagent/*.go
+```
+
+<a href="/img/eino/eino_agent.gif" target="_blank"><img src="/img/eino/eino_agent.gif" width="100%" /></a>
+
+Open the web UI:
+
+> `http://127.0.0.1:8080/agent/`
+
+#### Observability (Optional)
+
+- APMPlus: set `APMPLUS_APP_KEY` in `.env` and view traces/metrics at https://console.volcengine.com/apmplus-server
+
+  <a href="/img/eino/apm_plus_callback.gif" target="_blank"><img src="/img/eino/apm_plus_callback.gif" width="100%" /></a>
+
+- Langfuse: set `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY` to inspect trace details
+
+  <a href="/img/eino/langfuse_callback.gif" target="_blank"><img src="/img/eino/langfuse_callback.gif" width="100%" /></a>
+
+## Related Links
+
+Project: https://github.com/cloudwego/eino, https://github.com/cloudwego/eino-ext
+
+Eino User Manual: https://www.cloudwego.io/docs/eino/
+
+Website: __https://www.cloudwego.io__
+
+Join the developer community:
+
+<a href="/img/eino/eino_lark_qr_code_practice.png" target="_blank"><img src="/img/eino/eino_lark_qr_code_practice.png" width="50%" /></a>
+</script><h1>ByteDance LLM Application Go Framework — Eino in Practice</h1><header class=article-meta></header><h2 id=preface>Preface</h2><p>Building LLM-powered applications is like coaching a football team: <strong>components</strong> are players, <strong>orchestration</strong> is the strategy, and <strong>data</strong> is the ball flowing through the team. Eino is ByteDance’s open-source framework for LLM application development — stable core, flexible extensions, full tooling, and battle-tested in real apps like Doubao and TikTok. Picking up Eino feels like inheriting a strong team: even a new coach can lead a meaningful game quickly.</p><p>Let’s kick off the ramp-up journey.</p><h2 id=meet-the-players>Meet the Players</h2><p>Eino applications are built from versatile components:</p><table><tr><td>Component</td><td>Purpose</td></tr><tr><td>ChatModel</td><td>Interact with LLM: input `Message[]`, output `Message`</td></tr><tr><td>Tool</td><td>Interact with the world: execute actions based on model output</td></tr><tr><td>Retriever</td><td>Fetch context so answers are grounded</td></tr><tr><td>ChatTemplate</td><td>Convert external input into prompt messages</td></tr><tr><td>Document Loader</td><td>Load text</td></tr><tr><td>Document Transformer</td><td>Transform text</td></tr><tr><td>Indexer</td><td>Store and index documents for retrieval</td></tr><tr><td>Embedding</td><td>Shared dependency of Retriever/Indexer: text → vector</td></tr><tr><td>Lambda</td><td>Custom function</td></tr></table><p>Each abstraction defines input/output types, options, and method signatures:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>type</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>ChatModel</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>Generate</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>input</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>[]</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Message</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>opts</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000>Option</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Message</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>Stream</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>input</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>[]</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Message</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>opts</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>...</span><span style=color:#000>Option</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>StreamReader</span><span style=color:#000;font-weight:700>[</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Message</span><span style=color:#000;font-weight:700>],</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>BindTools</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>tools</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>[]</span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>schema</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>ToolInfo</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>error</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -170,4 +581,4 @@
 </span></span></code></pre></div><p><a href=/img/eino/eino_agent.gif target=_blank><img src=/img/eino/eino_agent.gif width=100%></a></p><p>Open the web UI:</p><blockquote><p><code>http://127.0.0.1:8080/agent/</code></p></blockquote><h4 id=observability-optional>Observability (Optional)</h4><ul><li><p>APMPlus: set <code>APMPLUS_APP_KEY</code> in <code>.env</code> and view traces/metrics at <a href=https://console.volcengine.com/apmplus-server>https://console.volcengine.com/apmplus-server</a></p><p><a href=/img/eino/apm_plus_callback.gif target=_blank><img src=/img/eino/apm_plus_callback.gif width=100%></a></p></li><li><p>Langfuse: set <code>LANGFUSE_PUBLIC_KEY</code> and <code>LANGFUSE_SECRET_KEY</code> to inspect trace details</p><p><a href=/img/eino/langfuse_callback.gif target=_blank><img src=/img/eino/langfuse_callback.gif width=100%></a></p></li></ul><h2 id=related-links>Related Links</h2><p>Project: <a href=https://github.com/cloudwego/eino>https://github.com/cloudwego/eino</a>, <a href=https://github.com/cloudwego/eino-ext>https://github.com/cloudwego/eino-ext</a></p><p>Eino User Manual: <a href=https://www.cloudwego.io/docs/eino/>https://www.cloudwego.io/docs/eino/</a></p><p>Website: <strong><a href=https://www.cloudwego.io>https://www.cloudwego.io</a></strong></p><p>Join the developer community:</p><p><a href=/img/eino/eino_lark_qr_code_practice.png target=_blank><img src=/img/eino/eino_lark_qr_code_practice.png width=50%></a></p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 3, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/8788f90c35c1a1e1c0c3a0644a2b725b1bed1fa9>fix: eino docs (#1515) (8788f90c)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

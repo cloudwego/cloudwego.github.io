@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Middleware Overview | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/middleware/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Middleware Overview"><meta property="og:description" content="Middleware Overview."><meta property="og:locale" content="en"><meta property="og:type" content="website"><meta itemprop=name content="Middleware Overview"><meta itemprop=description content="Middleware Overview."><meta itemprop=datePublished content="2022-05-23T00:00:00+00:00"><meta itemprop=dateModified content="2024-07-30T19:52:45+08:00"><meta itemprop=wordCount content="863"><meta itemprop=keywords content="Middleware,Server-side middleware,Client-side middleware,routing level"><meta name=twitter:card content="summary"><meta name=twitter:title content="Middleware Overview"><meta name=twitter:description content="Middleware Overview."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Middleware Overview | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/middleware/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Middleware Overview"><meta property="og:description" content="Middleware Overview."><meta property="og:locale" content="en"><meta property="og:type" content="website"><meta itemprop=name content="Middleware Overview"><meta itemprop=description content="Middleware Overview."><meta itemprop=datePublished content="2022-05-23T00:00:00+00:00"><meta itemprop=dateModified content="2024-07-30T19:52:45+08:00"><meta itemprop=wordCount content="863"><meta itemprop=keywords content="Middleware,Server-side middleware,Client-side middleware,routing level"><meta name=twitter:card content="summary"><meta name=twitter:title content="Middleware Overview"><meta name=twitter:description content="Middleware Overview."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,255 @@
 <label for=m-docshertzreferenceversion-check><a href=/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshertzreferenceversion><span>Version Descriptions</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/hertz/tutorials/basic-feature/middleware/_index.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/hertz/tutorials/basic-feature/middleware?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Middleware%20Overview" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#server-side-middleware>Server-side middleware</a><ul><li><a href=#implement-customized-middleware>Implement customized middleware</a></li><li><a href=#server-level-middleware>Server-level middleware</a></li><li><a href=#group-level-middleware>Group-level middleware</a></li><li><a href=#route-level-middleware>Route-level middleware</a></li><li><a href=#activate-default-middleware>Activate default middleware</a></li><li><a href=#middlewares-we-provided>Middlewares we provided</a></li></ul></li><li><a href=#client-side-middleware>Client-side Middleware</a><ul><li><a href=#implement-customized-middleware-1>Implement customized middleware</a></li><li><a href=#register-customized-middleware>Register customized middleware</a></li><li><a href=#full-example>Full example</a></li></ul></li><li><a href=#note>Note</a><ul><li><a href=#requestcontext-related-operations>RequestContext related operations</a></li><li><a href=#handler-related-operations>Handler related operations</a></li><li><a href=#quick-termination-of-server-middleware>Quick termination of server middleware</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/>Basic Feature</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/middleware/>Middleware Overview</a></li></ol></nav><div class=td-content><h1>Middleware Overview</h1><div class=lead>Middleware Overview.</div><header class=article-meta></header><p>There are various types of Hertz middleware, which are simply divided into two categories.</p><ul><li>Server-side middleware</li><li>Client-side middleware</li></ul><h2 id=server-side-middleware>Server-side middleware</h2><p>Server-side middleware is a function in the HTTP request-response cycle that provides a convenient mechanism for inspecting and filtering HTTP requests entering your application, such as logging each request or enabling CORS.</p><table><thead><tr><th style=text-align:center><img src=/img/docs/hertz_middleware.png alt=middleware></th></tr></thead><tbody><tr><td style=text-align:center>Figure 1: middleware call chain</td></tr></tbody></table><p>Middleware can perform tasks before or after passing the request deeper into the application:</p><ul><li>Middleware can be executed before the request reaches business processing, such as performing identity authentication and authorization authentication. When the middleware only has pre-handle logic and there is no requirement to be in a function call stack with real handler, the <code>.Next</code> can be omitted.</li><li>Middleware can also be executed after business processing has been performed, such as logging response times and recovering from a panic. If there is other processing logic (post-handle) after the business handler, or there is a strong requirement for the function call chain (stack), then the <code>.Next</code> must be called explicitly, see middleware C in Figure 1.</li></ul><h3 id=implement-customized-middleware>Implement customized middleware</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// One way</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#server-side-middleware>Server-side middleware</a><ul><li><a href=#implement-customized-middleware>Implement customized middleware</a></li><li><a href=#server-level-middleware>Server-level middleware</a></li><li><a href=#group-level-middleware>Group-level middleware</a></li><li><a href=#route-level-middleware>Route-level middleware</a></li><li><a href=#activate-default-middleware>Activate default middleware</a></li><li><a href=#middlewares-we-provided>Middlewares we provided</a></li></ul></li><li><a href=#client-side-middleware>Client-side Middleware</a><ul><li><a href=#implement-customized-middleware-1>Implement customized middleware</a></li><li><a href=#register-customized-middleware>Register customized middleware</a></li><li><a href=#full-example>Full example</a></li></ul></li><li><a href=#note>Note</a><ul><li><a href=#requestcontext-related-operations>RequestContext related operations</a></li><li><a href=#handler-related-operations>Handler related operations</a></li><li><a href=#quick-termination-of-server-middleware>Quick termination of server middleware</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/>Basic Feature</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/middleware/>Middleware Overview</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Middleware Overview" data-url=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/middleware/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+There are various types of Hertz middleware, which are simply divided into two categories.
+
+- Server-side middleware
+- Client-side middleware
+
+## Server-side middleware
+
+Server-side middleware is a function in the HTTP request-response cycle that provides a convenient mechanism for inspecting and filtering HTTP requests entering your application, such as logging each request or enabling CORS.
+
+| ![middleware](/img/docs/hertz_middleware.png) |
+| :-------------------------------------------: |
+|        Figure 1: middleware call chain        |
+
+Middleware can perform tasks before or after passing the request deeper into the application:
+
+- Middleware can be executed before the request reaches business processing, such as performing identity authentication and authorization authentication. When the middleware only has pre-handle logic and there is no requirement to be in a function call stack with real handler, the `.Next` can be omitted.
+- Middleware can also be executed after business processing has been performed, such as logging response times and recovering from a panic. If there is other processing logic (post-handle) after the business handler, or there is a strong requirement for the function call chain (stack), then the `.Next` must be called explicitly, see middleware C in Figure 1.
+
+### Implement customized middleware
+
+```go
+// One way
+func MyMiddleware() app.HandlerFunc {
+   return func(ctx context.Context, c *app.RequestContext) {
+      // pre-handle
+      // ...
+      // if there is no 'post-handle' logic, the 'c.Next(ctx)' can be omitted.
+      c.Next(ctx)
+   }
+}
+
+// The other way
+func MyMiddleware() app.HandlerFunc {
+   return func(ctx context.Context, c *app.RequestContext) {
+      c.Next(ctx) // call the next middleware(handler)
+      // post-handle
+      ...
+   }
+}
+```
+
+### Server-level middleware
+
+Server-level middleware will take effect on all routing of the server
+
+```go
+h := server.Default()
+h.Use(MyMiddleware())
+```
+
+### Group-level middleware
+
+The group-level middleware takes effect on the paths under the current routing group
+
+```go
+h := server.Default()
+group := h.Group("/group")
+group.Use(GroupMiddleware())
+```
+
+or
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+)
+
+func GroupMiddleware() []app.HandlerFunc {
+	return []app.HandlerFunc{func(ctx context.Context, c *app.RequestContext) {
+		fmt.Println("group middleware")
+		c.Next(ctx)
+	}}
+}
+
+func main() {
+	h := server.Default(server.WithHostPorts("127.0.0.1:8888"))
+
+	group := h.Group("/group", append(GroupMiddleware(),
+        func(ctx context.Context, c *app.RequestContext) {
+            fmt.Println("group middleware 2")
+            c.Next(ctx)
+        })...)
+	// ...
+	h.Spin()
+}
+```
+
+### Route-level middleware
+
+A route-level middleware only takes effect on the current route
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"net/http"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+)
+
+func PathMiddleware() []app.HandlerFunc {
+	return []app.HandlerFunc{func(ctx context.Context, c *app.RequestContext) {
+		fmt.Println("path middleware")
+		c.Next(ctx)
+	}}
+}
+
+func main() {
+	h := server.Default(server.WithHostPorts("127.0.0.1:8888"))
+
+	h.GET("/path", append(PathMiddleware(),
+		func(ctx context.Context, c *app.RequestContext) {
+			c.String(http.StatusOK, "path")
+		})...)
+
+	h.Spin()
+}
+```
+
+> If you use the hz tool and IDL to develop a project, the router folder will automatically generate group-level middleware and route-level middleware templates based on services and methods. You can add corresponding logic to it and customize your own personalized middleware.
+
+### Activate default middleware
+
+The Hertz framework already presets the commonly used Recover middleware, which can be registered by Default with `server.Default()`.
+
+### Middlewares we provided
+
+Hertz provides frequently-used middlewares such as BasicAuth, CORS, JWT etc., more implementations can be found at [hertz-contrib](https://github.com/hertz-contrib). If you need others, please make an issue.
+
+## Client-side Middleware
+
+Client-side middleware can be executed before the request is made or after the response is obtained:
+
+- Middleware can be executed before the request is sent, such as adding a signature or other fields to the request.
+- Middleware can also be executed after receiving the response, such as modifying the response result to adapt to the business logic.
+
+### Implement customized middleware
+
+The middleware implementation on the Client side is different from that on the Server side. The Client side cannot get the index of the middleware to increase, so the Client middleware uses nested functions to build the middleware in advance. When implementing client-side customized middleware, you can refer to the following code.
+
+```go
+func MyMiddleware(next client.Endpoint) client.Endpoint {
+    return func(ctx context.Context, req *protocol.Request, resp *protocol.Response) (err error) {
+        // pre-handle
+        // ...
+        err = next(ctx, req, resp)
+        if err != nil {
+            return
+        }
+        // post-handle
+        // ...
+    }
+}
+```
+
+Note: the `next` method must be executed to continue calls to the subsequent middleware. If you want to stop the middleware call, just return before `next`.
+
+### Register customized middleware
+
+Registering custom middleware is the same as on the server side.
+
+```go
+c, err := client.NewClient()
+c.Use(MyMiddleware)
+```
+
+### Full example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/protocol"
+)
+
+func MyMiddleware(next client.Endpoint) client.Endpoint {
+	return func(ctx context.Context, req *protocol.Request, resp *protocol.Response) (err error) {
+		// pre-handle
+		// ...
+		fmt.Println("before request")
+
+		req.AppendBodyString("k1=v1&")
+
+		err = next(ctx, req, resp)
+		if err != nil {
+			return
+		}
+		// post-handle
+		// ...
+		fmt.Println("after request")
+
+		return nil
+	}
+}
+
+func main() {
+	client, _ := client.NewClient()
+	client.Use(MyMiddleware)
+	statusCode, body, err := client.Post(context.Background(),
+		[]byte{},
+		"http://httpbin.org/redirect-to?url=http%3A%2F%2Fhttpbin.org%2Fpost&status_code=302",
+		&protocol.Args{})
+	fmt.Printf("%d, %s, %s", statusCode, body, err)
+}
+```
+
+> Middleware may be executed more than once, such as redirect, etc., idempotency needs to be considered
+
+## Note
+
+### RequestContext related operations
+
+When implementing server-side middleware, the `RequestContext` related operation is usually used, as shown in [RequestContext](/docs/hertz/tutorials/basic-feature/context/).
+
+### Handler related operations
+
+A server-side middleware is a handler, and the related operations of the handler can be found in [Handler](/docs/hertz/tutorials/basic-feature/context/request/#handler).
+
+### Quick termination of server middleware
+
+The server-side middleware will be executed in the order defined, if you want to terminate the middleware call quickly, you can use the following methods, noting that **the current middleware will still execute**.
+
+- `ctx.Abort()`：terminate subsequent calls
+- `ctx.AbortWithMsg(msg string, statusCode int)`：terminates subsequent calls and sets the body and status code for the Response
+- `ctx.AbortWithStatus(code int)`：terminates subsequent calls and sets the status code
+</script><h1>Middleware Overview</h1><div class=lead>Middleware Overview.</div><header class=article-meta></header><p>There are various types of Hertz middleware, which are simply divided into two categories.</p><ul><li>Server-side middleware</li><li>Client-side middleware</li></ul><h2 id=server-side-middleware>Server-side middleware</h2><p>Server-side middleware is a function in the HTTP request-response cycle that provides a convenient mechanism for inspecting and filtering HTTP requests entering your application, such as logging each request or enabling CORS.</p><table><thead><tr><th style=text-align:center><img src=/img/docs/hertz_middleware.png alt=middleware></th></tr></thead><tbody><tr><td style=text-align:center>Figure 1: middleware call chain</td></tr></tbody></table><p>Middleware can perform tasks before or after passing the request deeper into the application:</p><ul><li>Middleware can be executed before the request reaches business processing, such as performing identity authentication and authorization authentication. When the middleware only has pre-handle logic and there is no requirement to be in a function call stack with real handler, the <code>.Next</code> can be omitted.</li><li>Middleware can also be executed after business processing has been performed, such as logging response times and recovering from a panic. If there is other processing logic (post-handle) after the business handler, or there is a strong requirement for the function call chain (stack), then the <code>.Next</code> must be called explicitly, see middleware C in Figure 1.</li></ul><h3 id=implement-customized-middleware>Implement customized middleware</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// One way</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>MyMiddleware</span><span style=color:#000;font-weight:700>()</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>app</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>HandlerFunc</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>   </span><span style=color:#204a87;font-weight:700>return</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>func</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>context</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Context</span><span style=color:#000;font-weight:700>,</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>c</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>app</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>RequestContext</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>      </span><span style=color:#8f5902;font-style:italic>// pre-handle</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -242,4 +490,4 @@
 </span></span></span></code></pre></div><blockquote><p>Middleware may be executed more than once, such as redirect, etc., idempotency needs to be considered</p></blockquote><h2 id=note>Note</h2><h3 id=requestcontext-related-operations>RequestContext related operations</h3><p>When implementing server-side middleware, the <code>RequestContext</code> related operation is usually used, as shown in <a href=/docs/hertz/tutorials/basic-feature/context/>RequestContext</a>.</p><h3 id=handler-related-operations>Handler related operations</h3><p>A server-side middleware is a handler, and the related operations of the handler can be found in <a href=/docs/hertz/tutorials/basic-feature/context/request/#handler>Handler</a>.</p><h3 id=quick-termination-of-server-middleware>Quick termination of server middleware</h3><p>The server-side middleware will be executed in the order defined, if you want to terminate the middleware call quickly, you can use the following methods, noting that <strong>the current middleware will still execute</strong>.</p><ul><li><code>ctx.Abort()</code>：terminate subsequent calls</li><li><code>ctx.AbortWithMsg(msg string, statusCode int)</code>：terminates subsequent calls and sets the body and status code for the Response</li><li><code>ctx.AbortWithStatus(code int)</code>：terminates subsequent calls and sets the status code</li></ul><div class=section-index><hr class=panel-line><div class=entry><h5><a href=/docs/hertz/tutorials/basic-feature/middleware/basic-auth/>Basic Auth</a></h5><p>Hertz provides an implementation of Basic Auth.</p></div><div class=entry><h5><a href=/docs/hertz/tutorials/basic-feature/middleware/recovery/>Recovery</a></h5><p>The Recovery middleware is preset by the Hertz framework to provide the feature of Panic recovery for the Hertz framework.</p></div></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified July 30, 2024: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/03e698d928c335ff804c26068413f3293c9eb276>docs(hertz): function signature error (#1114) (03e698d9)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

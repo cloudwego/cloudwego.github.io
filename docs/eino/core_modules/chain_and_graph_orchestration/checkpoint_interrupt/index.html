@@ -4,7 +4,7 @@ Since the compatibility branch introduces additional performance overhead and ge
 Eino provides a compatibility branch. Businesses that use checkpoint and are on versions lower than v0.3.26 should first upgrade to the compatibility branch when upgrading eino, then upgrade to the main branch after old data expires.
 Since the compatibility branch introduces additional performance overhead and generally business agent checkpoints have a relatively short validity period, the branch has not been merged into the main branch."><meta itemprop=datePublished content="2026-03-02T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-02T21:50:06+08:00"><meta itemprop=wordCount content="1916"><meta name=twitter:card content="summary"><meta name=twitter:title content="Eino: Interrupt & CheckPoint User Manual"><meta name=twitter:description content="💡 Note: In version v0.3.26, due to a code writing error, the serialization content of CheckPoint broke compatibility. For new integrations using CheckPoint after v0.3.26, it’s recommended to use the latest version directly.
 Eino provides a compatibility branch. Businesses that use checkpoint and are on versions lower than v0.3.26 should first upgrade to the compatibility branch when upgrading eino, then upgrade to the main branch after old data expires.
-Since the compatibility branch introduces additional performance overhead and generally business agent checkpoints have a relatively short validity period, the branch has not been merged into the main branch."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+Since the compatibility branch introduces additional performance overhead and generally business agent checkpoints have a relatively short validity period, the branch has not been merged into the main branch."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -110,7 +110,449 @@ Since the compatibility branch introduces additional performance overhead and ge
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/chain_and_graph_orchestration/checkpoint_interrupt.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/chain_and_graph_orchestration?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino:%20Interrupt%20&%20CheckPoint%20User%20Manual" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#using-static-interrupt>Using Static Interrupt</a></li><li><a href=#using-checkpoint>Using CheckPoint</a><ul><li><a href=#implementing-checkpointstore>Implementing CheckPointStore</a></li><li><a href=#registering-serialization-methods>Registering Serialization Methods</a></li><li><a href=#enabling-checkpoint>Enabling CheckPoint</a></li></ul></li><li><a href=#dynamic-interrupt>Dynamic Interrupt</a><ul><li><a href=#before-eino-v070>Before eino v0.7.0</a></li><li><a href=#in-eino-v070-and-later>In eino v0.7.0 and later</a></li></ul></li><li><a href=#external-proactive-interrupt>External Proactive Interrupt</a></li><li><a href=#checkpoint-in-streaming>CheckPoint in Streaming</a></li><li><a href=#interruptcheckpoint-in-nested-graphs>Interrupt&amp;CheckPoint in Nested Graphs</a></li><li><a href=#resume>Resume</a><ul><li><a href=#before-eino-v070-1>Before eino v0.7.0</a></li><li><a href=#in-eino-v070-and-later-1>In eino v0.7.0 and later</a></li></ul></li></ul><ul><li><ul><li><a href=#before-eino-v070-2>Before eino v0.7.0</a></li><li><a href=#after-eino-v070>After eino v0.7.0</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/chain_and_graph_orchestration/>Eino: Chain & Graph & Workflow Orchestration</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/chain_and_graph_orchestration/checkpoint_interrupt/>Eino: Interrupt & CheckPoint User Manual</a></li></ol></nav><div class=td-content><h1>Eino: Interrupt & CheckPoint User Manual</h1><header class=article-meta></header><blockquote><p>💡
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#using-static-interrupt>Using Static Interrupt</a></li><li><a href=#using-checkpoint>Using CheckPoint</a><ul><li><a href=#implementing-checkpointstore>Implementing CheckPointStore</a></li><li><a href=#registering-serialization-methods>Registering Serialization Methods</a></li><li><a href=#enabling-checkpoint>Enabling CheckPoint</a></li></ul></li><li><a href=#dynamic-interrupt>Dynamic Interrupt</a><ul><li><a href=#before-eino-v070>Before eino v0.7.0</a></li><li><a href=#in-eino-v070-and-later>In eino v0.7.0 and later</a></li></ul></li><li><a href=#external-proactive-interrupt>External Proactive Interrupt</a></li><li><a href=#checkpoint-in-streaming>CheckPoint in Streaming</a></li><li><a href=#interruptcheckpoint-in-nested-graphs>Interrupt&amp;CheckPoint in Nested Graphs</a></li><li><a href=#resume>Resume</a><ul><li><a href=#before-eino-v070-1>Before eino v0.7.0</a></li><li><a href=#in-eino-v070-and-later-1>In eino v0.7.0 and later</a></li></ul></li></ul><ul><li><ul><li><a href=#before-eino-v070-2>Before eino v0.7.0</a></li><li><a href=#after-eino-v070>After eino v0.7.0</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/chain_and_graph_orchestration/>Eino: Chain & Graph & Workflow Orchestration</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/chain_and_graph_orchestration/checkpoint_interrupt/>Eino: Interrupt & CheckPoint User Manual</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino: Interrupt & CheckPoint User Manual" data-url=https://www.cloudwego.io/docs/eino/core_modules/chain_and_graph_orchestration/checkpoint_interrupt/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+> 💡
+> Note: In version v0.3.26, due to a code writing error, the serialization content of CheckPoint broke compatibility. For new integrations using CheckPoint after v0.3.26, it's recommended to use the latest version directly.
+>
+> Eino provides a compatibility branch. Businesses that use checkpoint and are on versions lower than v0.3.26 should first upgrade to the compatibility branch when upgrading eino, then upgrade to the main branch after old data expires.
+>
+> Since the compatibility branch introduces additional performance overhead and generally business agent checkpoints have a relatively short validity period, the branch has not been merged into the main branch.
+
+## Introduction
+
+Using the Interrupt & CheckPoint feature, you can pause Graph execution at specified positions and resume from the breakpoint later. For StateGraph, you can also modify State before resuming from the breakpoint.
+
+> 💡
+> Breakpoint resumption can only restore input and data generated by each node at runtime. You need to ensure the Graph orchestration is exactly the same, and pass in CallOptions completely again (should be kept consistent unless there are special circumstances, except for cases like relying on CallOption to pass data during Resume).
+
+## Using Static Interrupt
+
+Static Interrupt supports pausing the Graph before or after a specified Node executes. Pass in WithInterruptAfterNodes and WithInterruptBeforeNodes Options during Compile to set Interrupts:
+
+```go
+import (
+    "github.com/cloudwego/eino/compose"
+)
+
+func main() {
+    g := NewGraph[string, string]()
+    err := g.AddLambdaNode("node1", compose.InvokableLambda(func(ctx **context**._Context_, input string) (output string, err error) {/*invokable func*/})
+    if err != nil {/* error handle */}
+    err = g.AddLambdaNode("node2", compose.InvokableLambda(func(ctx **context**._Context_, input string) (output string, err error) {/*invokable func*/})
+    if err != nil {/* error handle */}
+    
+    /** other graph composed code
+    xxx 
+    */
+    
+    err = g.Compile(ctx, compose.WithInterruptAfterNodes([]string{"node1"}), compose.WithInterruptBeforeNodes([]string{"node2"}))
+    if err != nil {/* error handle */}
+}
+```
+
+> 💡
+> Currently only static breakpoints can be set during Compile. If you need to set them during requests, feel free to raise the requirement~
+
+You can get whether the current run was Interrupted and the Interrupt information from the error returned by the run:
+
+```go
+// compose/checkpoint.go
+
+**type **InterruptInfo **struct **{
+    State             any
+    BeforeNodes       []string
+    AfterNodes        []string
+    RerunNodes        []string
+    RerunNodesExtra   **map**[string]any
+    SubGraphs         **map**[string]*InterruptInfo
+    InterruptContexts []*InterruptCtx
+}
+
+func ExtractInterruptInfo(err error) (info *InterruptInfo, existed bool) {}
+```
+
+For example:
+
+```go
+import "github.com/cloudwego/eino/compse"
+
+/***graph compose code
+* g := NewGraph
+* xxx
+* runner := g.Compile
+*/
+
+result, err := runner.Invoke(ctx, input)
+if info, ok := ExtractInterruptInfo(err); ok {
+    // handler info
+}
+if err != nil {
+    // handle error
+}
+```
+
+> 💡
+> When Interrupted, output is an empty value and has no meaning.
+
+## Using CheckPoint
+
+CheckPoint records Graph running state. Using CheckPoint allows resuming execution after Interrupt.
+
+### Implementing CheckPointStore
+
+CheckPointStore is a KV storage interface with key type string and value type []byte. We don't provide encapsulation or default implementation; users need to implement it themselves to store checkpoints.
+
+```go
+// compose/checkpoint.go
+
+type CheckpointStore interface {
+    Get(ctx **context**._Context_, key string) (value []byte, existed bool,err error)
+    Set(ctx **context**._Context_, key string, value []byte) (err error)
+}
+```
+
+### Registering Serialization Methods
+
+CheckPoint saving and reading involves serialization and deserialization of Graph node inputs, outputs, and State. When only using simple types or eino built-in types (such as Message or Document), users don't need additional operations; when introducing custom structs, you need to register types in advance. Eino provides the registration method `schema.RegisterName`:
+
+```go
+package main
+
+import "github.com/cloudwego/eino/schema"
+
+type MyState struct {
+        Counter int
+        Note    string
+}
+
+func init() {
+        // Register the type with a stable name for serialization/persistence.
+        // Use the pointer form if you persist pointers to this type.
+        // It's recommended to register types within the `init()` function 
+        // within the same file your type is declared.
+        schema.RegisterName[*MyState]("my_state_v1")
+}
+```
+
+After registration, type information will be additionally recorded during serialization, so during deserialization, even without specifying the type (such as deserializing to interface{}), Eino can deserialize to the correct type. The key in the registration method uniquely identifies this type. Once the key is determined, it must not be changed, otherwise persisted checkpoints cannot be correctly restored.
+
+> 💡
+> Unexported fields of structs cannot be accessed, so they won't be stored/restored
+
+By default, eino's built-in serialization functionality is used. At this time, if the registered type implements json Marshaler and Unmarshaler, the type's serialization and deserialization will use custom methods.
+
+```
+// encoding/json
+
+type Marshaler interface {
+    MarshalJSON() ([]byte, error)
+}
+
+type Unmarshaler interface {
+    UnmarshalJSON([]byte) error
+}
+```
+
+Eino also provides an option to change the serialization method to gob:
+
+```go
+r, err := compose.NewChain[*AgentInput, Message]().
+    AppendLambda(compose.InvokableLambda(func(ctx context.Context, input *AgentInput) ([]Message, error) {
+       return a.genModelInput(ctx, instruction, input)
+    })).
+    AppendChatModel(a.model).
+    Compile(ctx, compose.WithGraphName(a.name),
+       compose.WithCheckPointStore(store),
+       compose.WithSerializer(&gobSerializer{}))
+```
+
+Users can choose based on preference. Once chosen, it's not recommended to change easily as historical data won't be compatible.
+
+### Enabling CheckPoint
+
+After creating CheckPointStore, pass it as an Option when Compiling Graph to bind CheckPointer to Graph:
+
+```go
+import (
+    "github.com/cloudwego/eino/compose"
+)
+
+func main() {
+    /** graph composed code
+    xxx 
+    */
+    
+    err = g.Compile(ctx, compose.WithCheckPointStore(store), compose.WithInterruptBeforeNodes([]string{"node2"}))
+    if err != nil {/* error handle */}
+}
+```
+
+After that, you can introduce CheckPoint during requests through CallOption:
+
+```
+// compose/checkpoint.go
+
+func WithCheckPointID(checkPointID string) Option
+```
+
+Checkpoint id will be used as the key for CheckPointStore. When the graph runs, it checks whether CheckPointStore has this id. If it exists, it resumes from the checkpoint; when interrupted, it saves the graph state to this id.
+
+## Dynamic Interrupt
+
+Nodes can dynamically trigger Interrupt by returning special errors:
+
+### Before eino v0.7.0
+
+```
+// eino/compose/interrupt.go
+
+// emit a plain interrupt signal
+var InterruptAndRerun = errors.New("interrupt and rerun")
+
+// emit an interrupt signal with extra info
+**func **NewInterruptAndRerunErr(extra any) error
+```
+
+When Eino Graph receives this error returned by a node, an interrupt will occur. When resuming, this node will be run again. Before re-running, StateModifier will be called to modify state (if configured).
+
+In this case, when re-running the node, the input will be replaced with an empty value instead of the original input. If the original input is still needed when re-running, it needs to be saved to State in advance.
+
+### In eino v0.7.0 and later
+
+Added support for "saving local state", "exposing internal interrupt signals", and "parallel interrupts":
+
+```
+// eino/compose/interrupt.go
+
+// emit an interrupt signal with user-facing info
+func Interrupt(ctx context.Context, info any) error
+
+// emit an interrupt signal with user-facing info AS WELL AS
+// persistent LOCALLY-DEFINED state
+func StatefulInterrupt(ctx context.Context, info any, state any) error
+
+// emit an interrupt signal WRAPPING other interrupt signals 
+// emitted from inner processes, 
+// such as ToolsNode wrapping Tools.
+func CompositeInterrupt(ctx context.Context, info any, state any, errs ...error)
+```
+
+For detailed design, see: [Eino human-in-the-loop Framework: Technical Architecture Guide](/docs/eino/core_modules/eino_adk/agent_hitl)
+
+## External Proactive Interrupt
+
+Sometimes, we want to proactively trigger an interrupt from outside the Graph, save the scene, and resume later. These scenarios may include graceful instance shutdown, etc. In this case, you can call `WithGraphInterrupt` to get a ctx and an interrupt function. The ctx is passed to running methods like `graph.Invoke()`, and the interrupt function is called when the user wants to proactively interrupt:
+
+```go
+// from compose/graph_call_options.go
+
+_// WithGraphInterrupt creates a context with graph cancellation support._
+_// When the returned context is used to invoke a graph or workflow, calling the interrupt function will trigger an interrupt._
+_// The graph will wait for current tasks to complete by default._
+**func **WithGraphInterrupt(parent context.Context) (ctx context.Context, interrupt **func**(opts ...GraphInterruptOption)) {}
+```
+
+When proactively calling the interrupt function, you can pass parameters like timeout:
+
+```go
+// from compose/graph_call_options.go
+
+_// WithGraphInterruptTimeout specifies the max waiting time before generating an interrupt._
+_// After the max waiting time, the graph will force an interrupt. Any unfinished tasks will be re-run when the graph is resumed._
+**func **WithGraphInterruptTimeout(timeout time.Duration) GraphInterruptOption {
+    **return func**(o *graphInterruptOptions) {
+       o.timeout = &timeout
+    }
+}
+```
+
+When externally triggered interrupt occurs, nodes internally don't have the opportunity to save local state (including the node's input), so eino will automatically save the input of externally interrupted nodes and automatically restore it on the next execution. For non-externally triggered interrupt scenarios, saving input is each node's responsibility when initiating interrupt internally, which can be done by saving to graph state or using `compose.StatefulInterrupt` to save local state.
+
+## CheckPoint in Streaming
+
+Streaming needs to concatenate data streams when saving CheckPoint, so concatenation methods need to be registered:
+
+```go
+// compose/stream_concat.go
+func RegisterStreamChunkConcatFunc[T any](fn func([]T) (T, error))
+
+// example
+type TestStruct struct {
+    Body string
+}
+
+// RegisterStreamChunkConcatFunc is not thread-safe, needs to be used during initialization phase
+RegisterStreamChunkConcatFunc(func(ss []TestStruct)(TestStruct, error){
+    ret := TestStruct{Body:""}
+    for i := range ss {
+        ret.Body += ss[i].Body
+    }
+    return ret, nil
+})
+```
+
+Eino provides concat methods for *schema.Message, []*schema.Message and string by default.
+
+## Interrupt&CheckPoint in Nested Graphs
+
+With the premise that the parent graph passes in CheckPointer, when using AddGraphNode, passing InterruptNodes through WithGraphCompileOptions can enable the sub-graph's Interrupt&CheckPoint. If the parent graph doesn't have CheckPointer set, an error will be reported during Compile.
+
+```go
+/* graph compose code
+xxx
+*/
+g.AddGraphNode("node1", subGraph, WithGraphCompileOptions(
+    WithInterruptAfterNodes([]string{"node2"}),
+))
+    
+g.Compile(ctx, WithCheckPointStore(cp))
+```
+
+If interrupted in a sub-graph, the state modified when resuming should be the sub-graph state. TODO, explain Path usage in StateModifier
+
+## Resume
+
+Resume: Graph runs after Interrupt and checkpoint saving.
+
+### Before eino v0.7.0
+
+Influence resume behavior by modifying State.
+
+```go
+// compose/checkpoint.go
+
+type StateModifier func(ctx context.Context, path NodePath, state any) error
+func WithStateModifier(sm StateModifier) GraphCompileOption
+```
+
+StateModifier takes effect when Graph resumes running, allowing modification of State before running. Path takes effect in nested graphs; treat as empty array for non-nested.
+
+```go
+/* graph compose and compile
+xxx
+*/
+
+// first run interrupt
+id := GenUUID()
+_, err := runner.Invoke(ctx, input, WithCheckPointID(id))
+
+// resume from id
+_, err = runner.Invoke(ctx, input/*unused*/, 
+    WithCheckPointID(id),
+    WithStateModifier(func(ctx context.Context, path NodePath, state any) error{
+        state.(*testState).Field1 = "hello"
+        return nil
+    }),
+)
+```
+
+> 💡
+> Input is not read during Resume, so passing empty input is fine at this time.
+
+### In eino v0.7.0 and later
+
+Besides StateModifier, you can also selectively resume a specific interrupt point, and directly pass "resume data" to the specified "interrupt point":
+
+```go
+// specifically resume particular interrupt point(s), 
+// without specifying resume data
+func Resume(ctx context.Context, interruptIDs ...string) context.Context
+
+// specifically resume one interrupt point, with custom resume data
+func ResumeWithData(ctx context.Context, interruptID string, data any) context.Context
+
+// specifically resume multiple interrupt points, each with custom resume data
+func BatchResumeWithData(ctx context.Context, resumeData map[string]any) context.Context
+```
+
+Where `InterruptID` is obtained from the interrupt error:
+
+```go
+interruptInfo, isInterrupt := ExtractInterruptInfo(err)
+if isInterrupt {
+    // maybe multiple interrupt points exist here,
+    // we only take the first one for illustration purpose
+    interruptID = interruptInfo.InterruptContexts[0].ID
+}
+```
+
+`resumeData` is the type defined by the interrupt point. For example, a Tool interrupted and requires user "approval" to execute this Tool, customizing an `ApprovalResult` as resumeData:
+
+```go
+func (i InvokableApprovableTool) InvokableRun(ctx context.Context, argumentsInJSON string,
+   opts ...tool.Option) (string, error) {
+
+   toolInfo, err := i.Info(ctx)
+   if err != nil {
+      return "", err
+   }
+
+   wasInterrupted, _, storedArguments := compose.GetInterruptState[string](ctx)
+   if !wasInterrupted { // initial invocation, interrupt and wait for approval
+      return "", compose.StatefulInterrupt(ctx, &ApprovalInfo{
+         ToolName:        toolInfo.Name,
+         ArgumentsInJSON: argumentsInJSON,
+         ToolCallID:      compose.GetToolCallID(ctx),
+      }, argumentsInJSON)
+   }
+
+   isResumeTarget, hasData, data := compose.GetResumeContext[*ApprovalResult](ctx)
+   if !isResumeTarget { // was interrupted but not explicitly resumed, reinterrupt and wait for approval again
+      return "", compose.StatefulInterrupt(ctx, &ApprovalInfo{
+         ToolName:        toolInfo.Name,
+         ArgumentsInJSON: storedArguments,
+         ToolCallID:      compose.GetToolCallID(ctx),
+      }, storedArguments)
+   }
+   if !hasData {
+      return "", fmt.Errorf("tool '%s' resumed with no data", toolInfo.Name)
+   }
+
+   if data.Approved {
+      return i.InvokableTool.InvokableRun(ctx, storedArguments, opts...)
+   }
+
+   if data.DisapproveReason != nil {
+      return fmt.Sprintf("tool '%s' disapproved, reason: %s", toolInfo.Name, *data.DisapproveReason), nil
+   }
+
+   return fmt.Sprintf("tool '%s' disapproved", toolInfo.Name), nil
+}
+```
+
+# Examples
+
+### Before eino v0.7.0
+
+[https://github.com/cloudwego/eino-examples/tree/main/compose/graph/react_with_interrupt](https://github.com/cloudwego/eino-examples/tree/main/compose/graph/react_with_interrupt)
+
+### After eino v0.7.0
+
+[https://github.com/cloudwego/eino/blob/main/compose/resume_test.go](https://github.com/cloudwego/eino/blob/main/compose/resume_test.go)
+
+Including:
+
+`TestInterruptStateAndResumeForRootGraph`: Simple dynamic interrupt
+
+`TestInterruptStateAndResumeForSubGraph`: Sub-graph interrupt
+
+`TestInterruptStateAndResumeForToolInNestedSubGraph`: Tool interrupt inside nested sub-graph
+
+`TestMultipleInterruptsAndResumes`: Parallel interrupts
+
+`TestReentryForResumedTools`: Tool interrupt in ReAct Agent, multiple loop executions after resume
+
+`TestGraphInterruptWithinLambda`: Lambda node contains independent Graph with internal interrupt
+</script><h1>Eino: Interrupt & CheckPoint User Manual</h1><header class=article-meta></header><blockquote><p>💡
 Note: In version v0.3.26, due to a code writing error, the serialization content of CheckPoint broke compatibility. For new integrations using CheckPoint after v0.3.26, it&rsquo;s recommended to use the latest version directly.</p><p>Eino provides a compatibility branch. Businesses that use checkpoint and are on versions lower than v0.3.26 should first upgrade to the compatibility branch when upgrading eino, then upgrade to the main branch after old data expires.</p><p>Since the compatibility branch introduces additional performance overhead and generally business agent checkpoints have a relatively short validity period, the branch has not been merged into the main branch.</p></blockquote><h2 id=introduction>Introduction</h2><p>Using the Interrupt & CheckPoint feature, you can pause Graph execution at specified positions and resume from the breakpoint later. For StateGraph, you can also modify State before resuming from the breakpoint.</p><blockquote><p>💡
 Breakpoint resumption can only restore input and data generated by each node at runtime. You need to ensure the Graph orchestration is exactly the same, and pass in CallOptions completely again (should be kept consistent unless there are special circumstances, except for cases like relying on CallOption to pass data during Resume).</p></blockquote><h2 id=using-static-interrupt>Using Static Interrupt</h2><p>Static Interrupt supports pausing the Graph before or after a specified Node executes. Pass in WithInterruptAfterNodes and WithInterruptBeforeNodes Options during Compile to set Interrupts:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>import</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#4e9a06>&#34;github.com/cloudwego/eino/compose&#34;</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -352,4 +794,4 @@ Input is not read during Resume, so passing empty input is fine at this time.</p
 </span></span></span></code></pre></div><h1 id=examples>Examples</h1><h3 id=before-eino-v070-2>Before eino v0.7.0</h3><p><a href=https://github.com/cloudwego/eino-examples/tree/main/compose/graph/react_with_interrupt>https://github.com/cloudwego/eino-examples/tree/main/compose/graph/react_with_interrupt</a></p><h3 id=after-eino-v070>After eino v0.7.0</h3><p><a href=https://github.com/cloudwego/eino/blob/main/compose/resume_test.go>https://github.com/cloudwego/eino/blob/main/compose/resume_test.go</a></p><p>Including:</p><p><code>TestInterruptStateAndResumeForRootGraph</code>: Simple dynamic interrupt</p><p><code>TestInterruptStateAndResumeForSubGraph</code>: Sub-graph interrupt</p><p><code>TestInterruptStateAndResumeForToolInNestedSubGraph</code>: Tool interrupt inside nested sub-graph</p><p><code>TestMultipleInterruptsAndResumes</code>: Parallel interrupts</p><p><code>TestReentryForResumedTools</code>: Tool interrupt in ReAct Agent, multiple loop executions after resume</p><p><code>TestGraphInterruptWithinLambda</code>: Lambda node contains independent Graph with internal interrupt</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 2, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/96139d4140c93a677eec194c2d34dffa3e2673dd>feat: sync eino docs (#1512) (96139d41)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

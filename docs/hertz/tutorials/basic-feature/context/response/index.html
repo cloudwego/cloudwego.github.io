@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Response | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/context/response/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Response"><meta property="og:description" content="The functions related to the response in RequestContext."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-07-10T00:00:00+00:00"><meta property="article:modified_time" content="2025-05-19T03:47:23+02:00"><meta itemprop=name content="Response"><meta itemprop=description content="The functions related to the response in RequestContext."><meta itemprop=datePublished content="2023-07-10T00:00:00+00:00"><meta itemprop=dateModified content="2025-05-19T03:47:23+02:00"><meta itemprop=wordCount content="2302"><meta itemprop=keywords content="RequestContext,Render,Header,Body,File operation,Response,Flush"><meta name=twitter:card content="summary"><meta name=twitter:title content="Response"><meta name=twitter:description content="The functions related to the response in RequestContext."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Response | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/context/response/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Response"><meta property="og:description" content="The functions related to the response in RequestContext."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-07-10T00:00:00+00:00"><meta property="article:modified_time" content="2025-05-19T03:47:23+02:00"><meta itemprop=name content="Response"><meta itemprop=description content="The functions related to the response in RequestContext."><meta itemprop=datePublished content="2023-07-10T00:00:00+00:00"><meta itemprop=dateModified content="2025-05-19T03:47:23+02:00"><meta itemprop=wordCount content="2302"><meta itemprop=keywords content="RequestContext,Render,Header,Body,File operation,Response,Flush"><meta name=twitter:card content="summary"><meta name=twitter:title content="Response"><meta name=twitter:description content="The functions related to the response in RequestContext."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -107,7 +107,645 @@
 <label for=m-docshertzreferenceversion-check><a href=/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshertzreferenceversion><span>Version Descriptions</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/hertz/tutorials/basic-feature/context/response.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/hertz/tutorials/basic-feature/context?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Response" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#header>Header</a><ul><li><a href=#setcontenttype>SetContentType</a></li><li><a href=#setcontenttypebytes>SetContentTypeBytes</a></li><li><a href=#setconnectionclose>SetConnectionClose</a></li><li><a href=#setstatuscode>SetStatusCode</a></li><li><a href=#status>Status</a></li><li><a href=#notfound>NotFound</a></li><li><a href=#notmodified>NotModified</a></li><li><a href=#redirect>Redirect</a></li><li><a href=#header-1>Header</a></li><li><a href=#setcookie>SetCookie</a></li><li><a href=#abortwithstatus>AbortWithStatus</a></li><li><a href=#abortwitherror>AbortWithError</a></li><li><a href=#responseheader>ResponseHeader</a></li></ul></li><li><a href=#render>Render</a></li><li><a href=#body>Body</a><ul><li><a href=#setbodystream>SetBodyStream</a></li><li><a href=#setbodystring>SetBodyString</a></li><li><a href=#write>Write</a></li><li><a href=#writestring>WriteString</a></li><li><a href=#abortwithmsg>AbortWithMsg</a></li><li><a href=#abortwithstatusjson>AbortWithStatusJSON</a></li></ul></li><li><a href=#file-operation>File operation</a><ul><li><a href=#file>File</a></li><li><a href=#fileattachment>FileAttachment</a></li><li><a href=#filefromfs>FileFromFS</a></li></ul></li><li><a href=#other-functions>Other Functions</a><ul><li><a href=#flush>Flush</a></li><li><a href=#getresponse>GetResponse</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/>Basic Feature</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/context/>RequestContext</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/context/response/>Response</a></li></ol></nav><div class=td-content><h1>Response</h1><div class=lead>The functions related to the response in RequestContext.</div><header class=article-meta></header><h2 id=header>Header</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>RequestContext</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>SetContentType</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>contentType</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>string</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#header>Header</a><ul><li><a href=#setcontenttype>SetContentType</a></li><li><a href=#setcontenttypebytes>SetContentTypeBytes</a></li><li><a href=#setconnectionclose>SetConnectionClose</a></li><li><a href=#setstatuscode>SetStatusCode</a></li><li><a href=#status>Status</a></li><li><a href=#notfound>NotFound</a></li><li><a href=#notmodified>NotModified</a></li><li><a href=#redirect>Redirect</a></li><li><a href=#header-1>Header</a></li><li><a href=#setcookie>SetCookie</a></li><li><a href=#abortwithstatus>AbortWithStatus</a></li><li><a href=#abortwitherror>AbortWithError</a></li><li><a href=#responseheader>ResponseHeader</a></li></ul></li><li><a href=#render>Render</a></li><li><a href=#body>Body</a><ul><li><a href=#setbodystream>SetBodyStream</a></li><li><a href=#setbodystring>SetBodyString</a></li><li><a href=#write>Write</a></li><li><a href=#writestring>WriteString</a></li><li><a href=#abortwithmsg>AbortWithMsg</a></li><li><a href=#abortwithstatusjson>AbortWithStatusJSON</a></li></ul></li><li><a href=#file-operation>File operation</a><ul><li><a href=#file>File</a></li><li><a href=#fileattachment>FileAttachment</a></li><li><a href=#filefromfs>FileFromFS</a></li></ul></li><li><a href=#other-functions>Other Functions</a><ul><li><a href=#flush>Flush</a></li><li><a href=#getresponse>GetResponse</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/>Tutorials</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/>Basic Feature</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/context/>RequestContext</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/context/response/>Response</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=Response data-url=https://www.cloudwego.io/docs/hertz/tutorials/basic-feature/context/response/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<i class="fa-regular fa-copy"></i>
+<span>Copy Full Text</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+Copy Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## Header
+
+```go
+func (ctx *RequestContext) SetContentType(contentType string)
+func (ctx *RequestContext) SetContentTypeBytes(contentType []byte)
+func (ctx *RequestContext) SetConnectionClose()
+func (ctx *RequestContext) SetStatusCode(statusCode int)
+func (ctx *RequestContext) Status(code int)
+func (ctx *RequestContext) NotFound()
+func (ctx *RequestContext) NotModified()
+func (ctx *RequestContext) Redirect(statusCode int, uri []byte)
+func (ctx *RequestContext) Header(key, value string)
+func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool)
+func (ctx *RequestContext) AbortWithStatus(code int)
+func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error
+```
+
+### SetContentType
+
+Set Content-Type.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) SetContentType(contentType string)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.Write([]byte(`{"foo":"bar"}`))
+    c.SetContentType("application/json; charset=utf-8")
+    // Content-Type: application/json; charset=utf-8
+})
+```
+
+### SetContentTypeBytes
+
+Set Content Type with type `[]byte`.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) SetContentTypeBytes(contentType []byte)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.Write([]byte(`{"foo":"bar"}`))
+    c.SetContentType([]byte("application/json; charset=utf-8"))
+    // Content-Type: application/json; charset=utf-8
+})
+```
+
+### SetConnectionClose
+
+Set Connection: close to inform the client that the server wants to close the connection.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) SetConnectionClose()
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.SetConnectionClose()
+})
+```
+
+### SetStatusCode
+
+Set Status Code.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) SetStatusCode(statusCode int)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.SetStatusCode(consts.StatusOK)
+    // Status Code: 200
+})
+```
+
+### Status
+
+Set Status Code, which is an alias for [SetStatusCode](#setstatuscode).
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) Status(code int)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.Status(consts.StatusOK)
+    // Status Code: 200
+})
+```
+
+### NotFound
+
+Set the Status Code to 404.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) NotFound()
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.NotFound() // Status Code: 404
+})
+```
+
+### NotModified
+
+Set the Status Code to 304.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) NotModified()
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.NotModified()
+    // Status Code: 304
+})
+```
+
+### Redirect
+
+Set the Status Code and the address to jump to.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) Redirect(statusCode int, uri []byte)
+```
+
+Example Code:
+
+```go
+// internal redirection
+// GET http://www.example.com:8888/user
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.Redirect(consts.StatusFound, []byte("/pet"))
+})
+// GET http://www.example.com:8888/pet
+h.GET("/pet", func(ctx context.Context, c *app.RequestContext) {
+    c.String(consts.StatusOK, "cat")
+})
+
+// external redirection
+// GET http://www.example.com:8888/user
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.Redirect(consts.StatusFound, []byte("http://www.example1.com:8888/pet"))
+})
+// GET http://www.example1.com:8888/pet
+h.GET("/pet", func(ctx context.Context, c *app.RequestContext) {
+    c.String(consts.StatusOK, "cat")
+})
+```
+
+### Header
+
+Set or delete the specified header.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) Header(key, value string)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.Header("My-Name", "tom")
+    c.Header("My-Name", "")
+    c.Header("My-Name-Not-Exists", "yes")
+})
+```
+
+### SetCookie
+
+Set Cookie.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) SetCookie(name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.SetCookie("user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteLaxMode, true, true)
+    cookie := c.Response.Header.Get("Set-Cookie")
+    // cookie == "user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=Lax"
+})
+```
+
+#### Partitioned Cookies (Experimental Feature)
+
+Starting January 2024, Chrome restricts third-party cookies by default for 1% of users, blocking SameSite=None
+attribute cookies. Partitioned cookies (also known as [CHIPS](https://developers.google.com/privacy-sandbox/3pcd/chips))
+are introduced as a privacy-preserving alternative for third-party cookies in cross-site requests.
+
+Support for partitioned cookies is available as an experimental feature since version 0.8.0, following the current
+[RFC draft](https://www.ietf.org/archive/id/draft-cutler-httpbis-partitioned-cookies-01.html#name-partitioned-cookies-with-th)
+and subject to future changes.
+
+Example Code:
+
+```go
+func SetPartitionedCookie(c *app.RequestContext, name, value string, maxAge int, path, domain string, sameSite protocol.CookieSameSite, secure, httpOnly bool) {
+   if path == "" {
+      path = "/"
+   }
+   cookie := protocol.AcquireCookie()
+   defer protocol.ReleaseCookie(cookie)
+   // It is recommended to use the __Host prefix when setting partitioned cookies
+   // to make them bound to the hostname (and not the registrable domain).
+   cookie.SetKey(name)
+   cookie.SetValue(url.QueryEscape(value))
+   cookie.SetMaxAge(maxAge)
+   // if name has __Host prefix, Path must be set to "/”.
+   cookie.SetPath(path)
+   cookie.SetDomain(domain)
+   // Partitioned cookies must be set with Secure.
+   cookie.SetSecure(secure)
+   cookie.SetHTTPOnly(httpOnly)
+   cookie.SetSameSite(sameSite)
+   cookie.SetPartitioned(true)
+   // Set-Cookie: user=hertz; max-age=1; domain=localhost; path=/; HttpOnly; secure; SameSite=None; Partitioned
+   c.Response.Header.SetCookie(cookie)
+}
+
+func main() {
+   h := server.Default()
+
+   h.GET("/partitioned", func(ctx context.Context, c *app.RequestContext) {
+      SetPartitionedCookie(c, "user", "hertz", 1, "/", "localhost", protocol.CookieSameSiteNoneMode, true, true)
+      c.JSON(consts.StatusOK, utils.H{"partitioned": "yes"})
+   })
+
+   h.Spin()
+}
+```
+
+### AbortWithStatus
+
+Set the Status Code and terminate subsequent handlers.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) AbortWithStatus(code int)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.AbortWithStatus(consts.StatusOK)
+}, func(ctx context.Context, c *app.RequestContext) {
+    // will not execute
+})
+```
+
+### AbortWithError
+
+Set the Status Code and collect Errors, terminate subsequent handlers, and return an Error.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) AbortWithError(code int, err error) *errors.Error
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.AbortWithError(consts.StatusOK, errors.New("hertz error"))
+	err := c.Errors.String()
+	// err == "Error #01: hertz error"
+}, func(ctx context.Context, c *app.RequestContext) {
+    // will not execute
+})
+```
+
+### ResponseHeader
+
+Use RequestContext.Response.Header to obtain the ResponseHeader object, this object provides the following methods to obtain/set the response header.
+
+| Function Signature                                                              | Description                                                                                                                                                                                                                      |
+| :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `func (h *ResponseHeader) IsHTTP11() bool`                                      | Determine if it is the `HTTP/1.1` protocol, and true indicates it is the `HTTP/1.1` protocol                                                                                                                                     |
+| `func (h *ResponseHeader) SetHeaderLength(length int)`                          | Set the length of the response header                                                                                                                                                                                            |
+| `func (h *ResponseHeader) GetHeaderLength()`                                    | Get the length of the response header                                                                                                                                                                                            |
+| `func (h *ResponseHeader) SetContentRange(startPos, endPos, contentLength int)` | Set `Content-Range: bytes startPos-endPos/contentLength` in the response header, such as `Content-Range: bytes 1-5/10`                                                                                                           |
+| `func (h *ResponseHeader) NoDefaultContentType() bool`                          | Obtain the default sending behavior when no Content-Type is specified. False indicates sending the default Content-Type value, true indicates not sending, and the default Content-Type value is `text/plain; charset=utf-8`     |
+| `func (h *ResponseHeader) SetNoDefaultContentType(b bool)`                      | Set the default sending behavior when no Content-Type is specified. False indicates sending the default Content-Type value, true indicates not sending, and the default Content-Type value is `text/plain; charset=utf-8`        |
+| `func (h *ResponseHeader) SetContentType(contentType string)`                   | Set Content-Type                                                                                                                                                                                                                 |
+| `func (h *ResponseHeader) ContentType() []byte`                                 | Obtain Content-Type                                                                                                                                                                                                              |
+| `func (h *ResponseHeader) SetContentTypeBytes(contentType []byte)`              | Set Content-Type                                                                                                                                                                                                                 |
+| `func (h *ResponseHeader) ContentLength() int`                                  | Obtain Content-Length, which can be a negative value. -1 represents `Transfer-Encoding: chunked`, -2 represents `Transfer-Encoding: identity`                                                                                    |
+| `func (h *ResponseHeader) SetContentLength(contentLength int)`                  | Set Content-Length, which can be a negative value. -1 represents `Transfer-Encoding: chunked`, -2 represents `Transfer-Encoding: identity`                                                                                       |
+| `func (h *ResponseHeader) SetContentLengthBytes(contentLength []byte)`          | Set Content-Length for type `[]byte`, which can be a negative value. -1 represents `Transfer-Encoding: chunked`, -2 represents `Transfer-Encoding: identity`                                                                     |
+| `func (h *ResponseHeader) CopyTo(dst *ResponseHeader)`                          | Return a copy of the response header, which can be used when there is competitive access to the response header                                                                                                                  |
+| `func (h *ResponseHeader) GetHeaders() []argsKV`                                | Return all response headers in the form of key value pairs                                                                                                                                                                       |
+| `func (h *ResponseHeader) VisitAll(f func(key, value []byte))`                  | Visit all the key values of all headers and execute the f function                                                                                                                                                               |
+| `func (h *ResponseHeader) Get(key string) string`                               | Obtain the value of key, concurrency security                                                                                                                                                                                    |
+| `func (h *ResponseHeader) GetAll(key string) []string`                          | Obtain all values of key with type `[]byte` (used to obtain multiple values with the same key), concurrency safety                                                                                                               |
+| `func (h *ResponseHeader) Peek(key string) []byte`                              | Obtain a key value of type `[]byte` as key, which is not secure for concurrency, and using `Get` when competing for access                                                                                                       |
+| `func (h *ResponseHeader) PeekAll(key string) [][]byte`                         | Obtain all values of type `[]byte` key as key (used to obtain multiple values with the same key), which is not secure for concurrency, and uses `GetAll` when competing for access                                               |
+| `func (h *ResponseHeader) Set(key, value string)`                               | Set the header key value to set a single header for the same key                                                                                                                                                                 |
+| `func (h *ResponseHeader) SetBytesV(key string, value []byte)`                  | Set the header key value of type `[]byte` to set a single header for the same key                                                                                                                                                |
+| `func (h *ResponseHeader) Add(key, value string)`                               | Set the header key value to set multiple headers for the same key, but the key will overwrite the following headers: Content Type, Content Length, Connection, Cookie, Transfer Encoding, Host, User Agent                       |
+| `func (h *ResponseHeader) AddArgBytes(key, value []byte, noValue bool)`         | Add Header key value (different from `Add`, the key must not be normalized and will not undergo special processing when it is Content-Type, Content-Length, Content-Encoding, Connection, Server, Set-Cookie, Transfer-Encoding) |
+| `func (h *ResponseHeader) SetArgBytes(key, value []byte, noValue bool)`         | Set Header key value (different from `Set`, the key must not be normalized and will not undergo special processing when it is Content-Type, Content-Length, Content-Encoding, Connection, Server, Set-Cookie, Transfer-Encoding) |
+| `func (h *ResponseHeader) Del(key string)`                                      | Delete key value pairs with key in the header                                                                                                                                                                                    |
+| `func (h *ResponseHeader) DelBytes(key []byte)`                                 | Delete key value pairs with key in the header                                                                                                                                                                                    |
+| `func (h *ResponseHeader) AppendBytes(dst []byte) []byte`                       | Attach the complete header to the dst and return                                                                                                                                                                                 |
+| `func (h *ResponseHeader) Header() []byte`                                      | Obtain the complete header of type `[]byte`                                                                                                                                                                                      |
+| `func (h *ResponseHeader) PeekLocation() []byte`                                | Return the value with key `Location` in the header                                                                                                                                                                               |
+| `func (h *ResponseHeader) Cookie(cookie *Cookie) bool`                          | Fill cookie for the given cookie.Key, and return false if the cookie.Key is missing                                                                                                                                              |
+| `func (h *RequestHeader) FullCookie() []byte`                                   | Return the complete cookie as a byte array                                                                                                                                                                                       |
+| `func (h *ResponseHeader) SetCookie(cookie *Cookie)`                            | Set Cookie Key Values                                                                                                                                                                                                            |
+| `func (h *ResponseHeader) VisitAllCookie(f func(key, value []byte))`            | Visit all the key values of all cookies and execute the f function                                                                                                                                                               |
+| `func (h *ResponseHeader) DelAllCookies()`                                      | Delete all cookies                                                                                                                                                                                                               |
+| `func (h *ResponseHeader) DelCookie(key string)`                                | Delete cookie with key in the response header. To delete cookies from the client, use the `DelClientCookie` function                                                                                                             |
+| `func (h *ResponseHeader) DelCookieBytes(key []byte)`                           | Delete cookie with key in the response header. To delete cookies from the client, use the `DelClientCookieBytes` function                                                                                                        |
+| `func (h *ResponseHeader) DelClientCookie(key string)`                          | Remove the cookie from the client                                                                                                                                                                                                |
+| `func (h *ResponseHeader) DelClientCookieBytes(key []byte)`                     | Remove the cookie from the client                                                                                                                                                                                                |
+| `func (h *ResponseHeader) SetConnectionClose(close bool)`                       | Set the `Connection: close` flag in the response header                                                                                                                                                                          |
+| `func (h *ResponseHeader) ConnectionClose() bool`                               | Determine if Connection: close is included                                                                                                                                                                                       |
+| `func (h *ResponseHeader) ContentEncoding() []byte`                             | Option Content-Encoding                                                                                                                                                                                                          |
+| `func (h *ResponseHeader) SetContentEncoding(contentEncoding string)`           | Set Content-Encoding                                                                                                                                                                                                             |
+| `func (h *ResponseHeader) SetContentEncodingBytes(contentEncoding []byte)`      | Set Content-Encoding                                                                                                                                                                                                             |
+| `func (h *ResponseHeader) SetCanonical(key, value []byte)`                      | Set the Header key value, assuming that the key is in canonical form                                                                                                                                                             |
+| `func (h *ResponseHeader) Server() []byte`                                      | Return the value with key `Server` in the header                                                                                                                                                                                 |
+| `func (h *ResponseHeader) SetServerBytes(server []byte)`                        | Set the key in the header to the value of Server                                                                                                                                                                                 |
+| `func (h *ResponseHeader) MustSkipContentLength() bool`                         | Determine if there is a response body (according to the HTTP/1.1 protocol, there is no response body when the response status codes are 1xx, 204, or 304)                                                                        |
+| `func (h *ResponseHeader) StatusCode() int`                                     | Option StatusCode                                                                                                                                                                                                                |
+| `func (h *ResponseHeader) SetStatusCode(statusCode int)`                        | Set StatusCode                                                                                                                                                                                                                   |
+| `func (h *ResponseHeader) Len() int`                                            | Return the number of headers                                                                                                                                                                                                     |
+| `func (h *ResponseHeader) DisableNormalizing()`                                 | Disable the normalization of header name (capitalize the first letter and the first letter after the Em dash)                                                                                                                    |
+| `func (h *ResponseHeader) IsDisableNormalizing() bool`                          | Whether to disable the normalization of header names, default not disabled                                                                                                                                                       |
+| `func (h *ResponseHeader) Trailer() *Trailer`                                   | Get Trailer                                                                                                                                                                                                                      |
+| `func (h *ResponseHeader) SetProtocol(p string)`                                | Set protocol name                                                                                                                                                                                                                |
+| `func (h *ResponseHeader) GetProtocol() string`                                 | Get protocol name                                                                                                                                                                                                                |
+| `func (h *ResponseHeader) Reset()`                                              | Reset the response header                                                                                                                                                                                                        |
+| `func (h *ResponseHeader) ResetSkipNormalize()`                                 | Reset the response header, except for the `disableNormalizing` state                                                                                                                                                             |
+| `func (h *ResponseHeader) ResetConnectionClose()`                               | Reset the connectionClose flag to false and delete the Connection Header                                                                                                                                                         |
+
+## Render
+
+Hertz supports rendering of JSON, HTML, Protobuf, etc. (For more information, please refer to [Render](/docs/hertz/tutorials/basic-feature/render))
+
+```go
+func (ctx *RequestContext) Render(code int, r render.Render)
+func (ctx *RequestContext) String(code int, format string, values ...interface{})
+func (ctx *RequestContext) ProtoBuf(code int, obj interface{})
+func (ctx *RequestContext) JSON(code int, obj interface{})
+func (ctx *RequestContext) PureJSON(code int, obj interface{})
+func (ctx *RequestContext) IndentedJSON(code int, obj interface{})
+func (ctx *RequestContext) HTML(code int, name string, obj interface{})
+func (ctx *RequestContext) Data(code int, contentType string, data []byte)
+func (ctx *RequestContext) XML(code int, obj interface{})
+```
+
+## Body
+
+```go
+func (ctx *RequestContext) SetBodyStream(bodyStream io.Reader, bodySize int)
+func (ctx *RequestContext) SetBodyString(body string)
+func (ctx *RequestContext) Write(p []byte) (int, error)
+func (ctx *RequestContext) WriteString(s string) (int, error)
+func (ctx *RequestContext) AbortWithMsg(msg string, statusCode int)
+func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
+```
+
+### SetBodyStream
+
+Set Body Stream and optional Body Size. This function is used for streaming processing on Hertz Server, as detailed in [Streaming](/docs/hertz/tutorials/basic-feature/engine/#streaming).
+
+> Note: When the bodySize is less than 0, all data is written. When it is greater than or equal to 0, data is written based on the set bodySize size.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) SetBodyStream(bodyStream io.Reader, bodySize int)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    data := "hello world"
+    r := strings.NewReader(data)
+    c.SetBodyStream(r, -1) // Body: "hello world"
+})
+
+h.GET("/user1", func(ctx context.Context, c *app.RequestContext) {
+    data := "hello world"
+    r1 := strings.NewReader(data)
+    c.SetBodyStream(r1, 5) // Body: "hello"
+})
+```
+
+### SetBodyString
+
+Set Body.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) SetBodyString(body string)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.SetBodyString("hello world") // Body: "hello world"
+})
+```
+
+### Write
+
+Add the byte array p to the Body.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) Write(p []byte) (int, error)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.Write([]byte("hello"))
+    c.Write([]byte(" "))
+    c.Write([]byte("world"))
+    // Body: "hello world"
+})
+```
+
+### WriteString
+
+Set the Body and return the size.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) WriteString(s string) (int, error)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    size, _ := c.WriteString("hello world")// Body: "hello world", size == 11
+})
+
+```
+
+### AbortWithMsg
+
+Set the Status Code and Body and terminate subsequent handlers.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) AbortWithMsg(msg string, statusCode int)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.AbortWithMsg("abort", consts.StatusOK)
+}, func(ctx context.Context, c *app.RequestContext) {
+    // will not execute
+})
+```
+
+### AbortWithStatusJSON
+
+Set Status Code and Json format Body and terminate subsequent handlers.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) AbortWithStatusJSON(code int, jsonObj interface{})
+```
+
+Example Code:
+
+```go
+ h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+  c.AbortWithStatusJSON(consts.StatusOK, utils.H{
+   "foo":  "bar",
+   "html": "<b>",
+  })
+ }, func(ctx context.Context, c *app.RequestContext) {
+  // will not execute
+ })
+```
+
+## File operation
+
+```go
+func (ctx *RequestContext) File(filepath string)
+func (ctx *RequestContext) FileAttachment(filepath, filename string)
+func (ctx *RequestContext) FileFromFS(filepath string, fs *FS)
+```
+
+### File
+
+Write the specified file to Body Stream.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) File(filepath string)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.File("./main.go")
+})
+```
+
+### FileAttachment
+
+Write the specified file to Body Stream and specify it as download through Content-Disposition.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) FileAttachment(filepath, filename string)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.FileAttachment("./main.go")
+})
+```
+
+### FileFromFS
+
+Write the specified file to Body Stream.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) FileFromFS(filepath string, fs *FS)
+```
+
+Example Code:
+
+```go
+h.GET("/user", func(ctx context.Context, c *app.RequestContext) {
+    c.FileFromFS("./main.go", &app.FS{
+        Root:               ".",
+        IndexNames:         nil,
+        GenerateIndexPages: false,
+        AcceptByteRange:    true,
+    })
+})
+```
+
+## Other Functions
+
+```go
+func (ctx *RequestContext) Flush() error
+func (ctx *RequestContext) GetResponse() (dst *protocol.Response)
+```
+
+### Flush
+
+Brush data into the hijacked Response Writer. (For more information, please refer to [response_writer](/docs/hertz/tutorials/framework-exten/response_writer/#%E5%8A%AB%E6%8C%81-response-%E7%9A%84-writer))
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) Flush() error
+```
+
+### GetResponse
+
+Get the Response object.
+
+Function Signature:
+
+```go
+func (ctx *RequestContext) GetResponse() (dst *protocol.Response)
+```
+</script><h1>Response</h1><div class=lead>The functions related to the response in RequestContext.</div><header class=article-meta></header><h2 id=header>Header</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>RequestContext</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>SetContentType</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>contentType</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>string</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>RequestContext</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>SetContentTypeBytes</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>contentType</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>[]</span><span style=color:#204a87;font-weight:700>byte</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>RequestContext</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>SetConnectionClose</span><span style=color:#000;font-weight:700>()</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#000>ctx</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>*</span><span style=color:#000>RequestContext</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>SetStatusCode</span><span style=color:#000;font-weight:700>(</span><span style=color:#000>statusCode</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#204a87;font-weight:700>int</span><span style=color:#000;font-weight:700>)</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -321,4 +959,4 @@ and subject to future changes.</p><p>Example Code:</p><div class=highlight><pre 
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified May 19, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/a7a343ca0ce434586b1814f3fddc70efb02b010a>chore: upgrade typos (#1332) (a7a343ca)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

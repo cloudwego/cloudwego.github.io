@@ -19,7 +19,7 @@
 在 golang 中，要实现这个假设，有两个基本方案：
 把不同节点的输入输出都变成一种更泛化的类型，例如 any 、map[string]any 等。 采用泛化成 any 的方案，但对应的代价是: 开发者在写代码时，需要显式转换成具体类型才能使用。这会极大增加开发者的心智负担，因此最终放弃此方案。 langchain 的方案可以看做是全程传递 map[string]any，各个逻辑节点根据自己的需要，用对应的 key 去取对应的 value。在 langchaingo 的实现中，即是按照这种方式实现，但同样，golang 中的 any 要被使用依然要使用 类型断言 才可使用。这种方案在开发者使用时依然有很大的心智负担。 每一个节点的输入输出类型保持开发者的预期，在 Compile 阶段保证上下游的类型是一致的。 方案 2 即是 eino 最终选定的方案。这种方案是编排时最容易被理解的，整个过程就像是 搭积木 一样，每一个积木突出的部分和凹陷的部分有各自的规格，仅有规格匹配了才能成为上下游关系。
 就如下图：
-对于一个编排而言，只有下游能识别和处理上游的输出，这个编排才能正常运行。 这个基本假设在 eino 中被清晰地表达了出来，让开发者在用 eino 做编排时，能够有十足的信心清楚编排的逻辑是如何运行和流转的，而不是从一系列的 any 中去猜测传过来的值是否正确。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+对于一个编排而言，只有下游能识别和处理上游的输出，这个编排才能正常运行。 这个基本假设在 eino 中被清晰地表达了出来，让开发者在用 eino 做编排时，能够有十足的信心清楚编排的逻辑是如何运行和流转的，而不是从一系列的 any 中去猜测传过来的值是否正确。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -128,7 +128,485 @@
 <label for=m-zhdocseinofaq-check><a href=/zh/docs/eino/faq/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/eino/core_modules/chain_and_graph_orchestration?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e7%bc%96%e6%8e%92%e7%9a%84%e8%ae%be%e8%ae%a1%e7%90%86%e5%bf%b5" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#以上下游-类型对齐-为基本准则>以上下游 <code>类型对齐</code> 为基本准则</a><ul><li><a href=#graph-中的类型对齐>graph 中的类型对齐</a></li><li><a href=#chain-中的类型对齐>chain 中的类型对齐</a></li><li><a href=#workflow-中的类型对齐>Workflow 中的类型对齐</a></li><li><a href=#statehandler-的类型对齐>StateHandler 的类型对齐</a></li><li><a href=#invoke-和-stream-下的类型对齐方式>invoke 和 stream 下的类型对齐方式</a></li><li><a href=#类型对齐在运行时检查的场景>类型对齐在运行时检查的场景</a></li></ul></li><li><a href=#带有明确倾向性的设计选择>带有明确倾向性的设计选择</a><ul><li><a href=#外部变量只读原则>外部变量只读原则</a></li><li><a href=#扇入与合并>扇入与合并</a></li><li><a href=#流式处理>流式处理</a></li><li><a href=#全局状态>全局状态</a></li><li><a href=#回调注入>回调注入</a></li><li><a href=#option-分配>Option 分配</a></li><li><a href=#图嵌套>图嵌套</a></li></ul></li><li><a href=#内部机制>内部机制</a><ul><li><a href=#执行时序>执行时序</a></li><li><a href=#运行引擎>运行引擎</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/chain_and_graph_orchestration/>Chain & Graph & Workflow 编排功能</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles/>编排的设计理念</a></li></ol></nav><div class=td-content><h1>编排的设计理念</h1><header class=article-meta></header><p>大模型应用编排框架的主流语言是 python，这门语言以其灵活性著称，灵活性给 sdk 的开发带来便利，但同时也给 sdk 的使用者带来了心智负担。</p><p>基于 golang 的 eino 则是 <code>静态类型</code> ，在 Compile 时做类型检查，避免了 python 等动态语言的运行时类型问题。</p><h2 id=以上下游-类型对齐-为基本准则>以上下游 <code>类型对齐</code> 为基本准则</h2><p>eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是哪种编排方式，其本质都是 <code>逻辑节点</code> + <code>上下游关系</code> 。在编排的产物运行时，都是从一个逻辑节点运行，然后下一步运行和这个节点相连的下一个节点。</p><p>这之间蕴含了一个基本假设：<strong>前一个运行节点的输出值，可以作为下一个节点的输入值。</strong></p><p>在 golang 中，要实现这个假设，有两个基本方案：</p><ol><li>把不同节点的输入输出都变成一种更泛化的类型，例如 <code>any</code> 、<code>map[string]any</code> 等。<ol><li>采用泛化成 any 的方案，但对应的代价是: 开发者在写代码时，需要显式转换成具体类型才能使用。这会极大增加开发者的心智负担，因此最终放弃此方案。</li><li>langchain 的方案可以看做是全程传递 <code>map[string]any</code>，各个逻辑节点根据自己的需要，用对应的 key 去取对应的 value。在 langchaingo 的实现中，即是按照这种方式实现，但同样，golang 中的 any 要被使用依然要使用 <code>类型断言</code> 才可使用。这种方案在开发者使用时依然有很大的心智负担。</li></ol></li><li>每一个节点的输入输出类型保持开发者的预期，在 Compile 阶段保证上下游的类型是一致的。</li></ol><p>方案 2 即是 eino 最终选定的方案。这种方案是编排时最容易被理解的，整个过程就像是 <code>搭积木</code> 一样，每一个积木突出的部分和凹陷的部分有各自的规格，仅有规格匹配了才能成为上下游关系。</p><p>就如下图：</p><p><a href=/img/eino/edge_type_validate.png target=_blank><img src=/img/eino/edge_type_validate.png width=100%></a></p><p>对于一个编排而言，只有下游能识别和处理上游的输出，这个编排才能正常运行。 这个基本假设在 eino 中被清晰地表达了出来，让开发者在用 eino 做编排时，能够有十足的信心清楚编排的逻辑是如何运行和流转的，而不是从一系列的 any 中去猜测传过来的值是否正确。</p><h3 id=graph-中的类型对齐>graph 中的类型对齐</h3><h4 id=edge>edge</h4><p>在 graph 中，一个节点的输出将顺着 <code>边(edge)</code> 流向下一节点，因此，用边连接的节点间必须要类型对齐。</p><p>如下图：</p><blockquote><p>这是一个模拟 ① 直接和大模型对话 ② 使用 RAG 模式 的场景，最后结果可用于对比两种模式的效果</p></blockquote><p><a href=/img/eino/input_output_type_validate.png target=_blank><img src=/img/eino/input_output_type_validate.png width=100%></a></p><p>图中绿色的部分，就是普通的 Edge 连接，其要求上游的输出必须能 <code>assign</code> 给下游，可以接收的类型有：</p><p>① 上下游类型相同: 例如上游输出 *schema.Message 下游输入也是 *schema.Message</p><p>② 下游接收接口，上游实现了该接口: 例如上游结构体实现了 Format() 接口，下游接收的是一个 interface{ Format() }。特殊情况是下游是 any（空接口），上游一定实现了 any，因此一定可以连接。</p><p>③ 上游是 interface，下游是具体类型: 当下游具体类型 implements 上游的 interface 类型时，有可能可以，有可能不行，在 compile 时无法确定，只有在运行时，等上游的具体类型确定了，才能最终确定。时，详细描述可见: <a href=/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles>Eino: 编排的设计理念</a></p><p>图中黄色的部分，则是 eino 提供的另一个类型转换的机制，即: 若下游接收的类型是 <code>map[string]any</code>，但是上游输出的类型并不是 map[string]any，可以使用 <code>graph.AddXXXNode(node_key, xxx, compose.WithOutputKey("outkey")</code> 的方式将上游输出的类型转化为 map[string]any，其中 map 的 key 是 option 中指定的 OutputKey。 一般在多条边汇聚到某一个节点时，这种机制使用起来较为方便。</p><p>同理，若上游是 <code>map[string]any</code> ，但是下游输入的类型并不是 map[string]any，则可以使用 <code>graph.AddXXXNode(node_key, xxx, compose.WithInputKey("inkey")</code> 来获取上游输出的其中一个 key 的 value，作为下游的输入。</p><h4 id=branch>branch</h4><p>如果一个节点后面连接了多个 edge，则每条 edge 的下游节点都会运行一次。branch 则是另一种机制： 一个 branch 后接了 n 个节点，但仅会运行 condition 返回的那个 node key 对应的节点。同一个 branch 后的节点，必须要类型对齐。</p><p>如下图:</p><blockquote><p>这是一个模拟 react agent 的运行逻辑</p></blockquote><p><a href=/img/eino/branch_to_draw_loop.png target=_blank><img src=/img/eino/branch_to_draw_loop.png width=100%></a></p><p>可以看到，一个 branch 本身拥有一个 <code>condition</code>, 这个 function 的输入必须和上游类型对齐。同时，一个 branch 后所接的各个节点，也必须和 condition 一样，要能接收上游的输出。</p><h3 id=chain-中的类型对齐>chain 中的类型对齐</h3><h4 id=chain>chain</h4><p>从抽象角度看，chain 就是一个 <code>链条</code>，如下所示：</p><p><a href=/img/eino/what_is_chain.png target=_blank><img src=/img/eino/what_is_chain.png width=100%></a></p><p>逻辑节点的类型可以分为 3 类：</p><ul><li>可编排组件 (例如 chat model、 chat template、 retriever、 lambda、graph 等等)</li><li>branch 节点</li><li>parallel 节点</li></ul><p>可以看到，在 chain 的视角下，不论是简单的节点(eg： chat model) 还是复杂的节点 (eg: graph、branch、parallel)，都是一样的，在运行过程中，一步的执行就是一个节点的运行。</p><p>也因此，chain 的上下游节点间，类型必须是对齐的，如下：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>TestChain</span><span style=color:#000;font-weight:700>()</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#以上下游-类型对齐-为基本准则>以上下游 <code>类型对齐</code> 为基本准则</a><ul><li><a href=#graph-中的类型对齐>graph 中的类型对齐</a></li><li><a href=#chain-中的类型对齐>chain 中的类型对齐</a></li><li><a href=#workflow-中的类型对齐>Workflow 中的类型对齐</a></li><li><a href=#statehandler-的类型对齐>StateHandler 的类型对齐</a></li><li><a href=#invoke-和-stream-下的类型对齐方式>invoke 和 stream 下的类型对齐方式</a></li><li><a href=#类型对齐在运行时检查的场景>类型对齐在运行时检查的场景</a></li></ul></li><li><a href=#带有明确倾向性的设计选择>带有明确倾向性的设计选择</a><ul><li><a href=#外部变量只读原则>外部变量只读原则</a></li><li><a href=#扇入与合并>扇入与合并</a></li><li><a href=#流式处理>流式处理</a></li><li><a href=#全局状态>全局状态</a></li><li><a href=#回调注入>回调注入</a></li><li><a href=#option-分配>Option 分配</a></li><li><a href=#图嵌套>图嵌套</a></li></ul></li><li><a href=#内部机制>内部机制</a><ul><li><a href=#执行时序>执行时序</a></li><li><a href=#运行引擎>运行引擎</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/>核心模块</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/chain_and_graph_orchestration/>Chain & Graph & Workflow 编排功能</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles/>编排的设计理念</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=编排的设计理念 data-url=https://www.cloudwego.io/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+大模型应用编排框架的主流语言是 python，这门语言以其灵活性著称，灵活性给 sdk 的开发带来便利，但同时也给 sdk 的使用者带来了心智负担。
+
+基于 golang 的 eino 则是 `静态类型` ，在 Compile 时做类型检查，避免了 python 等动态语言的运行时类型问题。
+
+## 以上下游 `类型对齐` 为基本准则
+
+eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是哪种编排方式，其本质都是 `逻辑节点` + `上下游关系` 。在编排的产物运行时，都是从一个逻辑节点运行，然后下一步运行和这个节点相连的下一个节点。
+
+这之间蕴含了一个基本假设：**前一个运行节点的输出值，可以作为下一个节点的输入值。**
+
+在 golang 中，要实现这个假设，有两个基本方案：
+
+1. 把不同节点的输入输出都变成一种更泛化的类型，例如 `any` 、`map[string]any` 等。
+   1. 采用泛化成 any 的方案，但对应的代价是: 开发者在写代码时，需要显式转换成具体类型才能使用。这会极大增加开发者的心智负担，因此最终放弃此方案。
+   2. langchain 的方案可以看做是全程传递 `map[string]any`，各个逻辑节点根据自己的需要，用对应的 key 去取对应的 value。在 langchaingo 的实现中，即是按照这种方式实现，但同样，golang 中的 any 要被使用依然要使用 `类型断言` 才可使用。这种方案在开发者使用时依然有很大的心智负担。
+2. 每一个节点的输入输出类型保持开发者的预期，在 Compile 阶段保证上下游的类型是一致的。
+
+方案 2 即是 eino 最终选定的方案。这种方案是编排时最容易被理解的，整个过程就像是 `搭积木` 一样，每一个积木突出的部分和凹陷的部分有各自的规格，仅有规格匹配了才能成为上下游关系。
+
+就如下图：
+
+<a href="/img/eino/edge_type_validate.png" target="_blank"><img src="/img/eino/edge_type_validate.png" width="100%" /></a>
+
+对于一个编排而言，只有下游能识别和处理上游的输出，这个编排才能正常运行。 这个基本假设在 eino 中被清晰地表达了出来，让开发者在用 eino 做编排时，能够有十足的信心清楚编排的逻辑是如何运行和流转的，而不是从一系列的 any 中去猜测传过来的值是否正确。
+
+### graph 中的类型对齐
+
+#### edge
+
+在 graph 中，一个节点的输出将顺着 `边(edge)` 流向下一节点，因此，用边连接的节点间必须要类型对齐。
+
+如下图：
+
+> 这是一个模拟 ① 直接和大模型对话 ② 使用 RAG 模式 的场景，最后结果可用于对比两种模式的效果
+
+<a href="/img/eino/input_output_type_validate.png" target="_blank"><img src="/img/eino/input_output_type_validate.png" width="100%" /></a>
+
+图中绿色的部分，就是普通的 Edge 连接，其要求上游的输出必须能 `assign` 给下游，可以接收的类型有：
+
+① 上下游类型相同: 例如上游输出 *schema.Message 下游输入也是 *schema.Message
+
+② 下游接收接口，上游实现了该接口: 例如上游结构体实现了 Format() 接口，下游接收的是一个 interface{ Format() }。特殊情况是下游是 any（空接口），上游一定实现了 any，因此一定可以连接。
+
+③  上游是  interface，下游是具体类型:  当下游具体类型 implements 上游的 interface 类型时，有可能可以，有可能不行，在 compile 时无法确定，只有在运行时，等上游的具体类型确定了，才能最终确定。时，详细描述可见: [Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles)
+
+图中黄色的部分，则是 eino 提供的另一个类型转换的机制，即: 若下游接收的类型是 `map[string]any`，但是上游输出的类型并不是 map[string]any，可以使用 `graph.AddXXXNode(node_key, xxx, compose.WithOutputKey("outkey")` 的方式将上游输出的类型转化为 map[string]any，其中 map 的 key 是 option 中指定的 OutputKey。 一般在多条边汇聚到某一个节点时，这种机制使用起来较为方便。
+
+同理，若上游是 `map[string]any` ，但是下游输入的类型并不是 map[string]any，则可以使用 `graph.AddXXXNode(node_key, xxx, compose.WithInputKey("inkey")` 来获取上游输出的其中一个 key 的 value，作为下游的输入。
+
+#### branch
+
+如果一个节点后面连接了多个 edge，则每条 edge 的下游节点都会运行一次。branch 则是另一种机制： 一个 branch 后接了 n 个节点，但仅会运行 condition 返回的那个 node key 对应的节点。同一个 branch 后的节点，必须要类型对齐。
+
+如下图:
+
+> 这是一个模拟 react agent 的运行逻辑
+
+<a href="/img/eino/branch_to_draw_loop.png" target="_blank"><img src="/img/eino/branch_to_draw_loop.png" width="100%" /></a>
+
+可以看到，一个 branch 本身拥有一个 `condition`, 这个 function 的输入必须和上游类型对齐。同时，一个 branch 后所接的各个节点，也必须和 condition 一样，要能接收上游的输出。
+
+### chain 中的类型对齐
+
+#### chain
+
+从抽象角度看，chain 就是一个 `链条`，如下所示：
+
+<a href="/img/eino/what_is_chain.png" target="_blank"><img src="/img/eino/what_is_chain.png" width="100%" /></a>
+
+逻辑节点的类型可以分为 3 类：
+
+- 可编排组件 (例如 chat model、 chat template、 retriever、 lambda、graph 等等)
+- branch 节点
+- parallel 节点
+
+可以看到，在 chain 的视角下，不论是简单的节点(eg： chat model) 还是复杂的节点 (eg: graph、branch、parallel)，都是一样的，在运行过程中，一步的执行就是一个节点的运行。
+
+也因此，chain 的上下游节点间，类型必须是对齐的，如下：
+
+```go
+func TestChain() {
+    chain := compose.NewChain[map[string]interface,string]()
+    
+    nodeTemplate := &fakeChatTemplate{} // input: map[string]any, output: []*schema.Message
+    
+    nodeHistoryLambda := &fakeLambda{} // input: []*schema.Message, output: []*schema.Message
+    
+    nodeChatModel := &fakeChatModel{} // input: []*schema.Message, output: *schema.Message
+    
+    nodeConvertResLambda := &fakeLambda{} // input: *schema.Message, output: string
+    
+    chain.
+        AppendChatTemplate(nodeTemplate).
+        AppendLambda(nodeHistoryLambda).
+        AppendChatModel(nodeChatModel).
+        AppendLambda(nodeConvertResLambda)
+}
+```
+
+上面的逻辑用图来表示如下：
+
+<a href="/img/eino/nodes_type_validate.png" target="_blank"><img src="/img/eino/nodes_type_validate.png" width="100%" /></a>
+
+若上下游的类型没有对齐，chain 会在 chain.Compile() 时返回错误。而 graph 会在 graph.AddXXXNode() 时就报错。
+
+#### parallel
+
+parallel 在 chain 中是一类特殊的节点，从 chain 的角度看 parallel 和其他的节点没啥区别。在 parallel 内部，其基本拓扑结构如下：
+
+<a href="/img/eino/same_type_of_parallel.png" target="_blank"><img src="/img/eino/same_type_of_parallel.png" width="100%" /></a>
+
+graph 中的多 edge 形成的结构其中一种就是这个，这里的基本假设是： 一个 parallel 的每一条边上有且仅有一个节点。当然，这一个节点也可以是 graph。但注意，目前框架没有直接提供在 parallel 中嵌套 branch 或 parallel 的能力。
+
+在 parallel 中的每个节点，由于其上游节点是同一个，因此他们都要和上游节点的输出类型对齐，比如图中上游节点输出了 `*schema.Message` ，则每个节点都要能接收这个类型。接收的方式和 graph 中的一致，通常可以用 `相同类型` 、`接口定义` 、`any`、`input key option` 的方式。
+
+parallel 节点的输出一定是一个 `map[string]any`，其中的 key 则是在 `parallel.AddXXX(output_key, xxx, opts...)` 时指定的 output_key，value 是节点内部的实际输出。
+
+一个 parallel 的构建例子如下：
+
+```go
+func TestParallel() {
+    chain := compose.NewChain[map[string]any, map[string]*schema.Message]()
+    
+    parallel := compose.NewParallel()
+    model01 := &fakeChatModel{} // input: []*schema.Message, output: *schema.Message
+    model02 := &fakeChatModel{} // input: []*schema.Message, output: *schema.Message
+    model03 := &fakeChatModel{} // input: []*schema.Message, output: *schema.Message
+    
+    parallel.
+        AddChatModel("outkey_01", model01).
+        AddChatModel("outkey_02", model02).
+        AddChatModel("outkey_03", model03)
+    
+    lambdaNode := &fakeLambdaNode{} // input: map[string]any, output: map[string]*schema.Message
+    
+    chain.
+        AppendParallel(parallel).
+        AppendLambda(lambdaNode)
+}
+```
+
+一个 parallel 在 chain 中的视角如下：
+
+> 图中是模拟同一个提问，由不同的大模型去回答，结果可用于对比效果
+
+<a href="/img/eino/graph_as_chain_node.png" target="_blank"><img src="/img/eino/graph_as_chain_node.png" width="100%" /></a>
+
+> 需要注意的是，这个结构只是逻辑上的视角，由于 chain 本身也是用 graph 实现的，parallel 在底层 graph 中会平铺到图中。
+
+#### branch
+
+chain 的 branch 和 graph 中的 branch 类似，branch 中的所有节点都要和上游节点的类型对齐，此处不再赘述。chain branch 的特殊之处是，branch 的所有可能的分支节点，都会连到 chain 中的同一个节点，或者都会连到 END。
+
+### Workflow 中的类型对齐
+
+Workflow 的类型对齐的维度，由整体的 Input & Output 改成了字段级别。具体可分为：
+
+- 上游输出的整体，类型对齐到下游的某个具体字段。
+- 上游输出的某个具体字段，类型对齐到下游的整体。
+- 上游输出的某个具体字段，类型对齐到下游输入的某个具体字段。
+
+原理和规则与整体的类型对齐相同。
+
+### StateHandler 的类型对齐
+
+StatePreHandler: 输入类型需要对齐对应节点的非流式输入类型。
+
+```go
+// input 类型为 []*schema.Message，对齐 ChatModel 的非流式输入类型
+preHandler := func(ctx context.Context, input []*schema.Message, state *state) ([]*schema.Message, error) {
+    // your handler logic
+}
+
+AddChatModelNode("xxx", model, WithStatePreHandler(preHandler))
+```
+
+StatePostHandler: 输入类型需要对齐对应节点的非流式输出类型。
+
+```go
+// input 类型为 *schema.Message，对齐 ChatModel 的非流式输出类型
+postHandler := func(ctx context.Context, input *schema.Message, state *state) (*schema.Message, error) {
+    // your handler logic
+}
+
+AddChatModelNode("xxx", model, WithStatePostHandler(postHandler))
+```
+
+StreamStatePreHandler: 输入类型需要对齐对应节点的流式输入类型。
+
+```go
+// input 类型为 *schema.StreamReader[[]*schema.Message]，对齐 ChatModel 的流式输入类型
+preHandler := func(ctx context.Context, input *schema.StreamReader[[]*schema.Message], state *state) (*schema.StreamReader[[]*schema.Message], error) {
+    // your handler logic
+}
+
+AddChatModelNode("xxx", model, WithStreamStatePreHandler(preHandler))
+```
+
+StreamStatePostHandler: 输入类型需要对齐对应节点的流式输出类型。
+
+```go
+// input 类型为 *schema.StreamReader[*schema.Message]，对齐 ChatModel 的流式输出类型
+postHandler := func(ctx context.Context, input *schema.StreamReader[*schema.Message], state *state) (*schema.StreamReader[*schema.Message], error) {
+    // your handler logic
+}
+
+AddChatModelNode("xxx", model, WithStreamStatePostHandler(postHandler))
+```
+
+### invoke 和 stream 下的类型对齐方式
+
+在 Eino 中，编排的结果是 graph 或 chain，若要运行，则需要使用 `Compile()` 来生成一个 `Runnable` 接口。
+
+Runnable 的一个重要作用就是提供了 「Invoke」、「Stream」、「Collect」、「Transform」 四种调用方式。
+
+> 上述几种调用方式的介绍以及详细的 Runnable 介绍可以查看: [Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)
+
+假设我们有一个 `Graph[[]*schema.Message, []*schema.Message]`，里面有一个 ChatModel 节点，一个 Lambda 节点，Compile 之后是一个 `Runnable[[]*schema.Message, []*schema.Message]`。
+
+```go
+package main
+
+import (
+    "context"
+    "io"
+    "testing"
+
+    "github.com/cloudwego/eino/compose"
+    "github.com/cloudwego/eino/schema"
+    "github.com/stretchr/testify/assert"
+)
+
+func TestTypeMatch(t *testing.T) {
+    ctx := context.Background()
+
+    g1 := compose.NewGraph[[]*schema.Message, string]()
+    _ = g1.AddChatModelNode("model", &mockChatModel{})
+    _ = g1.AddLambdaNode("lambda", compose.InvokableLambda(func(_ context.Context, msg *schema.Message) (string, error) {
+       return msg.Content, nil
+    }))
+    _ = g1.AddEdge(compose.START, "model")
+    _ = g1.AddEdge("model", "lambda")
+    _ = g1.AddEdge("lambda", compose.END)
+
+    runner, err := g1.Compile(ctx)
+    assert.NoError(t, err)
+
+    c, err := runner.Invoke(ctx, []*schema.Message{
+       schema.UserMessage("what's the weather in beijing?"),
+    })
+    assert.NoError(t, err)
+    assert.Equal(t, "the weather is good", c)
+
+    s, err := runner.Stream(ctx, []*schema.Message{
+       schema.UserMessage("what's the weather in beijing?"),
+    })
+    assert.NoError(t, err)
+
+    var fullStr string
+    for {
+       chunk, err := s.Recv()
+       if err != nil {
+          if err == io.EOF {
+             break
+          }
+          panic(err)
+       }
+
+       fullStr += chunk
+    }
+    assert.Equal(t, c, fullStr)
+}
+```
+
+当我们以 Stream 方式调用上面编译好的 Runnable 时，model 节点会输出 `*schema.StreamReader[*Message]`，但是 lambda 节点是 InvokableLambda，只接收非流式的 `*schema.Message` 作为输入。这也符合类型对齐规则，因为 Eino 框架会自动把流式的 Message 拼接成完整的 Message。
+
+在 stream 模式下，拼接帧 是一个非常常见的操作，拼接时，会先把 `*StreamReader[T] ` 中的所有元素取出来转成 `[]T`，再尝试把 `[]T` 拼接成一个完整的 `T`。框架内已经内置支持了如下类型的拼接:
+
+- `*schema.Message`:  详情见 `schema.``ConcatMessages``()`
+- `string`: 实现逻辑等同于 `+=`
+- `[]*schema.Message`: 详情见 `compose.concatMessageArray()`
+- `Map`: 把相同 key 的 val 进行合并，合并逻辑同上，若存在无法合并的类型，则失败 (ps: 不是覆盖)
+- 其他 slice：只有当 slice 中只有一个元素是非零值时，才能合并。
+
+对其他场景，或者当用户想用定制逻辑覆盖掉上面的默认行为时，开发者可自行实现 concat 方法，并使用 `compose.RegisterStreamChunkConcatFunc()` 注册到全局的拼接函数中。
+
+示例如下：
+
+```go
+// 假设我们自己的结构体如下
+type tStreamConcatItemForTest struct {
+    s string
+}
+
+// 实现一个拼接的方法
+func concatTStreamForTest(items []*tStreamConcatItemForTest) (*tStreamConcatItemForTest, error) {
+    var s string
+    for _, item := range items {
+        s += item.s
+    }
+
+    return &tStreamConcatItemForTest{s: s}, nil
+}
+
+func Init() {
+    // 注册到全局的拼接方法中
+    compose.RegisterStreamChunkConcatFunc(concatTStreamForTest)
+}
+```
+
+### 类型对齐在运行时检查的场景
+
+eino 的 Graph 类型对齐检查，会在 `err = graph.AddEdge("node1", "node2")` 时检查两个节点类型是否匹配，也就能在 `构建 graph 的过程`，或 `Compile 的过程` 发现类型不匹配的错误，这适用于 [Eino: 编排的设计理念](/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles) 中所列举的 ① ② ③ 条规则。
+
+当上游节点的输出为 `interface` 时，若下游节点类型实现了该 `interface`，则上游有可能可以转成下游类型 (类型断言)，但只能在 `运行过程` 才能清楚能否转换成功，该场景的类型检查移到了运行过程中。
+
+其结构可见下图：
+
+<a href="/img/eino/input_type_output_type_in_edge.png" target="_blank"><img src="/img/eino/input_type_output_type_in_edge.png" width="100%" /></a>
+
+这种场景适用于开发者能自行处理好上下游类型对齐的情况，可根据不同类型选择下游执行节点。
+
+## 带有明确倾向性的设计选择
+
+### 外部变量只读原则
+
+Eino 的 Graph 中的数据在 Node、Branch、Handler 间流转时，一律是变量赋值，不是 Copy。当 Input 是引用类型，如 Struct 指针、map、slice 时，在 Node、Branch、Handler 内部对 Input 的修改，会对外部有副作用，可能导致并发问题。因此，Eino 遵循外部变量只读原则：Node、Branch、Handler 内部不对 Input 做修改，如需修改，先自行 Copy。
+
+这个原则对 StreamReader 中的 Chunk 同样生效。
+
+### 扇入与合并
+
+**扇入**：多个上游的数据汇入到下游，一起作为下游的输入。需要明确定义多个上游的输出，如何**合并（Merge）**起来。
+
+默认情况下，首先要求多个上游输出的**实际类型**必须相同且为 Map，且相互间 key 不可重复。其次：
+
+- 在非流式场景下，合并后成为一个 Map，包含所有上游的所有键值对。
+- 在流式场景下，将类型相同的多个上游 StreamReader 合并为一个 StreamReader。实际 Recv 时效果为从多个上游 StreamReader 中公平读取。
+
+在 AddNode 时，可以通过添加 WithOutputKey 这个 Option 来把节点的输出转成 Map：
+
+```go
+// 这个节点的输出，会从 string 改成 map[string]any，
+// 且 map 中只有一个元素，key 是 your_output_key，value 是实际的的节点输出的 string
+graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Context, input []*schema.Message) (str string, err error) {
+    // your logic
+    return
+}), compose.WithOutputKey("your_output_key"))
+```
+
+也可以通过注册 Merge 方法来实现任意类型的 merge：
+
+```go
+// eino/compose/values_merge.go
+func RegisterValuesMergeFunc[T any](fn func([]T) (T, error))
+```
+
+Workflow 可以做到多个上游的多个输出字段映射到下游节点的不同字段。这并不属于合并场景，而是点对点的字段映射。事实上，eino workflow 目前不支持“多个上游字段同时映射到相同的下游字段”。
+
+### 流式处理
+
+Eino 认为，组件应当只需要实现业务场景中真实的流式范式，比如 ChatModel 不需要实现 Collect。因此，在编排场景中，Eino 自动帮助所有的节点**补全缺失的流式范式**。
+
+以 Invoke 方式运行 Graph，内部各节点均以 Invoke 范式运行，以 Stream, Collect 或 Transform 方式运行 Graph，内部各节点均以 Transform 范式运行。
+
+**自动拼接(Concatenate)**：Stream chunk 拼接为完整内容的场景，优先使用用户注册的自定义拼接函数，其次执行框架提供的默认行为，包括 Message, Message 数组，String，Map 和 Struct 及 Struct 指针。
+
+**自动流化(Box)**：需要将非流式的 T 变成 StreamReader[T] 的场景，框架自动执行。
+
+**自动合并(Merge)**：见上文“扇入与合并”环节。
+
+**自动复制(Copy)**：在需要做流的复制的场景自动进行流的复制，包括一个流扇出到多个下游节点，一个流进入一个或多个 callback handler。
+
+最后，Eino 要求所有编排元素能够感知和处理流。包括 branch，state handler，callback handler，passthrough，lambda 等。
+
+关于 Eino 对流的处理能力，详见 [Eino 流式编程要点](/zh/docs/eino/core_modules/chain_and_graph_orchestration/stream_programming_essentials)。
+
+### 全局状态
+
+**State**：在 NewGraph 时通过 `compose.WithGenLocalState` 传入 State 的创建方法。这个请求维度的全局状态在一次请求的各环节可读写使用。
+
+Eino 推荐用 `StatePreHandler` 和  `StatePostHandler`，功能定位是：
+
+- StatePreHandler：在每个节点执行前读写 State，以及按需替换节点的 Input。输入需对齐节点的非流式输入类型。
+- StatePostHandler：在每个节点执行后读写 State，以及按需替换节点的 Output。输入需对齐节点的非流式输出类型。
+
+针对流式场景，使用对应的 `StreamStatePreHandler` 和 `StreamStatePostHandler`，输入需分别对齐节点的流式输入和流式输出类型。
+
+这些 state handlers 位于节点外部，通过对 Input 或 Output 的修改影响节点，从而保证了节点的“状态无关”特性。
+
+如果需要在节点内部读写 State，Eino 提供了 `ProcessState[S any](ctx context.Context`**, **`handler func(context.Context`**, **`S) error) error` 函数。
+
+Eino 框架会在所有读写 State 的位置加锁。
+
+### 回调注入
+
+Eino 编排框架认为，进入编排的组件，可能内部埋入了 Callback 切面，也可以没有。这个信息由组件是否实现了 `Checker` 接口，以及接口中 `IsCallbacksEnabled` 方法的返回值来判断。
+
+- 当 `IsCallbacksEnabled` 返回 true 时，Eino 编排框架使用组件实现内部的 Callback 切面。
+- 否则，自动在组件实现外部包上 Callback 切面，（只能）上报 input 和 output。
+
+无论哪种，都会自动推断出 RunInfo。
+
+同时，对 Graph 整体，也一定会注入 Callback 切面，RunInfo 为 Graph 自身。
+
+关于 Eino 的 Callback 能力完整说明，见 [Eino: Callback 用户手册](/zh/docs/eino/core_modules/chain_and_graph_orchestration/callback_manual)。
+
+### Option 分配
+
+Eino 支持各种维度的 Call Option 分配方式：
+
+- 默认全局，即分配到所有节点，包括嵌套的内部图。
+- 可添加某个组件类型的 Option，这时默认分配到该类型的所有节点，比如 AddChatModelOption。定义了独有 Option 类型的 Lambda，也可以这样把 Option 指定到自身。
+- 可指定任意个具体的节点，使用 `DesignateNode(key ...string)`.
+- 可指定任意深度的嵌套图，或者其中的任意个具体的节点，使用 `DesignateNodeWithPath(path ...*NodePath)`.
+
+关于 Eino 的 Call Option 能力完整说明，见 [Eino: CallOption 能力与规范](/zh/docs/eino/core_modules/chain_and_graph_orchestration/call_option_capabilities)。
+
+### 图嵌套
+
+图编排产物 `Runnable` 与 Lambda 的接口形式非常相似。因此编译好的图可以简单的封装为 Lambda，并以 Lambda 节点的形式嵌套进其他图中。
+
+另一种方式，在编译前，Graph，Chain，Workflow 等都可以直接通过 AddGraph 的方式嵌套进其他图中。两个方式的差异是：
+
+- Lambda 的方式，在 trace 上会多一级 Lambda 节点。其他 Callback handler 视角看也会多一层。
+- Lambda 的方式，需要通过 Lambda 的 Option 来承接 CallOption，无法通过 DesignateNodeWithPath。
+- Lambda 的方式，内部图需事先编译。直接 AddGraph，则内部图随上级图一起编译。
+
+## 内部机制
+
+### 执行时序
+
+以一个添加了 StatePreHandler、StatePostHandler、InputKey、OutputKey，且内部没有实现 Callback 切面的 InvokableLambda（输入为 string，输出为 int）为例，在图中的流式执行完整时序如下：
+
+<a href="/img/eino/graph_node_run_wrapper.png" target="_blank"><img src="/img/eino/graph_node_run_wrapper.png" width="100%" /></a>
+
+在 workflow 的场景中，字段映射发生在两个位置：
+
+- 在节点执行后的 StatePostHandler 以及“流复制”步骤后，每个下游需要的字段会分别抽取出来。
+- 在节点执行前的“合并”步骤之后、StatePreHandler 之前，会将抽取出来的上游字段值转换为当前节点的输入。
+
+### 运行引擎
+
+`NodeTriggerMode == AnyPredecessor` 时，图以 pregel 引擎执行，对应的拓扑结构是有向有环图。特点是：
+
+- 当前执行中的一个或多个节点，所有的后序节点，作为一个 SuperStep，整体一起执行。这时，这些新的节点，会成为“当前”节点。
+- 支持 Branch，支持图中有环，但是可能需要人为添加 passthrough 节点，来确保 SuperStep 中的节点符合预期，如下图：
+
+<a href="/img/eino/graph_steps_in_graph2.png" target="_blank"><img src="/img/eino/graph_steps_in_graph2.png" width="100%" /></a>
+
+上图中 Node 4 和 Node 5 按规则被放在一起执行，大概率不符合预期。需要改成：
+
+<a href="/img/eino/graph_steps_in_graph.png" target="_blank"><img src="/img/eino/graph_steps_in_graph.png" width="100%" /></a>
+
+`NodeTriggerMode == AllPredecessor` 时，图以 dag 引擎执行，对应的拓扑结构是有向无环图。特点是：
+
+- 每个节点有确定的前序节点，当所有前序节点都完成后，本节点才具备运行条件。
+- 不支持图中有环，因为会打破“每个节点有确定的前序节点”这一假定。
+- 支持 Branch。在运行时，将 Branch 未选中的节点记为已跳过，不影响 AllPredecessor 的语义。
+
+> 💡
+> 设置 NodeTriggerMode = AllPredecessor 后，节点会在所有前驱就绪后执行，但并不是立即执行，而是依然遵循 SuperStep——在一批节点全部执行完成后再运行新的可运行节点。
+>
+> 如果在 Compile 时传入 compose.WithEagerExecution()，则就绪的节点会立刻运行。
+>
+> 在 Eino v0.4.0 版本及之后的版本中，设置 NodeTriggerMode = AllPredecessor 后会默认开启 EagerExecution。
+
+总结起来，pregel 模式灵活强大但有额外的心智负担，dag 模式清晰简单但场景受限。在 Eino 框架中，Chain 是 pregel 模式，Workflow 是 dag 模式，Graph 则都支持，可由用户从 pregel 和 dag 中选择。
+</script><h1>编排的设计理念</h1><header class=article-meta></header><p>大模型应用编排框架的主流语言是 python，这门语言以其灵活性著称，灵活性给 sdk 的开发带来便利，但同时也给 sdk 的使用者带来了心智负担。</p><p>基于 golang 的 eino 则是 <code>静态类型</code> ，在 Compile 时做类型检查，避免了 python 等动态语言的运行时类型问题。</p><h2 id=以上下游-类型对齐-为基本准则>以上下游 <code>类型对齐</code> 为基本准则</h2><p>eino 的最基础编排方式为 graph，以及简化的封装 chain。不论是哪种编排方式，其本质都是 <code>逻辑节点</code> + <code>上下游关系</code> 。在编排的产物运行时，都是从一个逻辑节点运行，然后下一步运行和这个节点相连的下一个节点。</p><p>这之间蕴含了一个基本假设：<strong>前一个运行节点的输出值，可以作为下一个节点的输入值。</strong></p><p>在 golang 中，要实现这个假设，有两个基本方案：</p><ol><li>把不同节点的输入输出都变成一种更泛化的类型，例如 <code>any</code> 、<code>map[string]any</code> 等。<ol><li>采用泛化成 any 的方案，但对应的代价是: 开发者在写代码时，需要显式转换成具体类型才能使用。这会极大增加开发者的心智负担，因此最终放弃此方案。</li><li>langchain 的方案可以看做是全程传递 <code>map[string]any</code>，各个逻辑节点根据自己的需要，用对应的 key 去取对应的 value。在 langchaingo 的实现中，即是按照这种方式实现，但同样，golang 中的 any 要被使用依然要使用 <code>类型断言</code> 才可使用。这种方案在开发者使用时依然有很大的心智负担。</li></ol></li><li>每一个节点的输入输出类型保持开发者的预期，在 Compile 阶段保证上下游的类型是一致的。</li></ol><p>方案 2 即是 eino 最终选定的方案。这种方案是编排时最容易被理解的，整个过程就像是 <code>搭积木</code> 一样，每一个积木突出的部分和凹陷的部分有各自的规格，仅有规格匹配了才能成为上下游关系。</p><p>就如下图：</p><p><a href=/img/eino/edge_type_validate.png target=_blank><img src=/img/eino/edge_type_validate.png width=100%></a></p><p>对于一个编排而言，只有下游能识别和处理上游的输出，这个编排才能正常运行。 这个基本假设在 eino 中被清晰地表达了出来，让开发者在用 eino 做编排时，能够有十足的信心清楚编排的逻辑是如何运行和流转的，而不是从一系列的 any 中去猜测传过来的值是否正确。</p><h3 id=graph-中的类型对齐>graph 中的类型对齐</h3><h4 id=edge>edge</h4><p>在 graph 中，一个节点的输出将顺着 <code>边(edge)</code> 流向下一节点，因此，用边连接的节点间必须要类型对齐。</p><p>如下图：</p><blockquote><p>这是一个模拟 ① 直接和大模型对话 ② 使用 RAG 模式 的场景，最后结果可用于对比两种模式的效果</p></blockquote><p><a href=/img/eino/input_output_type_validate.png target=_blank><img src=/img/eino/input_output_type_validate.png width=100%></a></p><p>图中绿色的部分，就是普通的 Edge 连接，其要求上游的输出必须能 <code>assign</code> 给下游，可以接收的类型有：</p><p>① 上下游类型相同: 例如上游输出 *schema.Message 下游输入也是 *schema.Message</p><p>② 下游接收接口，上游实现了该接口: 例如上游结构体实现了 Format() 接口，下游接收的是一个 interface{ Format() }。特殊情况是下游是 any（空接口），上游一定实现了 any，因此一定可以连接。</p><p>③ 上游是 interface，下游是具体类型: 当下游具体类型 implements 上游的 interface 类型时，有可能可以，有可能不行，在 compile 时无法确定，只有在运行时，等上游的具体类型确定了，才能最终确定。时，详细描述可见: <a href=/zh/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles>Eino: 编排的设计理念</a></p><p>图中黄色的部分，则是 eino 提供的另一个类型转换的机制，即: 若下游接收的类型是 <code>map[string]any</code>，但是上游输出的类型并不是 map[string]any，可以使用 <code>graph.AddXXXNode(node_key, xxx, compose.WithOutputKey("outkey")</code> 的方式将上游输出的类型转化为 map[string]any，其中 map 的 key 是 option 中指定的 OutputKey。 一般在多条边汇聚到某一个节点时，这种机制使用起来较为方便。</p><p>同理，若上游是 <code>map[string]any</code> ，但是下游输入的类型并不是 map[string]any，则可以使用 <code>graph.AddXXXNode(node_key, xxx, compose.WithInputKey("inkey")</code> 来获取上游输出的其中一个 key 的 value，作为下游的输入。</p><h4 id=branch>branch</h4><p>如果一个节点后面连接了多个 edge，则每条 edge 的下游节点都会运行一次。branch 则是另一种机制： 一个 branch 后接了 n 个节点，但仅会运行 condition 返回的那个 node key 对应的节点。同一个 branch 后的节点，必须要类型对齐。</p><p>如下图:</p><blockquote><p>这是一个模拟 react agent 的运行逻辑</p></blockquote><p><a href=/img/eino/branch_to_draw_loop.png target=_blank><img src=/img/eino/branch_to_draw_loop.png width=100%></a></p><p>可以看到，一个 branch 本身拥有一个 <code>condition</code>, 这个 function 的输入必须和上游类型对齐。同时，一个 branch 后所接的各个节点，也必须和 condition 一样，要能接收上游的输出。</p><h3 id=chain-中的类型对齐>chain 中的类型对齐</h3><h4 id=chain>chain</h4><p>从抽象角度看，chain 就是一个 <code>链条</code>，如下所示：</p><p><a href=/img/eino/what_is_chain.png target=_blank><img src=/img/eino/what_is_chain.png width=100%></a></p><p>逻辑节点的类型可以分为 3 类：</p><ul><li>可编排组件 (例如 chat model、 chat template、 retriever、 lambda、graph 等等)</li><li>branch 节点</li><li>parallel 节点</li></ul><p>可以看到，在 chain 的视角下，不论是简单的节点(eg： chat model) 还是复杂的节点 (eg: graph、branch、parallel)，都是一样的，在运行过程中，一步的执行就是一个节点的运行。</p><p>也因此，chain 的上下游节点间，类型必须是对齐的，如下：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>func</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>TestChain</span><span style=color:#000;font-weight:700>()</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>{</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>chain</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>:=</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>compose</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>NewChain</span><span style=color:#000;font-weight:700>[</span><span style=color:#204a87;font-weight:700>map</span><span style=color:#000;font-weight:700>[</span><span style=color:#204a87;font-weight:700>string</span><span style=color:#000;font-weight:700>]</span><span style=color:#204a87;font-weight:700>interface</span><span style=color:#000;font-weight:700>,</span><span style=color:#204a87;font-weight:700>string</span><span style=color:#000;font-weight:700>]()</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>    </span><span style=color:#000>nodeTemplate</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>:=</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#ce5c00;font-weight:700>&amp;</span><span style=color:#000>fakeChatTemplate</span><span style=color:#000;font-weight:700>{}</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#8f5902;font-style:italic>// input: map[string]any, output: []*schema.Message</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -271,4 +749,4 @@
 设置 NodeTriggerMode = AllPredecessor 后，节点会在所有前驱就绪后执行，但并不是立即执行，而是依然遵循 SuperStep——在一批节点全部执行完成后再运行新的可运行节点。</p><p>如果在 Compile 时传入 compose.WithEagerExecution()，则就绪的节点会立刻运行。</p><p>在 Eino v0.4.0 版本及之后的版本中，设置 NodeTriggerMode = AllPredecessor 后会默认开启 EagerExecution。</p></blockquote><p>总结起来，pregel 模式灵活强大但有额外的心智负担，dag 模式清晰简单但场景受限。在 Eino 框架中，Chain 是 pregel 模式，Workflow 是 dag 模式，Graph 则都支持，可由用户从 pregel 和 dag 中选择。</p><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 March 10, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/c2aa4096ad71b3ef0ce9941d864394f623fd7b74>docs(eino): sync docs from feishu 2026-03-09 (#1518) (c2aa4096)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

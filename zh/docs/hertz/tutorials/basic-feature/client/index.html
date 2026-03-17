@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>客户端 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/client/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="客户端"><meta property="og:description" content="Hertz 客户端相关功能。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-07-25T00:00:00+00:00"><meta property="article:modified_time" content="2025-09-18T10:21:11+08:00"><meta itemprop=name content="客户端"><meta itemprop=description content="Hertz 客户端相关功能。"><meta itemprop=datePublished content="2023-07-25T00:00:00+00:00"><meta itemprop=dateModified content="2025-09-18T10:21:11+08:00"><meta itemprop=wordCount content="1818"><meta itemprop=keywords content="Client 配置,发送请求,请求超时,流式处理,中间件,服务发现"><meta name=twitter:card content="summary"><meta name=twitter:title content="客户端"><meta name=twitter:description content="Hertz 客户端相关功能。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css as=style><link href=/scss/main.min.d82085885aff5076523f2bb4904f9e11bd16c28b46ecb5319ec0d01cb087e9de.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=zh class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>客户端 | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/client/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="客户端"><meta property="og:description" content="Hertz 客户端相关功能。"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2023-07-25T00:00:00+00:00"><meta property="article:modified_time" content="2025-09-18T10:21:11+08:00"><meta itemprop=name content="客户端"><meta itemprop=description content="Hertz 客户端相关功能。"><meta itemprop=datePublished content="2023-07-25T00:00:00+00:00"><meta itemprop=dateModified content="2025-09-18T10:21:11+08:00"><meta itemprop=wordCount content="1818"><meta itemprop=keywords content="Client 配置,发送请求,请求超时,流式处理,中间件,服务发现"><meta name=twitter:card content="summary"><meta name=twitter:title content="客户端"><meta name=twitter:description content="Hertz 客户端相关功能。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/zh/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>文档</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/zh/docs/hertz/>Hertz</a>
@@ -110,7 +110,810 @@
 <label for=m-zhdocshertzreferenceversion-check><a href=/zh/docs/hertz/reference/version/ class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-zhdocshertzreferenceversion><span>版本说明</span></a></label></li></ul></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/zh/docs/hertz/tutorials/basic-feature/client.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 编辑此页</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/zh/docs/hertz/tutorials/basic-feature?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> 添加子页面</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=%e5%ae%a2%e6%88%b7%e7%ab%af" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> 提交文档问题</a>
-<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#快速开始>快速开始</a></li><li><a href=#client-配置>Client 配置</a></li><li><a href=#client-request-配置>Client Request 配置</a></li><li><a href=#发送请求>发送请求</a><ul><li><a href=#do>Do</a></li><li><a href=#doredirects>DoRedirects</a></li><li><a href=#get>Get</a></li><li><a href=#post>Post</a></li></ul></li><li><a href=#请求超时>请求超时</a><ul><li><a href=#withrequesttimeout>WithRequestTimeout</a></li><li><a href=#dotimeout>DoTimeout</a></li><li><a href=#dodeadline>DoDeadline</a></li></ul></li><li><a href=#请求重试>请求重试</a><ul><li><a href=#setretryiffunc>SetRetryIfFunc</a></li></ul></li><li><a href=#添加请求内容>添加请求内容</a></li><li><a href=#上传文件>上传文件</a></li><li><a href=#流式读响应内容>流式读响应内容</a></li><li><a href=#服务发现>服务发现</a></li><li><a href=#tls>TLS</a></li><li><a href=#正向代理>正向代理</a><ul><li><a href=#setproxy>SetProxy</a></li></ul></li><li><a href=#关闭空闲连接>关闭空闲连接</a><ul><li><a href=#closeidleconnections>CloseIdleConnections</a></li></ul></li><li><a href=#获取拨号器名称>获取拨号器名称</a><ul><li><a href=#getdialername>GetDialerName</a></li></ul></li><li><a href=#中间件>中间件</a><ul><li><a href=#use>Use</a></li><li><a href=#useaslast>UseAsLast</a></li><li><a href=#takeoutlastmiddleware>TakeOutLastMiddleware</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/>基本特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/client/>客户端</a></li></ol></nav><div class=td-content><h1>客户端</h1><div class=lead>Hertz 客户端相关功能。</div><header class=article-meta></header><h2 id=快速开始>快速开始</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>package</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>main</span><span style=color:#f8f8f8;text-decoration:underline>
+<a href=https://github.com/cloudwego/hertz/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> 提交项目问题</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#快速开始>快速开始</a></li><li><a href=#client-配置>Client 配置</a></li><li><a href=#client-request-配置>Client Request 配置</a></li><li><a href=#发送请求>发送请求</a><ul><li><a href=#do>Do</a></li><li><a href=#doredirects>DoRedirects</a></li><li><a href=#get>Get</a></li><li><a href=#post>Post</a></li></ul></li><li><a href=#请求超时>请求超时</a><ul><li><a href=#withrequesttimeout>WithRequestTimeout</a></li><li><a href=#dotimeout>DoTimeout</a></li><li><a href=#dodeadline>DoDeadline</a></li></ul></li><li><a href=#请求重试>请求重试</a><ul><li><a href=#setretryiffunc>SetRetryIfFunc</a></li></ul></li><li><a href=#添加请求内容>添加请求内容</a></li><li><a href=#上传文件>上传文件</a></li><li><a href=#流式读响应内容>流式读响应内容</a></li><li><a href=#服务发现>服务发现</a></li><li><a href=#tls>TLS</a></li><li><a href=#正向代理>正向代理</a><ul><li><a href=#setproxy>SetProxy</a></li></ul></li><li><a href=#关闭空闲连接>关闭空闲连接</a><ul><li><a href=#closeidleconnections>CloseIdleConnections</a></li></ul></li><li><a href=#获取拨号器名称>获取拨号器名称</a><ul><li><a href=#getdialername>GetDialerName</a></li></ul></li><li><a href=#中间件>中间件</a><ul><li><a href=#use>Use</a></li><li><a href=#useaslast>UseAsLast</a></li><li><a href=#takeoutlastmiddleware>TakeOutLastMiddleware</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/>文档</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/>Hertz</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/>开发指南</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/>基本特性</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/client/>客户端</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title=客户端 data-url=https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/client/ data-success-markdown="已复制 Markdown 格式" data-success-text=已复制纯文本><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title=复制全文>
+<i class="fa-regular fa-copy"></i>
+<span>复制全文</span>
+</button>
+<button type=button class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<span class=sr-only>Toggle Dropdown</span></button><div class="dropdown-menu dropdown-menu-right"><button class=dropdown-item data-copy-type=markdown>
+复制 Markdown
+</button>
+<button class=dropdown-item data-copy-type=text>
+复制文本</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
+## 快速开始
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+func performRequest() {
+	c, _ := client.NewClient()
+	req, resp := protocol.AcquireRequest(), protocol.AcquireResponse()
+	req.SetRequestURI("http://localhost:8080/hello")
+
+	req.SetMethod("GET")
+	_ = c.Do(context.Background(), req, resp)
+	fmt.Printf("get response: %s\n", resp.Body())  // status == 200 resp.Body() == []byte("hello hertz")
+}
+
+func main() {
+	h := server.New(server.WithHostPorts(":8080"))
+	h.GET("/hello", func(ctx context.Context, c *app.RequestContext) {
+		c.JSON(consts.StatusOK, "hello hertz")
+	})
+	go performRequest()
+	h.Spin()
+}
+```
+
+## Client 配置
+
+| 配置项                            | 默认值         | 描述                                                                                                            |
+| --------------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------- |
+| WithDialTimeout                   | 1s             | 拨号超时时间                                                                                                    |
+| WithMaxConnsPerHost               | 512            | 每个主机可能建立的最大连接数                                                                                    |
+| WithMaxIdleConnDuration           | 10s            | 最大的空闲连接持续时间，空闲的连接在此持续时间后被关闭                                                          |
+| WithMaxConnDuration               | 0s             | 最大的连接持续时间，keep-alive 连接在此持续时间后被关闭                                                         |
+| WithMaxConnWaitTimeout            | 0s             | 等待空闲连接的最大时间                                                                                          |
+| WithKeepAlive                     | true           | 是否使用 keep-alive 连接，默认使用                                                                              |
+| WithClientReadTimeout             | 0s             | 完整读取响应（包括 body）的最大持续时间                                                                         |
+| WithTLSConfig                     | nil            | 设置用于创建 tls 连接的 tlsConfig，具体配置信息请看 [tls](/zh/docs/hertz/tutorials/basic-feature/tls/) |
+| WithDialer                        | network.Dialer | 设置指定的拨号器                                                                                                |
+| WithResponseBodyStream            | false          | 是否在流中读取 body，默认不在流中读取                                                                           |
+| WithDisableHeaderNamesNormalizing | false          | 是否禁用头名称规范化，默认不禁用，如 cONTENT-lenGTH -> Content-Length                                           |
+| WithName                          | ""             | 设置用户代理头中使用的客户端名称                                                                                |
+| WithNoDefaultUserAgentHeader      | false          | 设置是否应该在请求中包含默认的 User-Agent 头，默认包含 User-Agent 头                                            |
+| WithDisablePathNormalizing        | false          | 是否禁用路径规范化，默认规范路径，如 http://localhost:8080/hello/../ hello -> http://localhost:8080/hello       |
+| WithRetryConfig                   | nil            | HTTP 客户端的重试配置，重试配置详细说明请看 [重试](/zh/docs/hertz/tutorials/basic-feature/retry/)               |
+| WithWriteTimeout                  | 0s             | HTTP 客户端的写入超时时间                                                                                       |
+| WithConnStateObserve              | nil, 5s        | 设置观察和记录 HTTP 客户端的连接状态的函数以及观察执行间隔                                                      |
+| WithDialFunc                      | network.Dialer | 设置 HTTP 客户端拨号器函数，会覆盖自定义拨号器                                                                  |
+| WithHostClientConfigHook          | nil            | 设置 hook 函数来重新配置 host client                                                                            |
+
+示例代码：
+
+```go
+func main() {
+	observeInterval := 10 * time.Second
+	stateFunc := func(state config.HostClientState) {
+		fmt.Printf("state=%v\n", state.ConnPoolState().Addr)
+	}
+	var customDialFunc network.DialFunc = func(addr string) (network.Conn, error) {
+		return nil, nil
+	}
+	c, err := client.NewClient(
+		client.WithDialTimeout(1*time.Second),
+		client.WithMaxConnsPerHost(1024),
+		client.WithMaxIdleConnDuration(10*time.Second),
+		client.WithMaxConnDuration(10*time.Second),
+		client.WithMaxConnWaitTimeout(10*time.Second),
+		client.WithKeepAlive(true),
+		client.WithClientReadTimeout(10*time.Second),
+		client.WithDialer(standard.NewDialer()),
+		client.WithResponseBodyStream(true),
+		client.WithDisableHeaderNamesNormalizing(true),
+		client.WithName("my-client"),
+		client.WithNoDefaultUserAgentHeader(true),
+		client.WithDisablePathNormalizing(true),
+		client.WithRetryConfig(
+			retry.WithMaxAttemptTimes(3),
+			retry.WithInitDelay(1000),
+			retry.WithMaxDelay(10000),
+			retry.WithDelayPolicy(retry.DefaultDelayPolicy),
+			retry.WithMaxJitter(1000),
+		),
+		client.WithWriteTimeout(10*time.Second),
+		client.WithConnStateObserve(stateFunc, observeInterval),
+		client.WithDialFunc(customDialFunc, netpoll.NewDialer()),
+		client.WithHostClientConfigHook(func(hc interface{}) error {
+			if hct, ok := hc.(*http1.HostClient); ok {
+				hct.Addr = "FOO.BAR:443"
+			}
+			return nil
+		})
+	)
+	if err != nil {
+		return
+	}
+
+	status, body, _ := c.Get(context.Background(), nil, "http://www.example.com")
+	fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+```
+
+## Client Request 配置
+
+| 配置项             | 默认值                  | 描述                                                                                                                                         |
+| ------------------ | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| WithDialTimeout    | 0s                      | 拨号超时时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                                                             |
+| WithReadTimeout    | 0s                      | 完整读取响应（包括 body）的最大持续时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                                  |
+| WithWriteTimeout   | 0s                      | HTTP 客户端的写入超时时间，**该配置项的优先级高于 Client 配置，即会覆盖相应的 Client 配置项**                                                |
+| WithRequestTimeout | 0s                      | 完整的 HTTP 请求的超时时间                                                                                                                   |
+| WithTag            | make(map[string]string) | 以 key-value 形式设置 tags 字段，配合服务发现使用，详情见 [WithTag](/zh/docs/hertz/tutorials/third-party/service_discovery/#withtag)  |
+| WithSD             | false                   | 配合服务发现使用，传递 true 时，本次请求使用服务发现，详情见 [WithSD](/zh/docs/hertz/tutorials/third-party/service_discovery/#withsd) |
+
+示例代码：
+
+```go
+func main() {
+	cli, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetOptions(config.WithDialTimeout(1*time.Second),
+		config.WithReadTimeout(3*time.Second),
+		config.WithWriteTimeout(3*time.Second),
+		config.WithReadTimeout(5*time.Second),
+		config.WithSD(true),
+		config.WithTag("tag", "tag"))
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://www.example.com")
+	err = cli.Do(context.Background(), req, res)
+	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
+}
+```
+
+## 发送请求
+
+```go
+func (c *Client) Do(ctx context.Context, req *protocol.Request, resp *protocol.Response) error
+func (c *Client) DoRedirects(ctx context.Context, req *protocol.Request, resp *protocol.Response, maxRedirectsCount int) error
+func (c *Client) Get(ctx context.Context, dst []byte, url string, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
+func (c *Client) Post(ctx context.Context, dst []byte, url string, postArgs *protocol.Args, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
+```
+
+### Do
+
+Do 函数执行给定的 http 请求并填充给定的 http 响应。请求必须包含至少一个非零的 RequestURI，其中包含完整的 URL 或非零的 Host header + RequestURI。
+
+该函数不会跟随重定向，请使用 [Get](#get) 函数或 [DoRedirects](#doredirects) 函数或 [Post](#post) 函数来跟随重定向。
+
+如果 resp 为 nil，则会忽略响应。如果所有针对请求主机的 DefaultMaxConnsPerHost 连接都已忙，则会返回 `ErrNoFreeConns` 错误。在性能关键的代码中，建议通过 AcquireRequest 和 AcquireResponse 获取 req 和 resp。
+
+函数签名：
+
+```go
+func (c *Client) Do(ctx context.Context, req *protocol.Request, resp *protocol.Response) error
+```
+
+示例代码：
+
+```go
+func main() {
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8080/ping")
+
+	err = c.Do(context.Background(), req, res)
+	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
+	// resp.Body() == []byte("pong") err == <nil>
+}
+```
+
+### DoRedirects
+
+DoRedirects 函数执行给定的 http 请求并填充给定的 http 响应，遵循最多 maxRedirectsCount 次重定向。当重定向次数超过 maxRedirectsCount 时，将返回 `ErrTooManyRedirects` 错误。
+
+函数签名：
+
+```go
+func (c *Client) DoRedirects(ctx context.Context, req *protocol.Request, resp *protocol.Response, maxRedirectsCount int) error
+```
+
+示例代码：
+
+```go
+func main() {
+	// hertz server
+	// http://localhost:8080/redirect ctx.Redirect(consts.StatusMovedPermanently, []byte("/redirect2"))
+	// http://localhost:8080/redirect2 ctx.Redirect(consts.StatusMovedPermanently, []byte("/redirect3"))
+	// http://localhost:8080/redirect3 ctx.String(consts.StatusOK, "pong")
+
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8080/redirect")
+
+	err = c.DoRedirects(context.Background(), req, res, 1)
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("") err.Error() == "too many redirects detected when doing the request"
+
+	err = c.DoRedirects(context.Background(), req, res, 2)
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
+}
+```
+
+### Get
+
+Get 函数返回 URL 的状态码和响应体。dst 将被响应体替换并返回，如果 dst 太小，将分配一个新的切片。
+
+该函数会自动跟随重定向。
+
+函数签名：
+
+```go
+func (c *Client) Get(ctx context.Context, dst []byte, url string, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
+```
+
+示例代码：
+
+```go
+func main() {
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong")
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	status, body, err := c.Get(context.Background(), nil, "http://localhost:8080/ping")
+	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+	// status == 200 res.Body() == []byte("pong") err == <nil>
+}
+```
+
+### Post
+
+Post 函数使用给定的 POST 参数向指定的 URL 发送 POST 请求。dst 将被响应体替换并返回，如果 dst 太小，则将分配一个新的切片。
+
+该函数会自动跟随重定向。
+
+如果 postArgs 为 nil，则发送空的 POST 请求体。
+
+函数签名：
+
+```go
+func (c *Client) Post(ctx context.Context, dst []byte, url string, postArgs *protocol.Args, requestOptions ...config.RequestOption) (statusCode int, body []byte, err error)
+```
+
+示例代码：
+
+```go
+func main() {
+	// hertz server:http://localhost:8080/hello ctx.String(consts.StatusOK, "hello %s", c.PostForm("name"))
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	var postArgs protocol.Args
+	postArgs.Set("name", "cloudwego") // Set post args
+	status, body, err := c.Post(context.Background(), nil, "http://localhost:8080/hello", &postArgs)
+	fmt.Printf("status=%v body=%v err=%v\n", status, string(body), err)
+	// status == 200 res.Body() == []byte("hello cloudwego") err == <nil>
+}
+```
+
+## 请求超时
+
+> 注意：Do、DoRedirects、Get、Post 等请求函数可以通过 WithRequestTimeout 设置请求超时时间，DoTimeout 和 DoDeadline 函数通过传参的形式设置请求超时时间，两者都是修改 `RequestOptions.requestTimeout` 字段，所以在使用 DoTimeout 和 DoDeadline 函数时无需使用 WithRequestTimeout 函数，若同时使用了，请求超时时间以最后一次设置的为准。
+
+```go
+func WithRequestTimeout(t time.Duration) RequestOption
+func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
+func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
+```
+
+### WithRequestTimeout
+
+Do、DoRedirects、Get、Post 等请求函数虽然不能以传参的方式设置请求超时返回，但可以通过 [Client Request 配置](#client-request-配置) 中的 `WithRequestTimeout` 配置项来设置请求超时返回。
+
+示例代码：
+
+```go
+func main() {
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	// Do
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetOptions(config.WithRequestTimeout(5 * time.Second))
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8888/get")
+	err = c.Do(context.Background(), req, res)
+
+	// DoRedirects
+	err = c.DoRedirects(context.Background(), req, res, 5)
+
+	// Get
+	_, _, err = c.Get(context.Background(), nil, "http://localhost:8888/get", config.WithRequestTimeout(5*time.Second))
+
+	// Post
+	postArgs := &protocol.Args{}
+	_, _, err = c.Post(context.Background(), nil, "http://localhost:8888/post", postArgs, config.WithRequestTimeout(5*time.Second))
+}
+```
+
+### DoTimeout
+
+DoTimeout 函数执行给定的请求并在给定的超时时间内等待响应。
+
+该函数不会跟随重定向，请使用 [Get](#get) 函数或 [DoRedirects](#doredirects) 函数或 [Post](#post) 函数来跟随重定向。
+
+如果 resp 为 nil，则会忽略响应。如果在给定的超时时间内未能收到响应，则会返回 `errTimeout` 错误。
+
+函数签名：
+
+```go
+func (c *Client) DoTimeout(ctx context.Context, req *protocol.Request, resp *protocol.Response, timeout time.Duration) error
+```
+
+示例代码：
+
+```go
+func main() {
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong") biz handler time: 1.5s
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8080/ping")
+
+	err = c.DoTimeout(context.Background(), req, res, time.Second*3)
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
+
+	err = c.DoTimeout(context.Background(), req, res, time.Second)
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("") err.Error() == "timeout"
+}
+```
+
+### DoDeadline
+
+DoDeadline 执行给定的请求并等待响应，直至给定的最后期限。
+
+该函数不会跟随重定向，请使用 [Get](#get) 函数或 [DoRedirects](#doredirects) 函数或 [Post](#post) 函数来跟随重定向。
+
+如果 resp 为 nil，则会忽略响应。如果在给定的截止日期之前未能收到响应，则会返回 `errTimeout` 错误。
+
+函数签名：
+
+```go
+func (c *Client) DoDeadline(ctx context.Context, req *protocol.Request, resp *protocol.Response, deadline time.Time) error
+```
+
+示例代码：
+
+```go
+func main() {
+	// hertz server:http://localhost:8080/ping ctx.String(consts.StatusOK, "pong") biz handler time: 1.5s
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://localhost:8080/ping")
+
+	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(3*time.Second))
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("pong") err == <nil>
+
+	err = c.DoDeadline(context.Background(), req, res, time.Now().Add(1*time.Second))
+	fmt.Printf("resp = %v,err = %+v\n", string(res.Body()), err)
+	// res.Body() == []byte("") err.Error() == "timeout"
+}
+```
+
+## 请求重试
+
+```go
+func (c *Client) SetRetryIfFunc(retryIf client.RetryIfFunc)
+```
+
+### SetRetryIfFunc
+
+`SetRetryIfFunc` 方法用于自定义配置重试发生的条件。（更多内容请参考 [retry-条件配置](/zh/docs/hertz/tutorials/basic-feature/retry/#retry-条件配置)）
+
+函数签名：
+
+```go
+func (c *Client) SetRetryIfFunc(retryIf client.RetryIfFunc)
+```
+
+示例代码：
+
+```go
+func main() {
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	var customRetryIfFunc = func(req *protocol.Request, resp *protocol.Response, err error) bool {
+		return true
+	}
+	c.SetRetryIfFunc(customRetryIfFunc)
+	status2, body2, _ := c.Get(context.Background(), nil, "http://www.example.com")
+	fmt.Printf("status=%v body=%v\n", status2, string(body2))
+}
+```
+
+## 添加请求内容
+
+Hertz 客户端可以在 HTTP 请求中添加 `query` 参数、`www-url-encoded`、`multipart/form-data`、`json` 等多种形式的请求内容。
+
+示例代码：
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	req := &protocol.Request{}
+	res := &protocol.Response{}
+
+	// Use SetQueryString to set query parameters
+	req.Reset()
+	req.Header.SetMethod(consts.MethodPost)
+	req.SetRequestURI("http://127.0.0.1:8080/v1/bind")
+	req.SetQueryString("query=query&q=q1&q=q2&vd=1")
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+
+	// Send "www-url-encoded" request
+	req.Reset()
+	req.Header.SetMethod(consts.MethodPost)
+	req.SetRequestURI("http://127.0.0.1:8080/v1/bind?query=query&q=q1&q=q2&vd=1")
+	req.SetFormData(map[string]string{
+		"form": "test form",
+	})
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+
+	// Send "multipart/form-data" request
+	req.Reset()
+	req.Header.SetMethod(consts.MethodPost)
+	req.SetRequestURI("http://127.0.0.1:8080/v1/bind?query=query&q=q1&q=q2&vd=1")
+	req.SetMultipartFormData(map[string]string{
+		"form": "test form",
+	})
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+
+	// Send "Json" request
+	req.Reset()
+	req.Header.SetMethod(consts.MethodPost)
+	req.Header.SetContentTypeBytes([]byte("application/json"))
+	req.SetRequestURI("http://127.0.0.1:8080/v1/bind?query=query&q=q1&q=q2&vd=1")
+	data := struct {
+		Json string `json:"json"`
+	}{
+		"test json",
+	}
+	jsonByte, _ := json.Marshal(data)
+	req.SetBody(jsonByte)
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+}
+```
+
+## 上传文件
+
+Hertz 客户端支持向服务器上传文件。
+
+示例代码：
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	req := &protocol.Request{}
+	res := &protocol.Response{}
+	req.SetMethod(consts.MethodPost)
+	req.SetRequestURI("http://127.0.0.1:8080/singleFile")
+	req.SetFile("file", "your file path")
+
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+	fmt.Println(err, string(res.Body()))
+}
+```
+
+## 流式读响应内容
+
+Hertz 客户端支持流式读取 HTTP 响应内容。
+
+client 有复用连接的问题，如果使用了流式，那连接就会交由用户处理 (`resp.BodyStream()` 底层是对 connection 的封装)，这个时候对连接的管理会有一些不同：
+
+1. 如果用户不关闭连接，连接最终会被 GC 关掉，不会造成连接泄漏。但是，由于关闭连接需要等待 2RTT，在高并发情况下可能会出现 fd 被打满导致无法新建连接的情况。
+2. 用户可以调用相关接口回收连接，回收后，该连接会放入连接池中复用，资源使用率更好，性能更高。以下几种方式都会回收连接，注意回收只能回收一次。
+   1. 显式调用 `protocol.ReleaseResponse(), resp.Reset(), resp.ResetBody()`。
+   2. 非显式调用：server 侧也会有回收 resp 的逻辑。如果 client 与 server 使用同一个 response 的情况下就不需要显式调用回收的方法了。
+
+示例代码：
+
+```go
+func main() {
+	c, _ := client.NewClient(client.WithResponseBodyStream(true))
+	req := &protocol.Request{}
+	resp := &protocol.Response{}
+	defer func() {
+		protocol.ReleaseRequest(req)
+		protocol.ReleaseResponse(resp)
+	}()
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("http://127.0.0.1:8080/streamWrite")
+	err := c.Do(context.Background(), req, resp)
+	if err != nil {
+		return
+	}
+	bodyStream := resp.BodyStream()
+	p := make([]byte, resp.Header.ContentLength()/2)
+	_, err = bodyStream.Read(p)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	left, _ := ioutil.ReadAll(bodyStream)
+	fmt.Println(string(p), string(left))
+}
+```
+
+## 服务发现
+
+Hertz 客户端支持通过服务发现寻找目标服务器。
+
+Hertz 支持自定义服务发现模块，更多内容可参考 [服务发现拓展](/zh/docs/hertz/tutorials/framework-exten/service_discovery/#服务发现扩展)。
+
+Hertz 目前已接入的服务发现中心相关内容可参考 [服务注册与发现](/zh/docs/hertz/tutorials/third-party/service_discovery/)。
+
+## TLS
+
+Hertz 客户端默认使用的网络库 netpoll 不支持 TLS，如果要配置 TLS 访问 https 地址，应该使用标准库。
+
+TLS 相关的配置信息可参考 [tls](/zh/docs/hertz/tutorials/basic-feature/tls/)。
+
+示例代码：
+
+```go
+func main() {
+	clientCfg := &tls.Config{
+		InsecureSkipVerify: true,
+	}
+	c, err := client.NewClient(
+		client.WithTLSConfig(clientCfg),
+		client.WithDialer(standard.NewDialer()),
+	)
+	if err != nil {
+		return
+	}
+
+	req, res := &protocol.Request{}, &protocol.Response{}
+	req.SetMethod(consts.MethodGet)
+	req.SetRequestURI("https://www.example.com")
+
+	err = c.Do(context.Background(), req, res)
+	fmt.Printf("resp = %v,err = %+v", string(res.Body()), err)
+}
+```
+
+## 正向代理
+
+```go
+func (c *Client) SetProxy(p protocol.Proxy)
+```
+
+### SetProxy
+
+SetProxy 用来设置客户端代理。（更多内容请参考 [正向代理](/zh/docs/hertz/tutorials/basic-feature/proxy/#正向代理)）
+
+> 注意：同一个客户端不能设置多个代理，如果需要使用另一个代理，请创建另一个客户端并为其设置代理。
+
+示例代码：
+
+```go
+func (c *Client) SetProxy(p protocol.Proxy)
+```
+
+函数签名：
+
+```go
+func main() {
+	// Proxy address
+	proxyURL := "http://<__user_name__>:<__password__>@<__proxy_addr__>:<__proxy_port__>"
+
+	parsedProxyURL := protocol.ParseURI(proxyURL)
+	client, err := client.NewClient(client.WithDialer(standard.NewDialer()))
+	if err != nil {
+		return
+	}
+	client.SetProxy(protocol.ProxyURI(parsedProxyURL))
+	upstreamURL := "http://google.com"
+	_, body, _ := client.Get(context.Background(), nil, upstreamURL)
+	fmt.Println(string(body))
+}
+```
+
+## 关闭空闲连接
+
+```go
+func (c *Client) CloseIdleConnections()
+```
+
+### CloseIdleConnections
+
+`CloseIdleConnections` 方法用于关闭任何处于空闲状态的 `keep-alive` 连接。这些连接可能是之前的请求所建立的，但现在已经空闲了一段时间。该方法不会中断任何当前正在使用的连接。
+
+函数签名：
+
+```go
+func (c *Client) CloseIdleConnections()
+```
+
+示例代码：
+
+```go
+func main() {
+    c, err := client.NewClient()
+    if err != nil {
+        return
+    }
+    status, body, _ := c.Get(context.Background(), nil, "http://www.example.com")
+    fmt.Printf("status=%v body=%v\n", status, string(body))
+
+    // close idle connections
+    c.CloseIdleConnections()
+}
+```
+
+## 获取拨号器名称
+
+```go
+func (c *Client) GetDialerName() (dName string, err error)
+```
+
+### GetDialerName
+
+`GetDialerName` 方法用于获取客户端当前使用的拨号器的名称。如果无法获取拨号器名称，则返回 `unknown`。
+
+函数签名：
+
+```go
+func (c *Client) GetDialerName() (dName string, err error)
+```
+
+示例代码：
+
+```go
+func main() {
+	c, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	// get dialer name
+	dName, err := c.GetDialerName()
+	if err != nil {
+		fmt.Printf("GetDialerName failed: %v", err)
+		return
+	}
+	fmt.Printf("dialer name=%v\n", dName)
+	// dName == "standard"
+}
+```
+
+## 中间件
+
+```go
+func (c *Client) Use(mws ...Middleware)
+func (c *Client) UseAsLast(mw Middleware) error
+func (c *Client) TakeOutLastMiddleware() Middleware
+```
+
+### Use
+
+使用 `Use` 方法对当前 client 增加一个中间件。（更多内容请参考 [客户端中间件](/zh/docs/hertz/tutorials/basic-feature/middleware/#客户端中间件)）
+
+函数签名：
+
+```go
+func (c *Client) Use(mws ...Middleware)
+```
+
+### UseAsLast
+
+`UseAsLast` 函数将中间件添加到客户端中间件链的最后。
+
+如果客户端中间件链在之前已经设置了最后一个中间件，`UseAsLast` 函数将会返回 `errorLastMiddlewareExist` 错误。因此，为确保客户端中间件链的最后一个中间件为空，可以先使用 [TakeOutLastMiddleware](#takeoutlastmiddleware) 函数清空客户端中间件链的最后一个中间件。
+
+> 注意：`UseAsLast` 函数将中间件设置在了 `ctx.lastMiddleware` 中，而使用 [Use](#use) 函数设置的中间件链存放在 `ctx.mws` 中，两者相对独立，只是在执行客户端中间件链的最后才执行 `ctx.lastMiddleware`，因此 `UseAsLast` 函数在 [Use](#use) 函数之前或之后调用皆可。
+
+函数签名：
+
+```go
+func (c *Client) UseAsLast(mw Middleware) error
+```
+
+示例代码：
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	client.Use(MyMiddleware)
+	client.UseAsLast(LastMiddleware)
+	req := &protocol.Request{}
+	res := &protocol.Response{}
+	req.SetRequestURI("http://www.example.com")
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+}
+```
+
+### TakeOutLastMiddleware
+
+`TakeOutLastMiddleware` 函数返回 [UseAsLast](#useaslast) 函数中设置的最后一个中间件并将其清空，若没有设置则返回 `nil`。
+
+函数签名：
+
+```go
+func (c *Client) TakeOutLastMiddleware() Middleware
+```
+
+示例代码：
+
+```go
+func main() {
+	client, err := client.NewClient()
+	if err != nil {
+		return
+	}
+	client.Use(MyMiddleware)
+	client.UseAsLast(LastMiddleware)
+	req := &protocol.Request{}
+	res := &protocol.Response{}
+	req.SetRequestURI("http://www.example.com")
+	err = client.Do(context.Background(), req, res)
+	if err != nil {
+		return
+	}
+	middleware := client.TakeOutLastMiddleware() // middleware == LastMiddleware
+	middleware = client.TakeOutLastMiddleware() // middleware == nil
+}
+```
+</script><h1>客户端</h1><div class=lead>Hertz 客户端相关功能。</div><header class=article-meta></header><h2 id=快速开始>快速开始</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#204a87;font-weight:700>package</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000>main</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#204a87;font-weight:700>import</span><span style=color:#f8f8f8;text-decoration:underline> </span><span style=color:#000;font-weight:700>(</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>	</span><span style=color:#4e9a06>&#34;context&#34;</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -557,4 +1360,4 @@
 </span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>反馈</h2><p class=feedback--question>当前页面对你有帮助吗？</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">是</button>
 <button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">否</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>请告诉我们如何改进</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>最后修改 September 18, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/627de0dd129bad8d6d278450b6a0bfa3a555afee>docs(hertz): fix doc about client Get and Post (#1419) (627de0dd)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
-<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.84ba9af565392cd38463af5d663ae483367bd953c1d38a4273aa09e0bfd62d65.js integrity="sha256-hLqa9WU5LNOEY69dZjrkgzZ72VPB04pCc6oJ4L/WLWU=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
+<a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
