@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-12"
 lastmod: ""
 tags: []
 title: 'Backend: Local FileSystem'
@@ -11,7 +11,7 @@ weight: 2
 
 Package: `github.com/cloudwego/eino-ext/adk/backend/local`
 
-Note: If your eino version is v0.8.0 or above, you need to use local backend [v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Flocal%2Fv0.2.0-alpha.1) version.
+Note: If your eino version is v0.8.0 or above, you need to use local backend [adk/backend/local/v0.2.1](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Flocal%2Fv0.2.1).
 
 ### Overview
 
