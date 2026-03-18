@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-03-09"
 lastmod: ""
 tags: []
-title: 'Eino: 编排的设计理念'
+title: 编排的设计理念
 weight: 2
 ---
 

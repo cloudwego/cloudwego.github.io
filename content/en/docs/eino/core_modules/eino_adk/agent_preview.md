@@ -1,25 +1,27 @@
 ---
 Description: ""
-date: "2025-12-11"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino ADK: Overview'
-weight: 1
+weight: 2
 ---
 
 # What is Eino ADK?
 
-Eino ADK, inspired by Google ADK, is a flexible Go framework for building Agents and Multi‑Agent applications. It standardizes context passing, event streaming and conversion, task transfer, interrupts & resume, and cross‑cutting aspects. It is model‑agnostic and deployment‑agnostic, aiming to make Agent and Multi‑Agent development simpler and more robust while offering production‑grade governance capabilities.
+Eino ADK, inspired by [Google-ADK](https://google.github.io/adk-docs/agents/), provides a flexible composition framework for Agent development in Go, i.e., an Agent and Multi-Agent development framework. Eino ADK has accumulated common capabilities for multi-Agent interaction, including context passing, event stream distribution and conversion, task control transfer, interrupt and resume, and common aspects. It is widely applicable, model-agnostic, and deployment-agnostic, making Agent and Multi-Agent development simpler and more convenient while providing comprehensive production-grade application governance capabilities.
 
-Eino ADK helps developers build and manage agent applications, providing a resilient development environment to support conversational and non‑conversational agents, complex tasks, and workflows.
+Eino ADK aims to help developers develop and manage Agent applications. It provides a flexible and robust development environment to help developers build various Agent applications such as conversational agents, non-conversational agents, complex tasks, workflows, and more.
 
-# Architecture
+# ADK Framework
+
+The overall module structure of Eino ADK is shown in the diagram below:
 
 <a href="/img/eino/eino_adk_module_architecture.png" target="_blank"><img src="/img/eino/eino_adk_module_architecture.png" width="100%" /></a>
 
 ## Agent Interface
 
-The core of ADK is the `Agent` abstraction. See the full details in [Eino ADK: Agent Interface](/docs/eino/core_modules/eino_adk/agent_interface).
+The core of Eino ADK is the Agent abstraction (Agent Interface). All ADK functionality is designed around the Agent abstraction. For details, see [Eino ADK: Agent Interface](/docs/eino/core_modules/eino_adk/agent_interface)
 
 ```go
 type Agent interface {
@@ -36,57 +38,63 @@ type Agent interface {
 }
 ```
 
-`Agent.Run`:
+The definition of `Agent.Run` is:
 
-1. Reads task details and related data from `AgentInput`, `AgentRunOption`, and optional session context
-2. Executes the task and writes progress/results into an `AgentEvent` iterator
-3. Requires a future‑style asynchronous execution. In practice (see ChatModelAgent `Run`):
-   - Create a pair of Iterator/Generator
-   - Start the agent’s async task with the Generator, process `AgentInput` (e.g., call LLM) and emit events into the Generator
-   - Return the Iterator immediately to the caller
+1. Get task details and related data from the input AgentInput, AgentRunOption, and optional Context Session
+2. Execute the task and write the execution process and results to the AgentEvent Iterator
 
-## Collaboration
+`Agent.Run` requires the Agent implementation to execute asynchronously in a Future pattern. The core is divided into three steps. For specifics, refer to the implementation of the Run method in ChatModelAgent:
 
-ADK provides rich composition primitives to build Multi‑Agent systems: Supervisor, Plan‑Execute, Group‑Chat, etc. See [Eino ADK: Agent Collaboration](/docs/eino/core_modules/eino_adk/agent_collaboration).
+1. Create a pair of Iterator and Generator
+2. Start the Agent's asynchronous task and pass in the Generator to process AgentInput. The Agent executes core logic in this asynchronous task (e.g., ChatModelAgent calls LLM) and writes new events to the Generator for the Agent caller to consume from the Iterator
+3. Return the Iterator immediately after starting the task in step 2
 
-Primitives:
+## Multi-Agent Collaboration
+
+Around the Agent abstraction, Eino ADK provides various simple, easy-to-use composition primitives for rich scenarios, supporting the development of diverse Multi-Agent collaboration strategies such as Supervisor, Plan-Execute, Group-Chat, and other Multi-Agent scenarios. This enables different Agent division of labor and cooperation patterns to handle more complex tasks. For details, see [Eino ADK: Agent Collaboration](/docs/eino/core_modules/eino_adk/agent_collaboration)
+
+The collaboration primitives defined by Eino ADK during Agent collaboration are as follows:
+
+- Collaboration methods between Agents
 
 <table>
-<tr><td>Collaboration</td><td>Description</td></tr>
-<tr><td>Transfer</td><td>Directly transfer the task to another Agent; current Agent exits and does not track the transferred task</td></tr>
-<tr><td>ToolCall (AgentAsTool)</td><td>Treat an Agent as a tool call, wait for its response, consume its output, and continue processing</td></tr>
+<tr><td>Collaboration Method</td><td>Description</td></tr>
+<tr><td>Transfer</td><td>Directly transfer the task to another Agent. The current Agent exits after execution and does not care about the task execution status of the transferred Agent</td></tr>
+<tr><td>ToolCall(AgentAsTool)</td><td>Call an Agent as a ToolCall, wait for the Agent's response, and obtain the output result of the called Agent for the next round of processing</td></tr>
 </table>
 
-Context strategies:
+- Context strategies for AgentInput
 
 <table>
 <tr><td>Context Strategy</td><td>Description</td></tr>
-<tr><td>Upstream full dialogue</td><td>Provide the child Agent with the complete upstream conversation</td></tr>
-<tr><td>New task description</td><td>Ignore upstream conversation and provide a fresh summarized task as the child Agent’s input</td></tr>
+<tr><td>Upstream Agent Full Dialogue</td><td>Get the complete dialogue record of this Agent's upstream Agent</td></tr>
+<tr><td>New Task Description</td><td>Ignore the complete dialogue record of the upstream Agent and provide a new task summary as the sub-Agent's AgentInput</td></tr>
 </table>
 
-Decision autonomy:
+- Decision Autonomy
 
 <table>
-<tr><td>Autonomy</td><td>Description</td></tr>
-<tr><td>Autonomous</td><td>Inside the Agent, choose downstream Agents as needed (often via LLM). Even if decisions are based on preset logic, from the outside this is treated as autonomous.</td></tr>
-<tr><td>Preset</td><td>Pre‑define the next Agent. Execution order is fixed and predictable.</td></tr>
+<tr><td>Decision Autonomy</td><td>Description</td></tr>
+<tr><td>Autonomous Decision</td><td>Inside the Agent, based on its available downstream Agents, when assistance is needed, autonomously select downstream Agents for assistance. Generally, the Agent makes decisions based on LLM internally, but even if selection is based on preset logic, it is still considered autonomous decision from outside the Agent</td></tr>
+<tr><td>Preset Decision</td><td>Pre-set the next Agent after an Agent executes a task. The execution order of Agents is predetermined and predictable</td></tr>
 </table>
 
-Compositions:
+Around the collaboration primitives, Eino ADK provides the following Agent composition primitives:
 
 <table>
-<tr><td>Type</td><td>Description</td><td>Run Mode</td><td>Collaboration</td><td>Context</td><td>Autonomy</td></tr>
-<tr><td><strong>SubAgents</strong></td><td>Treat a user‑provided Agent as the parent, and its subAgents list as children, forming an autonomously deciding Agent. Name/Description identify the Agent.<li>Currently limited to one parent per Agent</li><li>Use SetSubAgents to build a “multi‑branch tree” Multi‑Agent</li><li>AgentName must be unique within the tree</li></td><td><a href="/img/eino/eino_adk_preview_tree.png" target="_blank"><img src="/img/eino/eino_adk_preview_tree.png" width="100%" /></a></td><td>Transfer</td><td>Upstream full dialogue</td><td>Autonomous</td></tr>
-<tr><td><strong>Sequential</strong></td><td>Compose SubAgents to execute in order. Name/Description identify the Sequential Agent. Executes subagents sequentially until all finish.</td><td><a href="/img/eino/eino_adk_overview_sequential.png" target="_blank"><img src="/img/eino/eino_adk_overview_sequential.png" width="100%" /></a></td><td>Transfer</td><td>Upstream full dialogue</td><td>Preset</td></tr>
-<tr><td><strong>Parallel</strong></td><td>Compose SubAgents to run concurrently under the same context. Name/Description identify the Parallel Agent. Executes subagents in parallel, ends after all complete.</td><td><a href="/img/eino/eino_adk_parallel_controller_overview.png" target="_blank"><img src="/img/eino/eino_adk_parallel_controller_overview.png" width="100%" /></a></td><td>Transfer</td><td>Upstream full dialogue</td><td>Preset</td></tr>
-<tr><td><strong>Loop</strong></td><td>Compose SubAgents to run in array order, repeat cyclically. Name/Description identify the Loop Agent. Executes subagents in sequence per loop.</td><td><a href="/img/eino/eino_adk_yet_another_loop.png" target="_blank"><img src="/img/eino/eino_adk_yet_another_loop.png" width="100%" /></a></td><td>Transfer</td><td>Upstream full dialogue</td><td>Preset</td></tr>
-<tr><td><strong>AgentAsTool</strong></td><td>Convert an Agent into a Tool for use by other Agents. Whether an Agent can call other Agents as Tools depends on its implementation. ChatModelAgent supports AgentAsTool.</td><td><a href="/img/eino/eino_adk_agent_as_tool_sequence_diagram_1.png" target="_blank"><img src="/img/eino/eino_adk_agent_as_tool_sequence_diagram_1.png" width="100%" /></a></td><td>ToolCall</td><td>New task description</td><td>Autonomous</td></tr>
+<tr><td>Type</td><td>Description</td><td>Run Mode</td><td>Collaboration Method</td><td>Context Strategy</td><td>Decision Autonomy</td></tr>
+<tr><td><strong>SubAgents</strong></td><td>Use the user-provided agent as the Parent Agent and the user-provided subAgents list as Child Agents to form an autonomously deciding Agent, where Name and Description serve as the Agent's name identifier and description.<li>Currently limited to one Agent having only one Parent Agent</li><li>Use the SetSubAgents function to build a "multi-branch tree" form of Multi-Agent</li><li>In this "multi-branch tree", AgentName must remain unique</li></td><td><a href="/img/eino/eino_adk_preview_tree.png" target="_blank"><img src="/img/eino/eino_adk_preview_tree.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Dialogue</td><td>Autonomous Decision</td></tr>
+<tr><td><strong>Sequential</strong></td><td>Combine the user-provided SubAgents list into a Sequential Agent that executes in order, where Name and Description serve as the Sequential Agent's name identifier and description. When the Sequential Agent executes, it runs the SubAgents list in order until all Agents have been executed.</td><td><a href="/img/eino/eino_adk_overview_sequential.png" target="_blank"><img src="/img/eino/eino_adk_overview_sequential.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Dialogue</td><td>Preset Decision</td></tr>
+<tr><td><strong>Parallel</strong></td><td>Combine the user-provided SubAgents list into a Parallel Agent that executes concurrently based on the same context, where Name and Description serve as the Parallel Agent's name identifier and description. When the Parallel Agent executes, it runs the SubAgents list concurrently and ends after all Agents complete execution.</td><td><a href="/img/eino/eino_adk_parallel_controller_overview.png" target="_blank"><img src="/img/eino/eino_adk_parallel_controller_overview.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Dialogue</td><td>Preset Decision</td></tr>
+<tr><td><strong>Loop</strong></td><td>Execute the user-provided SubAgents list in array order, cycling repeatedly, to form a Loop Agent, where Name and Description serve as the Loop Agent's name identifier and description. When the Loop Agent executes, it runs the SubAgents list in sequence and ends after all Agents complete execution.</td><td><a href="/img/eino/eino_adk_yet_another_loop.png" target="_blank"><img src="/img/eino/eino_adk_yet_another_loop.png" width="100%" /></a></td><td>Transfer</td><td>Upstream Agent Full Dialogue</td><td>Preset Decision</td></tr>
+<tr><td><strong>AgentAsTool</strong></td><td>Convert an Agent into a Tool to be used by other Agents as a regular Tool. Whether an Agent can call other Agents as Tools depends on its own implementation. The ChatModelAgent provided in Eino ADK supports the AgentAsTool functionality</td><td><a href="/img/eino/eino_adk_agent_as_tool_sequence_diagram_1.png" target="_blank"><img src="/img/eino/eino_adk_agent_as_tool_sequence_diagram_1.png" width="100%" /></a></td><td>ToolCall</td><td>New Task Description</td><td>Autonomous Decision</td></tr>
 </table>
 
 ## ChatModelAgent
 
-`ChatModelAgent` is the key implementation of the agent abstraction. It wraps LLM interaction and implements a ReAct‑style control flow via Eino Graph, exporting events as `AgentEvent`s. See [Eino ADK: ChatModelAgent](/docs/eino/core_modules/eino_adk/agent_implementation/chat_model).
+`ChatModelAgent` is Eino ADK's key implementation of Agent. It encapsulates the interaction logic with large language models, implements a ReAct paradigm Agent, orchestrates the ReAct Agent control flow based on Graph in Eino, and exports events generated during ReAct Agent execution through callbacks.Handler, converting them to AgentEvent for return.
+
+To learn more about ChatModelAgent, see: [Eino ADK: ChatModelAgent](/docs/eino/core_modules/eino_adk/agent_implementation/chat_model)
 
 ```go
 type ChatModelAgentConfig struct {
@@ -130,27 +138,25 @@ func NewChatModelAgent(_ context.Context, config *ChatModelAgentConfig) (*ChatMo
 }
 ```
 
-## AgentRunner
+# AgentRunner
 
-Runner executes agents and enables advanced features. See [Eino ADK: Agent Runner & Extensions](/docs/eino/core_modules/eino_adk/agent_extension).
+AgentRunner is the executor for Agents, providing support for extended functionality required by Agent execution. For details, see: [Eino ADK: Agent Extension](/docs/eino/core_modules/eino_adk/agent_extension)
 
-Runner‑only capabilities:
+Only when executing agents through Runner can you use the following ADK features:
 
 - Interrupt & Resume
-- Cross‑cutting hooks (coming)
-- Context preprocessing
+- Aspect mechanism (supported in 1226 test version, API compatibility not guaranteed before official release)
+- Context environment preprocessing
 
-```go
-type RunnerConfig struct {
-    Agent           Agent
-    EnableStreaming bool
+  ```go
+  type RunnerConfig struct {
+      Agent           Agent
+      EnableStreaming bool
 
-    CheckPointStore compose.CheckPointStore
-}
+      CheckPointStore compose.CheckPointStore
+  }
 
-func NewRunner(_ context.Context, conf RunnerConfig) *Runner {
-    // omit code
-}
-```
-
- 
+  func NewRunner(_ context.Context, conf RunnerConfig) *Runner {
+      // omit code
+  }
+  ```

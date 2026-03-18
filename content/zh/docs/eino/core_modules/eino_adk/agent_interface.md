@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino ADK: Agent 抽象'
+title: Agent 抽象
 weight: 3
 ---
 
@@ -333,3 +333,58 @@ h.Send(&AgentEvent{AgentName: h.agentName, Action: &AgentAction{
 ```
 
 4. 中止循环：当 LoopAgent 的一个子 Agent 发出 BreakLoopAction 时，对应的 LoopAgent 会停止循环并正常退出。
+
+# 语言设置
+
+ADK 提供了 `SetLanguage` 函数用于设置内置提示词（prompt）的语言。这影响所有 ADK 内置组件和中间件生成的提示词语言。本能力在 [alpha/08](https://github.com/cloudwego/eino/releases/tag/v0.8.0-alpha.13) 版本引入。
+
+## API
+
+```go
+// Language 表示 ADK 内置提示词的语言设置
+type Language uint8
+
+const (
+    // LanguageEnglish 表示英文（默认）
+    LanguageEnglish Language = iota
+    // LanguageChinese 表示中文
+    LanguageChinese
+)
+
+// SetLanguage 设置 ADK 内置提示词的语言
+// 默认语言是英文（如果未显式设置）
+func SetLanguage(lang Language) error
+```
+
+## 使用示例
+
+```go
+import "github.com/cloudwego/eino/adk"
+
+// 设置为中文
+err := adk.SetLanguage(adk.LanguageChinese)
+if err != nil {
+    // 处理错误
+}
+
+// 设置为英文（默认）
+err = adk.SetLanguage(adk.LanguageEnglish)
+```
+
+## 影响范围
+
+语言设置会影响以下组件的内置提示词：
+
+<table>
+<tr><td>组件/中间件</td><td>影响的提示词</td></tr>
+<tr><td>FileSystem Middleware</td><td>文件系统工具描述、系统提示词、执行工具提示词</td></tr>
+<tr><td>Reduction Middleware</td><td>工具结果截断/清理的提示文字</td></tr>
+<tr><td>Skill Middleware</td><td>技能系统提示词、技能工具描述</td></tr>
+<tr><td>ChatModelAgent</td><td>内置系统提示词</td></tr>
+</table>
+
+> 💡
+> 建议在程序初始化时设置语言，因为语言设置是全局生效的。在运行时更改语言可能导致同一会话中出现混合语言的提示词。
+
+> 💡
+> 语言设置仅影响 ADK 内置的提示词。你自定义的提示词（如 Agent 的 Instruction）需要自行处理国际化。

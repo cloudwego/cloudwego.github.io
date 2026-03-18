@@ -3,22 +3,22 @@ Description: ""
 date: "2025-11-20"
 lastmod: ""
 tags: []
-title: 'Eino: Document Loader Guide'
-weight: 8
+title: 'Eino: Document Loader User Guide'
+weight: 1
 ---
 
-## Introduction
+## **Introduction**
 
-`Document Loader` loads documents from various sources (e.g., web URLs, local files) and converts them into a standard document format. It’s useful for scenarios such as:
+Document Loader is a component for loading documents. Its main purpose is to load document content from different sources (such as network URLs, local files, etc.) and convert them into a standard document format. This component plays an important role in scenarios that require obtaining document content from various sources, such as:
 
-- Loading web content from URLs
-- Reading local documents like PDF or Word
+- Loading web content from network URLs
+- Reading local PDF, Word, and other format documents
 
-## Component Definition
+## **Component Definition**
 
-### Interface
+### **Interface Definition**
 
-> Code: `eino/components/document/interface.go`
+> Code location: eino/components/document/interface.go
 
 ```go
 type Loader interface {
@@ -26,18 +26,18 @@ type Loader interface {
 }
 ```
 
-#### Load
+#### **Load Method**
 
-- Purpose: load documents from a given source
-- Params:
-  - `ctx`: request context and callback manager
-  - `src`: document source including URI
-  - `opts`: loader options
-- Returns:
-  - `[]*schema.Document`: loaded documents
-  - `error`
+- Function: Load documents from specified data sources
+- Parameters:
+  - ctx: Context object for passing request-level information and Callback Manager
+  - src: Document source containing URI information of the document
+  - opts: Loading options for configuring loading behavior
+- Return values:
+  - `[]*schema.Document`: Loaded document list
+  - error: Error information during loading
 
-### Source
+### **Source Struct**
 
 ```go
 type Source struct {
@@ -45,35 +45,43 @@ type Source struct {
 }
 ```
 
-Defines source information:
+The Source struct defines the document source information:
 
-- `URI`: a web URL or local file path
+- URI: Uniform Resource Identifier of the document, can be a network URL or local file path
 
-### Document
+### **Document Struct**
 
 ```go
 type Document struct {
+    // ID is the unique identifier of the document
     ID string
+    // Content is the content of the document
     Content string
+    // MetaData stores metadata information of the document
     MetaData map[string]any
 }
 ```
 
-Standard document fields:
+The Document struct is the standard format for documents, containing the following important fields:
 
-- `ID`: unique identifier
-- `Content`: document content
-- `MetaData`: source info, embeddings, scores, sub-indexes, and custom metadata
+- ID: Unique identifier of the document, used to uniquely identify a document in the system
+- Content: Actual content of the document
+- MetaData: Metadata of the document, can store information such as:
+  - Source information of the document
+  - Vector representation of the document (for vector retrieval)
+  - Document score (for ranking)
+  - Document sub-index (for hierarchical retrieval)
+  - Other custom metadata
 
-### Options
+### **Common Options**
 
-`LoaderOption` represents loader options. There is no global common option; each implementation defines its own and wraps via `WrapLoaderImplSpecificOptFn`.
+The Loader component uses `LoaderOption` to define loading options. Loader currently has no common Options. Each specific implementation can define its own specific options, wrapped into a unified `LoaderOption` type through the `WrapLoaderImplSpecificOptFn` function.
 
-## Usage
+## **Usage**
 
-### Standalone
+### **Standalone Usage**
 
-> Code: `eino-ext/components/document/loader/file/examples/fileloader`
+> Code location: eino-ext/components/document/loader/file/examples/fileloader
 
 ```go
 import (
@@ -81,32 +89,43 @@ import (
     "github.com/cloudwego/eino-ext/components/document/loader/file"
 )
 
-loader, _ := file.NewFileLoader(ctx, &file.FileLoaderConfig{ UseNameAsID: true })
+// Initialize loader (using file loader as example)
+loader, _ := file.NewFileLoader(ctx, &file.FileLoaderConfig{
+    // Configuration parameters
+    UseNameAsID: true,
+})
 
+// Load document
 filePath := "../../testdata/test.md"
-docs, _ := loader.Load(ctx, document.Source{ URI: filePath })
+docs, _ := loader.Load(ctx, document.Source{
+    URI: filePath,
+})
+
 log.Printf("doc content: %v", docs[0].Content)
 ```
 
-### In Orchestration
+### **Usage in Orchestration**
 
 ```go
-// Chain
+// Use in Chain
 chain := compose.NewChain[string, []*schema.Document]()
 chain.AppendLoader(loader)
+
+// Compile and run
 runnable, _ := chain.Compile()
+
 result, _ := runnable.Invoke(ctx, input)
 
-// Graph
+// Use in Graph
 graph := compose.NewGraph[string, []*schema.Document]()
 graph.AddLoaderNode("loader_node", loader)
 ```
 
-## Options and Callbacks
+## **Option and Callback Usage**
 
-### Callback Example
+### **Callback Usage Example**
 
-> Code: `eino-ext/components/document/loader/file/examples/fileloader`
+> Code location: eino-ext/components/document/loader/file/examples/fileloader
 
 ```go
 import (
@@ -115,60 +134,83 @@ import (
     "github.com/cloudwego/eino/compose"
     "github.com/cloudwego/eino/schema"
     callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
+
     "github.com/cloudwego/eino-ext/components/document/loader/file"
 )
 
+// Create callback handler
 handler := &callbacksHelper.LoaderCallbackHandler{
     OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *document.LoaderCallbackInput) context.Context {
        log.Printf("start loading docs...: %s\n", input.Source.URI)
        return ctx
     },
     OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *document.LoaderCallbackOutput) context.Context {
-       log.Printf("complete loading docs, total: %d\n", len(output.Docs))
+       log.Printf("complete loading docs, total loaded docs: %d\n", len(output.Docs))
        return ctx
     },
+    // OnError
 }
 
-helper := callbacksHelper.NewHandlerHelper().Loader(handler).Handler()
+// Use callback handler
+helper := callbacksHelper.NewHandlerHelper().
+    Loader(handler).
+    Handler()
 
 chain := compose.NewChain[document.Source, []*schema.Document]()
 chain.AppendLoader(loader)
+// Use at runtime
 run, _ := chain.Compile(ctx)
 
-outDocs, _ := run.Invoke(ctx, document.Source{ URI: filePath }, compose.WithCallbacks(helper))
+outDocs, _ := run.Invoke(ctx, document.Source{
+    URI: filePath,
+}, compose.WithCallbacks(helper))
+
 log.Printf("doc content: %v", outDocs[0].Content)
 ```
 
-## Existing Implementations
+## **Existing Implementations**
 
-1. File Loader — local filesystem: [Loader — local file](/docs/eino/ecosystem_integration/document/loader_local_file)
-2. Web Loader — HTTP/HTTPS: [Loader — web url](/docs/eino/ecosystem_integration/document/loader_web_url)
-3. S3 Loader — S3-compatible storage: [Loader — Amazon S3](/docs/eino/ecosystem_integration/document/loader_amazon_s3)
+1. File Loader: For loading documents from the local file system [Loader - local file](/docs/eino/ecosystem_integration/document/loader_local_file)
+2. Web Loader: For loading documents pointed to by network URLs [Loader - web url](/docs/eino/ecosystem_integration/document/loader_web_url)
+3. S3 Loader: For loading documents stored in S3-compatible storage systems [Loader - amazon s3](/docs/eino/ecosystem_integration/document/loader_amazon_s3)
 
-## Implementation Notes
+## **Implementation Reference**
 
-### Option Mechanism
+When implementing your own loader component, pay attention to the option mechanism and callback handling.
+
+### Option **Mechanism**
+
+Custom Loader needs to implement its own Option parameter mechanism:
 
 ```go
+// Define option struct
 type MyLoaderOptions struct {
     Timeout time.Duration
     RetryCount int
 }
 
+// Define option functions
 func WithTimeout(timeout time.Duration) document.LoaderOption {
-    return document.WrapLoaderImplSpecificOptFn(func(o *MyLoaderOptions) { o.Timeout = timeout })
+    return document.WrapLoaderImplSpecificOptFn(func(o *MyLoaderOptions) {
+        o.Timeout = timeout
+    })
 }
 
 func WithRetryCount(count int) document.LoaderOption {
-    return document.WrapLoaderImplSpecificOptFn(func(o *MyLoaderOptions) { o.RetryCount = count })
+    return document.WrapLoaderImplSpecificOptFn(func(o *MyLoaderOptions) {
+        o.RetryCount = count
+    })
 }
 ```
 
-### Callback Structures
+### **Callback Handling**
 
-> Code: `eino/components/document/callback_extra_loader.go`
+Loader implementations need to trigger callbacks at appropriate times:
+
+> Code location: eino/components/document/callback_extra_loader.go
 
 ```go
+// This is the callback input/output defined by the loader component. Implementations need to satisfy the meaning of the parameters.
 type LoaderCallbackInput struct {
     Source Source
     Extra map[string]any
@@ -181,7 +223,7 @@ type LoaderCallbackOutput struct {
 }
 ```
 
-### Full Implementation Example
+### **Complete Implementation Example**
 
 ```go
 import (
@@ -208,6 +250,7 @@ type Config struct {
 }
 
 func (l *CustomLoader) Load(ctx context.Context, src document.Source, opts ...document.LoaderOption) ([]*schema.Document, error) {
+    // 1. Handle options
     options := &customLoaderOptions{
        Timeout:    l.timeout,
        RetryCount: l.retryCount,
@@ -215,17 +258,21 @@ func (l *CustomLoader) Load(ctx context.Context, src document.Source, opts ...do
     options = document.GetLoaderImplSpecificOptions(options, opts...)
     var err error
 
+    // 2. Handle errors and call error callback method
     defer func() {
        if err != nil {
           callbacks.OnError(ctx, err)
        }
     }()
 
+    // 3. Callback before loading starts
     ctx = callbacks.OnStart(ctx, &document.LoaderCallbackInput{
        Source: src,
     })
 
+    // 4. Execute loading logic
     docs, err := l.doLoad(ctx, src, options)
+
     if err != nil {
        return nil, err
     }
@@ -239,20 +286,23 @@ func (l *CustomLoader) Load(ctx context.Context, src document.Source, opts ...do
 }
 
 func (l *CustomLoader) doLoad(ctx context.Context, src document.Source, opts *customLoaderOptions) ([]*schema.Document, error) {
+    // Implement document loading logic
+    // 1. Load document content
+    // 2. Construct Document object, note that important information like document source can be saved in MetaData
     return []*schema.Document{{
        Content: "Hello World",
     }}, nil
 }
 ```
 
-### Notes
+### **Notes**
 
-- `MetaData` is critical for storing document source and other metadata
-- Return meaningful errors on load failures for easier debugging
+- MetaData is an important part of the document, used to save various metadata information of the document
+- Return meaningful error information when document loading fails, making error troubleshooting easier
 
-## Other References
+## Other Reference Documents
 
-- [Eino: Document Transformer Guide](/docs/eino/core_modules/components/document_transformer_guide)
-- [Eino: Embedding Guide](/docs/eino/core_modules/components/embedding_guide)
-- [Eino: Indexer Guide](/docs/eino/core_modules/components/indexer_guide)
-- [Eino: Retriever Guide](/docs/eino/core_modules/components/retriever_guide)
+- [[🚧]Eino: Document Transformer User Guide](/docs/eino/core_modules/components/document_transformer_guide)
+- [[🚧]Eino: Embedding User Guide](/docs/eino/core_modules/components/embedding_guide)
+- [[🚧]Eino: Indexer User Guide](/docs/eino/core_modules/components/indexer_guide)
+- [[🚧]Eino: Retriever User Guide](/docs/eino/core_modules/components/retriever_guide)

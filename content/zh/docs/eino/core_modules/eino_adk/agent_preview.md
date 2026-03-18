@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2025-12-11"
+date: "2026-01-20"
 lastmod: ""
 tags: []
-title: 'Eino ADK: 概述'
+title: 概述
 weight: 2
 ---
 
@@ -145,18 +145,18 @@ AgentRunner 是 Agent 的执行器，为 Agent 运行所需要的拓展功能加
 只有通过 Runner 执行 agent 时，才可以使用 ADK 的如下功能：
 
 - Interrupt & Resume
-- 切面机制（当前版本尚未支持）
+- 切面机制（测试版本支持，正式发布前不保证 API 兼容，详见 Agent 扩展章节）
 - Context 环境的预处理
 
-```go
-type RunnerConfig struct {
-    Agent           Agent
-    EnableStreaming bool
+  ```go
+  type RunnerConfig struct {
+      Agent           Agent
+      EnableStreaming bool
 
-    CheckPointStore compose.CheckPointStore
-}
+      CheckPointStore compose.CheckPointStore
+  }
 
-func NewRunner(_ context.Context, conf RunnerConfig) *Runner {
-    // omit code
-}
-```
+  func NewRunner(_ context.Context, conf RunnerConfig) *Runner {
+      // omit code
+  }
+  ```

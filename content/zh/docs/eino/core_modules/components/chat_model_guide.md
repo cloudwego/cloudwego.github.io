@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-12-09"
+date: "2026-03-09"
 lastmod: ""
 tags: []
-title: 'Eino: ChatModel 使用说明'
-weight: 1
+title: ChatModel 使用说明
+weight: 8
 ---
 
 ## 基本介绍
@@ -143,6 +143,29 @@ WithTopP(topP float32) Option
 
 // 设置停止词
 WithStop(stop []string) Option
+
+// WithTools is the option to set tools for the model.
+func WithTools(tools []*schema.ToolInfo) Option {
+        if tools == nil {
+                tools = []*schema.ToolInfo{}
+        }
+        return Option{
+                apply: func(opts *Options) {
+                        opts.Tools = tools
+                },
+        }
+}
+
+// WithToolChoice sets the tool choice for the model. It also allows for providing a list of
+// tool names to constrain the model to a specific subset of the available tools.
+func WithToolChoice(toolChoice schema.ToolChoice, allowedToolNames ...string) Option {
+        return Option{
+                apply: func(opts *Options) {
+                        opts.ToolChoice = &toolChoice
+                        opts.AllowedToolNames = allowedToolNames
+                },
+        }
+}
 ```
 
 ## 使用方式
@@ -313,10 +336,7 @@ result, err := runnable.Invoke(ctx, messages, compose.WithCallbacks(helper))
 
 ## **已有实现**
 
-1. OpenAI ChatModel: 使用 OpenAI 的 GPT 系列模型 [ChatModel - OpenAI](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_openai)
-2. Ollama ChatModel: 使用 Ollama 本地模型 [ChatModel - Ollama](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ollama)
-3. ARK ChatModel: 使用 ARK 平台的模型服务 [ChatModel - ARK](/zh/docs/eino/ecosystem_integration/chat_model/chat_model_ark)
-4. 更多查看： [Eino ChatModel](https://www.cloudwego.io/zh/docs/eino/ecosystem_integration/chat_model/)
+[ChatModel](/zh/docs/eino/ecosystem_integration/chat_model)
 
 ## 自行实现参考
 

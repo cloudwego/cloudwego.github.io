@@ -74,7 +74,7 @@ type UnaryMiddleware func(next UnaryEndpoint) UnaryEndpoint
 ### 注入 client 侧的中间件
 
 ```go
-import "github.com/cloudwego/client"
+import "github.com/cloudwego/kitex/client"
 
 cli, err := xxx.NewClient(
     "a.b.c", 
@@ -107,7 +107,7 @@ cli, err := xxx.NewClient(
 ### 注入 server 侧的中间件
 
 ```go
-import "github.com/cloudwego/server"
+import "github.com/cloudwego/kitex/server"
 
 svr, err := xxx.NewServer(
     //...

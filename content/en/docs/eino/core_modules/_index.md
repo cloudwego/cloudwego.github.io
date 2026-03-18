@@ -4,7 +4,7 @@ date: "2025-07-21"
 lastmod: ""
 tags: []
 title: 'Eino: Core Modules'
-weight: 3
+weight: 4
 ---
 
 Eino’s core modules include the following parts:

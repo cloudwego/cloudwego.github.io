@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2026-03-03"
 lastmod: ""
 tags: []
 title: 字节跳动大模型应用 Go 开发框架 —— Eino 实践
@@ -106,7 +106,7 @@ compiledGraph, err := graph.Compile(ctx)
 if err != nil {
     return err
 }
-out, err := r.Invoke(ctx, map[string]any{"query":"Beijing's weather this weekend"})
+out, err := compiledGraph.Invoke(ctx, map[string]any{"query":"Beijing's weather this weekend"})
 ```
 
 ## 了解工具

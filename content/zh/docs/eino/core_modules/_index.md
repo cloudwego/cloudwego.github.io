@@ -3,8 +3,8 @@ Description: ""
 date: "2025-07-21"
 lastmod: ""
 tags: []
-title: 'Eino: 核心模块'
-weight: 3
+title: 核心模块
+weight: 4
 ---
 
 Eino 中的核心模块有如下几个部分：

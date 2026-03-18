@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2025-12-03"
+date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino ADK MultiAgent: Plan-Execute Agent'
-weight: 3
+title: Plan-Execute Agent
+weight: 4
 ---
 
 ## Plan-Execute Agent 概述

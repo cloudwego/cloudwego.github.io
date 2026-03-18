@@ -1,39 +1,101 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2026-03-16"
 lastmod: ""
 tags: []
-title: 'Eino: 快速开始'
+title: 快速开始
 weight: 2
 ---
 
-## 简要说明
+本篇文档用于作为 ChatWithEino Quickstart 的统一入口：用一条清晰的路径带你跑起来，并解释这个系列最终要交付什么（一个可扩展的端到端 Agent 应用骨架）。
 
-Eino 提供了多种面向 AI 应用开发场景的组件抽象，同时也提供了多种实现，因此用 Eino 快速上手开发一个应用是**非常简单**的。本目录中将提供几个最常见的用 AI 搭建的应用实例，以帮助你快速地上手使用 Eino。
+## 这是什么
 
-这几个小应用仅用于快速上手，对于其中的单项能力的更详细介绍及示例，可以参考 [组件介绍](/zh/docs/eino/core_modules/components)、[编排介绍](/zh/docs/eino/core_modules/chain_and_graph_orchestration/chain_graph_introduction) 等专题文档。
+ChatWithEino 是一个基于 Eino 构建的学习型 Agent：它能读取源码/文档/示例，并通过对话帮助开发者理解 Eino 以及用 Eino 写代码。
 
-## 快速开始示例
+这个 Quickstart 系列采用“渐进式搭建”的方式：
 
-### 示例：LLM 最简应用
+- 前期以 Console 为载体，逐步引入 ChatModel、Agent/Runner、Memory、Tool、Middleware、Callback、Interrupt/Resume、Graph Tool、Skill
+- 最终把同一个 Agent 以 Web 形态交付出来，并用 A2UI 协议把事件流渲染成可增量更新的 UI
 
-AI 的应用中，最基础的场景就是 prompt + chat model 的场景，这也是互联网上各类 AI 应用平台提供的最重要的功能。你可以定义 `System Prompt` 来约束大模型的回答逻辑，比如 “你在扮演一个 XXX 角色” 等等。这个示例中，你可以用 Eino 的 `PromptTemplate` 组件 和 `ChatModel` 组件来构建一个角色扮演应用。
+## 最短路径：先跑起来
 
-- [实现一个最简 LLM 应用-ChatModel](/zh/docs/eino/quick_start/simple_llm_application)
+在仓库根目录执行：
 
-### 示例：创建一个 Agent
+```bash
+git clone https://github.com/cloudwego/eino-examples.git
+cd eino-examples/quickstart/chatwitheino
+```
 
-大模型是 AI 的大脑，其核心是理解自然语言，并做出回应，(文本)大模型本身只能接收一段文本，然后输出一段文本。而当你希望大模型能使用一些工具自行获取所需的信息、执行一些动作，就需要使用 `Tool` 来实现了，拥有了 Tool 的大模型就像是拥有了手脚，可以和当下已有的 IT 基础设施进行交互，比如 "调用 http 接口查询天气，再根据天气提醒你今天要传什么衣服"，就需要大模型调用 "search tool" 查询信息。
+### 1) 最小 Console（第一章）
 
-我们通常把能够根据大模型的输出调用相关 tool 的这套体系所构建出的整体，叫做 “智能体”，即 Agent。
+准备模型配置（以 OpenAI 为例）：
 
-在 Eino 中，你可以单独使用 ChatModel + ToolsNode 来实现 Agent，也可以使用封装好的 `react agent` 和 `multi agent`。
+```bash
+export OPENAI_API_KEY="..."
+export OPENAI_MODEL="gpt-4.1-mini"
+```
 
-在这个示例中，我们将使用 react agent 来构建一个可以和现实世界交互的智能体。
+运行：
 
-- [Agent-让大模型拥有双手](/zh/docs/eino/quick_start/agent_llm_with_tools)
+```bash
+go run ./cmd/ch01 -- "用一句话解释 Eino 的 Component 设计解决了什么问题？"
+```
 
-## 下一步探索
+### 2) 最终 Web（A2UI）
 
-- 理解 Eino 的核心模块和概念： [Eino: 核心模块](/zh/docs/eino/core_modules)，这是你自如玩转使用 Eino 做应用开发的关键信息。
-- Eino 保持开放生态的姿态，提供了大量生态集成组件：[Eino: 生态集成](/zh/docs/eino/ecosystem_integration)，你可以使用这些组件快速构建自己的业务应用。
+```bash
+go run .
+```
+
+启动后访问输出里的地址（默认 `http://localhost:8080`）。
+
+### 3) （可选）开启 skills（第九章能力复用）
+
+skills 用于把一组稳定的“知识/指令包”（`SKILL.md` + `reference/*.md`）注入到 Agent，让模型在需要时按需加载并调用。
+
+```bash
+go run ./scripts/sync_eino_ext_skills.go -src /path/to/eino-ext -dest ./skills/eino-ext -clean
+EINO_EXT_SKILLS_DIR="$(pwd)/skills/eino-ext" go run .
+```
+
+说明：
+
+- `./skills/` 目录默认被 `.gitignore` 忽略，避免把同步出来的 skills 误提交
+- 如需验证 Skill 是否生效，可运行第九章示例入口代码：
+  - [https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch09/main.go](https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/cmd/ch09/main.go)
+
+## 学习路线（章节导航）
+
+<table>
+<tr><td>章节</td><td>主题</td><td>入口</td></tr>
+<tr><td>第一章</td><td>ChatModel 与 Message（Console）</td><td>https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/docs/ch01_chatmodel_agent_console.md</td></tr>
+<tr><td>第二章</td><td>Agent 与 Runner（Console 多轮）</td><td>https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/docs/ch02_chatmodel_agent_runner_console.md</td></tr>
+<tr><td>第三章</td><td>Memory 与 Session（持久化对话）</td><td>https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/docs/ch03_memory_session_jsonl.md</td></tr>
+<tr><td>第四章</td><td>Tool 与文件系统访问</td><td>https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/docs/ch04_tool_backend_filesystem.md</td></tr>
+<tr><td>第五章</td><td>Middleware（中间件模式）</td><td>https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/docs/ch05_middleware.md</td></tr>
+<tr><td>第六章</td><td>Callback 与 Trace（可观测性）</td><td>https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/docs/ch06_callback.md</td></tr>
+<tr><td>第七章</td><td>Interrupt/Resume（中断与恢复）</td><td>https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/docs/ch07_interrupt_resume.md</td></tr>
+<tr><td>第八章</td><td>Graph Tool（复杂工作流）</td><td>https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/docs/ch08_graph_tool.md</td></tr>
+<tr><td>第九章</td><td>Skill（Console）</td><td>https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/docs/ch09_skill.md</td></tr>
+<tr><td>最终章</td><td>A2UI（Web）</td><td>https://github.com/cloudwego/eino-examples/blob/main/quickstart/chatwitheino/docs/ch10_a2ui.md</td></tr>
+</table>
+
+## 最终交付：一个可扩展的端到端 Agent 应用骨架
+
+你可以把这个 Quickstart 的最终产物理解为一套“可插拔的应用骨架”，它把 Eino 的关键能力连成闭环：
+
+- 运行时：Runner 驱动执行，支持流式输出与事件模型
+- 工具层：通过 Tool 接入文件系统/检索/工作流等能力
+- 中间件：用 handler/middleware 承载重试、审批、错误处理等横切能力
+- 人机协作：interrupt/resume + checkpoint 支持审批、补参、分支选择等交互式流程
+- 确定性编排：compose（graph/chain/workflow）把复杂业务流程组织为可维护、可复用的执行图
+- UI 交付：用 A2UI 把 Agent 的事件流映射为可增量渲染的 UI 组件树（SSE 推送）
+
+其中 A2UI 的边界需要明确：它不是 Eino 框架本身的一部分，而是业务层的 UI 协议/渲染方案。本 Quickstart 用它来展示“Agent 能力如何以产品形态呈现给用户”，具体实现与协议细节以最终章为准。
+
+## 下一步探索（从 Quickstart 到真实业务）
+
+- 想系统理解 Eino 的组件抽象与用法：从第一章的 Component 入门开始，再按章节逐步补齐 Tool/Graph/Callback/Interrupt 等能力
+- 想复用更大规模的知识与指令：对接 `eino-ext` 的 skills，并通过 Skill 中间件按需加载
+- 想把 Agent 做成业务产品：参考最终章（A2UI/Web）把事件流、状态与交互打通，再替换为你自己的 UI 形态与协议

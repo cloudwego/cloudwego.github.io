@@ -3,29 +3,31 @@ Description: ""
 date: "2025-11-20"
 lastmod: ""
 tags: []
-title: 'Eino ADK: Agent Runner & Extensions'
-weight: 3
+title: 'Eino ADK: Agent Runner and Extension'
+weight: 6
 ---
 
 # Agent Runner
 
 ## Definition
 
-Runner is the core engine that executes Agents in Eino ADK. It manages the full lifecycle: multi‑agent collaboration, context passing, and cross‑cutting aspects like interrupt and callback. Any Agent should run via Runner.
+Runner is the core engine in Eino ADK responsible for executing Agents. Its main purpose is to manage and control the entire lifecycle of Agents, such as handling multi-Agent collaboration, saving and passing context, etc. Cross-cutting capabilities like interrupt, callback, etc. all rely on Runner for implementation. Any Agent should be run through Runner.
 
 ## Interrupt & Resume
 
-Runner provides runtime interrupt and resume. It allows a running Agent to actively interrupt execution and persist current state, then resume from the breakpoint. Commonly used when external input is needed, long waits occur, or workflows are pausable.
+Agent Runner provides runtime interrupt and resume functionality. This allows a running Agent to proactively interrupt its execution and save the current state, supporting resumption from the interrupt point. This functionality is commonly used in scenarios where the Agent processing flow requires external input, long waits, or pausable operations.
 
-Three key points in one interrupt→resume process:
+Below we introduce three key points in an interrupt-to-resume process:
 
-1. Interrupted Action: emitted by Agent, intercepted by Runner
-2. Checkpoint: after intercepting, Runner persists current state
-3. Resume: when conditions are ready, Runner resumes from the breakpoint
+1. Interrupted Action: Thrown by the Agent as an interrupt event, intercepted by Agent Runner
+2. Checkpoint: Agent Runner intercepts the event and saves the current running state
+3. Resume: After running conditions are ready again, Agent Runner resumes running from the checkpoint
 
 ### Interrupted Action
 
-During execution, an Agent can actively interrupt Runner by emitting an AgentEvent containing Interrupted Action. Runner treats an event as interrupted when `Interrupted` is non‑nil:
+During the Agent's execution, you can proactively interrupt the Runner's operation by producing an AgentEvent containing an Interrupted Action.
+
+When the Event's Interrupted is not empty, the Agent Runner considers an interrupt to have occurred:
 
 ```go
 // github.com/cloudwego/eino/adk/interface.go
@@ -41,13 +43,13 @@ type InterruptInfo struct {
 }
 ```
 
-When interruption occurs, use `InterruptInfo` to attach custom data. This data:
+When an interrupt occurs, you can attach custom interrupt information through the InterruptInfo structure. This information:
 
-1. Is returned to the caller to explain the interruption reason
-2. Will be passed back to the interrupted Agent on resume, so the Agent can recover based on it
+1. Will be passed to the caller, which can be used to explain the reason for the interrupt, etc.
+2. If the Agent run needs to be resumed later, the InterruptInfo will be re-passed to the interrupted Agent upon resumption, and the Agent can use this information to resume running
 
 ```go
-// e.g., ChatModelAgent emits the following AgentEvent on interrupt:
+// For example, when ChatModelAgent interrupts, it sends the following AgentEvent:
 h.Send(&AgentEvent{AgentName: h.agentName, Action: &AgentAction{
     Interrupted: &InterruptInfo{
        Data: &ChatModelAgentInterruptInfo{Data: data, Info: info},
@@ -57,7 +59,7 @@ h.Send(&AgentEvent{AgentName: h.agentName, Action: &AgentAction{
 
 ### State Persistence (Checkpoint)
 
-Runner terminates the current run after capturing an event with Interrupted Action. If:
+When Runner captures this Event with Interrupted Action, it immediately terminates the current execution flow. If:
 
 1. CheckPointStore is set in Runner
 
@@ -75,25 +77,28 @@ type CheckPointStore interface {
 }
 ```
 
-2. WithCheckPointID is passed when calling Runner
+1. CheckPointID is passed via AgentRunOption WithCheckPointID when calling Runner
 
 ```go
 // github.com/cloudwego/eino/adk/interrupt.go
-func WithCheckPointID(id string) _AgentRunOption_
+func WithCheckPointID(id string) AgentRunOption
 ```
 
-Runner persists current state (original input, history, etc.) and the Agent’s InterruptInfo into CheckPointStore under CheckPointID.
+After terminating running, Runner persists the current running state (original input, conversation history, etc.) and the InterruptInfo thrown by the Agent to CheckPointStore using CheckPointID as the key.
 
-> To preserve interface concrete types, Eino ADK uses gob (https://pkg.go.dev/encoding/gob) to serialize runtime state. For custom types, register via gob.Register or gob.RegisterName (prefer the latter; the former uses path+type name as default identifiers, so both location and name must remain unchanged). Eino auto‑registers framework built‑in types.
+> 💡
+> To preserve the original types of data in interfaces, Eino ADK uses gob ([https://pkg.go.dev/encoding/gob](https://pkg.go.dev/encoding/gob)) to serialize running state. Therefore, when using custom types, you need to register the types in advance using gob.Register or gob.RegisterName (the latter is more recommended; the former uses path plus type name as the default name, so both the type's location and name cannot change). Eino automatically registers types built into the framework.
 
 ### Resume
+
+When running is interrupted, calling Runner's Resume interface with the CheckPointID from the interrupt can resume running:
 
 ```go
 // github.com/cloudwego/eino/adk/runner.go
 func (r *Runner) Resume(ctx context.Context, checkPointID string, opts ...AgentRunOption) (*AsyncIterator[*AgentEvent], error)
 ```
 
-Resume requires the interrupted Agent to implement `ResumableAgent`. Runner reads state from CheckPointStore and resumes; `InterruptInfo` and last run’s `EnableStreaming` are provided as inputs:
+Resuming Agent running requires the interrupted Agent to implement the ResumableAgent interface. Runner reads the running state from CheckPointerStore and resumes running, where the InterruptInfo and the EnableStreaming configured in the previous run are provided as input to the Agent:
 
 ```go
 // github.com/cloudwego/eino/adk/interface.go
@@ -106,8 +111,8 @@ type ResumableAgent interface {
 // github.com/cloudwego/eino/adk/interrupt.go
 type ResumeInfo struct {
     EnableStreaming bool
-    *_InterruptInfo_
+    *InterruptInfo
 }
 ```
 
-If Resume needs to pass new inputs to the Agent, define AgentRunOption and supply it when calling Runner.Resume.
+To pass new information to the Agent during Resume, you can define an AgentRunOption and pass it when calling Runner.Resume.

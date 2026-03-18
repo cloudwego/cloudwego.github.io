@@ -1,72 +1,75 @@
 ---
 Description: ""
-date: "2025-07-21"
+date: "2026-01-20"
 lastmod: ""
 tags: []
 title: 'Eino: Components'
 weight: 1
 ---
 
-LLM application development differs from traditional app development primarily due to two core capabilities:
+The most significant difference between LLM application development and traditional application development lies in the two core capabilities of large language models:
 
-- **Semantic text processing**: understanding and generating human language, handling relationships within unstructured content.
-- **Intelligent decision-making**: reasoning from context and making appropriate action decisions.
+- **Semantic text processing**: the ability to understand and generate human language, handling semantic relationships in unstructured content.
+- **Intelligent decision-making**: the ability to reason and make judgments based on context, and make corresponding behavioral decisions.
 
-These capabilities lead to three major application patterns:
+These two core capabilities have given rise to three main application patterns:
 
-1. **Direct conversation**: process user input and produce responses.
-2. **Knowledge processing**: semantically process, store, and retrieve textual documents.
-3. **Tool calling**: reason from context and call appropriate tools.
+1. **Direct conversation mode**: process user input and generate corresponding responses.
+2. **Knowledge processing mode**: semantically process, store, and retrieve textual documents.
+3. **Tool calling mode**: make decisions based on context and call corresponding tools.
 
-These patterns summarize common LLM app scenarios and provide a basis for abstraction and standardization. Eino abstracts these into reusable **components**.
+These patterns highly summarize the main scenarios of current LLM applications and provide a foundation for abstraction and standardization. Based on this, Eino abstracts these common capabilities into reusable "Components".
 
-Mapping components to patterns:
+The relationship between component abstractions and these patterns is as follows:
 
-**Conversation components:**
+**Conversation processing components:**
 
-1. Template and parameter preparation for LLM interaction: `ChatTemplate`
+1. Component abstractions for templated processing and LLM interaction parameters: `ChatTemplate`, `AgenticChatTemplate`
 
-   - See [Eino: ChatTemplate Guide](/docs/eino/core_modules/components/chat_template_guide)
+   > See [Eino: ChatTemplate Guide](/docs/eino/core_modules/components/chat_template_guide), [Eino: AgenticChatTemplate Guide [Beta]](/docs/eino/core_modules/components/agentic_chat_template_guide)
+   >
+2. Component abstractions for direct LLM interaction: `ChatModel`, `AgenticModel`
 
-2. Direct LLM interaction: `ChatModel`
+   > See [Eino: ChatModel Guide](/docs/eino/core_modules/components/chat_model_guide), [Eino: AgenticModel Guide [Beta]](/docs/eino/core_modules/components/agentic_chat_model_guide)
+   >
 
-   - See [Eino: ChatModel Guide](/docs/eino/core_modules/components/chat_model_guide)
+**Text semantic processing components:**
 
-**Text semantics components:**
+1. Component abstractions for acquiring and processing text documents: `Document.Loader`, `Document.Transformer`
 
-1. Document acquisition and processing: `Document.Loader`, `Document.Transformer`
+   > See [Eino: Document Loader Guide](/docs/eino/core_modules/components/document_loader_guide), [Eino: Document Transformer Guide](/docs/eino/core_modules/components/document_transformer_guide)
+   >
+2. Component abstraction for semantic processing of text documents: `Embedding`
 
-   - See [Document Loader Guide](/docs/eino/core_modules/components/document_loader_guide) and [Document Transformer Guide](/docs/eino/core_modules/components/document_transformer_guide)
+   > See [Eino: Embedding Guide](/docs/eino/core_modules/components/embedding_guide)
+   >
+3. Component abstraction for storing data indexes after embedding: `Indexer`
 
-2. Semantic embedding of documents: `Embedding`
+   > See [Eino: Indexer Guide](/docs/eino/core_modules/components/indexer_guide)
+   >
+4. Component abstraction for indexing and retrieving semantically related text documents: `Retriever`
 
-   - See [Embedding Guide](/docs/eino/core_modules/components/embedding_guide)
-
-3. Indexing and storage of embeddings: `Indexer`
-
-   - See [Indexer Guide](/docs/eino/core_modules/components/indexer_guide)
-
-4. Retrieval of semantically related documents: `Retriever`
-
-   - See [Retriever Guide](/docs/eino/core_modules/components/retriever_guide)
+   > See [Eino: Retriever Guide](/docs/eino/core_modules/components/retriever_guide)
+   >
 
 **Decision and execution components:**
 
-1. Tool-enabled decision making for LLMs: `ToolsNode`
+1. Component abstractions for LLM decision-making and tool calling: `ToolsNode`, `AgenticToolsNode`
 
-   - See [ToolsNode Guide](/docs/eino/core_modules/components/tools_node_guide)
+   > See [Eino: ToolsNode&Tool Guide](/docs/eino/core_modules/components/tools_node_guide), [Eino: AgenticToolsNode&Tool Guide [Beta]](/docs/eino/core_modules/components/agentic_tools_node_guide)
+   >
 
-**Custom logic:**
+**Custom components:**
 
-1. User-defined business logic: `Lambda`
+1. Component abstraction for user-defined code logic: `Lambda`
 
-   - See [Lambda Guide](/docs/eino/core_modules/components/lambda_guide)
+   > See [Eino: Lambda Guide](/docs/eino/core_modules/components/lambda_guide)
+   >
 
-Components provide application capabilities — the bricks and mortar of LLM app construction. Eino’s component abstractions follow these principles:
+Components are the capability providers for LLM applications, serving as the bricks and mortar in the construction process of LLM applications. The quality of component abstractions determines the complexity of LLM application development. Eino's component abstractions adhere to the following design principles:
 
-1. **Modularity and standardization**: unify common capabilities into clear modules with well-defined boundaries for flexible composition.
-2. **Extensibility**: keep interfaces minimally constraining so developers can implement custom components easily.
-3. **Reusability**: package common capabilities and implementations as ready-to-use tooling.
+1. **Modularity and standardization**: abstract a series of capabilities with the same functionality into unified modules, with clear responsibilities and boundaries between components, supporting flexible composition.
+2. **Extensibility**: keep the interface design with minimal constraints on module capabilities, allowing component developers to easily implement custom component development.
+3. **Reusability**: encapsulate the most commonly used capabilities and implementations, providing developers with ready-to-use tools.
 
-These abstractions establish consistent development paradigms, reduce cognitive load, and improve collaboration efficiency, letting developers focus on business logic instead of reinventing the wheel.
-
+Component abstractions enable LLM application development to form relatively fixed paradigms, reducing cognitive complexity and enhancing collaboration efficiency. Component encapsulation allows developers to focus on implementing business logic, avoiding reinventing the wheel, and quickly building high-quality LLM applications.

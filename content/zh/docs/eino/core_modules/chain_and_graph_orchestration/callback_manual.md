@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2025-12-11"
+date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino: Callback 用户手册'
+title: Callback 用户手册
 weight: 5
 ---
 
@@ -155,7 +155,7 @@ Handler 需要注入到 Context 中才能被触发。
 
 通过 `compose.WithCallbacks(...).DesignateNode(...)` 向顶层 Graph 的某个 Node 注入 Handler。当这个 Node 自身是个内嵌的 Graph 时，会注入到这个内嵌 Graph 自身和其内部的各 Node。
 
-通过 `compose.WithCallbacks(...).DesignateNodeForPath(...)` 向内部嵌套的 Graph 的某个 Node 注入 Handler。
+通过 `compose.WithCallbacks(...).DesignateNodeWithPath(...)` 向内部嵌套的 Graph 的某个 Node 注入 Handler。
 
 ### 在 Graph 外注入 Handler
 
@@ -189,7 +189,7 @@ Graph 会为内部所有的 Node 自动注入 RunInfo。机制是每个 Node 的
 
 ### 组件实现内部触发(Component Callback)
 
-在组件实现的代码中，调用 callbacks 包中的 `OnStart(), OnEnd(), OnError(), OnStartWithStreamInput(), OnEndWithStreamOutput()`。以 Ark 的 ChatModel 实现为例，在 Generate 方法中：
+在组件实现的代码中，调用 callbacks 包中的 `OnStart(), OnEnd(), OnError(), OnStartWithStreamInput(), ``OnEndWithStreamOutput``()`。以 Ark 的 ChatModel 实现为例，在 Generate 方法中：
 
 ```go
 func (cm *ChatModel) Generate(ctx context.Context, in []*schema.Message, opts ...fmodel.Option) (

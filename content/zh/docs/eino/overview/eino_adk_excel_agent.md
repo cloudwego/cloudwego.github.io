@@ -4,7 +4,7 @@ date: "2025-12-02"
 lastmod: ""
 tags: []
 title: 用 Eino ADK 构建你的第一个 AI 智能体：从 Excel Agent 实战开始
-weight: 4
+weight: 7
 ---
 
 ## 从 Excel Agent 详解 Eino ADK

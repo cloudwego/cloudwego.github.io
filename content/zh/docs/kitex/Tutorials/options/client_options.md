@@ -90,6 +90,17 @@ func WithMiddlewareBuilder(mwb endpoint.MiddlewareBuilder) Option
 
 用于创建并添加中间件，可以根据 ctx 判断场景并创建中间件。 ctx 是框架传入的包含运行时配置信息的上下文（非 RPC 调用的上下文），以便中间件初始化时能利用框架的信息。
 
+### 流式配置聚合 - WithStreamOptions
+
+```go
+func WithStreamOptions(opts ...client.StreamOption) Option
+```
+
+**Kitex >= v0.13.0 新增该选项。**
+
+聚合流式相关配置，例如 StreamMiddleware、StreamSendMiddleware、StreamRecvMiddleware、RecvTimeout，仅对流式方法生效。
+更多用法参考 [StreamX 流中间件](../../basic-feature/streamx/streamx_middleware/)。
+
 ### 熔断器 - WithCircuitBreaker
 
 ```go
@@ -198,7 +209,7 @@ func WithGRPCConnPoolSize(s uint32) Option
 func WithGRPCWriteBufferSize(s uint32) Option
 ```
 
-设置 gRPC 写缓冲大小，写缓冲决定了每次批量调用底层写发送数据的大小。默认值为32KB，如果设置为0，则相当于禁用缓冲区，每次写操作都直接调用底层连接进行发送。该设置只对传输协议使用 gRPC 的场景生效。
+设置 gRPC 写缓冲大小，写缓冲决定了每次批量调用底层写发送数据的大小。默认值为 32KB，如果设置为 0，则相当于禁用缓冲区，每次写操作都直接调用底层连接进行发送。该设置只对传输协议使用 gRPC 的场景生效。
 
 #### WithGRPCReadBufferSize
 
@@ -206,7 +217,7 @@ func WithGRPCWriteBufferSize(s uint32) Option
 func WithGRPCReadBufferSize(s uint32) Option
 ```
 
-设置 gRPC 的读缓冲大小，读缓冲决定了每次批量从底层读取多少数据。默认值为32KB，如果设置为0，则相当于禁用缓冲区，每次读操作都直接从底层连接进行读操作。该设置只对传输协议使用 gRPC 的场景生效。
+设置 gRPC 的读缓冲大小，读缓冲决定了每次批量从底层读取多少数据。默认值为 32KB，如果设置为 0，则相当于禁用缓冲区，每次读操作都直接从底层连接进行读操作。该设置只对传输协议使用 gRPC 的场景生效。
 
 #### WithGRPCInitialWindowSize
 
@@ -214,7 +225,7 @@ func WithGRPCReadBufferSize(s uint32) Option
 func WithGRPCInitialWindowSize(s uint32) Option
 ```
 
-设置 gRPC 每个 Stream 的初始收发窗口大小，最低为64KB，若设置的值小于最低值，则会被忽略。该设置只对传输协议使用 gRPC 的场景生效。
+设置 gRPC 每个 Stream 的初始收发窗口大小，最低为 64KB，若设置的值小于最低值，则会被忽略。该设置只对传输协议使用 gRPC 的场景生效。
 
 #### WithGRPCInitialConnWindowSize
 
@@ -222,7 +233,7 @@ func WithGRPCInitialWindowSize(s uint32) Option
 func WithGRPCInitialConnWindowSize(s uint32) Option
 ```
 
-设置 gRPC 单条连接上的初始窗口大小，最低为64KB，若设置的值小于最低值，则会被忽略。该设置只对传输协议使用 gRPC 的场景生效。
+设置 gRPC 单条连接上的初始窗口大小，最低为 64KB，若设置的值小于最低值，则会被忽略。该设置只对传输协议使用 gRPC 的场景生效。
 
 #### WithGRPCMaxHeaderListSize
 
@@ -230,7 +241,7 @@ func WithGRPCInitialConnWindowSize(s uint32) Option
 func WithGRPCMaxHeaderListSize(s uint32) Option
 ```
 
-设置 gRPC MaxHeaderListSize 参数，该参数决定了每次调用允许发送的header的最大条数。该设置只对传输协议使用 gRPC 的场景生效。
+设置 gRPC MaxHeaderListSize 参数，该参数决定了每次调用允许发送的 header 的最大条数。该设置只对传输协议使用 gRPC 的场景生效。
 
 #### WithGRPCKeepaliveParams
 
@@ -408,7 +419,7 @@ func WithResolver(r discovery.Resolver) Option
 func WithHTTPResolver(r http.Resolver) Option
 ```
 
-指定HTTP Resolver，详见[直连访问-自定义 DNS resolver](/zh/docs/kitex/tutorials/basic-feature/visit_directly/)。
+指定 HTTP Resolver，详见[直连访问-自定义 DNS resolver](/zh/docs/kitex/tutorials/basic-feature/visit_directly/)。
 
 ### 负载均衡 - WithLoadBalancer
 
