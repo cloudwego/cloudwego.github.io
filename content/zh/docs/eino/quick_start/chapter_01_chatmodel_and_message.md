@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-12"
+date: "2026-03-24"
 lastmod: ""
 tags: []
 title: 第一章：ChatModel 与 Message（Console）

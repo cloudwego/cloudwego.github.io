@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2026-03-16"
+date: "2026-03-24"
 lastmod: ""
 tags: []
 title: Skill
-weight: 2
+weight: 3
 ---
 
 Skill Middleware 为 Eino ADK Agent 提供了 Skill 支持，使 Agent 能够动态发现和使用预定义的技能来更准确、高效地完成任务。
@@ -111,25 +111,6 @@ type Backend interface {
 <tr><td><pre>Get</pre></td><td>根据名称获取完整的技能内容。当 Agent 决定使用某个技能时调用，返回包含详细指令的完整 Skill 结构</td></tr>
 </table>
 
-## AgentHub 和 ModelHub
-
-当 Skill 使用 Context 模式（fork/isolate）时，需要配置 AgentHub 和 ModelHub：
-
-```go
-// AgentFactory 用于创建 Agent 实例
-type AgentFactory func(ctx context.Context, m model.ToolCallingChatModel) (adk.Agent, error)
-
-// AgentHub 提供 Agent 工厂函数
-type AgentHub interface {
-    Get(ctx context.Context, name string) (AgentFactory, error)
-}
-
-// ModelHub 提供模型实例
-type ModelHub interface {
-    Get(ctx context.Context, name string) (model.ToolCallingChatModel, error)
-}
-```
-
 ### **NewBackendFromFilesystem**
 
 基于 `filesystem.Backend` 接口的后端实现，在指定的目录下读取技能：
@@ -158,85 +139,34 @@ func NewBackendFromFilesystem(ctx context.Context, config *BackendFromFilesystem
 
 ### **filesystem.Backend 实现**
 
-`filesystem.Backend` 接口有以下两种实现可供选择：
+`filesystem.Backend` 接口有以下两种实现可供选择，详见 [Middleware: FileSystem](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem)
 
-#### **Local Backend（本地文件系统）**
+## AgentHub 和 ModelHub
 
-基于本地文件系统的实现，适用于 Unix/MacOS 环境：
-
-```go
-import "github.com/cloudwego/eino-ext/adk/backend/local"
-
-type Config struct {
-    ValidateCommand func(string) error // optional
-}
-
-func NewBackend(ctx context.Context, cfg *Config) (filesystem.Backend, error)
-```
-
-<table>
-<tr><td>字段</td><td>类型</td><td>必需</td><td>说明</td></tr>
-<tr><td>ValidateCommand</td><td><pre>func(string) error</pre></td><td>否</td><td>命令验证函数，用于在执行命令前进行安全校验</td></tr>
-</table>
-
-> **注意**：仅支持 Unix/MacOS，不支持 Windows。
-
-#### **Sandbox Backend（沙箱环境）**
-
-基于火山引擎 AgentKit 沙箱工具的实现，适用于需要隔离执行环境的场景：
+当 Skill 使用 Context 模式（fork/isolate）时，需要配置 AgentHub 和 ModelHub：
 
 ```go
-import "github.com/cloudwego/eino-ext/adk/backend/agentkit"
-
-type Config struct {
-    AccessKeyID      string
-    SecretAccessKey  string
-    Region           Region  // 可选，默认 cn-beijing
-    ToolID           string
-    SessionID        string  // 与 UserSessionID 至少提供一个
-    UserSessionID    string  // 与 SessionID 至少提供一个
-    SessionTTL       int     // 可选，默认 1800 秒
-    ExecutionTimeout int     // 可选
-    HTTPClient       *http.Client // 可选
+// AgentHubOptions contains options passed to AgentHub.Get when creating an agent for skill execution.
+type AgentHubOptions struct {
+    // Model is the resolved model instance when a skill specifies a "model" field in frontmatter.
+    // nil means the skill did not specify a model override; implementations should use their default.
+    Model model.ToolCallingChatModel
 }
 
-func NewSandboxToolBackend(config *Config) (filesystem.Backend, error)
-```
-
-<table>
-<tr><td>字段</td><td>类型</td><td>必需</td><td>说明</td></tr>
-<tr><td>AccessKeyID</td><td><pre>string</pre></td><td>是</td><td>火山引擎 Access Key ID</td></tr>
-<tr><td>SecretAccessKey</td><td><pre>string</pre></td><td>是</td><td>火山引擎 Secret Access Key</td></tr>
-<tr><td>Region</td><td><pre>Region</pre></td><td>否</td><td>区域，支持 <pre>cn-beijing</pre>（默认）和 <pre>cn-shanghai</pre></td></tr>
-<tr><td>ToolID</td><td><pre>string</pre></td><td>是</td><td>沙箱工具 ID</td></tr>
-<tr><td>SessionID</td><td><pre>string</pre></td><td>否</td><td>会话 ID，与 UserSessionID 至少提供一个</td></tr>
-<tr><td>UserSessionID</td><td><pre>string</pre></td><td>否</td><td>用户会话 ID，与 SessionID 至少提供一个</td></tr>
-<tr><td>SessionTTL</td><td><pre>int</pre></td><td>否</td><td>会话存活时间（秒），范围 60-86400，默认 1800</td></tr>
-<tr><td>ExecutionTimeout</td><td><pre>int</pre></td><td>否</td><td>代码执行超时时间（秒）</td></tr>
-</table>
-
-> 更多信息请参考：[火山引擎 AgentKit 文档](https://www.volcengine.com/docs/86681/1847934)
-
-**LocalBackend** 内置的本地文件系统后端实现，在指定的目录下读取技能：
-
-```go
-type LocalBackendConfig struct {
-    BaseDir string
+// AgentHub provides agent instances for context mode (fork/fork_with_context) execution.
+type AgentHub interface {
+    // Get returns an Agent by name. When name is empty, implementations should return a default agent.
+    // The opts parameter carries skill-level overrides (e.g., model) resolved by the framework.
+    Get(ctx context.Context, name string, opts *AgentHubOptions) (adk.Agent, error)
 }
 
-func NewLocalBackend(config *LocalBackendConfig) (*LocalBackend, error)
+// ModelHub 提供模型实例
+type ModelHub interface {
+    Get(ctx context.Context, name string) (model.ToolCallingChatModel, error)
+}
 ```
 
-<table>
-<tr><td>字段</td><td>类型</td><td>必需</td><td>说明</td></tr>
-<tr><td><pre>BaseDir</pre></td><td><pre>string</pre></td><td>是</td><td>技能根目录的路径。LocalBackend 会扫描此目录下的所有子目录，查找包含 <pre>SKILL.md</pre> 文件的目录作为技能</td></tr>
-</table>
-
-工作方式：
-
-- 扫描 `BaseDir` 下的一级子目录
-- 查找每个子目录中的 `SKILL.md` 文件
-- 解析 YAML frontmatter 获取元数据
+### 
 
 ## 初始化
 

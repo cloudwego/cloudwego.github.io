@@ -145,7 +145,7 @@ AgentRunner 是 Agent 的执行器，为 Agent 运行所需要的拓展功能加
 只有通过 Runner 执行 agent 时，才可以使用 ADK 的如下功能：
 
 - Interrupt & Resume
-- 切面机制（测试版本支持，正式发布前不保证 API 兼容，详见 Agent 扩展章节）
+- 切面机制
 - Context 环境的预处理
 
   ```go

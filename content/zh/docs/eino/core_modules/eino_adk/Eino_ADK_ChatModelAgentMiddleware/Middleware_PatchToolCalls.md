@@ -4,7 +4,7 @@ date: "2026-03-09"
 lastmod: ""
 tags: []
 title: PatchToolCalls
-weight: 7
+weight: 8
 ---
 
 adk/middlewares/patchtoolcalls

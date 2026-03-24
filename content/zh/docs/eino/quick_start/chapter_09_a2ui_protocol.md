@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-16"
 lastmod: ""
 tags: []
-title: 第九章：A2UI 协议（流式 UI 组件）
+title: 第十章：A2UI 协议（流式 UI 组件）
 weight: 10
 ---
 

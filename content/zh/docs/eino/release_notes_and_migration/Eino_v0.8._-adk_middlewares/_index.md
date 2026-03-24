@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-09"
+date: "2026-03-24"
 lastmod: ""
 tags: []
 title: v0.8.*-adk middlewares
@@ -65,7 +65,7 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 > 💡
 > **功能**: 自动对话历史摘要，防止超出模型上下文窗口限制
 
-📚 **详细文档**: [Middleware: Summarization](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_summarization)
+📚 **详细文档**: [Middleware: FileSystem](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem)
 
 当对话历史的 Token 数量超过阈值时，自动调用 LLM 生成摘要，压缩上下文。
 
