@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-03-24"
 lastmod: ""
 tags: []
 title: Interrupt & CheckPoint使用手册
@@ -109,7 +109,7 @@ type CheckpointStore interface {
 
 ### 注册序列化方法
 
-CheckPoint 的保存和读取涉及对 Graph 节点输入输出以及 State 的序列化和反序列化，在仅使用简单类型或 eino 内置类型（比如 Message 或 Document）时，用户无需额外操作；当引入自定义 struct 时，需要提前注册类型，Eino 提供了注册方法 `schema.RegisterName`：
+CheckPoint 的保存和读取涉及对 Graph 节点输入输出以及 State 的序列化和反序列化，在仅使用简单类型或 eino 内置类型（比如 Message 或 Document）时，用户无需额外操作；当引入自定义 struct 时，需要提前注册类型，Eino 提供了注册方法 `schema.``RegisterName`：
 
 ```go
 package main

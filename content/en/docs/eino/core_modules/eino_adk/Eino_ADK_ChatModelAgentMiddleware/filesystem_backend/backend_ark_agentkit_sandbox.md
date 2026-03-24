@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2026-03-16"
+date: "2026-03-24"
 lastmod: ""
 tags: []
-title: 'Backend: Ark Agentkit Sandbox'
+title: Ark Agentkit Sandbox
 weight: 1
 ---
 
@@ -11,7 +11,7 @@ weight: 1
 
 Package: `github.com/cloudwego/eino-ext/adk/backend/agentkit`
 
-Note: If your eino version is v0.8.0 or above, you need to use ark agentkit backend [v0.2.0-alpha](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.0-alpha.1) version.
+Note: If your eino version is v0.8.0 or above, you need to use ark agentkit backend [adk/backend/agentkit/v0.2.1](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.1).
 
 ### Overview
 
@@ -92,9 +92,10 @@ func main() {
     })
 
     // Read file
-    content, err := backend.Read(ctx, &filesystem.ReadRequest{
+    fContent, err := backend.Read(ctx, &filesystem.ReadRequest{
         FilePath: "/home/gem/hello.txt",
     })
+    fmt.Println(fContent.Content)
 }
 ```
 
@@ -191,10 +192,6 @@ result, _ := backend.Execute(ctx, &filesystem.ExecuteRequest{
 </table>
 
 ### FAQ
-
-**Q: Write returns "file already exists" error**
-
-This is a security feature. Use a different filename or use Edit to modify existing files.
 
 **Q: Authentication failed**
 

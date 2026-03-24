@@ -4,7 +4,7 @@ date: "2026-03-12"
 lastmod: ""
 tags: []
 title: Reduction
-weight: 6
+weight: 5
 ---
 
 # Reduction 中间件

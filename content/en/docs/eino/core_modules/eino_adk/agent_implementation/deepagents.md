@@ -75,7 +75,7 @@ type Config struct {
 <tr><td>StreamingShell</td><td>Provides Shell capability with streaming results, optional, mutually exclusive with Shell</td><td>execute(streaming)</td></tr>
 </table>
 
-DeepAgents implements built-in filesystem by referencing filesystem middleware. For more detailed capability description of this middleware, see: [Middleware: FileSystem](/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_FileSystem)
+DeepAgents implements built-in filesystem by referencing filesystem middleware. For more detailed capability description of this middleware, see: [Middleware: FileSystem](/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem)
 
 ### Task Decomposition and Planning
 

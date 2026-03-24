@@ -4,7 +4,7 @@ date: "2026-03-09"
 lastmod: ""
 tags: []
 title: ToolSearch
-weight: 5
+weight: 7
 ---
 
 # ToolSearch 中间件

@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Middleware: ToolSearch'
+title: ToolSearch
 weight: 5
 ---
 

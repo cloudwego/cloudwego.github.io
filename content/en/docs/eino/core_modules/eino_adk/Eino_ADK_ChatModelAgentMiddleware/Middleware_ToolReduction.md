@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-12"
 lastmod: ""
 tags: []
-title: 'Middleware: ToolReduction'
+title: ToolReduction
 weight: 6
 ---
 

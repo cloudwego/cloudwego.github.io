@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-16"
+date: "2026-03-24"
 lastmod: ""
 tags: []
 title: 第九章：Skill（Console）
@@ -91,7 +91,7 @@ Enter your message (empty line to exit):
 2. 用 `skill.NewBackendFromFilesystem` 把 `EINO_EXT_SKILLS_DIR` 变成一个 Skill Backend
 3. 用 `skill.NewMiddleware` 生成中间件，并把它塞进 DeepAgent 的 `Handlers`
 
-**关键代码片段（注意：这是简化后的代码片段，不能直接运行，完整代码请参考 cmd/ch09/main.go）：**
+**关键代码片段（注意：这是简化后的代码片段，不能直接运行，完整代码请参考 ****cmd/ch09/main.go****）：**
 
 ```go
 backend, _ := localbk.NewBackend(ctx, &localbk.Config{})

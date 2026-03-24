@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2026-03-12"
+date: "2026-03-24"
 lastmod: ""
 tags: []
-title: 'Backend: Local FileSystem'
+title: Local File System
 weight: 2
 ---
 
@@ -67,9 +67,10 @@ func main() {
     })
 
     // Read file
-    content, err := backend.Read(ctx, &filesystem.ReadRequest{
+    fcontent, err := backend.Read(ctx, &filesystem.ReadRequest{
         FilePath: "/tmp/hello.txt",
     })
+    fmt.Println(fcontent.Content)
 }
 ```
 
@@ -217,17 +218,13 @@ absPath, _ := filepath.Abs("./relative/path")
 
 ### FAQ
 
-**Q: Why are absolute paths required?**
+**Q: Why does running grep fail with `ripgrep (rg) is not installed or not in PATH. Please install it:` [https://github.com/BurntSushi/ripgrep#installation](https://github.com/BurntSushi/ripgrep#installation)?**
 
-To prevent directory traversal attacks. Use `filepath.Abs()` to convert.
-
-**Q: Write fails**
-
-File already exists (security feature), path is not absolute, or insufficient permissions.
+The local Grep command relies on `ripgrep` by default. If your system does not have `ripgrep` installed, install it following the official guide.
 
 **Q: Does GrepRaw support regex?**
 
-No, it uses literal matching. For regex, use Execute to call system grep.
+Yes. GrepRaw uses `ripgrep` under the hood for grep operations, so regex patterns are supported.
 
 **Q: Windows support?**
 
