@@ -59,7 +59,7 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 })
 ```
 
-See [Eino ADK: ChatModelAgentMiddleware](/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware) for details
+See [Eino ADK: ChatModelAgentMiddleware](/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware) for details
 
 ---
 
@@ -68,7 +68,7 @@ See [Eino ADK: ChatModelAgentMiddleware](/docs/eino/core_modules/eino_adk/Eino_A
 > 💡
 > **Function**: Automatic conversation history summarization to prevent exceeding model context window limits
 
-📚 **Detailed Documentation**: [Middleware: Summarization](/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_Summarization)
+📚 **Detailed Documentation**: [Middleware: Summarization](/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_summarization)
 
 When the token count of conversation history exceeds a threshold, automatically calls LLM to generate a summary and compress the context.
 
@@ -95,7 +95,7 @@ mw, err := summarization.New(ctx, &summarization.Config{
 > 💡
 > **Function**: Tool result compression to optimize context usage efficiency
 
-📚 **Detailed Documentation**: [Middleware: ToolReduction](/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_ToolReduction)
+📚 **Detailed Documentation**: [Middleware: ToolReduction](/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_toolreduction)
 
 Provides two-phase tool output management:
 
@@ -120,7 +120,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **Function**: File system operation toolset
 
-📚 **Detailed Documentation**: [Middleware: FileSystem](/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_FileSystem)
+📚 **Detailed Documentation**: [Middleware: FileSystem](/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem)
 
 **New Capabilities**:
 
@@ -133,7 +133,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **Function**: Dynamic loading and execution of Skills
 
-📚 **Detailed Documentation**: [Middleware: Skill](/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_Skill)
+📚 **Detailed Documentation**: [Middleware: Skill](/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_skill)
 
 **New Capabilities**:
 
@@ -146,7 +146,7 @@ mw, err := reduction.New(ctx, &reduction.Config{
 > 💡
 > **Function**: Task planning and execution tools
 
-📚 **Detailed Documentation**: [Middleware: PlanTask](/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_PlanTask)
+📚 **Detailed Documentation**: [Middleware: PlanTask](/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_plantask)
 
 Supports Agent creation and management of task plans, suitable for complex task scenarios requiring step-by-step execution.
 
@@ -155,7 +155,7 @@ Supports Agent creation and management of task plans, suitable for complex task 
 > 💡
 > **Function**: Tool search with dynamic retrieval from a large number of tools
 
-📚 **Detailed Documentation**: [Middleware: ToolSearch](/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_ToolSearch)
+📚 **Detailed Documentation**: [Middleware: ToolSearch](/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_toolsearch)
 
 When there are many tools, dynamically selects the most relevant tools through semantic search to avoid context overload.
 
@@ -164,7 +164,7 @@ When there are many tools, dynamically selects the most relevant tools through s
 > 💡
 > **Function**: Patch dangling tool calls to ensure message history completeness
 
-📚 **Detailed Documentation**: [Middleware: PatchToolCalls](/docs/eino/core_modules/eino_adk/Eino_ADK_ChatModelAgentMiddleware/Middleware_PatchToolCalls)
+📚 **Detailed Documentation**: [Middleware: PatchToolCalls](/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_patchtoolcalls)
 
 Scans message history and inserts placeholder messages for tool calls missing responses. Suitable for scenarios where tool calls are interrupted or cancelled.
 

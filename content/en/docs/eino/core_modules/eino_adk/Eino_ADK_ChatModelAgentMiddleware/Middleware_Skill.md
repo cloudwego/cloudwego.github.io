@@ -1,40 +1,40 @@
 ---
 Description: ""
-date: "2026-03-16"
+date: "2026-03-24"
 lastmod: ""
 tags: []
-title: 'Middleware: Skill'
-weight: 2
+title: Skill
+weight: 3
 ---
 
-Skill Middleware provides Skill support for Eino ADK Agents, enabling Agents to dynamically discover and use predefined skills to complete tasks more accurately and efficiently.
+Skill middleware adds Skill support to Eino ADK agents, enabling agents to dynamically discover and use predefined skills to complete tasks more accurately and efficiently.
 
 # What is a Skill
 
-A Skill is a folder containing instructions, scripts, and resources that Agents can discover and use on demand to extend their capabilities. The core of a Skill is a `SKILL.md` file containing metadata (at least name and description) and instructions guiding the Agent to perform specific tasks.
+A Skill is a folder that contains instructions, scripts, and resources. Agents can discover and use these skills on demand to extend their capabilities. The core of a Skill is a `SKILL.md` file, which includes metadata (at least `name` and `description`) and guidance for the agent to execute a specific type of task.
 
 ```
 my-skill/
-├── SKILL.md          # Required: Instructions + metadata
-├── scripts/          # Optional: Executable code
-├── references/       # Optional: Reference documentation
-└── assets/           # Optional: Templates, resources
+├── SKILL.md          # Required: instructions + metadata
+├── scripts/          # Optional: executable code
+├── references/       # Optional: reference docs
+└── assets/           # Optional: templates/resources
 ```
 
-Skills use **Progressive Disclosure** to efficiently manage context:
+Skills use **Progressive Disclosure** to manage context efficiently:
 
-1. **Discovery**: At startup, the Agent only loads the name and description of each available Skill, enough to determine when the Skill might be needed
-2. **Activation**: When a task matches a Skill's description, the Agent reads the complete `SKILL.md` content into context
-3. **Execution**: The Agent follows instructions to execute the task, and can also load other files or execute bundled code as needed. This approach keeps the Agent responsive while allowing on-demand access to more context.
+1. **Discovery**: on startup, the agent only loads each skill’s name and description — enough to decide when the skill might be useful
+2. **Activation**: when a task matches a skill’s description, the agent loads the full `SKILL.md` content into context
+3. **Execution**: the agent follows the instructions and can load other files or execute bundled code as needed. This keeps the agent responsive while still allowing on-demand access to additional context.
 
 > 💡
 > Ref: [https://agentskills.io/home](https://agentskills.io/home)
 
-# Interface Introduction
+# Interfaces
 
 ## FrontMatter
 
-The metadata structure of a Skill, used for quick display of Skill information during discovery phase, avoiding loading full content:
+Skill metadata used for quick display during discovery, avoiding loading full content:
 
 ```go
 type FrontMatter struct {
@@ -48,32 +48,32 @@ type FrontMatter struct {
 
 <table>
 <tr><td>Field</td><td>Type</td><td>Description</td></tr>
-<tr><td><pre>Name</pre></td><td><pre>string</pre></td><td>Unique identifier for the Skill. Agent calls the Skill by this name. Recommend using short, meaningful names (e.g., <pre>pdf-processing</pre>, <pre>web-research</pre>). Corresponds to the <pre>name</pre> field in SKILL.md frontmatter</td></tr>
-<tr><td><pre>Description</pre></td><td><pre>string</pre></td><td>Description of Skill functionality. This is the key basis for Agent to decide whether to use the Skill, should clearly explain applicable scenarios and capabilities. Corresponds to the <pre>description</pre> field in SKILL.md frontmatter</td></tr>
-<tr><td><pre>Context</pre></td><td><pre>ContextMode</pre></td><td>Context mode. Possible values: <pre>fork</pre> (copy history messages to create new Agent for execution), <pre>isolate</pre> (create new Agent with isolated context for execution). Leave empty for inline mode (directly return Skill content)</td></tr>
-<tr><td><pre>Agent</pre></td><td><pre>string</pre></td><td>Specify the Agent name to use. Used with <pre>Context</pre> field, gets the corresponding Agent factory function via <pre>AgentHub</pre>. Leave empty to use default Agent</td></tr>
-<tr><td><pre>Model</pre></td><td><pre>string</pre></td><td>Specify the model name to use. Gets the corresponding model instance via <pre>ModelHub</pre>. In Context mode, passed to Agent factory; in inline mode, switches the model used by subsequent ChatModel calls</td></tr>
+<tr><td><pre>Name</pre></td><td><pre>string</pre></td><td>Unique identifier of a skill. The agent invokes the skill by name. Use short, meaningful names (e.g. <pre>pdf-processing</pre>, <pre>web-research</pre>). Corresponds to the <pre>name</pre> field in SKILL.md frontmatter.</td></tr>
+<tr><td><pre>Description</pre></td><td><pre>string</pre></td><td>Description of what the skill does. This is the key basis for the agent to decide whether to use the skill, so it should clearly describe applicable scenarios and capabilities. Corresponds to the <pre>description</pre> field in SKILL.md frontmatter.</td></tr>
+<tr><td><pre>Context</pre></td><td><pre>ContextMode</pre></td><td>Context mode. Supported values: <pre>fork_with_context</pre> (copy history messages to a new agent for execution), <pre>fork</pre> (create a new agent with isolated context for execution). Empty means inline mode (return skill content directly).</td></tr>
+<tr><td><pre>Agent</pre></td><td><pre>string</pre></td><td>Agent name to use. Used with <pre>Context</pre>, resolved via <pre>AgentHub</pre>. Empty means using the default agent.</td></tr>
+<tr><td><pre>Model</pre></td><td><pre>string</pre></td><td>Model name to use. Resolved via <pre>ModelHub</pre>. In context mode, passed to the agent factory; in inline mode, it switches the model used by subsequent ChatModel calls.</td></tr>
 </table>
 
 ### ContextMode
 
 ```go
 const (
-    ContextModeFork    ContextMode = "fork"    // Copy history messages
-    ContextModeIsolate ContextMode = "isolate" // Isolate context
+    ContextModeFork            ContextMode = "fork"              // Isolated context
+    ContextModeForkWithContext ContextMode = "fork_with_context" // Copy history messages
 )
 ```
 
 <table>
 <tr><td>Mode</td><td>Description</td></tr>
-<tr><td>Inline (default)</td><td>Skill content is returned directly as tool result, processed by current Agent</td></tr>
-<tr><td>Fork</td><td>Create new Agent, copy current conversation history, execute Skill task independently and return result</td></tr>
-<tr><td>Isolate</td><td>Create new Agent with isolated context (only containing Skill content), execute independently and return result</td></tr>
+<tr><td>Inline (default)</td><td>Skill content is returned as the tool result and the current agent continues processing</td></tr>
+<tr><td>ForkWithContext</td><td>Create a new agent, copy current conversation history, execute the skill independently, and return the result</td></tr>
+<tr><td>Fork</td><td>Create a new agent with isolated context (only skill content), execute independently, and return the result</td></tr>
 </table>
 
 ## Skill
 
-Complete Skill structure, containing metadata and actual instruction content:
+Complete skill structure (metadata + instruction content):
 
 ```go
 type Skill struct {
@@ -85,18 +85,18 @@ type Skill struct {
 
 <table>
 <tr><td>Field</td><td>Type</td><td>Description</td></tr>
-<tr><td><pre>FrontMatter</pre></td><td><pre>FrontMatter</pre></td><td>Embedded metadata structure, including <pre>Name</pre>, <pre>Description</pre>, <pre>Context</pre>, <pre>Agent</pre>, <pre>Model</pre></td></tr>
-<tr><td><pre>Content</pre></td><td><pre>string</pre></td><td>Body content after frontmatter in SKILL.md file. Contains detailed instructions, workflows, examples, etc. Agent reads this content after activating Skill</td></tr>
-<tr><td><pre>BaseDirectory</pre></td><td><pre>string</pre></td><td>Absolute path of Skill directory. Agent can use this path to access other resource files in the Skill directory (such as scripts, templates, reference docs, etc.)</td></tr>
+<tr><td><pre>FrontMatter</pre></td><td><pre>FrontMatter</pre></td><td>Embedded metadata: <pre>Name</pre>, <pre>Description</pre>, <pre>Context</pre>, <pre>Agent</pre>, <pre>Model</pre></td></tr>
+<tr><td><pre>Content</pre></td><td><pre>string</pre></td><td>The body of SKILL.md after frontmatter. Contains detailed instructions, workflows, examples, etc. The agent reads it after skill activation.</td></tr>
+<tr><td><pre>BaseDirectory</pre></td><td><pre>string</pre></td><td>Absolute path of the skill directory. The agent can use this path to access other resources in the skill directory (scripts, templates, references, etc.).</td></tr>
 </table>
 
 ## Backend
 
-Skill backend interface, defining how skills are retrieved. The Backend interface decouples skill storage from usage, providing the following benefits:
+Skill backend interface defines how skills are retrieved. It decouples skill storage from usage:
 
-- **Flexible storage**: Skills can be stored in local file system, database, remote service, cloud storage, etc.
-- **Extensibility**: Teams can implement custom Backends as needed, such as dynamically loading from Git repository, getting from config center, etc.
-- **Test friendly**: Can easily create Mock Backend for unit testing
+- **Flexible storage**: store skills in local filesystem, databases, remote services, cloud storage, etc.
+- **Extensible**: implement custom backends (e.g. load from Git repos, config centers)
+- **Test-friendly**: easy to build mock backends for unit tests
 
 ```go
 type Backend interface {
@@ -107,32 +107,13 @@ type Backend interface {
 
 <table>
 <tr><td>Method</td><td>Description</td></tr>
-<tr><td><pre>List</pre></td><td>List metadata of all available skills. Called at Agent startup to build skill tool descriptions, letting Agent know which skills are available</td></tr>
-<tr><td><pre>Get</pre></td><td>Get complete skill content by name. Called when Agent decides to use a skill, returns complete Skill structure with detailed instructions</td></tr>
+<tr><td><pre>List</pre></td><td>List metadata of all available skills. Called when the agent starts to build the skill tool description, so the agent knows what skills exist.</td></tr>
+<tr><td><pre>Get</pre></td><td>Get full skill content by name. Called when the agent decides to use a skill, returning the full Skill structure including detailed instructions.</td></tr>
 </table>
 
-## AgentHub and ModelHub
+### NewBackendFromFilesystem
 
-When Skills use Context mode (fork/isolate), AgentHub and ModelHub need to be configured:
-
-```go
-// AgentFactory creates Agent instances
-type AgentFactory func(ctx context.Context, m model.ToolCallingChatModel) (adk.Agent, error)
-
-// AgentHub provides Agent factory functions
-type AgentHub interface {
-    Get(ctx context.Context, name string) (AgentFactory, error)
-}
-
-// ModelHub provides model instances
-type ModelHub interface {
-    Get(ctx context.Context, name string) (model.ToolCallingChatModel, error)
-}
-```
-
-### **NewBackendFromFilesystem**
-
-Backend implementation based on `filesystem.Backend` interface, reads skills from specified directory:
+A filesystem-backed backend implementation that reads skills from a directory via `filesystem.Backend`:
 
 ```go
 type BackendFromFilesystemConfig struct {
@@ -145,147 +126,96 @@ func NewBackendFromFilesystem(ctx context.Context, config *BackendFromFilesystem
 
 <table>
 <tr><td>Field</td><td>Type</td><td>Required</td><td>Description</td></tr>
-<tr><td>Backend</td><td><pre>filesystem.Backend</pre></td><td>Yes</td><td>File system backend implementation for file operations</td></tr>
-<tr><td>BaseDir</td><td><pre>string</pre></td><td>Yes</td><td>Path to skills root directory. Scans all first-level subdirectories under this directory, looking for directories containing <pre>SKILL.md</pre> files as skills</td></tr>
+<tr><td>Backend</td><td><pre>filesystem.Backend</pre></td><td>Yes</td><td>Filesystem backend implementation used for file operations</td></tr>
+<tr><td>BaseDir</td><td><pre>string</pre></td><td>Yes</td><td>Root directory for skills. It scans all first-level subdirectories and treats the ones containing <pre>SKILL.md</pre> as skills.</td></tr>
 </table>
 
 How it works:
 
-- Scans first-level subdirectories under `BaseDir`
-- Looks for `SKILL.md` file in each subdirectory
-- Parses YAML frontmatter to get metadata
-- Deeply nested `SKILL.md` files are ignored
+- scan first-level subdirectories under `BaseDir`
+- look for `SKILL.md` in each subdirectory
+- parse YAML frontmatter to get metadata
+- deeply nested `SKILL.md` files are ignored
 
-### **filesystem.Backend Implementations**
+### filesystem.Backend Implementations
 
-The `filesystem.Backend` interface has the following two implementations to choose from:
+There are two `filesystem.Backend` implementations to choose from. See [Middleware: FileSystem](/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/middleware_filesystem).
 
-#### **Local Backend (Local File System)**
+## AgentHub and ModelHub
 
-Implementation based on local file system, suitable for Unix/MacOS environments:
-
-```go
-import "github.com/cloudwego/eino-ext/adk/backend/local"
-
-type Config struct {
-    ValidateCommand func(string) error // optional
-}
-
-func NewBackend(ctx context.Context, cfg *Config) (filesystem.Backend, error)
-```
-
-<table>
-<tr><td>Field</td><td>Type</td><td>Required</td><td>Description</td></tr>
-<tr><td>ValidateCommand</td><td><pre>func(string) error</pre></td><td>No</td><td>Command validation function for security checks before command execution</td></tr>
-</table>
-
-> **Note**: Only supports Unix/MacOS, does not support Windows.
-
-#### **Sandbox Backend (Sandbox Environment)**
-
-Implementation based on Volcengine AgentKit sandbox tool, suitable for scenarios requiring isolated execution environments:
+When Skills use context mode (fork/isolate), you need to configure AgentHub and ModelHub:
 
 ```go
-import "github.com/cloudwego/eino-ext/adk/backend/agentkit"
-
-type Config struct {
-    AccessKeyID      string
-    SecretAccessKey  string
-    Region           Region  // Optional, default cn-beijing
-    ToolID           string
-    SessionID        string  // Provide at least one of SessionID or UserSessionID
-    UserSessionID    string  // Provide at least one of SessionID or UserSessionID
-    SessionTTL       int     // Optional, default 1800 seconds
-    ExecutionTimeout int     // Optional
-    HTTPClient       *http.Client // Optional
+// AgentHubOptions contains options passed to AgentHub.Get when creating an agent for skill execution.
+type AgentHubOptions struct {
+    // Model is the resolved model instance when a skill specifies a "model" field in frontmatter.
+    // nil means the skill did not specify a model override; implementations should use their default.
+    Model model.ToolCallingChatModel
 }
 
-func NewSandboxToolBackend(config *Config) (filesystem.Backend, error)
-```
-
-<table>
-<tr><td>Field</td><td>Type</td><td>Required</td><td>Description</td></tr>
-<tr><td>AccessKeyID</td><td><pre>string</pre></td><td>Yes</td><td>Volcengine Access Key ID</td></tr>
-<tr><td>SecretAccessKey</td><td><pre>string</pre></td><td>Yes</td><td>Volcengine Secret Access Key</td></tr>
-<tr><td>Region</td><td><pre>Region</pre></td><td>No</td><td>Region, supports <pre>cn-beijing</pre> (default) and <pre>cn-shanghai</pre></td></tr>
-<tr><td>ToolID</td><td><pre>string</pre></td><td>Yes</td><td>Sandbox Tool ID</td></tr>
-<tr><td>SessionID</td><td><pre>string</pre></td><td>No</td><td>Session ID, provide at least one of SessionID or UserSessionID</td></tr>
-<tr><td>UserSessionID</td><td><pre>string</pre></td><td>No</td><td>User Session ID, provide at least one of SessionID or UserSessionID</td></tr>
-<tr><td>SessionTTL</td><td><pre>int</pre></td><td>No</td><td>Session TTL (seconds), range 60-86400, default 1800</td></tr>
-<tr><td>ExecutionTimeout</td><td><pre>int</pre></td><td>No</td><td>Code execution timeout (seconds)</td></tr>
-</table>
-
-> For more information see: [Volcengine AgentKit Documentation](https://www.volcengine.com/docs/86681/1847934)
-
-**LocalBackend** Built-in local file system backend implementation, reads skills from specified directory:
-
-```go
-type LocalBackendConfig struct {
-    BaseDir string
+// AgentHub provides agent instances for context mode (fork/fork_with_context) execution.
+type AgentHub interface {
+    // Get returns an Agent by name. When name is empty, implementations should return a default agent.
+    // The opts parameter carries skill-level overrides (e.g., model) resolved by the framework.
+    Get(ctx context.Context, name string, opts *AgentHubOptions) (adk.Agent, error)
 }
 
-func NewLocalBackend(config *LocalBackendConfig) (*LocalBackend, error)
+// ModelHub provides model instances.
+type ModelHub interface {
+    Get(ctx context.Context, name string) (model.ToolCallingChatModel, error)
+}
 ```
 
-<table>
-<tr><td>Field</td><td>Type</td><td>Required</td><td>Description</td></tr>
-<tr><td><pre>BaseDir</pre></td><td><pre>string</pre></td><td>Yes</td><td>Path to skills root directory. LocalBackend scans all subdirectories under this directory, looking for directories containing <pre>SKILL.md</pre> files as skills</td></tr>
-</table>
-
-How it works:
-
-- Scans first-level subdirectories under `BaseDir`
-- Looks for `SKILL.md` file in each subdirectory
-- Parses YAML frontmatter to get metadata
+##
 
 ## Initialization
 
-Create Skill Middleware (recommend using `NewChatModelAgentMiddleware`):
+Create the Skill middleware (recommended: `NewMiddleware`):
 
 ```go
-func NewChatModelAgentMiddleware(ctx context.Context, config *Config) (adk.ChatModelAgentMiddleware, error)
+func NewMiddleware(ctx context.Context, config *Config) (adk.ChatModelAgentMiddleware, error)
 ```
 
-Config is configured as:
+Config:
 
 ```go
 type Config struct {
-    // Backend skill backend implementation, required
+    // Backend is required
     Backend Backend
     
-    // SkillToolName skill tool name, default "skill"
+    // SkillToolName defaults to "skill"
     SkillToolName *string
     
-    // AgentHub provides Agent factory functions for Context mode
-    // Required when Skill uses "context: fork" or "context: isolate"
+    // AgentHub provides agent factories for context mode
+    // Required when skill uses "context: fork" or "context: isolate"
     AgentHub AgentHub
     
-    // ModelHub provides model instances for Skills specifying models
+    // ModelHub provides model instances for skill-specified models
     ModelHub ModelHub
     
-    // CustomSystemPrompt custom system prompt
+    // CustomSystemPrompt customizes system prompt
     CustomSystemPrompt SystemPromptFunc
     
-    // CustomToolDescription custom tool description
+    // CustomToolDescription customizes tool description
     CustomToolDescription ToolDescriptionFunc
 }
 ```
 
 <table>
 <tr><td>Field</td><td>Type</td><td>Required</td><td>Default</td><td>Description</td></tr>
-<tr><td><pre>Backend</pre></td><td><pre>Backend</pre></td><td>Yes</td><td><li></li></td><td>Skill backend implementation. Responsible for skill storage and retrieval, can use built-in <pre>LocalBackend</pre> or custom implementation</td></tr>
-<tr><td><pre>SkillToolName</pre></td><td><pre>*string</pre></td><td>No</td><td><pre>"skill"</pre></td><td>Skill tool name. Agent calls skill tool by this name. If your Agent already has a tool with the same name, you can customize the name through this field to avoid conflicts</td></tr>
-<tr><td><pre>AgentHub</pre></td><td><pre>AgentHub</pre></td><td>No</td><td><li></li></td><td>Provides Agent factory functions. Required when Skill uses <pre>context: fork</pre> or <pre>context: isolate</pre></td></tr>
-<tr><td><pre>ModelHub</pre></td><td><pre>ModelHub</pre></td><td>No</td><td><li></li></td><td>Provides model instances. Used when Skill specifies the <pre>model</pre> field</td></tr>
+<tr><td><pre>Backend</pre></td><td><pre>Backend</pre></td><td>Yes</td><td><li></li></td><td>Skill backend implementation responsible for storage and retrieval. You can use the built-in <pre>LocalBackend</pre> or provide your own.</td></tr>
+<tr><td><pre>SkillToolName</pre></td><td><pre>*string</pre></td><td>No</td><td><pre>"skill"</pre></td><td>Name of the skill tool. Agents invoke skills via this tool name. If your agent already has a tool with the same name, set this to avoid conflicts.</td></tr>
+<tr><td><pre>AgentHub</pre></td><td><pre>AgentHub</pre></td><td>No</td><td><li></li></td><td>Provides agent factories. Required when a skill uses <pre>context: fork</pre> or <pre>context: isolate</pre>.</td></tr>
+<tr><td><pre>ModelHub</pre></td><td><pre>ModelHub</pre></td><td>No</td><td><li></li></td><td>Provides model instances. Used when a skill specifies the <pre>model</pre> field.</td></tr>
 <tr><td><pre>CustomSystemPrompt</pre></td><td><pre>SystemPromptFunc</pre></td><td>No</td><td>Built-in prompt</td><td>Custom system prompt function</td></tr>
 <tr><td><pre>CustomToolDescription</pre></td><td><pre>ToolDescriptionFunc</pre></td><td>No</td><td>Built-in description</td><td>Custom tool description function</td></tr>
 </table>
 
 # Quick Start
 
-Taking loading pdf skill from local as an example, complete code at [https://github.com/cloudwego/eino-examples/tree/alpha/08/adk/middlewares/skill](https://github.com/cloudwego/eino-examples/tree/alpha/08/adk/middlewares/skill).
+Example: loading a pdf skill locally. Full code: [https://github.com/cloudwego/eino-examples/tree/main/adk/middlewares/skill](https://github.com/cloudwego/eino-examples/tree/main/adk/middlewares/skill).
 
-- Create skills directory in working directory:
+- Create a skills directory under your working directory:
 
 ```go
 workdir/
@@ -297,42 +227,48 @@ workdir/
 └── other files
 ```
 
-- Create local filesystem backend, and create Skill middleware based on backend:
+- Create a local filesystem backend and build the Skill middleware:
 
 ```go
-import （
+import (
     "github.com/cloudwego/eino/adk/middlewares/skill"
     "github.com/cloudwego/eino-ext/adk/backend/local"
-）
+)
 
+ctx := context.Background() 
 
 be, err := local.NewBackend(ctx, &local.Config{})
 if err != nil {
     log.Fatal(err)
 }
 
-wd, _ := os.Getwd()
-workDir := filepath.Join(wd, "adk", "middlewares", "skill", "workdir")
 skillBackend, err := skill.NewBackendFromFilesystem(ctx, &skill.BackendFromFilesystemConfig{
     Backend: be,
     BaseDir: skillsDir,
 })
+if err != nil {
+    log.Fatalf("Failed to create skill backend: %v", err)
+}
+
+sm, err := skill.NewMiddleware(ctx, &skill.Config{
+    Backend: skillBackend,
+})
 ```
 
-- Create local Filesystem Middleware based on backend, for agent to read skill other files and execute scripts:
+- Create a local FileSystem middleware so the agent can read other skill files and execute scripts:
 
 ```go
 import (
     "github.com/cloudwego/eino/adk/middlewares/filesystem"
 )
 
-fsm, err := filesystem.NewMiddleware(ctx, &filesystem.Config{
-    Backend:                          be,
-    WithoutLargeToolResultOffloading: true,
+fsm, err := filesystem.New(ctx, &filesystem.MiddlewareConfig{
+    Backend:        be,
+    StreamingShell: be,
 })
 ```
 
-- Create Agent and configure middlewares
+- Create an agent and configure middlewares:
 
 ```go
 agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
@@ -340,11 +276,11 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
     Description: "An agent that can analyze logs",
     Instruction: "You are a helpful assistant.",
     Model:       cm,
-    Middlewares: []adk.ChatModelAgentMiddleware{fsm, skillMiddleware},
+    Handlers:    []adk.ChatModelAgentMiddleware{fsm, sm},
 })
 ```
 
-- Call Agent and observe results
+- Run the agent and observe output:
 
 ```go
 runner := adk.NewRunner(ctx, adk.RunnerConfig{
@@ -421,9 +357,9 @@ answer: Here's the analysis result of the log file:
 The log file contains critical issues related to database connectivity and a warning about memory usage. Let me know if you need further analysis!
 ```
 
-# Principles
+# How It Works
 
-Skill middleware adds system prompt and skill tool to Agent, system prompt content is as follows, {tool_name} is the tool name of skill tool:
+The Skill middleware adds a system prompt and a skill tool to the agent. The system prompt is below, where `{tool_name}` is the tool name of the skill tool:
 
 ```python
 # Skills System
@@ -457,7 +393,7 @@ User: "Can you research the latest developments in quantum computing?"
 Remember: Skills make you more capable and consistent. When in doubt, check if a skill exists for the task!
 ```
 
-Skill tool receives the skill name to load, returns the complete content in the corresponding SKILL.md, and informs agent of all available skill names and descriptions in the tool description:
+The skill tool takes a skill name to load and returns the full content of the corresponding SKILL.md. Its tool description lists all available skills with their names and descriptions:
 
 ```sql
 Execute a skill within the main conversation
@@ -495,9 +431,9 @@ Important:
 </available_skills>
 ```
 
-Execution example:
+Example:
 
 <a href="/img/eino/GzIObeN6roy2SAxpEXBcMqrRnYb.png" target="_blank"><img src="/img/eino/GzIObeN6roy2SAxpEXBcMqrRnYb.png" width="100%" /></a>
 
 > 💡
-> Skill Middleware only provides the ability to load SKILL.md as shown above. If the Skill itself needs to read files, execute scripts, etc., users need to configure the corresponding capabilities for the agent separately.
+> Skill middleware only provides the ability to load SKILL.md as shown above. If a skill requires the agent to read files, execute scripts, etc., users need to configure those capabilities for the agent separately.
