@@ -41,6 +41,10 @@ func WithServiceAddr(addr net.Addr) Option
 
 ### 多路复用 - WithMuxTransport
 
+> **⚠️ 已废弃**
+>
+> 原因详见[连接类型-连接多路复用](/zh/docs/kitex/tutorials/basic-feature/connection_type/#连接多路复用)。
+
 ```go
 func WithMuxTransport() Option
 ```

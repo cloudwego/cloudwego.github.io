@@ -23,6 +23,10 @@ description: "Kitex Frequently Asked Questions and corresponding Answers."
 
 **Q3: How to configure multiplexing?**
 
+> **⚠️ Deprecated**
+>
+> Reason see [Connection Multiplexing](/docs/kitex/tutorials/basic-feature/connection_type/#connection-multiplexing).
+
 - If you are using Thrift or Kitex Protobuf, to configure multiplexing:
   1. Configure WithMuxTransport() on your server.
   2. Configure WithMuxConnection(1) on your client
