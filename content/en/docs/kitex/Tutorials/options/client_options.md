@@ -61,6 +61,10 @@ Enable long connections. [More](/docs/kitex/tutorials/basic-feature/connection_t
 
 ### WithMuxConnection
 
+> **⚠️ Deprecated**
+>
+> Reason see [Connection Multiplexing](/docs/kitex/tutorials/basic-feature/connection_type/#connection-multiplexing).
+
 ```go
 func WithMuxConnection(connNum int) Option
 ```

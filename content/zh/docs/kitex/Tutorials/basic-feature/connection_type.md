@@ -82,6 +82,12 @@ xxxCli := xxxservice.NewClient("destServiceName", client.WithLongConnection(conn
 
 ## 连接多路复用
 
+> **⚠️ 已废弃**
+>
+> - `WithMuxConnection` 和 `WithMuxTransport` 所依赖的 [`netpollmux`](https://github.com/cloudwego/kitex/pull/1933) 不再维护
+> - 在实际业务场景中性能收益不显著
+> - 服务端需要先启用此功能，否则使用不当可能导致请求失败
+
 开启连接多路复用，Client 访问 Server 常规只需要**1个连接**即可，相比连接池极限测试吞吐表现更好（目前的极限测试配置了2个连接），且能大大减少连接数量。
 
 特别说明：

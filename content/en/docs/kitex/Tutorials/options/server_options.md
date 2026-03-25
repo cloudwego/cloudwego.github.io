@@ -42,6 +42,10 @@ When local server has multiple IP addresses, you can also use this method to spe
 
 ### WithMuxTransport
 
+> **⚠️ Deprecated**
+>
+> Reason see [Connection Multiplexing](/docs/kitex/tutorials/basic-feature/connection_type/#connection-multiplexing).
+
 ```go
 func WithMuxTransport() Option
 ```

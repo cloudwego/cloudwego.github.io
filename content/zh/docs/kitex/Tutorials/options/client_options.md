@@ -60,6 +60,10 @@ func WithLongConnection(cfg connpool.IdleConfig) Option
 
 ### 多路复用 - WithMuxConnection
 
+> **⚠️ 已废弃**
+>
+> 原因详见[连接类型-连接多路复用](/zh/docs/kitex/tutorials/basic-feature/connection_type/#连接多路复用)。
+
 ```go
 func WithMuxConnection(connNum int) Option
 ```

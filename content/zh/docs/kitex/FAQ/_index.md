@@ -22,6 +22,10 @@ description: "Kitex 常见问题解答。"
 
 **Q3: 如何配置开启连接多路复用？**
 
+> **⚠️ 已废弃**
+>
+> 原因详见[连接类型-连接多路复用](/zh/docs/kitex/tutorials/basic-feature/connection_type/#连接多路复用)。
+
 - 如果使用 Thrift 或 Kitex Protobuf ，开启连接多路复用：服务端配置 WithMuxTransport()，调用端配置 WithMuxConnection(1)。
 - 如果使用 gRPC， 默认是连接多路复用。
 
