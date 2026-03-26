@@ -84,7 +84,7 @@ The setting of parameters is suggested as follows:
 > **⚠️ Deprecated**
 >
 > - `WithMuxConnection` and `WithMuxTransport` rely on [`netpollmux`](https://github.com/cloudwego/kitex/pull/1933) which is no longer maintained
-> - The performance gain is not significant in actual business scenarios
+> - Connection multiplexing shows significant performance gains in stress testing scenarios, but in real business scenarios, the throughput is usually not high enough to benefit significantly; considering the maintenance costs, it has been deprecated and will no longer be maintained
 > - The server must enable this feature first, otherwise, it may lead to request failure if used improperly
 
 The client invokes the Server only need one connection normally when enabling Connection Multiplexing. Connection Multiplexing not only reduces the number of connections but also performs better than Connection Pool.
