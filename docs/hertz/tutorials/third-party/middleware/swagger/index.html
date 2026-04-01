@@ -1,4 +1,4 @@
-<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Swagger | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/swagger/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Swagger"><meta property="og:description" content="Generate RESTful API documentation with the official Swagger toolchain and HTTP adaptor."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2025-12-04T00:00:00+00:00"><meta property="article:modified_time" content="2025-12-16T15:46:24+08:00"><meta itemprop=name content="Swagger"><meta itemprop=description content="Generate RESTful API documentation with the official Swagger toolchain and HTTP adaptor."><meta itemprop=datePublished content="2025-12-04T00:00:00+00:00"><meta itemprop=dateModified content="2025-12-16T15:46:24+08:00"><meta itemprop=wordCount content="1453"><meta itemprop=keywords content="Swagger,RESTful API"><meta name=twitter:card content="summary"><meta name=twitter:title content="Swagger"><meta name=twitter:description content="Generate RESTful API documentation with the official Swagger toolchain and HTTP adaptor."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Swagger | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/hertz/tutorials/third-party/middleware/swagger/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Swagger"><meta property="og:description" content="Generate RESTful API documentation with the official Swagger toolchain and HTTP adaptor."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2025-12-04T00:00:00+00:00"><meta property="article:modified_time" content="2026-04-01T10:12:21+08:00"><meta itemprop=name content="Swagger"><meta itemprop=description content="Generate RESTful API documentation with the official Swagger toolchain and HTTP adaptor."><meta itemprop=datePublished content="2025-12-04T00:00:00+00:00"><meta itemprop=dateModified content="2026-04-01T10:12:21+08:00"><meta itemprop=wordCount content="1453"><meta itemprop=keywords content="Swagger,RESTful API"><meta name=twitter:card content="summary"><meta name=twitter:title content="Swagger"><meta name=twitter:description content="Generate RESTful API documentation with the official Swagger toolchain and HTTP adaptor."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css as=style><link href=/scss/main.min.54f74e0608b496d0d984273a268fe969114637bb312534ffe25bf74a1e234e8d.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-toggle=collapse data-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ml-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -117,12 +117,12 @@ Copy Markdown
 </button>
 <button class=dropdown-item data-copy-type=text>
 Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
-> **⚠️ Deprecated**
->
-> The `hertz-contrib/swagger` middleware is now deprecated.  
-> Hertz recommends all users to migrate to the official `swaggo/swag` toolchain using the [Hertz HTTP Adaptor](../../basic-feature/http-adaptor/).
->
-> See the migration guide below.
+&gt; **⚠️ Deprecated**
+&gt;
+&gt; The `hertz-contrib/swagger` middleware is now deprecated.  
+&gt; Hertz recommends all users to migrate to the official `swaggo/swag` toolchain using the [Hertz HTTP Adaptor](../../basic-feature/http-adaptor/).
+&gt;
+&gt; See the migration guide below.
 
 ## Migration Guide
 
@@ -143,19 +143,19 @@ go install github.com/swaggo/swag/cmd/swag@latest
 
 ```go
 // Before (deprecated: hertz-contrib/swagger)
-import "github.com/hertz-contrib/swagger"
-import swaggerFiles "github.com/swaggo/files"
+import &#34;github.com/hertz-contrib/swagger&#34;
+import swaggerFiles &#34;github.com/swaggo/files&#34;
 
-url := swagger.URL("http://localhost:8888/swagger/doc.json")
-h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url))
+url := swagger.URL(&#34;http://localhost:8888/swagger/doc.json&#34;)
+h.GET(&#34;/swagger/*any&#34;, swagger.WrapHandler(swaggerFiles.Handler, url))
 ```
 
 ```go
 // After (recommended: adaptor)
-import "github.com/cloudwego/hertz/pkg/common/adaptor"
-import httpSwagger "github.com/swaggo/http-swagger"
+import &#34;github.com/cloudwego/hertz/pkg/common/adaptor&#34;
+import httpSwagger &#34;github.com/swaggo/http-swagger&#34;
 
-h.GET("/swagger/*any", adaptor.HertzHandler(httpSwagger.WrapHandler))
+h.GET(&#34;/swagger/*any&#34;, adaptor.HertzHandler(httpSwagger.WrapHandler))
 ```
 
 ## Example Usage
@@ -167,15 +167,15 @@ into a Hertz application using the Hertz HTTP adaptor.
 package main
 
 import (
-    "context"
+    &#34;context&#34;
 
     // Path to generated docs
-    _ "project/docs"
+    _ &#34;project/docs&#34;
 
-    "github.com/cloudwego/hertz/pkg/app"
-    "github.com/cloudwego/hertz/pkg/app/server"
-    "github.com/cloudwego/hertz/pkg/common/adaptor"
-    httpSwagger "github.com/swaggo/http-swagger"
+    &#34;github.com/cloudwego/hertz/pkg/app&#34;
+    &#34;github.com/cloudwego/hertz/pkg/app/server&#34;
+    &#34;github.com/cloudwego/hertz/pkg/common/adaptor&#34;
+    httpSwagger &#34;github.com/swaggo/http-swagger&#34;
 )
 
 // PingHandler handler
@@ -186,7 +186,7 @@ import (
 // @Router /ping [get]
 func PingHandler(c context.Context, ctx *app.RequestContext) {
     ctx.JSON(200, map[string]string{
-        "ping": "pong",
+        &#34;ping&#34;: &#34;pong&#34;,
     })
 }
 
@@ -206,10 +206,10 @@ func PingHandler(c context.Context, ctx *app.RequestContext) {
 func main() {
     h := server.Default()
 
-    h.GET("/ping", PingHandler)
+    h.GET(&#34;/ping&#34;, PingHandler)
 
     // Swagger endpoint
-    h.GET("/swagger/*any",
+    h.GET(&#34;/swagger/*any&#34;,
         adaptor.HertzHandler(
             httpSwagger.WrapHandler,
         ),
@@ -249,19 +249,19 @@ For users who want to create their own custom UI, they will need to download the
 
 2. Create an `index.html` file in the same directory with the following template. The original configuration options present in the old `hertz-contrib/swagger` middleware can be directly configured in the HTML file.
 
-**Note: The HTML file below is just a sample and should be modified accordingly to the user's needs.**
+**Note: The HTML file below is just a sample and should be modified accordingly to the user&#39;s needs.**
 
 ```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>My Custom Swagger UI</title> <!-- Title -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="swagger-ui.css">
-  <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
-  <style>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+&lt;head&gt;
+  &lt;meta charset=&#34;UTF-8&#34;&gt;
+  &lt;title&gt;My Custom Swagger UI&lt;/title&gt; &lt;!-- Title --&gt;
+  &lt;link href=&#34;https://fonts.googleapis.com/css?family=Open&#43;Sans:400,700|Source&#43;Code&#43;Pro:300,600|Titillium&#43;Web:400,600,700&#34; rel=&#34;stylesheet&#34;&gt;
+  &lt;link rel=&#34;stylesheet&#34; type=&#34;text/css&#34; href=&#34;swagger-ui.css&#34;&gt;
+  &lt;link rel=&#34;icon&#34; type=&#34;image/png&#34; href=&#34;favicon-32x32.png&#34; sizes=&#34;32x32&#34; /&gt;
+  &lt;link rel=&#34;icon&#34; type=&#34;image/png&#34; href=&#34;favicon-16x16.png&#34; sizes=&#34;16x16&#34; /&gt;
+  &lt;style&gt;
     html { box-sizing: border-box; overflow: -moz-scrollbars-vertical; overflow-y: scroll; }
     *, *:before, *:after { box-sizing: inherit; }
 
@@ -279,135 +279,200 @@ For users who want to create their own custom UI, they will need to download the
       font-weight: bold;
       border-bottom: 4px solid #312e81;
     }
-  </style>
-</head>
+  &lt;/style&gt;
+&lt;/head&gt;
 
-<body>
+&lt;body&gt;
 
-<div class="custom-banner">
+&lt;div class=&#34;custom-banner&#34;&gt;
   My Custom Swagger UI
-</div>
+&lt;/div&gt;
 
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position:absolute;width:0;height:0">
-  <defs>
-    <symbol viewBox="0 0 20 20" id="unlocked">
-          <path d="M15.8 8H14V5.6C14 2.703 12.665 1 10 1 7.334 1 6 2.703 6 5.6V6h2v-.801C8 3.754 8.797 3 10 3c1.203 0 2 .754 2 2.199V8H4c-.553 0-1 .646-1 1.199V17c0 .549.428 1.139.951 1.307l1.197.387C5.672 18.861 6.55 19 7.1 19h5.8c.549 0 1.428-.139 1.951-.307l1.196-.387c.524-.167.953-.757.953-1.306V9.199C17 8.646 16.352 8 15.8 8z"></path>
-    </symbol>
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; xmlns:xlink=&#34;http://www.w3.org/1999/xlink&#34; style=&#34;position:absolute;width:0;height:0&#34;&gt;
+  &lt;defs&gt;
+    &lt;symbol viewBox=&#34;0 0 20 20&#34; id=&#34;unlocked&#34;&gt;
+          &lt;path d=&#34;M15.8 8H14V5.6C14 2.703 12.665 1 10 1 7.334 1 6 2.703 6 5.6V6h2v-.801C8 3.754 8.797 3 10 3c1.203 0 2 .754 2 2.199V8H4c-.553 0-1 .646-1 1.199V17c0 .549.428 1.139.951 1.307l1.197.387C5.672 18.861 6.55 19 7.1 19h5.8c.549 0 1.428-.139 1.951-.307l1.196-.387c.524-.167.953-.757.953-1.306V9.199C17 8.646 16.352 8 15.8 8z&#34;&gt;&lt;/path&gt;
+    &lt;/symbol&gt;
 
-    <symbol viewBox="0 0 20 20" id="locked">
-      <path d="M15.8 8H14V5.6C14 2.703 12.665 1 10 1 7.334 1 6 2.703 6 5.6V8H4c-.553 0-1 .646-1 1.199V17c0 .549.428 1.139.951 1.307l1.197.387C5.672 18.861 6.55 19 7.1 19h5.8c.549 0 1.428-.139 1.951-.307l1.196-.387c.524-.167.953-.757.953-1.306V9.199C17 8.646 16.352 8 15.8 8zM12 8H8V5.199C8 3.754 8.797 3 10 3c1.203 0 2 .754 2 2.199V8z"/>
-    </symbol>
+    &lt;symbol viewBox=&#34;0 0 20 20&#34; id=&#34;locked&#34;&gt;
+      &lt;path d=&#34;M15.8 8H14V5.6C14 2.703 12.665 1 10 1 7.334 1 6 2.703 6 5.6V8H4c-.553 0-1 .646-1 1.199V17c0 .549.428 1.139.951 1.307l1.197.387C5.672 18.861 6.55 19 7.1 19h5.8c.549 0 1.428-.139 1.951-.307l1.196-.387c.524-.167.953-.757.953-1.306V9.199C17 8.646 16.352 8 15.8 8zM12 8H8V5.199C8 3.754 8.797 3 10 3c1.203 0 2 .754 2 2.199V8z&#34;/&gt;
+    &lt;/symbol&gt;
 
-    <symbol viewBox="0 0 20 20" id="close">
-      <path d="M14.348 14.849c-.469.469-1.229.469-1.697 0L10 11.819l-2.651 3.029c-.469.469-1.229.469-1.697 0-.469-.469-.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-.469-.469-.469-1.228 0-1.697.469-.469 1.228-.469 1.697 0L10 8.183l2.651-3.031c.469-.469 1.228-.469 1.697 0 .469.469.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c.469.469.469 1.229 0 1.698z"/>
-    </symbol>
+    &lt;symbol viewBox=&#34;0 0 20 20&#34; id=&#34;close&#34;&gt;
+      &lt;path d=&#34;M14.348 14.849c-.469.469-1.229.469-1.697 0L10 11.819l-2.651 3.029c-.469.469-1.229.469-1.697 0-.469-.469-.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-.469-.469-.469-1.228 0-1.697.469-.469 1.228-.469 1.697 0L10 8.183l2.651-3.031c.469-.469 1.228-.469 1.697 0 .469.469.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c.469.469.469 1.229 0 1.698z&#34;/&gt;
+    &lt;/symbol&gt;
 
-    <symbol viewBox="0 0 20 20" id="large-arrow">
-      <path d="M13.25 10L6.109 2.58c-.268-.27-.268-.707 0-.979.268-.27.701-.27.969 0l7.83 7.908c.268.271.268.709 0 .979l-7.83 7.908c-.268.271-.701.27-.969 0-.268-.269-.268-.707 0-.979L13.25 10z"/>
-    </symbol>
+    &lt;symbol viewBox=&#34;0 0 20 20&#34; id=&#34;large-arrow&#34;&gt;
+      &lt;path d=&#34;M13.25 10L6.109 2.58c-.268-.27-.268-.707 0-.979.268-.27.701-.27.969 0l7.83 7.908c.268.271.268.709 0 .979l-7.83 7.908c-.268.271-.701.27-.969 0-.268-.269-.268-.707 0-.979L13.25 10z&#34;/&gt;
+    &lt;/symbol&gt;
 
-    <symbol viewBox="0 0 20 20" id="large-arrow-down">
-      <path d="M17.418 6.109c.272-.268.709-.268.979 0s.271.701 0 .969l-7.908 7.83c-.27.268-.707.268-.979 0l-7.908-7.83c-.27-.268-.27-.701 0-.969.271-.268.709-.268.979 0L10 13.25l7.418-7.141z"/>
-    </symbol>
+    &lt;symbol viewBox=&#34;0 0 20 20&#34; id=&#34;large-arrow-down&#34;&gt;
+      &lt;path d=&#34;M17.418 6.109c.272-.268.709-.268.979 0s.271.701 0 .969l-7.908 7.83c-.27.268-.707.268-.979 0l-7.908-7.83c-.27-.268-.27-.701 0-.969.271-.268.709-.268.979 0L10 13.25l7.418-7.141z&#34;/&gt;
+    &lt;/symbol&gt;
 
-    <symbol viewBox="0 0 24 24" id="jump-to">
-      <path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7z"/>
-    </symbol>
+    &lt;symbol viewBox=&#34;0 0 24 24&#34; id=&#34;jump-to&#34;&gt;
+      &lt;path d=&#34;M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7z&#34;/&gt;
+    &lt;/symbol&gt;
 
-    <symbol viewBox="0 0 24 24" id="expand">
-      <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
-    </symbol>
+    &lt;symbol viewBox=&#34;0 0 24 24&#34; id=&#34;expand&#34;&gt;
+      &lt;path d=&#34;M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z&#34;/&gt;
+    &lt;/symbol&gt;
 
-  </defs>
-</svg>
+  &lt;/defs&gt;
+&lt;/svg&gt;
 
-<div id="swagger-ui"></div>
+&lt;div id=&#34;swagger-ui&#34;&gt;&lt;/div&gt;
 
-<script src="swagger-ui-bundle.js"></script><script src=swagger-ui-standalone-preset.js></script><script>window.onload=function(){const e=SwaggerUIBundle({url:"swagger/doc.json",syntaxHighlight:!0,dom_id:"#swagger-ui",validatorUrl:null,oauth2RedirectUrl:"",persistAuthorization:!1,presets:[SwaggerUIBundle.presets.apis,SwaggerUIStandalonePreset],plugins:[SwaggerUIBundle.plugins.DownloadUrl],layout:"StandaloneLayout",docExpansion:"none",deepLinking:!0,defaultModelsExpandDepth:1}),t="";t&&e.initOAuth({clientId:t}),window.ui=e}</script></body></html>```
+&lt;script src=&#34;swagger-ui-bundle.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;swagger-ui-standalone-preset.js&#34;&gt;&lt;/script&gt;
+&lt;script&gt;
+window.onload = function() {
+  const ui = SwaggerUIBundle({
+    url: &#34;swagger/doc.json&#34;,                // URL
+    syntaxHighlight: true,              // SyntaxHighlight
+    dom_id: &#39;#swagger-ui&#39;,
+    validatorUrl: null,
+    oauth2RedirectUrl: &#34;&#34;,              // Oauth2RedirectURL
+    persistAuthorization: false,        // PersistAuthorization
+    presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+    plugins: [SwaggerUIBundle.plugins.DownloadUrl],
+    layout: &#34;StandaloneLayout&#34;,
+    docExpansion: &#34;none&#34;,               // DocExpansion
+    deepLinking: true,                  // DeepLinking
+    defaultModelsExpandDepth: 1         // DefaultModelsExpandDepth
+  });
+
+  const defaultClientId = &#34;&#34;;           // Oauth2DefaultClientID
+  if (defaultClientId) ui.initOAuth({ clientId: defaultClientId });
+
+  window.ui = ui;                      
+}
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+```
+
 The final project directory should have the following structure:
+
 ```sh
 project/
 ├── main.go
-├── docs/ # generated by swag init
-│ ├── docs.go
-│ ├── swagger.json
-│ └── swagger.yaml
-├── swagger-ui/ # custom UI (copied from Swagger UI dist)
-│ ├── favicon-16x16.png
-│ ├── favicon-32x32.png
-│ ├── index.html
-│ ├── swagger-ui-bundle.js
-│ ├── swagger-ui-standalone-preset.js
-│ ├── swagger-ui.css
-│ └── ...other swagger ui dist files as needed...
+├── docs/                 # generated by swag init
+│   ├── docs.go
+│   ├── swagger.json
+│   └── swagger.yaml
+├── swagger-ui/           # custom UI (copied from Swagger UI dist)
+│   ├── favicon-16x16.png
+│   ├── favicon-32x32.png
+│   ├── index.html 
+│   ├── swagger-ui-bundle.js
+│   ├── swagger-ui-standalone-preset.js
+│   ├── swagger-ui.css
+│   └── ...other swagger ui dist files as needed...
 ├── go.mod
 └── go.sum
 ```
+
 3. Serve static files
+
 Add this line into `main.go`
+
 ```go
-h.GET("/swagger/*any", adaptor.HertzHandler(httpSwagger.WrapHandler))
+h.GET(&#34;/swagger/*any&#34;, adaptor.HertzHandler(httpSwagger.WrapHandler))
+
 // Add this line
-h.Static("/", "./swagger-ui")
+h.Static(&#34;/&#34;, &#34;./swagger-ui&#34;)
+
 h.Spin()
+
 // Rest of code
 ```
+
 4. Run program
+
 ```sh
 go run main.go
 ```
+
 On a web browser, go to http://localhost:8888/index.html to see the customised Swagger UI.
+
 ## Legacy Documentation (Deprecated)
+
 Hertz middleware to automatically generate RESTful API documentation with Swagger 2.0.
+
 The implementation of the [swagger](https://github.com/hertz-contrib/swagger) extension refers to the implementation of [Gin](https://github.com/swaggo/gin-swagger).
+
 ### Usage
+
 1. Add comments to your API source code, See [Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format).
+
 2. Download [Swag][Swag] for Go by using:
+
 `go get` install executables needs to work with `GOPATH` mode.
+
 ```sh
 go get github.com/swaggo/swag/cmd/swag
 ```
+
 Starting in Go 1.17,installing executables with `go get` is deprecated. `go install` may be used instead:
+
 ```sh
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
+
 3. Run the [Swag][Swag] at your Go project root path(for instance `~/root/go-project-name`),
-[Swag][Swag] will parse comments and generate required files(`docs` folder and `docs/doc.go`)
-at `~/root/go-project-name/docs`.
+   [Swag][Swag] will parse comments and generate required files(`docs` folder and `docs/doc.go`)
+   at `~/root/go-project-name/docs`.
+
 ```sh
 swag init
 ```
+
 swag init with options(All options can be viewed via `swag init -h`).
+
 ```bash
-swag init --parseDependency --parseInternal --parseDepth 5 --instanceName "swagger"
+swag init --parseDependency --parseInternal --parseDepth 5 --instanceName &#34;swagger&#34;
 ```
-| Options | Default | Description |
+
+| Options         | Default   | Description                                                                                                                                                                      |
 | --------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| parseInternal | false | Parse go files in internal packages. |
-| parseDependency | false | Parse go files inside dependency folder. |
-| parseDepth | 100 | Dependency parse depth.If you know the depth of the data structure to be parsed, it is recommended to use `parseDepth`, the swag command execution time will be greatly reduced. |
-| instanceName | "swagger" | The instance name of the swagger document. If multiple different swagger instances should be deployed on one hertz router, ensure that each instance has a unique name. |
+| parseInternal   | false     | Parse go files in internal packages.                                                                                                                                             |
+| parseDependency | false     | Parse go files inside dependency folder.                                                                                                                                         |
+| parseDepth      | 100       | Dependency parse depth.If you know the depth of the data structure to be parsed, it is recommended to use `parseDepth`, the swag command execution time will be greatly reduced. |
+| instanceName    | &#34;swagger&#34; | The instance name of the swagger document. If multiple different swagger instances should be deployed on one hertz router, ensure that each instance has a unique name.          |
+
 4. Download [hertz-swagger](https://github.com/hertz-contrib/swagger) by using:
+
 ```sh
 go get github.com/hertz-contrib/swagger
 go get github.com/swaggo/files
 ```
+
 Import following in your code:
+
 ```go
-import "github.com/hertz-contrib/swagger" // hertz-swagger middleware
-import "github.com/swaggo/files" // swagger embed files
+import &#34;github.com/hertz-contrib/swagger&#34; // hertz-swagger middleware
+import &#34;github.com/swaggo/files&#34; // swagger embed files
 ```
+
 ### Example
+
 Now assume you have implemented a simple api as following:
+
 ```go
 func PingHandler(ctx context.Context, c *app.RequestContext) {
-c.JSON(200, map[string]string{
-"ping": "pong",
-})
+    c.JSON(200, map[string]string{
+        &#34;ping&#34;: &#34;pong&#34;,
+    })
 }
+
 ```
+
 So how to use hertz-swagger on api above? Just follow the following guide.
+
 1. Add Comments for apis and main function with hertz-swagger rules like following:
+
 ```go
 // PingHandler TestHandler
 // @Summary TestSummary
@@ -416,31 +481,39 @@ So how to use hertz-swagger on api above? Just follow the following guide.
 // @Produce application/json
 // @Router /ping [get]
 func PingHandler(ctx context.Context, c *app.RequestContext) {
-c.JSON(200, map[string]string{
-"ping": "pong",
-})
+    c.JSON(200, map[string]string{
+        &#34;ping&#34;: &#34;pong&#34;,
+    })
 }
 ```
+
 2. Use `swag init` command to generate a docs, docs generated will be stored at `docs/`.
 3. Import the generated docs package into the current project:
-I assume your project named `github.com/go-project-name/docs`.
+   I assume your project named `github.com/go-project-name/docs`.
+
 ```go
 import (
-docs "github.com/go-project-name/docs"
+   docs &#34;github.com/go-project-name/docs&#34;
 )
 ```
+
 4. Build your application and after that, go to http://localhost:8888/swagger/index.html ,you to see your Swagger UI.
+
 5. The full code and folder relatives here:
+
 ```go
 package main
+
 import (
-"context"
-"github.com/cloudwego/hertz/pkg/app"
-"github.com/cloudwego/hertz/pkg/app/server"
-"github.com/hertz-contrib/swagger"
-_ "github.com/hertz-contrib/swagger/example/basic/docs"
-swaggerFiles "github.com/swaggo/files"
+   &#34;context&#34;
+
+   &#34;github.com/cloudwego/hertz/pkg/app&#34;
+   &#34;github.com/cloudwego/hertz/pkg/app/server&#34;
+   &#34;github.com/hertz-contrib/swagger&#34;
+   _ &#34;github.com/hertz-contrib/swagger/example/basic/docs&#34;
+   swaggerFiles &#34;github.com/swaggo/files&#34;
 )
+
 // PingHandler Testhandler
 // @Summary TestSummary
 // @Description TestDescription
@@ -448,62 +521,84 @@ swaggerFiles "github.com/swaggo/files"
 // @Produce application/json
 // @Router /ping [get]
 func PingHandler(ctx context.Context, c *app.RequestContext) {
-c.JSON(200, map[string]string{
-"ping": "pong",
-})
+	c.JSON(200, map[string]string{
+		&#34;ping&#34;: &#34;pong&#34;,
+	})
 }
+
 // @title HertzTest
 // @version 1.0
 // @description This is a demo using Hertz.
+
 // @contact.name hertz-contrib
 // @contact.url https://github.com/hertz-contrib
+
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
 // @host localhost:8888
 // @BasePath /
 // @schemes http
 func main() {
-h := server.Default()
-h.GET("/ping", PingHandler)
-url := swagger.URL("http://localhost:8888/swagger/doc.json") // The url pointing to API definition
-h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url))
-h.Spin()
+	h := server.Default()
+
+	h.GET(&#34;/ping&#34;, PingHandler)
+
+	url := swagger.URL(&#34;http://localhost:8888/swagger/doc.json&#34;) // The url pointing to API definition
+	h.GET(&#34;/swagger/*any&#34;, swagger.WrapHandler(swaggerFiles.Handler, url))
+
+	h.Spin()
 }
+
 ```
+
 Demo project tree, `swag init` is run at relative `.`.
+
 ```
 .
 ├── docs
-│ ├── docs.go
-│ ├── swagger.json
-│ └── swagger.yaml
+│   ├── docs.go
+│   ├── swagger.json
+│   └── swagger.yaml
 ├── go.mod
 ├── go.sum
 └── main.go
 ```
+
 ### Multiple APIs
+
 This feature was introduced in swag v1.7.9.
+
 ### Configuration
+
 You can configure Swagger using different configuration options.
+
 ```go
 func main() {
-h := server.Default()
-h.GET("/ping", PingHandler)
-url := swagger.URL("http://localhost:8888/swagger/doc.json") // The url pointing to API definition
-h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url, swagger.DefaultModelsExpandDepth(-1)))
-h.Spin()
+	h := server.Default()
+
+	h.GET(&#34;/ping&#34;, PingHandler)
+
+	url := swagger.URL(&#34;http://localhost:8888/swagger/doc.json&#34;) // The url pointing to API definition
+	h.GET(&#34;/swagger/*any&#34;, swagger.WrapHandler(swaggerFiles.Handler, url, swagger.DefaultModelsExpandDepth(-1)))
+	h.Spin()
 }
+
 ```
-| Option | Type | Default | Description |
+
+| Option                   | Type   | Default    | Description                                                                                                                                                                         |
 | ------------------------ | ------ | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| URL | string | "doc.json" | URL pointing to API definition |
-| DocExpansion | string | "list" | Controls the default expansion setting for the operations and tags. It can be 'list' (expands only the tags), 'full' (expands the tags and operations) or 'none' (expands nothing). |
-| DeepLinking | bool | true | If set to true, enables deep linking for tags and operations. See the Deep Linking documentation for more information. |
-| DefaultModelsExpandDepth | int | 1 | Default expansion depth for models (set to -1 completely hide the models). |
-| PersistAuthorization | bool | false | If set to true, it persists authorization data and it would not be lost on browser close/refresh. |
-| Oauth2DefaultClientID | string | "" | If set, it's used to prepopulate the _client_id_ field of the OAuth2 Authorization dialog. |
+| URL                      | string | &#34;doc.json&#34; | URL pointing to API definition                                                                                                                                                      |
+| DocExpansion             | string | &#34;list&#34;     | Controls the default expansion setting for the operations and tags. It can be &#39;list&#39; (expands only the tags), &#39;full&#39; (expands the tags and operations) or &#39;none&#39; (expands nothing). |
+| DeepLinking              | bool   | true       | If set to true, enables deep linking for tags and operations. See the Deep Linking documentation for more information.                                                              |
+| DefaultModelsExpandDepth | int    | 1          | Default expansion depth for models (set to -1 completely hide the models).                                                                                                          |
+| PersistAuthorization     | bool   | false      | If set to true, it persists authorization data and it would not be lost on browser close/refresh.                                                                                   |
+| Oauth2DefaultClientID    | string | &#34;&#34;         | If set, it&#39;s used to prepopulate the _client_id_ field of the OAuth2 Authorization dialog.                                                                                          |
+
 ---
-[Swag]: https://github.com/swaggo/swag</script><h1>Swagger</h1><div class=lead>Generate RESTful API documentation with the official Swagger toolchain and HTTP adaptor.</div><header class=article-meta></header><blockquote><p><strong>⚠️ Deprecated</strong></p><p>The <code>hertz-contrib/swagger</code> middleware is now deprecated.<br>Hertz recommends all users to migrate to the official <code>swaggo/swag</code> toolchain using the <a href=/docs/hertz/tutorials/basic-feature/http-adaptor/>Hertz HTTP Adaptor</a>.</p><p>See the migration guide below.</p></blockquote><h2 id=migration-guide>Migration Guide</h2><ol><li>Remove deprecated dependencies</li></ol><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>github.com/hertz-contrib/swagger
+
+[Swag]: https://github.com/swaggo/swag
+</script><h1>Swagger</h1><div class=lead>Generate RESTful API documentation with the official Swagger toolchain and HTTP adaptor.</div><header class=article-meta></header><blockquote><p><strong>⚠️ Deprecated</strong></p><p>The <code>hertz-contrib/swagger</code> middleware is now deprecated.<br>Hertz recommends all users to migrate to the official <code>swaggo/swag</code> toolchain using the <a href=/docs/hertz/tutorials/basic-feature/http-adaptor/>Hertz HTTP Adaptor</a>.</p><p>See the migration guide below.</p></blockquote><h2 id=migration-guide>Migration Guide</h2><ol><li>Remove deprecated dependencies</li></ol><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>github.com/hertz-contrib/swagger
 </span></span><span style=display:flex><span>github.com/swaggo/files
 </span></span></code></pre></div><ol start=2><li>Install official swag generator</li></ol><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>go install github.com/swaggo/swag/cmd/swag@latest
 </span></span></code></pre></div><ol start=3><li>Use hertz adaptor</li></ol><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8f5902;font-style:italic>// Before (deprecated: hertz-contrib/swagger)</span><span style=color:#f8f8f8;text-decoration:underline>
@@ -792,6 +887,6 @@ I assume your project named <code>github.com/go-project-name/docs</code>.</li></
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline>	</span><span style=color:#000>h</span><span style=color:#000;font-weight:700>.</span><span style=color:#000>Spin</span><span style=color:#000;font-weight:700>()</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span><span style=display:flex><span><span style=color:#f8f8f8;text-decoration:underline></span><span style=color:#000;font-weight:700>}</span><span style=color:#f8f8f8;text-decoration:underline>
 </span></span></span></code></pre></div><table><thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td>URL</td><td>string</td><td>&ldquo;doc.json&rdquo;</td><td>URL pointing to API definition</td></tr><tr><td>DocExpansion</td><td>string</td><td>&ldquo;list&rdquo;</td><td>Controls the default expansion setting for the operations and tags. It can be &rsquo;list&rsquo; (expands only the tags), &lsquo;full&rsquo; (expands the tags and operations) or &rsquo;none&rsquo; (expands nothing).</td></tr><tr><td>DeepLinking</td><td>bool</td><td>true</td><td>If set to true, enables deep linking for tags and operations. See the Deep Linking documentation for more information.</td></tr><tr><td>DefaultModelsExpandDepth</td><td>int</td><td>1</td><td>Default expansion depth for models (set to -1 completely hide the models).</td></tr><tr><td>PersistAuthorization</td><td>bool</td><td>false</td><td>If set to true, it persists authorization data and it would not be lost on browser close/refresh.</td></tr><tr><td>Oauth2DefaultClientID</td><td>string</td><td>""</td><td>If set, it&rsquo;s used to prepopulate the <em>client_id</em> field of the OAuth2 Authorization dialog.</td></tr></tbody></table><hr><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
-<button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified December 16, 2025: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/f63ff556663060183592062596d4f247e794efa8>fix: improve readability of websocket and swagger docs (#1480) (f63ff556)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
+<button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified April 1, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/6aa53a2a1bdaf51f73c69c7b71c0cfbed5793c18>fix: enable disabling of safeHTML in Swagger middleware documentation (#1532) (6aa53a2a)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
 <a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=/js/popper.min.js></script><script src=/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.0ce781ace8f7863644f5b82bdd4916a178ef964a3bcd6b41309b67903b89417e.js integrity="sha256-DOeBrOj3hjZE9bgr3UkWoXjvlko7zWtBMJtnkDuJQX4=" crossorigin=anonymous></script><script src=/js/prism.js></script><script src=/js/prism-custom.js></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
