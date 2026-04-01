@@ -4,6 +4,7 @@ date: 2025-12-04
 weight: 8
 keywords: ["Swagger", "RESTful API"]
 description: "Generate RESTful API documentation with the official Swagger toolchain and HTTP adaptor."
+disableSafeHTML: true
 ---
 
 > **⚠️ Deprecated**

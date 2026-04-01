@@ -24,4 +24,5 @@
 </div>
 
 {{/* Embed raw markdown for copy-as-markdown */}}
-<script id="copy-fulltext-markdown" type="text/plain">{{ .RawContent | safeHTML }}</script>
+{{/* Allow front matter to disable safeHTML for XSS safety */}}
+<script id="copy-fulltext-markdown" type="text/plain">{{ if .Params.disableSafeHTML }}{{ .RawContent }}{{ else }}{{ .RawContent | safeHTML }}{{ end }}</script>

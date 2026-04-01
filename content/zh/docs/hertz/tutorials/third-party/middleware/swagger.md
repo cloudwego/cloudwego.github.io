@@ -4,6 +4,7 @@ date: 2025-12-04
 weight: 8
 keywords: ["Swagger", "RESTful API"]
 description: "使用官方 Swagger 工具链和 HTTP Adaptor 生成 RESTful API 文档"
+disableSafeHTML: true
 ---
 
 > **⚠️ 已废弃**
