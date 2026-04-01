@@ -62,7 +62,7 @@ func main() {
 | WithKeepAlive                     | true           | determines whether use keep-alive connection, default use.                                                                                              |
 | WithClientReadTimeout             | 0s             | maximum duration for full response reading (including body). Default 0 means unlimited     |
 | WithTLSConfig                     | nil            | tlsConfig to create a tls connection, for specific configuration information, please refer to [tls](/docs/hertz/tutorials/basic-feature/tls/). |
-| WithDialer                        | network.Dialer | specific dialer. The default depends on platform: netpoll on linux/darwin with amd64/arm64 when `HERTZ_NO_NETPOLL` is not set; falls back to standard for TLS; standard otherwise. |
+| WithDialer                        | network.Dialer | specific dialer. The default depends on platform: netpoll on linux/darwin with amd64/arm64 when `HERTZ_NO_NETPOLL=true` is not set; falls back to standard for TLS; standard otherwise. |
 | WithResponseBodyStream            | false          | determine whether read body in stream or not, default not read in stream.                                                                               |
 | WithDisableHeaderNamesNormalizing | false          | whether disable header names normalizing, default not disabled, for example, cONTENT-lenGTH -> Content-Length.                                          |
 | WithName                          | ""             | set client name which used in User-Agent Header.                                                                                                        |

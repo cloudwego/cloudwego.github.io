@@ -317,7 +317,7 @@ OPTIONS:
 
 <!---->
 
-- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 mitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional" 还是 "required" 决定
+- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 omitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional" 还是 "required" 决定
 
 <!---->
 
@@ -424,7 +424,7 @@ OPTIONS:
 
 <!---->
 
-- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 mitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional" 还是 "required" 决定
+- unset_omitempty: 当 idl 为 protobuf 时，生成 model field，去掉 omitempty tag；当 idl 为 thrift 时，是否添加 omitempty 根据 field 是 "optional" 还是 "required" 决定
 
 <!---->
 
