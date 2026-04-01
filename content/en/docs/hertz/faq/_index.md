@@ -35,6 +35,10 @@ For very vast requests cases, use a combination of streaming and go net.
 
 If the framework reports the following error codes, you can check it for possible causes. If there is an error code other than the following, the error code is not caused by the framework and needs to be located by the user to see whether it is set by itself or by some middleware.
 
+### 403
+
+This status code is returned only when the `fs` feature is enabled and a directory index is accessed without permission. Hertz does not return `403` in other scenarios.
+
 ### 404
 
 1. Access to the wrong port, commonly access to the debug port.
@@ -43,9 +47,17 @@ If the framework reports the following error codes, you can check it for possibl
    1. Check whether all expected routes are registered correctly based on the startup log.
    2. Check that the access method is correct.
 
+### 413
+
+The request body sent by the client exceeds the maximum size configured by [`WithMaxRequestBodySize`](../reference/config.md) on the server side. The default limit is 4 MB.
+
 ### 417
 
 The server returns `false` after executing the custom `ContinueHandler` (the server actively rejects the subsequent body of the 100 Continue).
+
+### 431
+
+The request header sent by the client exceeds the maximum size configured by [`WithMaxHeaderBytes`](../reference/config.md) on the server side. The default limit is 1 MB.
 
 ### 500
 

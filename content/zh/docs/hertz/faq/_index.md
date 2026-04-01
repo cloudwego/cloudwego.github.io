@@ -29,6 +29,10 @@ description: "Hertz 常见问题解答。"
 
 如果框架报以下的错误码，可以按照可能原因进行排查。如果出现非以下错误码，则不是框架打出来的，需要由使用方定位一下是否自行设置或者由某些中间件设置了错误码。
 
+### 403
+
+仅在启用fs功能，访问无权限的目录索引时才会出现403错误码，其他场景下不会出现403错误码。
+
 ### 404
 
 1. 访问到了错误的端口上了，常见访问到了 debug 端口
@@ -37,9 +41,17 @@ description: "Hertz 常见问题解答。"
    1. 根据启动日志查看是否所有预期路由都正常注册
    2. 查看访问方法是否正确
 
+### 413
+
+client 发送的请求体（request body）大小超出服务端配置 [`WithMaxRequestBodySize`](../reference/config.md) 的最大值（默认为 4MB）。
+
 ### 417
 
 server 在执行完自定义的 `ContinueHandler` 之后返回 `false`（server 主动拒绝掉 100 Continue 后续的 body）。
+
+### 431
+
+client 发送的请求头（request header）大小超出服务端配置 [`WithMaxHeaderBytes`](../reference/config.md) 的最大值（默认为 1MB）。
 
 ### 500
 
