@@ -61,14 +61,14 @@ func main() {
 
 | Function           | Function Signature                                                    | Description                                                                                                                                                                    |
 | ------------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| GetCompatRequest   | `func GetCompatRequest(req *protocol.Request) (*http.Request, error)` | Build and fetch Go standard library `http.Request` from Hertz `protocol.Request`                                                                                               |
+| ~~GetCompatRequest~~   | `func GetCompatRequest(req *protocol.Request) (*http.Request, error)` | **Deprecated: Please use [`adaptor.HertzHandler`](./http-adaptor.md) instead.** Build and fetch Go standard library `http.Request` from Hertz `protocol.Request`                                                                                               |
 | CopyToHertzRequest | `func CopyToHertzRequest(req *http.Request, hreq *protocol.Request)`  | Copy the `URI`, `Host`, `Method`, `Protocol`, `Header` of Go standard library `http.Request` to Hertz `protocol.Request`, The `Body` field will be adapted by sharing `Reader` |
 
 ## http.ResponseWriter
 
 | Function / Struct       | Function Signature                                                          | Description                                                                                                                          |
 | ----------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| GetCompatResponseWriter | `func GetCompatResponseWriter(resp *protocol.Response) http.ResponseWriter` | Build and fetch Go standard library `http.ResponseWriter` from Hertz `protocol.Response`                                             |
+| ~~GetCompatResponseWriter~~ | `func GetCompatResponseWriter(resp *protocol.Response) http.ResponseWriter` | **Deprecated: Please use [`adaptor.HertzHandler`](./http-adaptor.md) instead.** Build and fetch Go standard library `http.ResponseWriter` from Hertz `protocol.Response`                                             |
 | compatResponse          | /                                                                           | `compatResponse` implements the `http.ResponseWriter` interface and has adaptations to `Header`, `Write` and `WriteHeader` functions |
 
 ## Handler

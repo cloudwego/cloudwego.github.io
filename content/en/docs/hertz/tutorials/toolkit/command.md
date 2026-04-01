@@ -72,14 +72,16 @@ OPTIONS:
    --thriftgo value, -t value [ --thriftgo value, -t value ]              Specify arguments for the thriftgo. ({flag}={value})
    --protoc value, -p value [ --protoc value, -p value ]                  Specify arguments for the protoc. ({flag}={value})
    --option_package value, -P value [ --option_package value, -P value ]  Specify the package path. ({include_path}={import_path})
+   --trim_gopackage value, --trim_pkg value                               Trim the prefix of go_package for protobuf.
    --no_recurse                                                           Generate master model only. (default: false)
    --force, -f                                                            Force new a project, which will overwrite the generated files (default: false)
    --enable_extends                                                       Parse 'extends' for thrift IDL (default: false)
+   --sort_router                                                          Sort router register code, to avoid code difference (default: false)
    --json_enumstr                                                         Use string instead of num for json enums when idl is thrift. (default: false)
    --unset_omitempty                                                      Remove 'omitempty' tag for generated struct. (default: false)
    --pb_camel_json_tag                                                    Convert Name style for json tag to camel(Only works protobuf). (default: false)
    --snake_tag                                                            Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
-   --rm_tag value [ --rm_tag value ]                                      Remove the specified tag
+   --rm_tag value [ --rm_tag value ]                                      Remove the default tag(json/query/form). If the annotation tag is set explicitly, it will not be removed.
    --exclude_file value, -E value [ --exclude_file value, -E value ]      Specify the files that do not need to be updated.
    --customize_layout value                                               Specify the path for layout template.
    --customize_layout_data_path value                                     Specify the path for layout template render data.
@@ -142,6 +144,10 @@ OPTIONS:
 
 <!---->
 
+- trim_gopackage/trim_pkg: Trim the prefix of go_package for protobuf
+
+<!---->
+
 - no_recurse: Generate only model code for the master idl, default to false
 
 <!---->
@@ -151,6 +157,10 @@ OPTIONS:
 <!---->
 
 - enable_extends: Parsing extensions in thrift idl
+
+<!---->
+
+- sort_router: Sort router register code, to avoid code difference
 
 <!---->
 
@@ -170,7 +180,7 @@ OPTIONS:
 
 <!---->
 
-- rm_tag value: Remove the specified tag
+- rm_tag value: Remove the default tag(json/query/form). If the annotation tag is set explicitly, it will not be removed.
 
 <!---->
 
@@ -226,13 +236,15 @@ OPTIONS:
    --thriftgo value, -t value [ --thriftgo value, -t value ]              Specify arguments for the thriftgo. ({flag}={value})
    --protoc value, -p value [ --protoc value, -p value ]                  Specify arguments for the protoc. ({flag}={value})
    --option_package value, -P value [ --option_package value, -P value ]  Specify the package path. ({include_path}={import_path})
+   --trim_gopackage value, --trim_pkg value                               Trim the prefix of go_package for protobuf.
    --no_recurse                                                           Generate master model only. (default: false)
    --enable_extends                                                       Parse 'extends' for thrift IDL (default: false)
+   --sort_router                                                          Sort router register code, to avoid code difference (default: false)
    --json_enumstr                                                         Use string instead of num for json enums when idl is thrift. (default: false)
    --unset_omitempty                                                      Remove 'omitempty' tag for generated struct. (default: false)
    --pb_camel_json_tag                                                    Convert Name style for json tag to camel(Only works protobuf). (default: false)
    --snake_tag                                                            Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
-   --rm_tag value [ --rm_tag value ]                                      Remove the specified tag
+   --rm_tag value [ --rm_tag value ]                                      Remove the default tag(json/query/form). If the annotation tag is set explicitly, it will not be removed.
    --exclude_file value, -E value [ --exclude_file value, -E value ]      Specify the files that do not need to be updated.
    --customize_package value                                              Specify the path for package template.
    --handler_by_method                                                    Generate a separate handler file for each method. (default: false)
@@ -285,11 +297,19 @@ OPTIONS:
 
 <!---->
 
+- trim_gopackage/trim_pkg: Trim the prefix of go_package for protobuf
+
+<!---->
+
 - no_recurse: Generate only model code for the master idl, default to false
 
 <!---->
 
 - enable_extends: Parsing extensions in thrift idl
+
+<!---->
+
+- sort_router: Sort router register code, to avoid code difference
 
 <!---->
 
@@ -309,7 +329,7 @@ OPTIONS:
 
 <!---->
 
-- rm_tag value: Remove the specified tag
+- rm_tag value: Remove the default tag(json/query/form). If the annotation tag is set explicitly, it will not be removed.
 
 <!---->
 
@@ -354,11 +374,12 @@ OPTIONS:
    --thriftgo value, -t value [ --thriftgo value, -t value ]          Specify arguments for the thriftgo. ({flag}={value})
    --protoc value, -p value [ --protoc value, -p value ]              Specify arguments for the protoc. ({flag}={value})
    --no_recurse                                                       Generate master model only. (default: false)
+   --trim_gopackage value, --trim_pkg value                           Trim the prefix of go_package for protobuf.
    --json_enumstr                                                     Use string instead of num for json enums when idl is thrift. (default: false)
    --unset_omitempty                                                  Remove 'omitempty' tag for generated struct. (default: false)
    --pb_camel_json_tag                                                Convert Name style for json tag to camel(Only works protobuf). (default: false)
    --snake_tag                                                        Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
-   --rm_tag value [ --rm_tag value ]                                  Remove the specified tag
+   --rm_tag value [ --rm_tag value ]                                  Remove the default tag(json/query/form). If the annotation tag is set explicitly, it will not be removed.
    --exclude_file value, -E value [ --exclude_file value, -E value ]  Specify the files that do not need to be updated.
    --help, -h                                                         show help (default: false)
 ```
@@ -395,6 +416,10 @@ OPTIONS:
 
 <!---->
 
+- trim_gopackage/trim_pkg: Trim the prefix of go_package for protobuf
+
+<!---->
+
 - json_enumstr: When idl is thrift, json enums uses string instead of num (the option passed through to thriftgo)
 
 <!---->
@@ -411,7 +436,7 @@ OPTIONS:
 
 <!---->
 
-- rm_tag value: Remove the specified tag
+- rm_tag value: Remove the default tag(json/query/form). If the annotation tag is set explicitly, it will not be removed.
 
 <!---->
 
@@ -441,16 +466,20 @@ OPTIONS:
    --client_dir value                                                 Specify the client path. If not specified, IDL generated path is used for 'client' command; no client code is generated for 'new' command
    --use value                                                        Specify the model package to import for handler.
    --force_client_dir value                                           Specify the client path, and won't use namespaces as subpaths
+   --force_client                                                     Force update 'hertz_client.go' (default: false)
    --proto_path value, -I value [ --proto_path value, -I value ]      Add an IDL search path for includes. (Valid only if idl is protobuf)
    --thriftgo value, -t value [ --thriftgo value, -t value ]          Specify arguments for the thriftgo. ({flag}={value})
    --protoc value, -p value [ --protoc value, -p value ]              Specify arguments for the protoc. ({flag}={value})
    --no_recurse                                                       Generate master model only. (default: false)
    --enable_extends                                                   Parse 'extends' for thrift IDL (default: false)
+   --trim_gopackage value, --trim_pkg value                           Trim the prefix of go_package for protobuf.
    --json_enumstr                                                     Use string instead of num for json enums when idl is thrift. (default: false)
+   --enable_optional                                                  Optional field do not transfer for thrift if not set.(Only works for query tag) (default: false)
+   --query_enumint                                                    Use num instead of string for query enum parameter. (default: false)
    --unset_omitempty                                                  Remove 'omitempty' tag for generated struct. (default: false)
    --pb_camel_json_tag                                                Convert Name style for json tag to camel(Only works protobuf). (default: false)
    --snake_tag                                                        Use snake_case style naming for tags. (Only works for 'form', 'query', 'json') (default: false)
-   --rm_tag value [ --rm_tag value ]                                  Remove the specified tag
+   --rm_tag value [ --rm_tag value ]                                  Remove the default tag(json/query/form). If the annotation tag is set explicitly, it will not be removed.
    --exclude_file value, -E value [ --exclude_file value, -E value ]  Specify the files that do not need to be updated.
    --customize_package value                                          Specify the path for package template.
    --protoc-plugins value [ --protoc-plugins value ]                  Specify plugins for the protoc. ({plugin_name}:{options}:{out_dir})
@@ -486,6 +515,10 @@ OPTIONS:
 
 <!---->
 
+- force_client: Force update 'hertz_client.go'
+
+<!---->
+
 - proto_path/I: When idl is protobuf, specify the search path for idl, the same as the - I instruction for protoc
 
 <!---->
@@ -506,7 +539,19 @@ OPTIONS:
 
 <!---->
 
+- trim_gopackage/trim_pkg: Trim the prefix of go_package for protobuf
+
+<!---->
+
 - json_enumstr: When idl is thrift, json enums uses string instead of num (the option passed through to thriftgo)
+
+<!---->
+
+- enable_optional: Optional field do not transfer for thrift if not set.(Only works for query tag)
+
+<!---->
+
+- query_enumint: Use num instead of string for query enum parameter.
 
 <!---->
 
@@ -522,7 +567,7 @@ OPTIONS:
 
 <!---->
 
-- rm_tag value: Remove the specified tag
+- rm_tag value: Remove the default tag(json/query/form). If the annotation tag is set explicitly, it will not be removed.
 
 <!---->
 
