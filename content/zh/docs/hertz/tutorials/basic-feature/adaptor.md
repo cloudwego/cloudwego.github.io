@@ -61,14 +61,14 @@ func main() {
 
 | 函数               | 函数签名                                                              | 介绍                                                                                                                                                         |
 | ------------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| GetCompatRequest   | `func GetCompatRequest(req *protocol.Request) (*http.Request, error)` | 通过 Hertz `protocol.Request` 构建并获取 Go 标准库 `http.Request`                                                                                            |
+| ~~GetCompatRequest~~   | `func GetCompatRequest(req *protocol.Request) (*http.Request, error)` | **已弃用：请使用 [`adaptor.HertzHandler`](./http-adaptor.md) 代替**。通过 Hertz `protocol.Request` 构建并获取 Go 标准库 `http.Request`                                                                                            |
 | CopyToHertzRequest | `func CopyToHertzRequest(req *http.Request, hreq *protocol.Request)`  | 拷贝 Go 标准库 `http.Request` 的 `URI`，`Host`，`Method`，`Protocol`，`Header` 到 Hertz `protocol.Request`，对于 `Body` 属性会以共享 `Reader` 的方式进行适配 |
 
 ## http.ResponseWriter
 
 | 函数 / 结构体           | 函数签名                                                                    | 介绍                                                                                                         |
 | ----------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| GetCompatResponseWriter | `func GetCompatResponseWriter(resp *protocol.Response) http.ResponseWriter` | 通过 Hertz `protocol.Response` 构建并获取 Go 标准库 `http.ResponseWriter`                                    |
+| ~~GetCompatResponseWriter~~ | `func GetCompatResponseWriter(resp *protocol.Response) http.ResponseWriter` | **已弃用：请使用 [`adaptor.HertzHandler`](./http-adaptor.md) 代替**。通过 Hertz `protocol.Response` 构建并获取 Go 标准库 `http.ResponseWriter`                                    |
 | compatResponse          | /                                                                           | `compatResponse` 结构体实现了 `http.ResponseWriter` 接口并对 `Header`，`Write`，`WriteHeader` 函数进行了适配 |
 
 ## Handler
