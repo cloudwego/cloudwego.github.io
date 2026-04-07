@@ -90,7 +90,6 @@ At this point, our entire directory structure looks like this:
 ├── Cargo.toml
 ├── idl
 │   └── volo_example.thrift
-├── rust-toolchain.toml
 ├── src
 │   ├── bin
 │   │   └── server.rs

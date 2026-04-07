@@ -93,7 +93,6 @@ service ItemService {
 ├── Cargo.toml
 ├── idl
 │   └── rpc_example.thrift
-├── rust-toolchain.toml
 ├── src
 │   ├── bin
 │   │   └── server.rs

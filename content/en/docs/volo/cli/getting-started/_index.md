@@ -94,7 +94,6 @@ At this point, our entire catalog is structured as follows:
 ├── Cargo.toml
 ├── idl
 │   └── rpc_example.thrift
-├── rust-toolchain.toml
 ├── src
 │   ├── bin
 │   │   └── server.rs

@@ -91,7 +91,6 @@ At this point, our entire directory structure looks like this:
 ├── Cargo.toml
 ├── idl
 │   └── volo_example.proto
-├── rust-toolchain.toml
 ├── src
 │   ├── bin
 │   │   └── server.rs
