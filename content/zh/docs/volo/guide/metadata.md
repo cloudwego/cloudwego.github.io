@@ -38,7 +38,6 @@ use metainfo::{Backward, Forward};
 
 pub struct S;
 
-#[volo::async_trait]
 impl volo_gen::volo::example::ItemService for S {
     async fn get_item(
         &self,

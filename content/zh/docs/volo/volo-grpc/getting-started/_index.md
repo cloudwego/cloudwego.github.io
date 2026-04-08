@@ -92,7 +92,6 @@ volo idl add -g git@github.com:org/repo.git -r main /path/to/your/idl.proto
 ├── Cargo.toml
 ├── idl
 │   └── volo_example.proto
-├── rust-toolchain.toml
 ├── src
 │   ├── bin
 │   │   └── server.rs

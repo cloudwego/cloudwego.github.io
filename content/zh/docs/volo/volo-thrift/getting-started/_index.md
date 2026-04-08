@@ -91,7 +91,6 @@ volo idl add -g git@github.com:org/repo.git -r main /path/to/your/idl.thrift
 ├── Cargo.toml
 ├── idl
 │   └── volo_example.thrift
-├── rust-toolchain.toml
 ├── src
 │   ├── bin
 │   │   └── server.rs
@@ -109,7 +108,6 @@ volo idl add -g git@github.com:org/repo.git -r main /path/to/your/idl.thrift
 ```rust
 pub struct S;
 
-#[volo::async_trait]
 impl volo_gen::volo::example::ItemService for S {
     // 这部分是我们需要增加的代码
     async fn get_item(
