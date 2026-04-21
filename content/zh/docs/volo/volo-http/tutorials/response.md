@@ -46,8 +46,8 @@ async fn teapot() -> StatusCode { StatusCode::IM_A_TEAPOT }
 
 ```rust
 use volo_http::{
-    json::Json,
     server::{
+        extract::Json,
         route::{get, post, Router},
         IntoResponse,
     },

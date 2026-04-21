@@ -376,10 +376,10 @@ use std::convert::Infallible;
 
 use volo_http::{
     context::ServerContext,
-    json::Json,
     request::ServerRequest,
     response::ServerResponse,
     server::{
+        extract::Json,
         route::{post_service, Router},
         IntoResponse,
     },
