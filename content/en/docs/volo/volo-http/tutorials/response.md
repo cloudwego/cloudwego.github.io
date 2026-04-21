@@ -45,8 +45,8 @@ In the framework, types such as `Form`, `Json`, etc. also implement `IntoRespons
 
 ```rust
 use volo_http::{
-    json::Json,
     server::{
+        extract::Json,
         route::{get, post, Router},
         IntoResponse,
     },
