@@ -82,7 +82,7 @@ weight = 60
 parent = "社区"
 
 [[languages.zh.menu.main]]
-name = "[new]企业级解决方案"
+name = "企业级解决方案"
 identifier = "business_solution"
 weight = 45
 
