@@ -1,8 +1,89 @@
 // Code formatting.
-
 @if $enable-dark-mode {
   @include color-mode(dark, true) {
-    --td-pre-bg: #{adjust-color($gray-900, $lightness: -2.5%)};
+    // Prism dark mode overrides
+    code[class*="language-"],
+    pre[class*="language-"] {
+      color: var(--td-code-fg) !important;
+      background: var(--td-pre-bg) !important;
+      text-shadow: none !important;
+    }
+
+    .token.comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+      color: #969896 !important;
+    }
+
+    .token.punctuation {
+      color: #c5c8c6 !important;
+    }
+
+    .token.namespace {
+      opacity: .7;
+    }
+
+    .token.property,
+    .token.tag,
+    .token.boolean,
+    .token.number,
+    .token.constant,
+    .token.symbol,
+    .token.deleted {
+      color: #cc6666 !important;
+    }
+
+    .token.selector,
+    .token.attr-name,
+    .token.string,
+    .token.char,
+    .token.builtin,
+    .token.inserted {
+      color: #b5bd68 !important;
+    }
+
+    .token.operator,
+    .token.entity,
+    .token.url,
+    .language-css .token.string,
+    .style .token.string {
+      color: #8abeb7 !important;
+      background: transparent !important;
+    }
+
+    .token.atrule,
+    .token.attr-value,
+    .token.keyword {
+      color: #81a2be !important;
+    }
+
+    .token.function,
+    .token.class-name {
+      color: #f0c674 !important;
+    }
+
+    .token.regex,
+    .token.important,
+    .token.variable {
+      color: #de935f !important;
+    }
+
+    .command-line-prompt {
+      border-right: 1px solid #444 !important;
+    }
+
+    .command-line-prompt > span:before {
+      color: #666 !important;
+    }
+
+    div.code-toolbar > .toolbar > .toolbar-item > a,
+    div.code-toolbar > .toolbar > .toolbar-item > button,
+    div.code-toolbar > .toolbar > .toolbar-item > span {
+      background: #373b41 !important;
+      color: #c5c8c6 !important;
+      box-shadow: 0 2px 0 0 rgba(0,0,0,.4) !important;
+    }
   }
 }
 

@@ -22,7 +22,7 @@
 
 .markdown div[class*=language-] {
   margin-bottom: 16px;
-  background: var(--bs-tertiary-bg);
+  background: var(--td-pre-bg);
   border: 1px solid var(--bs-border-color);
   border-radius: 0
 }
@@ -36,7 +36,8 @@
 .markdown div[class*=language-] pre {
   padding: 1em;
   margin: .5em 0;
-  overflow: auto
+  overflow: auto;
+  background: transparent !important;
 }
 
 .markdown pre.mermaid {
@@ -46,7 +47,8 @@
 }
 
 .markdown div[class*=language-] pre code {
-  color: var(--bs-secondary-color)
+  color: inherit;
+  background: transparent !important;
 }
 
 .markdown h2 {

@@ -134,8 +134,14 @@ $navbar-dark-disabled-color: rgba($white, 0.25) !default;
 // The minimum contrast ratio for text readability.
 $min-contrast-ratio: 3 !default;
 
-// Dark mode pre bg
+// Code background variables
 :root,
 [data-bs-theme='light'] {
-  --td-pre-bg: var(--bs-tertiary-bg);
+  --td-pre-bg: #f8f9fa;
+  --td-code-fg: #212529;
+}
+
+[data-bs-theme='dark'] {
+  --td-pre-bg: #1d1f21;
+  --td-code-fg: #c5c8c6;
 }
