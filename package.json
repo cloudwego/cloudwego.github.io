@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "6.7.2",
-    "bootstrap": "4.6.2"
+    "bootstrap": "5.3.8"
   }
 }
-

@@ -1,5 +1,11 @@
 // Code formatting.
 
+@if $enable-dark-mode {
+  @include color-mode(dark, true) {
+    --td-pre-bg: #{adjust-color($gray-900, $lightness: -2.5%)};
+  }
+}
+
 .td-content {
 	// Highlighted code.
     .highlight {
@@ -21,7 +27,7 @@
         margin: 0;
         font-size: 85%;
         word-break: normal;
-        background-color: rgba($black, 0.05);
+        background-color: var(--td-pre-bg);
         border-radius: $border-radius;
 
         br {
@@ -33,7 +39,7 @@
     // Code blocks
     pre {
         word-wrap: normal;
-        background-color: $gray-100;
+        background-color: var(--td-pre-bg);
         padding: $spacer;
      
 

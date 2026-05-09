@@ -15,7 +15,7 @@ assets/scss/_styles_project.scss
     top: 4rem;
   }
 
-  background: $gray-100;
+  background: var(--bs-tertiary-bg);
   text-align: center;
 
   & p {
@@ -56,4 +56,40 @@ pre.mermaid {
   right: 1rem;
   top: 1rem;
   z-index: 10;
+}
+
+// Dark mode color adjustments
+@if $enable-dark-mode {
+  @include color-mode(dark) {
+    // Improve box shadow contrast in dark mode
+    --bs-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.8);
+    --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.8);
+    --bs-box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.8);
+
+    // Adjust primary/secondary for better contrast in dark mode
+    --bs-primary: #{tint-color($primary, 20%)};
+
+    // Fix hardcoded white/light backgrounds in sections
+    .td-box--white,
+    .td-box--light {
+      background-color: var(--bs-body-bg) !important;
+      color: var(--bs-body-color) !important;
+    }
+
+    // Ensure footer custom icon images are visible
+    .bg-dark {
+      img[src$=".svg"] {
+        filter: brightness(0) invert(1);
+      }
+    }
+
+    // Cloudwego link colors for dark mode
+    a.cloudwego-link {
+      color: #6db8f0;
+    }
+
+    a.cloudwego-link:hover {
+      color: #a8d4f7;
+    }
+  }
 }

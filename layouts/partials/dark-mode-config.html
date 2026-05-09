@@ -1,0 +1,14 @@
+{{/* Helper partial to get dark mode configuration */ -}}
+
+{{/* Initialize to config defaults */}}
+{{ $darkModeConfig := dict "enable" false "showMenu" false -}}
+{{ $ui := site.Params.ui -}}
+{{ $menuConfig := $ui.showLightDarkModeMenu -}}
+
+{{ if eq $menuConfig "enable-only" -}}
+  {{ $darkModeConfig = dict "enable" true "showMenu" false -}}
+{{ else if $menuConfig -}}
+  {{ $darkModeConfig = dict "enable" true "showMenu" true -}}
+{{ end -}}
+
+{{ return $darkModeConfig -}}

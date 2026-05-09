@@ -2,7 +2,7 @@
 
 .alert {
     font-weight: $font-weight-medium;
-    background: $white;
+    background: var(--bs-body-bg);
     color: inherit;
     border-radius: 0;
 

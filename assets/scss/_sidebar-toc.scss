@@ -2,7 +2,7 @@
 // Right side toc
 //
 .td-sidebar-toc {
-    border-left: 1px solid $border-color;
+    border-left: 1px solid var(--bs-border-color);
 
     @supports (position: sticky) {
         position: sticky;
@@ -47,10 +47,10 @@
         > ul > li > ul > li > a {}
 
         a {
-            color: $gray-600;
+            color: var(--bs-secondary-color);
 
             &:hover {
-                color: $blue;
+                color: var(--bs-link-color);
                 text-decoration: none;
             }
         }
