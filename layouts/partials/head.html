@@ -21,15 +21,10 @@
 
 {{/* Styles to set colors immediately */ -}}
 <style>
-  :root { --td-pre-bg: #f8f9fa; --bs-body-bg: #ffffff; --bs-body-color: #212529; }
+  html { background: Canvas; color: CanvasText; }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-bs-theme="light"]) { --td-pre-bg: #1d1f21; --bs-body-bg: #0b0d12; --bs-body-color: #e6e6e6; }
+    html { background: #0b0d12; color: #e6e6e6; }
   }
-  [data-bs-theme="dark"] { --td-pre-bg: #1d1f21 !important; --bs-body-bg: #0b0d12 !important; --bs-body-color: #e6e6e6 !important; }
-  
-  html, body { background-color: var(--bs-body-bg) !important; color: var(--bs-body-color) !important; }
-  pre, pre code, pre[class*="language-"], code[class*="language-"] { background-color: var(--td-pre-bg) !important; color: #c5c8c6 !important; }
-  
   {{/* Avoid transitions until theme CSS is loaded */ -}}
   html[data-theme-init] * { transition: none !important; }
 </style>
@@ -57,10 +52,6 @@
 
 {{ partial "baidu_tongji.html" . }}
 
-{{ if .Site.Params.prism_syntax_highlighting }}
-<!-- stylesheet for Prism -->
-<link rel="stylesheet" href="{{ "/css/prism.css" | relURL }}"/>
-{{ end }}
 {{ partialCached "head-css.html" . "asdf" }}
 <script src="/js/jquery.min.js" ></script>
 {{ if .Site.Params.offlineSearch }}

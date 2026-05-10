@@ -48,10 +48,14 @@
 {{ $js := $js | minify | fingerprint }}
 <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" crossorigin="anonymous"></script>
 {{ end }}
-{{ if .Site.Params.prism_syntax_highlighting }}
-<!-- scripts for prism -->
-<script src='{{ "/js/prism.js" | relURL }}'></script>
-<script src='{{ "/js/prism-custom.js" | relURL }}'></script>
+{{ if ( not .Site.Params.disable_click2copy_chroma ) }}
+  {{ $c2cJS := resources.Get "js/click-to-copy.js" -}}
+  {{ if not hugo.IsServer -}}
+    {{ $c2cJS = $c2cJS | minify | fingerprint -}}
+  {{ end -}}
+  <script defer src="{{ $c2cJS.RelPermalink }}" {{ with $c2cJS.Data.Integrity -}}
+    integrity="{{ . }}" {{ end -}}
+    crossorigin="anonymous"></script>
 {{ end }}
 <script src='{{ "/js/tabpane-persist.js" | relURL }}'></script>
 {{ partial "hooks/body-end.html" . }}
