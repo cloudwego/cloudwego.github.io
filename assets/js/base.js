@@ -20,7 +20,7 @@ limitations under the License.
 
     $(function() {
         $('[data-bs-toggle="tooltip"]').tooltip();
-        $('[data-toggle="popover"]').popover();
+        $('[data-bs-toggle="popover"]').popover();
 
         $('.popover-dismiss').popover({
             trigger: 'focus'

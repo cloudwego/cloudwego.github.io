@@ -16,11 +16,16 @@ assets/scss/_styles_project.scss
   }
 
   background: var(--bs-tertiary-bg);
+  color: var(--bs-body-color);
   text-align: center;
 
   & p {
     padding: 0.5rem;
     margin-bottom: initial;
+  }
+
+  a {
+    color: var(--bs-primary) !important;
   }
 }
 
