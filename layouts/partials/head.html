@@ -5,37 +5,34 @@
 
 {{ $darkMode := partialCached "dark-mode-config.html" "dark-mode-global" -}}
 {{ if $darkMode.enable -}}
-{{/* Browser hints before CSS loads */ -}}
-<meta name="color-scheme" content="light dark">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-<meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#000000">
-
-{{/* Styles to set canvas colors and avoid transitions */ -}}
-<style>
-  {{/* Set system colors as default */ -}}
-  html { background: Canvas; color: CanvasText; }
-  {{/* Define reasonable dark defaults */ -}}
-  @media (prefers-color-scheme: dark) {
-    html { background: #0b0d12; color: #e6e6e6; }
-  }
-  {{/* Avoid transitions until theme CSS is loaded */ -}}
-  html[data-theme-init] * { transition: none !important; }
-</style>
-
-{{/* Set theme attribute before CSS loads to prevent flash */ -}}
+{{/* Set theme attribute before everything else to prevent flash */ -}}
 <script>
   (function() {
     const themeKey = 'td-color-theme';
     const storedTheme = localStorage.getItem(themeKey);
     let theme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-
-    if (theme === 'auto') {
-      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-
+    if (theme === 'auto') theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     document.documentElement.setAttribute('data-bs-theme', theme);
   })();
 </script>
+
+{{/* Browser hints before CSS loads */ -}}
+<meta name="color-scheme" content="light dark">
+
+{{/* Styles to set colors immediately */ -}}
+<style>
+  :root { --td-pre-bg: #f8f9fa; --bs-body-bg: #ffffff; --bs-body-color: #212529; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-bs-theme="light"]) { --td-pre-bg: #1d1f21; --bs-body-bg: #0b0d12; --bs-body-color: #e6e6e6; }
+  }
+  [data-bs-theme="dark"] { --td-pre-bg: #1d1f21 !important; --bs-body-bg: #0b0d12 !important; --bs-body-color: #e6e6e6 !important; }
+  
+  html, body { background-color: var(--bs-body-bg) !important; color: var(--bs-body-color) !important; }
+  pre, pre code, pre[class*="language-"], code[class*="language-"] { background-color: var(--td-pre-bg) !important; color: #c5c8c6 !important; }
+  
+  {{/* Avoid transitions until theme CSS is loaded */ -}}
+  html[data-theme-init] * { transition: none !important; }
+</style>
 {{ end -}}
 
 {{ range .AlternativeOutputFormats -}}
@@ -60,6 +57,10 @@
 
 {{ partial "baidu_tongji.html" . }}
 
+{{ if .Site.Params.prism_syntax_highlighting }}
+<!-- stylesheet for Prism -->
+<link rel="stylesheet" href="{{ "/css/prism.css" | relURL }}"/>
+{{ end }}
 {{ partialCached "head-css.html" . "asdf" }}
 <script src="/js/jquery.min.js" ></script>
 {{ if .Site.Params.offlineSearch }}
@@ -68,9 +69,5 @@
   integrity="sha384-vRQ9bDyE0Wnu+lMfm57BlYLO0/XauFuKpVsZPs7KEDwYKktWi5+Kz3MP8++DFlRY"
   crossorigin="anonymous"></script>
 {{end}}
-{{ if .Site.Params.prism_syntax_highlighting }}
-<!-- stylesheet for Prism -->
-<link rel="stylesheet" href="{{ "/css/prism.css" | relURL }}"/>
-{{ end }}
 {{ partial "hooks/head-end.html" . }}
 <!--To comply with GDPR, cookie consent scripts places in head-end must execute before Google Analytics is enabled -->
