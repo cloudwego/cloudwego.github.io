@@ -76,7 +76,10 @@
   }
 
   .dropdown {
-    min-width: 100px;
+    min-width: auto;
+    @include media-breakpoint-up(lg) {
+      min-width: 100px;
+    }
   }
 
   @include media-breakpoint-down(lg) {

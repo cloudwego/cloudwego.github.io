@@ -39,13 +39,13 @@
 			{{ end }}
 			{{ end }}
 			{{ if  .Site.Params.versions }}
-			<li class="nav-item dropdown me-4">
-				{{ partial "navbar-version-selector.html" . }}
+			<li class="nav-item dropdown me-2 me-lg-4">
+				{{ partial "navbar-version-selector.html" (dict "context" . "align" "end") }}
 			</li>
 			{{ end }}
 			{{ if  (gt (len .Site.Home.Translations) 0) }}
-			<li class="nav-item dropdown me-4">
-				{{ partial "navbar-lang-selector.html" . }}
+			<li class="nav-item dropdown me-2 me-lg-4">
+				{{ partial "navbar-lang-selector.html" (dict "context" . "align" "end") }}
 			</li>
 			{{ end }}
 			{{ if $darkMode.showMenu -}}

@@ -4,6 +4,11 @@
 
 .td-content {
     order: 1;
+    
+    // Prevent long links or unbreakable strings from causing horizontal page scroll
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
 
     p, li, td {
         font-weight: $font-weight-body-text;
@@ -37,10 +42,10 @@
 
     > table {
         @extend .table-striped;
-
         @extend .table-responsive;
-
         @extend .table;
+        
+        display: block;
     }
 
     > blockquote {
