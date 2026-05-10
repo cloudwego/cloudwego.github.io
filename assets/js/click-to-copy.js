@@ -58,7 +58,9 @@ const copyCode = (codeSample) => {
     text = codeSample.textContent;
   }
   text = text ? text.trim() : '';
-  navigator.clipboard.writeText(text + '\n');
+  navigator.clipboard.writeText(text + '\n').catch(error => {
+    console.warn('Failed to copy text to clipboard:', error);
+  });
 };
 
 const pruneUnselectableElements = (sourceNode, cloneNode) => {
