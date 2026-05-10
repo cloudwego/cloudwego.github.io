@@ -1,4 +1,6 @@
-@import 'chroma-light';
+[data-bs-theme='light'] {
+  @import 'chroma-light';
+}
 
 @if $enable-dark-mode {
   [data-bs-theme='dark'] {
