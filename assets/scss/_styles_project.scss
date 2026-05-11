@@ -122,3 +122,12 @@ pre.mermaid {
     }
   }
 }
+
+@include media-breakpoint-down(md) {
+  // targeted fix for sidebar margins that often cause overflow on mobile
+  .td-sidebar-nav,
+  .td-sidebar__search {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}

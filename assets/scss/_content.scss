@@ -46,6 +46,9 @@
         @extend .table;
         
         display: block;
+        width: 100%;
+        overflow-x: auto;
+        word-break: normal;
     }
 
     > blockquote {
