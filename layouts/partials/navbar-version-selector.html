@@ -1,9 +1,9 @@
 {{ $context := .context }}
 {{ $align := .align | default "start" }}
-<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarVersionDropdownLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	<span>{{ $context.Site.Params.version_menu }}</span>
 </a>
-<div class="dropdown-menu dropdown-menu-{{ $align }}" aria-labelledby="navbarDropdownMenuLink">
+<div class="dropdown-menu dropdown-menu-{{ $align }}" aria-labelledby="navbarVersionDropdownLink">
 	{{ range $context.Site.Params.versions }}
 	<a class="dropdown-item" href="{{ .url }}">{{ .version }}</a>
 	{{ end }}

@@ -2,6 +2,10 @@ let codeListings = document.querySelectorAll('.highlight > pre');
 
 for (let index = 0; index < codeListings.length; index++) {
   const codeSample = codeListings[index].querySelector('code');
+  if (!codeSample) {
+    continue;
+  }
+
   const copyButton = document.createElement('button');
   const buttonAttributes = {
     type: 'button',
@@ -25,9 +29,7 @@ for (let index = 0; index < codeListings.length; index++) {
   const tooltip = new bootstrap.Tooltip(copyButton);
 
   copyButton.onclick = () => {
-    copyCode(codeSample);
-    copyButton.setAttribute('data-bs-original-title', 'Copied!');
-    tooltip.show();
+    copyCode(codeSample, copyButton, tooltip);
   };
 
   copyButton.onmouseout = () => {
@@ -41,7 +43,11 @@ for (let index = 0; index < codeListings.length; index++) {
   codeListings[index].insertBefore(buttonDiv, codeSample);
 }
 
-const copyCode = (codeSample) => {
+const copyCode = (codeSample, copyButton, tooltip) => {
+  if (!codeSample) {
+    return;
+  }
+
   const isConsoleBlock = codeSample.matches(
     "code[data-lang='console'], code.language-console"
   );
@@ -58,7 +64,16 @@ const copyCode = (codeSample) => {
     text = codeSample.textContent;
   }
   text = text ? text.trim() : '';
-  navigator.clipboard.writeText(text + '\n').catch(error => {
+
+  if (!navigator.clipboard) {
+    console.warn('Clipboard API not available (requires HTTPS or localhost)');
+    return;
+  }
+
+  navigator.clipboard.writeText(text + '\n').then(() => {
+    copyButton.setAttribute('data-bs-original-title', 'Copied!');
+    tooltip.show();
+  }).catch(error => {
     console.warn('Failed to copy text to clipboard:', error);
   });
 };

@@ -1,10 +1,10 @@
 {{ $context := .context }}
 {{ $align := .align | default "start" }}
 {{ $langPage := cond (gt (len $context.Translations) 0) $context $context.Site.Home }}
-<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarLangDropdownLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	<span>{{ $langPage.Language.LanguageName }}</span>
 </a>
-<div class="dropdown-menu dropdown-menu-{{ $align }}" aria-labelledby="navbarDropdownMenuLink">
+<div class="dropdown-menu dropdown-menu-{{ $align }}" aria-labelledby="navbarLangDropdownLink">
 	{{ range $langPage.Translations }}
 	<a class="dropdown-item" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
 	{{ end }}
