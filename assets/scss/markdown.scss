@@ -22,8 +22,8 @@
 
 .markdown div[class*=language-] {
   margin-bottom: 16px;
-  background: rgba(225,230,238,.3);
-  border: 1px solid #979797;
+  background: var(--td-pre-bg);
+  border: 1px solid var(--bs-border-color);
   border-radius: 0
 }
 
@@ -36,7 +36,8 @@
 .markdown div[class*=language-] pre {
   padding: 1em;
   margin: .5em 0;
-  overflow: auto
+  overflow: auto;
+  background: transparent !important;
 }
 
 .markdown pre.mermaid {
@@ -46,7 +47,8 @@
 }
 
 .markdown div[class*=language-] pre code {
-  color: rgba(0,0,0,.5)
+  color: inherit;
+  background: transparent !important;
 }
 
 .markdown h2 {
@@ -107,7 +109,7 @@
 
 .markdown ol li,.markdown p,.markdown ul li {
   font-size: 14px;
-  color: rgba(0,0,0,.5);
+  color: var(--bs-secondary-color);
   line-height: 24px;
   letter-spacing: .8px
 }
@@ -119,13 +121,13 @@
 }
 
 .markdown ol li a,.markdown p a,.markdown ul li a {
-  color: #002fa7;
+  color: var(--bs-link-color);
   text-decoration: none;
   cursor: pointer
 }
 
 .markdown ol li b,.markdown p b,.markdown ul li b {
-  color: #000
+  color: var(--bs-body-color)
 }
 
 .markdown .icon.outbound,.markdown a[href^="#"] {
@@ -148,7 +150,7 @@
 
 .markdown table tr {
   height: 60px;
-  color: rgba(0,0,0,.5)
+  color: var(--bs-secondary-color)
 }
 
 @media (max-width:1000px) {
@@ -158,8 +160,8 @@
 }
 
 .markdown table tr th {
-  background-color: #f2f2f2;
-  color: #000
+  background-color: var(--bs-tertiary-bg);
+  color: var(--bs-body-color)
 }
 
 .markdown table tr td,.markdown table tr th {
@@ -173,7 +175,7 @@
 }
 
 .markdown table tr:nth-child(2n) td,.markdown table tr:nth-child(2n) th {
-  background-color: #f2f2f2
+  background-color: var(--bs-tertiary-bg)
 }
 
 .markdown ol,.markdown ul {
@@ -226,7 +228,7 @@
   top:120px;
   font-size:60px;
   line-height:60px;
-  color:rgba(0,0,0,.05)
+  color: var(--bs-tertiary-color)
 }
 .common-banner .banner .outside {
   position:absolute;
@@ -234,7 +236,7 @@
   top:156px;
   font-size:48px;
   line-height:48px;
-  color:#000;
+  color: var(--bs-body-color);
   font-weight:400
 }
 .common-banner .banner-mobile {

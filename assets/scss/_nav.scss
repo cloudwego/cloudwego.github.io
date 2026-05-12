@@ -76,10 +76,13 @@
   }
 
   .dropdown {
-    min-width: 100px;
+    min-width: auto;
+    @include media-breakpoint-up(lg) {
+      min-width: 100px;
+    }
   }
 
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     padding-right: 0.5rem;
     padding-left: 0.75rem;
 
@@ -101,6 +104,20 @@
         white-space: nowrap;
         -webkit-overflow-scrolling: touch;
       }
+    }
+  }
+
+  // Theme toggler styles
+  .td-navbar__light-dark-menu {
+    .bi {
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.125em;
+      fill: currentcolor;
+    }
+
+    .dropdown-menu {
+      min-width: 8rem;
     }
   }
 }
@@ -195,7 +212,7 @@ nav.foldable-nav {
     padding-left: 0.4em;
     padding-right: 0.4em;
     font-size: 1em;
-    color: $gray-900;
+    color: var(--bs-body-color);
     transition: all 0.5s;
     &:hover {
       transform: rotate(90deg);
@@ -203,7 +220,7 @@ nav.foldable-nav {
   }
 
   .ul-1 .with-child > input:checked ~ label:before {
-    color: $primary;
+    color: var(--bs-primary);
     transform: rotate(90deg);
     transition: transform 0.5s;
   }
@@ -216,13 +233,13 @@ nav.foldable-nav {
 @media (hover: hover) and (pointer: fine) {
   nav.foldable-nav {
     .ul-1 .with-child > label:hover:before {
-      color: $primary;
+      color: var(--bs-primary);
       transform: rotate(30deg);
       transition: transform 0.5s;
     }
 
     .ul-1 .with-child > input:checked ~ label:hover:before {
-      color: $primary;
+      color: var(--bs-primary);
       transform: rotate(60deg) !important;
       transition: transform 0.5s;
     }

@@ -1,16 +1,88 @@
-// Code formatting.
+[data-bs-theme='light'] {
+  @import 'chroma-light';
+}
+
+@if $enable-dark-mode {
+  [data-bs-theme='dark'] {
+    @import 'chroma-dark';
+
+    .chroma {
+      background-color: var(--td-pre-bg) !important;
+
+      // Color tuning for the `native` Chroma style:
+      .go {
+        color: #cccccc95;
+      }
+    }
+  }
+}
 
 .td-content {
 	// Highlighted code.
     .highlight {
         @extend .card;
-	
         margin: 2rem 0;
         padding: 0;
+        position: relative;
+
+        .click-to-copy {
+          display: block;
+          text-align: right;
+        }
+	    
+        &:hover button.td-click-to-copy,
+        &:focus-within button.td-click-to-copy {
+            opacity: 1;
+        }
 	    
         pre {
             margin: 0;
             padding: 1rem;
+            border-radius: inherit;
+            
+            // Custom modern scrollbar for code blocks
+            &::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+            &::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: rgba(128, 128, 128, 0.4);
+                border-radius: 4px;
+            }
+            &::-webkit-scrollbar-thumb:hover {
+                background-color: rgba(128, 128, 128, 0.6);
+            }
+            scrollbar-width: thin;
+            scrollbar-color: rgba(128, 128, 128, 0.4) transparent;
+
+            // Default click-to-copy button
+            button.td-click-to-copy {
+              position: absolute;
+              color: var(--bs-tertiary-color);
+              border-width: 0;
+              background-color: transparent;
+              background-image: none;
+              --bs-btn-box-shadow: 0;
+              padding: var(--bs-btn-padding-y) calc(var(--bs-btn-padding-x) / 2);
+              right: 4px;
+              top: 2px;
+              opacity: 0;
+              transition: opacity 0.3s ease-in-out;
+
+              &:hover {
+                color: var(--bs-secondary-color);
+                background-color: var(--bs-dark-bg-subtle);
+              }
+
+              &:active {
+                color: var(--bs-secondary-color);
+                background-color: var(--bs-dark-bg-subtle);
+                transform: translateY(2px);
+              }
+            }
         }
     }
 
@@ -21,7 +93,7 @@
         margin: 0;
         font-size: 85%;
         word-break: normal;
-        background-color: rgba($black, 0.05);
+        background-color: var(--td-pre-bg);
         border-radius: $border-radius;
 
         br {
@@ -33,9 +105,26 @@
     // Code blocks
     pre {
         word-wrap: normal;
-        background-color: $gray-100;
+        background-color: var(--td-pre-bg);
         padding: $spacer;
-     
+        
+        // Custom modern scrollbar for code blocks
+        &::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba(128, 128, 128, 0.4);
+            border-radius: 4px;
+        }
+        &::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(128, 128, 128, 0.6);
+        }
+        scrollbar-width: thin;
+        scrollbar-color: rgba(128, 128, 128, 0.4) transparent;
 
         > code {
 	    background-color: inherit !important;

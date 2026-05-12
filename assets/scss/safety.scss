@@ -9,28 +9,30 @@
         border-radius: 0px;
       }
       .btn-outline-primary{
-        color: #4b4b4b;
-        border-color: #989898;
+        color: var(--bs-body-color);
+        border-color: var(--bs-border-color);
+
+        &:hover {
+          color: #fff;
+          background: var(--bs-primary);
+          border-color: var(--bs-primary);
+        }
       }
 
-      .btn-outline-primary:hover{
-        color: #fff;
-        background: #4075d9;
-        border-color: #4075d9;
+      .btn-check:checked + .btn-outline-primary,
+      .btn-outline-primary:active, 
+      .btn-outline-primary.active {
+        color: #fff !important;
+        background-color: var(--bs-primary) !important;
+        border-color: var(--bs-primary) !important;
       }
+    }
+  }
 
-      .btn-group > .btn:not(:last-child):not(.dropdown-toggle),
-      .btn-group > .btn-group:not(:last-child) > .btn {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-
-      .btn-outline-primary:not(:disabled):not(.disabled):active,
-      .btn-outline-primary:not(:disabled):not(.disabled).active,
-      .show > .btn-outline-primary.dropdown-toggle {
-        color: #fff;
-        background: #4075d9;
-      }
+  [data-bs-theme='dark'] & {
+    .btn-outline-primary {
+      color: var(--bs-body-color);
+      border-color: var(--bs-border-color);
     }
   }
   .custom-table {
@@ -50,8 +52,8 @@
     .page-item.active .page-link {
       z-index: 3;
       color: #fff;
-      background-color: #4075d9;
-      border-color: #4075d9;
+      background-color: var(--bs-primary);
+      border-color: var(--bs-primary);
     }
   }
 }

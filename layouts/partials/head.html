@@ -3,6 +3,33 @@
 {{ hugo.Generator }}
 {{- $outputFormat := partial "outputformat.html" . -}}
 
+{{ $darkMode := partialCached "dark-mode-config.html" "dark-mode-global" -}}
+{{ if $darkMode.enable -}}
+{{/* Set theme attribute before everything else to prevent flash */ -}}
+<script>
+  (function() {
+    const themeKey = 'td-color-theme';
+    const storedTheme = localStorage.getItem(themeKey);
+    let theme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (theme === 'auto') theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-bs-theme', theme);
+  })();
+</script>
+
+{{/* Browser hints before CSS loads */ -}}
+<meta name="color-scheme" content="light dark">
+
+{{/* Styles to set colors immediately */ -}}
+<style>
+  html { background: Canvas; color: CanvasText; }
+  @media (prefers-color-scheme: dark) {
+    html { background: #0b0d12; color: #e6e6e6; }
+  }
+  {{/* Avoid transitions until theme CSS is loaded */ -}}
+  html[data-theme-init] * { transition: none !important; }
+</style>
+{{ end -}}
+
 {{ range .AlternativeOutputFormats -}}
 <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}">
 {{ end -}}
@@ -33,9 +60,5 @@
   integrity="sha384-vRQ9bDyE0Wnu+lMfm57BlYLO0/XauFuKpVsZPs7KEDwYKktWi5+Kz3MP8++DFlRY"
   crossorigin="anonymous"></script>
 {{end}}
-{{ if .Site.Params.prism_syntax_highlighting }}
-<!-- stylesheet for Prism -->
-<link rel="stylesheet" href="{{ "/css/prism.css" | relURL }}"/>
-{{ end }}
 {{ partial "hooks/head-end.html" . }}
 <!--To comply with GDPR, cookie consent scripts places in head-end must execute before Google Analytics is enabled -->

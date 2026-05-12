@@ -6,7 +6,7 @@
 <a id="td-block-{{ .Ordinal }}" class="td-offset-anchor"></a>
 <section class="row td-box td-box--{{ $col_id }} td-box--gradient td-box--height-{{ $height }} {{ $_class }}">
 	<div class="col">
-		<div class="row {{ $type }}">
+		<div class="row align-items-center {{ $type }}">
 			{{ if eq .Page.File.Ext "md" }}
 				{{ .Inner | markdownify }}
 			{{ else }}

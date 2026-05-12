@@ -4,6 +4,11 @@
 
 .td-content {
     order: 1;
+    
+    // Prevent long links or unbreakable strings from causing horizontal page scroll
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
 
     p, li, td {
         font-weight: $font-weight-body-text;
@@ -37,17 +42,20 @@
 
     > table {
         @extend .table-striped;
-
         @extend .table-responsive;
-
         @extend .table;
+        
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        word-break: normal;
     }
 
     > blockquote {
         padding: 0 0 0 1rem;
         margin-bottom: $spacer;
-        color: $gray-600;
-        border-left: 6px solid $secondary;
+        color: var(--bs-secondary-color);
+        border-left: 6px solid var(--bs-primary);
     }
 
     > ul li, > ol li {

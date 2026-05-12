@@ -59,41 +59,41 @@ If you're looking for a place to start for your first contribution, here's a few
 
 The community is structured with various roles to streamline day-to-day operations, and to recognize the efforts of longstanding contributors. Responsibilities for the various community roles fall under these subprojects (repos) as defined by the CloudWeGo team.
 
- <table class='table table-bordered table-striped table-hover'>
+  <table class='table table-bordered table-striped table-hover'>
       <thead>
       <tr>
-        <th class="text-left">Role</th>
-        <th class="text-left">Responsibilities</th>
-        <th class="text-left">Requirements</th>
-        <th class="text-left">Defined by</th>
+        <th class="text-start">Role</th>
+        <th class="text-start">Responsibilities</th>
+        <th class="text-start">Requirements</th>
+        <th class="text-start">Defined by</th>
       </tr>
       </thead>
       <tr>
-        <td class="text-left">Member</td>
+        <td class="text-start">Member</td>
         <td>Active contributor in the community.</td>
         <td>Sponsorship by two approvers or maintainers, and multiple code contributions to the project.</td>
         <td>GitHub org member.</td>
       </tr>
       <tr>
-        <td class="text-left">Committer</td>
+        <td class="text-start">Committer</td>
         <td>Active code contributions and/or issue replies in the subproject.</td>
         <td>Sponsorship by two approvers or maintainers and multiple code contributions to the project.</td>
         <td>GitHub subproject committer team.</td>
       </tr>
       <tr>
-        <td class="text-left">Reviewer</td>
+        <td class="text-start">Reviewer</td>
         <td>Review contributions from other members, and give feedback and guidance.</td>
         <td>Continuous history of review and authorship in a subproject.</td>
         <td>GitHub subproject reviewer team.</td>
       </tr>
       <tr>
-        <td class="text-left">Approver</td>
+        <td class="text-start">Approver</td>
         <td>Approve contributions received by the project.</td>
         <td>Highly experienced, active reviewer and contributor to a subproject.</td>
         <td>GitHub subproject approver team.</td>
       </tr>
       <tr>
-        <td class="text-left">Maintainer</td>
+        <td class="text-start">Maintainer</td>
         <td>Set the direction and priorities for a subproject.</td>
         <td>Demonstrated sense of responsibility and excellent technical judgement for the subproject.</td>
         <td>GitHub subproject maintainer team.</td>

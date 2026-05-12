@@ -24,7 +24,7 @@
           </h5>
         {{ end }}
         {{ with $.Get "subtitle" }}
-          <h6 class="card-title mb-2 text-muted">
+          <h6 class="card-title mb-2 text-body-secondary">
             {{ if eq $.Page.File.Ext "md" }}
               {{ $.Get "subtitle" | markdownify }}
             {{ else }}

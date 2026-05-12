@@ -6,6 +6,30 @@ assets/scss/_styles_project.scss
 
 */
 
+// Global scrollbar styles for a consistent, modern look across the whole site
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(128, 128, 128, 0.4) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(128, 128, 128, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(128, 128, 128, 0.6);
+}
+
 .o-banner {
   @include media-breakpoint-up(md) {
     width: 100%;
@@ -15,12 +39,17 @@ assets/scss/_styles_project.scss
     top: 4rem;
   }
 
-  background: $gray-100;
+  background: var(--bs-tertiary-bg);
+  color: var(--bs-body-color);
   text-align: center;
 
   & p {
     padding: 0.5rem;
     margin-bottom: initial;
+  }
+
+  a {
+    color: var(--bs-primary) !important;
   }
 }
 
@@ -56,4 +85,49 @@ pre.mermaid {
   right: 1rem;
   top: 1rem;
   z-index: 10;
+}
+
+// Dark mode color adjustments
+@if $enable-dark-mode {
+  @include color-mode(dark) {
+    // Improve box shadow contrast in dark mode
+    --bs-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.8);
+    --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.8);
+    --bs-box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.8);
+
+    // Adjust primary/secondary for better contrast in dark mode
+    --bs-primary: #{tint-color($primary, 20%)};
+
+    // Fix hardcoded white/light backgrounds in sections
+    .td-box--white,
+    .td-box--light {
+      background-color: var(--bs-body-bg) !important;
+      color: var(--bs-body-color) !important;
+    }
+
+    // Ensure footer custom icon images are visible
+    .bg-dark {
+      img[src$=".svg"] {
+        filter: brightness(0) invert(1);
+      }
+    }
+
+    // Cloudwego link colors for dark mode
+    a.cloudwego-link {
+      color: #6db8f0;
+    }
+
+    a.cloudwego-link:hover {
+      color: #a8d4f7;
+    }
+  }
+}
+
+@include media-breakpoint-down(md) {
+  // targeted fix for sidebar margins that often cause overflow on mobile
+  .td-sidebar-nav,
+  .td-sidebar__search {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
 }

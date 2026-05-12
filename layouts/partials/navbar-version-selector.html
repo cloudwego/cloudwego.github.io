@@ -1,8 +1,10 @@
-<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	{{ .Site.Params.version_menu }}
+{{ $context := .context }}
+{{ $align := .align | default "start" }}
+<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarVersionDropdownLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	<span>{{ $context.Site.Params.version_menu }}</span>
 </a>
-<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-	{{ range .Site.Params.versions }}
+<div class="dropdown-menu dropdown-menu-{{ $align }}" aria-labelledby="navbarVersionDropdownLink">
+	{{ range $context.Site.Params.versions }}
 	<a class="dropdown-item" href="{{ .url }}">{{ .version }}</a>
 	{{ end }}
 </div>
