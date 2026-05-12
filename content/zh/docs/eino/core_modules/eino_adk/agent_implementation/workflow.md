@@ -358,9 +358,15 @@ func NewExitControllerAgent() adk.Agent {
     a, err := adk.NewChatModelAgent(context.Background(), &adk.ChatModelAgentConfig{
         Name:        "ExitController",
         Description: "控制优化循环的退出",
-        Instruction: `检查前面的分析结果，如果代码分析师认为代码质量已达到标准（包含"EXIT"关键词），
-则输出 "TERMINATE" 并生成退出动作来结束循环。否则继续下一轮优化。`,
+        Instruction: `检查前面的分析结果，判断当前代码优化流程是否应该结束,如果代码分析师认为代码质量已达到标准（包含"EXIT"关键词），
+则输出 "TERMINATE"并调用 exit 工具结束整个循环，否则继续下一轮优化。
+
+注意：
+- 只有调用 exit 工具，外层 LoopAgent 才会真正停止。
+- 仅仅输出 "TERMINATE" 文本不会结束循环。`,
         Model: newChatModel(),
+        // 必须创建exitTool才能提前退出
+        Exit:  &adk.ExitTool{},
     })
     if err != nil {
         log.Fatal(err)
