@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-24"
+date: "2026-05-17"
 lastmod: ""
 tags: []
 title: Local File System
@@ -9,170 +9,129 @@ weight: 2
 
 ## Local Backend
 
-Package: `github.com/cloudwego/eino-ext/adk/backend/local`
+**Package**: `github.com/cloudwego/eino-ext/adk/backend/local`
 
-Note: If your eino version is v0.8.0 or above, you need to use local backend [adk/backend/local/v0.2.1](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Flocal%2Fv0.2.1).
+> 💡
+> eino v0.8.0+ requires local backend v0.2.1 or above.
 
-### Overview
+Local Backend is the local implementation of Eino ADK FileSystem, directly operating on the local file system. It implements both the `filesystem.Backend` (file operations) and `filesystem.StreamingShell` (streaming command execution) interfaces.
 
-Local Backend is the local file system implementation of EINO ADK FileSystem, directly operating on the local file system, providing native performance and zero-configuration experience.
+**Core features**: Zero configuration, native performance, enforced absolute paths, streaming command execution, optional command validation.
 
-#### Core Features
+---
 
-- Zero Configuration - Works out of the box
-- Native Performance - Direct file system access, no network overhead
-- Path Safety - Enforces absolute paths
-- Streaming Execution - Supports real-time command output streaming
-- Command Validation - Optional security validation hooks
-
-### Installation
+## Installation
 
 ```bash
 go get github.com/cloudwego/eino-ext/adk/backend/local
 ```
 
-### Configuration
+## Configuration
 
 ```go
 type Config struct {
-    // Optional: Command validation function for Execute() security control
+    // Optional: command validation function for security control of ExecuteStreaming.
+    // Rejects execution when a non-nil error is returned.
     ValidateCommand func(string) error
 }
 ```
 
-### Quick Start
-
-#### Basic Usage
+## Quick Start
 
 ```go
-import (
-    "context"
+backend, err := local.NewBackend(ctx, &local.Config{})
 
-    "github.com/cloudwego/eino-ext/adk/backend/local"
-    "github.com/cloudwego/eino/adk/filesystem"
-)
+// Write file (must be absolute path; overwrites if file exists)
+err = backend.Write(ctx, &filesystem.WriteRequest{
+    FilePath: "/tmp/hello.txt",
+    Content:  "Hello, Local Backend!",
+})
 
-func main() {
-    ctx := context.Background()
-
-    backend, err := local.NewBackend(ctx, &local.Config{})
-    if err != nil {
-        panic(err)
-    }
-
-    // Write file (must be absolute path)
-    err = backend.Write(ctx, &filesystem.WriteRequest{
-        FilePath: "/tmp/hello.txt",
-        Content:  "Hello, Local Backend!",
-    })
-
-    // Read file
-    fcontent, err := backend.Read(ctx, &filesystem.ReadRequest{
-        FilePath: "/tmp/hello.txt",
-    })
-    fmt.Println(fcontent.Content)
-}
-```
-
-#### With Command Validation
-
-```go
-func validateCommand(cmd string) error {
-    allowed := map[string]bool{"ls": true, "cat": true, "grep": true}
-    parts := strings.Fields(cmd)
-    if len(parts) == 0 || !allowed[parts[0]] {
-        return fmt.Errorf("command not allowed: %s", parts[0])
-    }
-    return nil
-}
-
-backend, _ := local.NewBackend(ctx, &local.Config{
-    ValidateCommand: validateCommand,
+// Read file (supports line-level pagination)
+fc, err := backend.Read(ctx, &filesystem.ReadRequest{
+    FilePath: "/tmp/hello.txt",
+    Offset:   1,   // Starting line number (1-based)
+    Limit:    50,  // Maximum lines, 0 means all
 })
 ```
 
-#### Integration with Agent
+### Integration with Agent
 
 ```go
 import (
     "github.com/cloudwego/eino/adk"
     fsMiddleware "github.com/cloudwego/eino/adk/middlewares/filesystem"
+    "github.com/cloudwego/eino-ext/adk/backend/local"
 )
 
-// Create Backend
 backend, _ := local.NewBackend(ctx, &local.Config{})
 
-// Create Middleware
 middleware, _ := fsMiddleware.New(ctx, &fsMiddleware.Config{
-    Backend: backend,
-    StreamingShell: backend,
+    Backend:        backend, // Required: registers ls/read/write/edit/glob/grep tools
+    StreamingShell: backend, // Optional: registers streaming execute tool
 })
 
-// Create Agent
 agent, _ := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
-    Name:        "LocalFileAgent",
-    Description: "AI Agent with local file system access capabilities",
-    Model:       chatModel,
-    Handlers:    []adk.ChatModelAgentMiddleware{middleware},
+    Model:    chatModel,
+    Handlers: []adk.ChatModelAgentMiddleware{middleware},
 })
 ```
 
-### API Reference
+> 💡
+> `Shell` and `StreamingShell` are mutually exclusive in the middleware Config. Local Backend only implements `StreamingShell` (streaming command execution), not the non-streaming `Shell`.
+
+---
+
+## Implemented Interfaces and Methods
+
+### filesystem.Backend
 
 <table>
-<tr><td>Method</td><td>Description</td></tr>
-<tr><td>LsInfo</td><td>List directory contents</td></tr>
-<tr><td>Read</td><td>Read file content (supports pagination, default 200 lines)</td></tr>
-<tr><td>Write</td><td>Create new file (error if exists)</td></tr>
-<tr><td>Edit</td><td>Replace file content</td></tr>
-<tr><td>GrepRaw</td><td>Search file content (literal match)</td></tr>
-<tr><td>GlobInfo</td><td>Find files by pattern</td></tr>
-<tr><td>Execute</td><td>Execute shell commands</td></tr>
-<tr><td>ExecuteStreaming</td><td>Execute commands with streaming output</td></tr>
+<tr><td>Method</td><td>Signature</td><td>Description</td></tr>
+<tr><td><pre>LsInfo</pre></td><td><pre>(ctx, *LsInfoRequest) ([]FileInfo, error)</pre></td><td>List directory contents</td></tr>
+<tr><td><pre>Read</pre></td><td><pre>(ctx, *ReadRequest) (*FileContent, error)</pre></td><td>Read file, supports line-level pagination (Offset 1-based, Limit 0=all)</td></tr>
+<tr><td><pre>Write</pre></td><td><pre>(ctx, *WriteRequest) error</pre></td><td>Write file; auto-creates parent directories; <strong>overwrites if file exists</strong></td></tr>
+<tr><td><pre>Edit</pre></td><td><pre>(ctx, *EditRequest) error</pre></td><td>String replacement; supports <pre>ReplaceAll</pre>; errors if <pre>OldString</pre> is not unique (in non-ReplaceAll mode)</td></tr>
+<tr><td><pre>GrepRaw</pre></td><td><pre>(ctx, *GrepRequest) ([]GrepMatch, error)</pre></td><td>ripgrep-based search, <strong>supports full regex syntax</strong>; supports case-insensitive, multiline matching, context lines</td></tr>
+<tr><td><pre>GlobInfo</pre></td><td><pre>(ctx, *GlobInfoRequest) ([]FileInfo, error)</pre></td><td>Glob pattern file matching, supports <pre>*</pre>/<pre>**</pre>/<pre>?</pre>/<pre>[abc]</pre></td></tr>
 </table>
 
-#### Examples
+### filesystem.StreamingShell
+
+<table>
+<tr><td>Method</td><td>Signature</td><td>Description</td></tr>
+<tr><td><pre>ExecuteStreaming</pre></td><td><pre>(ctx, *ExecuteRequest) (*StreamReader[*ExecuteResponse], error)</pre></td><td>Streaming shell command execution with real-time output; supports background running (<pre>RunInBackendGround</pre>)</td></tr>
+</table>
+
+---
+
+## Usage Examples
+
+### Search Content (Regex)
 
 ```go
-// List directory
-files, _ := backend.LsInfo(ctx, &filesystem.LsInfoRequest{
-    Path: "/home/user",
-})
-
-// Read file (paginated)
-content, _ := backend.Read(ctx, &filesystem.ReadRequest{
-    FilePath: "/path/to/file.txt",
-    Offset:   0,
-    Limit:    50,
-})
-
-// Search content (literal match, not regex)
 matches, _ := backend.GrepRaw(ctx, &filesystem.GrepRequest{
     Path:    "/home/user/project",
-    Pattern: "TODO",
+    Pattern: "TODO|FIXME",       // ripgrep regex syntax
     Glob:    "*.go",
+    CaseInsensitive: true,
 })
+```
 
-// Find files
-files, _ := backend.GlobInfo(ctx, &filesystem.GlobInfoRequest{
-    Path:    "/home/user",
-    Pattern: "**/*.go",
-})
+### Edit File
 
-// Edit file
+```go
 backend.Edit(ctx, &filesystem.EditRequest{
     FilePath:   "/tmp/file.txt",
-    OldString:  "old",
-    NewString:  "new",
+    OldString:  "old text",
+    NewString:  "new text",
     ReplaceAll: true,
 })
+```
 
-// Execute command
-result, _ := backend.Execute(ctx, &filesystem.ExecuteRequest{
-    Command: "ls -la /tmp",
-})
+### Streaming Command Execution
 
-// Streaming execution
+```go
 reader, _ := backend.ExecuteStreaming(ctx, &filesystem.ExecuteRequest{
     Command: "tail -f /var/log/app.log",
 })
@@ -181,51 +140,62 @@ for {
     if err == io.EOF {
         break
     }
-    fmt.Print(resp.Stdout)
+    fmt.Print(resp.Output)
 }
 ```
 
-### Path Requirements
-
-All paths must be absolute paths (starting with `/`):
+### With Command Validation
 
 ```go
-// Correct
-backend.Read(ctx, &filesystem.ReadRequest{FilePath: "/home/user/file.txt"})
-
-// Incorrect
-backend.Read(ctx, &filesystem.ReadRequest{FilePath: "./file.txt"})
+backend, _ := local.NewBackend(ctx, &local.Config{
+    ValidateCommand: func(cmd string) error {
+        allowed := map[string]bool{"ls": true, "cat": true, "grep": true}
+        parts := strings.Fields(cmd)
+        if len(parts) == 0 || !allowed[parts[0]] {
+            return fmt.Errorf("command not allowed: %s", parts[0])
+        }
+        return nil
+    },
+})
 ```
 
-Convert relative paths:
+---
 
-```go
-absPath, _ := filepath.Abs("./relative/path")
-```
+## Path Requirements
 
-### Comparison with Agentkit Backend
+All file paths must be absolute paths (starting with `/`). Relative paths can be converted using `filepath.Abs()`.
+
+---
+
+## Comparison with Agentkit Backend
 
 <table>
 <tr><td>Feature</td><td>Local</td><td>Agentkit</td></tr>
-<tr><td>Execution Model</td><td>Local Direct</td><td>Remote Sandbox</td></tr>
-<tr><td>Network Dependency</td><td>None</td><td>Required</td></tr>
-<tr><td>Configuration Complexity</td><td>Zero Config</td><td>Requires Credentials</td></tr>
-<tr><td>Security Model</td><td>OS Permissions</td><td>Isolated Sandbox</td></tr>
-<tr><td>Streaming Output</td><td>Supported</td><td>Not Supported</td></tr>
-<tr><td>Platform Support</td><td>Unix/Linux/macOS</td><td>Any</td></tr>
-<tr><td>Use Cases</td><td>Development/Local</td><td>Multi-tenant/Production</td></tr>
+<tr><td>Execution model</td><td>Local direct</td><td>Remote sandbox</td></tr>
+<tr><td>Network dependency</td><td>None</td><td>Required</td></tr>
+<tr><td>Configuration complexity</td><td>Zero config</td><td>Requires credentials</td></tr>
+<tr><td>Security model</td><td>OS permissions + ValidateCommand</td><td>Isolated sandbox</td></tr>
+<tr><td>Streaming output</td><td>Supported (StreamingShell)</td><td>Not supported</td></tr>
+<tr><td>Platform support</td><td>Unix/Linux/macOS</td><td>Any</td></tr>
+<tr><td>Use case</td><td>Development / local environment</td><td>Multi-tenant / production</td></tr>
 </table>
 
-### FAQ
+---
 
-**Q: Why does running grep fail with `ripgrep (rg) is not installed or not in PATH. Please install it:` [https://github.com/BurntSushi/ripgrep#installation](https://github.com/BurntSushi/ripgrep#installation)?**
-
-The local Grep command relies on `ripgrep` by default. If your system does not have `ripgrep` installed, install it following the official guide.
+## FAQ
 
 **Q: Does GrepRaw support regex?**
 
-Yes. GrepRaw uses `ripgrep` under the hood for grep operations, so regex patterns are supported.
+A: Yes. It uses ripgrep (`rg`) under the hood and supports full regex syntax. The system must have ripgrep installed, otherwise it will report `ripgrep (rg) is not installed or not in PATH`. See [https://github.com/BurntSushi/ripgrep#installation](https://github.com/BurntSushi/ripgrep#installation) for installation instructions.
 
-**Q: Windows support?**
+**Q: Does Write create or overwrite?**
 
-Not supported, depends on `/bin/sh`.
+A: Overwrite. `Write` uses `O_CREATE|O_TRUNC` flags — if the file exists, its content is overwritten; if it doesn't exist, it is created (including auto-creation of parent directories).
+
+**Q: Is Windows supported?**
+
+A: No. `ExecuteStreaming` depends on `/bin/sh`. File operations themselves can run on any platform, but command execution is limited to Unix-based systems.
+
+**Q: Does Local Backend support non-streaming Execute?**
+
+A: No. Local only implements `StreamingShell` (`ExecuteStreaming`), not `Shell` (`Execute`). `Shell` and `StreamingShell` are mutually exclusive in the middleware Config — choose one.

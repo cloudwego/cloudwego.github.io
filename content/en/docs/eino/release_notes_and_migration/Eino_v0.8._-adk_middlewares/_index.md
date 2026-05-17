@@ -1,16 +1,13 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-05-17"
 lastmod: ""
 tags: []
-title: 'Eino: v0.8.*-adk middlewares'
+title: v0.8.*-adk middlewares
 weight: 8
 ---
 
 This document introduces the main new features and improvements in Eino ADK v0.8.*.
-
-> 💡
-> Currently in the v0.8.0.Beta version stage: [https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1)
 
 ## Version Highlights
 
@@ -266,7 +263,7 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 
 ## Upgrade Guide
 
-For detailed migration steps and code examples, please refer to: [Eino v0.8 Breaking Changes](/docs/eino/release_notes_and_migration/Eino_v0.8._-adk_middlewares/Eino_v0.8_Breaking_Changes)
+For detailed migration steps and code examples, please refer to: [Eino v0.8 Breaking Changes](/docs/eino/release_notes_and_migration/eino_v0.8._-adk_middlewares/eino_v0.8_breaking_changes)
 
 **Quick Checklist**:
 

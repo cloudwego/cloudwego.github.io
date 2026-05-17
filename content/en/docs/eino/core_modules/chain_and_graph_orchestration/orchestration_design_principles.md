@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-05-17"
 lastmod: ""
 tags: []
 title: 'Eino: Orchestration Design Principles'
@@ -321,7 +321,7 @@ func Init() {
 
 Eino's Graph type alignment check occurs at `err = graph.AddEdge("node1", "node2")` when checking whether the two nodes' types match. This allows discovering type mismatch errors during `graph building` or `Compile process`, applicable to rules ① ② ③ listed in [Eino: Orchestration Design Principles](/docs/eino/core_modules/chain_and_graph_orchestration/orchestration_design_principles).
 
-When the upstream node's output is `interface`, if the downstream node type implements that `interface`, upstream may be convertible to downstream type (type assertion), but can only be determined during `runtime`. At this point, if it's determined that upstream cannot be assigned to downstream, an error will be thrown.
+When the upstream node's output is `interface`, if the downstream node type implements that `interface`, upstream may be convertible to downstream type (type assertion), but can only be determined during `runtime`. The type check for this scenario is moved to runtime.
 
 The structure is shown in the figure below:
 

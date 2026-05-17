@@ -1,82 +1,147 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-05-17"
 lastmod: ""
 tags: []
-title: 'Eino ADK: ChatModelAgentMiddleware'
+title: ChatModelAgentMiddleware
 weight: 8
 ---
 
-## Overview
+`ChatModelAgentMiddleware` is the core interface for customizing the behavior of `ChatModelAgent` (and `DeepAgent` built on top of it). Introduced in v0.8.0 and continuously evolving in subsequent releases.
 
-## ChatModelAgentMiddleware Interface
+## Type Conventions
 
-`ChatModelAgentMiddleware` defines the interface for customizing `ChatModelAgent` behavior.
+This document uses aliases with the default `M = *schema.Message`. The generic raw types are named with a `Typed` prefix:
 
-**Important:** This interface is designed specifically for `ChatModelAgent` and Agents built on top of it (such as `DeepAgent`).
+```go
+type ChatModelAgentMiddleware     = TypedChatModelAgentMiddleware[*schema.Message]
+type BaseChatModelAgentMiddleware = TypedBaseChatModelAgentMiddleware[*schema.Message]
+type ChatModelAgentState          = TypedChatModelAgentState[*schema.Message]
+type ModelContext                  = TypedModelContext[*schema.Message]
+```
 
-> 💡
-> The ChatModelAgentMiddleware interface was introduced in [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1)
+When you need to use `*schema.AgenticMessage`, use the `Typed` generic versions directly.
 
-### Why Use ChatModelAgentMiddleware Instead of AgentMiddleware?
+---
 
-<table>
-<tr><td>Feature</td><td>AgentMiddleware (struct)</td><td>ChatModelAgentMiddleware (interface)</td></tr>
-<tr><td>Extensibility</td><td>Closed, users cannot add new methods</td><td>Open, users can implement custom handlers</td></tr>
-<tr><td>Context Propagation</td><td>Callbacks only return error</td><td>All methods return <pre>(context.Context, ..., error)</pre></td></tr>
-<tr><td>Configuration Management</td><td>Scattered in closures</td><td>Centralized in struct fields</td></tr>
-</table>
-
-### Interface Definition
+## Interface Definition
 
 ```go
 type ChatModelAgentMiddleware interface {
-    // BeforeAgent is called before each agent run, allows modifying instruction and tools configuration
+    // ── Lifecycle Hooks ──
+
+    // BeforeAgent: called once before the agent runs, can modify instruction and tools configuration
     BeforeAgent(ctx context.Context, runCtx *ChatModelAgentContext) (context.Context, *ChatModelAgentContext, error)
 
-    // BeforeModelRewriteState is called before each model call
-    // The returned state will be persisted to the agent's internal state and passed to the model
-    // The returned context will be propagated to the model call and subsequent handlers
+    // AfterAgent: called after the agent terminates successfully (final answer or return-directly tool result)
+    // Not called on error termination (max iterations exceeded, context cancelled, model error)
+    AfterAgent(ctx context.Context, state *ChatModelAgentState) (context.Context, error)
+
+    // BeforeModelRewriteState: called before each model invocation
+    // The returned state is persisted; Messages, ToolInfos, and DeferredToolInfos can be modified
     BeforeModelRewriteState(ctx context.Context, state *ChatModelAgentState, mc *ModelContext) (context.Context, *ChatModelAgentState, error)
 
-    // AfterModelRewriteState is called after each model call
+    // AfterModelRewriteState: called after each model invocation
     // The input state contains the model response as the last message
     AfterModelRewriteState(ctx context.Context, state *ChatModelAgentState, mc *ModelContext) (context.Context, *ChatModelAgentState, error)
 
-    // WrapInvokableToolCall wraps the synchronous execution of a tool with custom behavior
-    // If no wrapping is needed, return the original endpoint and nil error
-    // Only called for tools that implement InvokableTool
+    // ── Wrappers ──
+
     WrapInvokableToolCall(ctx context.Context, endpoint InvokableToolCallEndpoint, tCtx *ToolContext) (InvokableToolCallEndpoint, error)
-
-    // WrapStreamableToolCall wraps the streaming execution of a tool with custom behavior
-    // If no wrapping is needed, return the original endpoint and nil error
-    // Only called for tools that implement StreamableTool
     WrapStreamableToolCall(ctx context.Context, endpoint StreamableToolCallEndpoint, tCtx *ToolContext) (StreamableToolCallEndpoint, error)
-
-    // WrapEnhancedInvokableToolCall wraps the synchronous execution of an enhanced tool with custom behavior
     WrapEnhancedInvokableToolCall(ctx context.Context, endpoint EnhancedInvokableToolCallEndpoint, tCtx *ToolContext) (EnhancedInvokableToolCallEndpoint, error)
-
-    // WrapEnhancedStreamableToolCall wraps the streaming execution of an enhanced tool with custom behavior
     WrapEnhancedStreamableToolCall(ctx context.Context, endpoint EnhancedStreamableToolCallEndpoint, tCtx *ToolContext) (EnhancedStreamableToolCallEndpoint, error)
 
-    // WrapModel wraps the chat model with custom behavior
-    // If no wrapping is needed, return the original model and nil error
-    // Called at request time, executed before each model call
-    WrapModel(ctx context.Context, m model.BaseChatModel, mc *ModelContext) (model.BaseChatModel, error)
+    // WrapModel: wraps the ChatModel; parameter type is model.BaseModel[M] (not ToolCallingChatModel)
+    // The framework handles WithTools binding separately, not through user wrappers
+    WrapModel(ctx context.Context, m model.BaseModel[M], mc *ModelContext) (model.BaseModel[M], error)
 }
 ```
 
-### Using BaseChatModelAgentMiddleware
+> 💡
+> Embed `*BaseChatModelAgentMiddleware` to get no-op default implementations for all methods — only override the ones you care about.
 
-Embed `*BaseChatModelAgentMiddleware` to get default no-op implementations:
+### Why an Interface Instead of the AgentMiddleware Struct?
+
+`AgentMiddleware` is a struct with inherent limitations — users cannot extend methods, and callbacks only return error without propagating context. `ChatModelAgentMiddleware` is an interface:
+
+- Hook methods return `(context.Context, ..., error)`, supporting context propagation
+- Wrapper methods propagate the modified context through the endpoint chain
+- Custom handlers can carry arbitrary internal state
+
+**Selection principle**: Use `AgentMiddleware` for simple static modifications (appending instructions/tools); use `ChatModelAgentMiddleware` when you need dynamic behavior, context modification, or call wrapping. Both can be used simultaneously.
+
+---
+
+## Context Types
+
+### ChatModelAgentContext
+
+Input to `BeforeAgent`, called once before each Run:
 
 ```go
-type MyHandler struct {
-    *adk.BaseChatModelAgentMiddleware
-}
+type ChatModelAgentContext struct {
+    // Current instruction (includes agent config + framework appended + prior handler modifications)
+    Instruction string
 
-func (h *MyHandler) BeforeModelRewriteState(ctx context.Context, state *adk.ChatModelAgentState, mc *adk.ModelContext) (context.Context, *adk.ChatModelAgentState, error) {
-    return ctx, state, nil
+    // Original tool list (includes framework-implicit tools like transfer/exit)
+    Tools []tool.BaseTool
+
+    // Set of tool names configured to "return directly"
+    ReturnDirectly map[string]bool
+
+    // ToolInfo for the model's native tool search capability
+    // After being set by a handler, the framework passes it to the model via model.WithToolSearchTool
+    ToolSearchTool *schema.ToolInfo
+}
+```
+
+### ChatModelAgentState
+
+**Persistent state** passed before and after each model call (retained across iterations):
+
+```go
+type ChatModelAgentState struct {
+    // All messages in the current session
+    Messages []*schema.Message
+
+    // Tool definitions passed to the model (via model.WithTools), can be modified in BeforeModelRewriteState
+    ToolInfos []*schema.ToolInfo
+
+    // Deferred retrieval tool definitions (via model.WithDeferredTools), used for the model's native search capability
+    // nil when not in use
+    DeferredToolInfos []*schema.ToolInfo
+}
+```
+
+> 💡
+> The recommended place to modify `ToolInfos` / `DeferredToolInfos` is `BeforeModelRewriteState` — this is the source of truth for tool configuration. Do not modify the tool list in `WrapModel`.
+
+### ModelContext
+
+Context for `WrapModel` and `Before/AfterModelRewriteState`:
+
+```go
+type ModelContext struct {
+    // Deprecated: use ChatModelAgentState.ToolInfos instead
+    Tools []*schema.ToolInfo
+
+    // Model retry configuration
+    ModelRetryConfig *ModelRetryConfig
+
+    // Model failover configuration
+    ModelFailoverConfig *ModelFailoverConfig[*schema.Message]
+}
+```
+
+### ToolContext
+
+Metadata for tool wrapping:
+
+```go
+type ToolContext struct {
+    Name   string // Tool name
+    CallID string // Unique identifier for this call
 }
 ```
 
@@ -84,215 +149,105 @@ func (h *MyHandler) BeforeModelRewriteState(ctx context.Context, state *adk.Chat
 
 ## Tool Call Endpoint Types
 
-Tool wrapping uses function types instead of interfaces, more clearly expressing the wrapping intent:
+Tool wrapping uses function types rather than interfaces. The framework calls the corresponding Wrap method based on the interface the tool implements:
 
 ```go
-// InvokableToolCallEndpoint is the function signature for synchronous tool calls
-type InvokableToolCallEndpoint func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error)
-
-// StreamableToolCallEndpoint is the function signature for streaming tool calls
+// Standard tools
+type InvokableToolCallEndpoint  func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error)
 type StreamableToolCallEndpoint func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (*schema.StreamReader[string], error)
 
-// EnhancedInvokableToolCallEndpoint is the function signature for enhanced synchronous tool calls
-type EnhancedInvokableToolCallEndpoint func(ctx context.Context, toolArgument *schema.ToolArgument, opts ...tool.Option) (*schema.ToolResult, error)
-
-// EnhancedStreamableToolCallEndpoint is the function signature for enhanced streaming tool calls
+// Enhanced tools (using ToolArgument/ToolResult)
+type EnhancedInvokableToolCallEndpoint  func(ctx context.Context, toolArgument *schema.ToolArgument, opts ...tool.Option) (*schema.ToolResult, error)
 type EnhancedStreamableToolCallEndpoint func(ctx context.Context, toolArgument *schema.ToolArgument, opts ...tool.Option) (*schema.StreamReader[*schema.ToolResult], error)
 ```
 
-### Why Use Separate Endpoint Types?
-
-The previous `ToolCall` interface contained both `InvokableRun` and `StreamableRun`, but most tools only implement one of them.
-Separate endpoint types enable:
-
-- Corresponding wrap methods are only called when the tool implements the respective interface
-- Clearer contract for wrapper authors
-- No ambiguity about which method to implement
+> 💡
+> Each Wrap method is **only called when the tool implements the corresponding interface**. For example, if a tool only implements `InvokableTool`, only `WrapInvokableToolCall` will be called — `WrapStreamableToolCall` will not.
 
 ---
 
-## ChatModelAgentContext
+## Execution Order
 
-`ChatModelAgentContext` contains runtime information passed to handlers before each `ChatModelAgent` run.
+### Model Call Lifecycle (from outer to inner)
 
-```go
-type ChatModelAgentContext struct {
-    // Instruction is the instruction for the current Agent execution
-    // Includes agent-configured instructions, framework and AgentMiddleware appended extra instructions,
-    // and modifications applied by previous BeforeAgent handlers
-    Instruction string
+1. `AgentMiddleware.BeforeChatModel`
+2. **ChatModelAgentMiddleware.BeforeModelRewriteState**
+3. `retryModelWrapper` (internal — retry on failure)
+4. `eventSenderModelWrapper` preprocessing (internal — prepare event sending)
+5. **ChatModelAgentMiddleware.WrapModel** preprocessing (first registered → runs first)
+6. `callbackInjectionModelWrapper` (internal)
+7. **Model.Generate / Stream**
+8. `callbackInjectionModelWrapper` postprocessing
+9. **ChatModelAgentMiddleware.WrapModel** postprocessing (first registered → runs last)
+10. `eventSenderModelWrapper` postprocessing
+11. `retryModelWrapper` postprocessing
+12. **ChatModelAgentMiddleware.AfterModelRewriteState**
+13. `AgentMiddleware.AfterChatModel`
 
-    // Tools are the original tools (without any wrappers or tool middleware) currently configured for Agent execution
-    // Includes tools passed in AgentConfig, tools implicitly added by the framework (like transfer/exit tools),
-    // and other tools added by middleware
-    Tools []tool.BaseTool
+### Tool Call Lifecycle (from outer to inner)
 
-    // ReturnDirectly is the set of tool names currently configured to make the Agent return directly
-    ReturnDirectly map[string]bool
-}
-```
+1. `eventSenderToolHandler` (internal — sends tool result event)
+2. `ToolsConfig.ToolCallMiddlewares`
+3. `AgentMiddleware.WrapToolCall`
+4. **ChatModelAgentMiddleware.WrapXxxToolCall** (first registered → outermost)
+5. **Tool.InvokableRun / StreamableRun**
 
----
+### WrapModel Usage Recommendations
 
-## ChatModelAgentState
-
-`ChatModelAgentState` represents the state of the chat model agent during conversation. This is the primary state type for `ChatModelAgentMiddleware` and `AgentMiddleware` callbacks.
-
-```go
-type ChatModelAgentState struct {
-    // Messages contains all messages in the current conversation session
-    Messages []Message
-}
-```
-
----
-
-## ToolContext
-
-`ToolContext` provides metadata about the tool being wrapped. Created at request time, contains information about the current tool call.
-
-```go
-type ToolContext struct {
-    // Name is the tool name
-    Name string
-
-    // CallID is the unique identifier for this specific tool call
-    CallID string
-}
-```
-
-### Usage Example: Tool Call Wrapping
-
-```go
-func (h *MyHandler) WrapInvokableToolCall(ctx context.Context, endpoint adk.InvokableToolCallEndpoint, tCtx *adk.ToolContext) (adk.InvokableToolCallEndpoint, error) {
-    return func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error) {
-        log.Printf("Tool %s (call %s) starting with args: %s", tCtx.Name, tCtx.CallID, argumentsInJSON)
-        
-        result, err := endpoint(ctx, argumentsInJSON, opts...)
-        
-        if err != nil {
-            log.Printf("Tool %s failed: %v", tCtx.Name, err)
-            return "", err
-        }
-        
-        log.Printf("Tool %s completed with result: %s", tCtx.Name, result)
-        return result, nil
-    }, nil
-}
-```
-
----
-
-## ModelContext
-
-`ModelContext` contains context information passed to `WrapModel`. Created at request time, contains tool configuration for the current model call.
-
-```go
-type ModelContext struct {
-    // Tools is the list of tools currently configured for the agent
-    // Populated at request time, contains the tools that will be sent to the model
-    Tools []*schema.ToolInfo
-
-    // ModelRetryConfig contains the retry configuration for the model
-    // Populated at request time from the agent's ModelRetryConfig
-    // Used by EventSenderModelWrapper to appropriately wrap stream errors
-    ModelRetryConfig *ModelRetryConfig
-}
-```
-
-### Usage Example: Model Wrapping
-
-```go
-func (h *MyHandler) WrapModel(ctx context.Context, m model.BaseChatModel, mc *adk.ModelContext) (model.BaseChatModel, error) {
-    return &myModelWrapper{
-        inner: m,
-        tools: mc.Tools,
-    }, nil
-}
-
-type myModelWrapper struct {
-    inner model.BaseChatModel
-    tools []*schema.ToolInfo
-}
-
-func (w *myModelWrapper) Generate(ctx context.Context, msgs []*schema.Message, opts ...model.Option) (*schema.Message, error) {
-    log.Printf("Model called with %d tools", len(w.tools))
-    return w.inner.Generate(ctx, msgs, opts...)
-}
-
-func (w *myModelWrapper) Stream(ctx context.Context, msgs []*schema.Message, opts ...model.Option) (*schema.StreamReader[*schema.Message], error) {
-    return w.inner.Stream(ctx, msgs, opts...)
-}
-```
+<table>
+<tr><td>✅ Recommended Uses</td><td>❌ Not Recommended</td></tr>
+<tr><td>Model call retry logic</td><td>Modifying input messages (not persisted, breaks prompt cache)</td></tr>
+<tr><td>Model failover (backup models)</td><td>Modifying tool list (should modify <pre>state.ToolInfos</pre> in <pre>BeforeModelRewriteState</pre>)</td></tr>
+<tr><td>Sending custom events (e.g., streaming progress)</td><td></td></tr>
+<tr><td>Processing/transforming response streams, modifying call parameters</td><td></td></tr>
+</table>
 
 ---
 
 ## Run-Local Storage API
 
-`SetRunLocalValue`, `GetRunLocalValue`, and `DeleteRunLocalValue` provide the ability to store, retrieve, and delete values during the current agent Run() call.
+Store and retrieve key-value pairs during the current agent `Run()`. Values are compatible with interrupt/resume — they are serialized and persisted with checkpoints.
 
 ```go
-// SetRunLocalValue sets a key-value pair that persists during the current agent Run() call
-// The value is scoped to this specific execution and is not shared between different Run() calls or agent instances
-//
-// Values stored here are compatible with interrupt/resume cycles - they are serialized and restored when the agent resumes
-// For custom types, they must be registered in init() using schema.RegisterName[T]() to ensure proper serialization
-//
-// This function can only be called from within a ChatModelAgentMiddleware during agent execution
-// Returns an error if called outside of agent execution context
 func SetRunLocalValue(ctx context.Context, key string, value any) error
-
-// GetRunLocalValue retrieves a value set during the current agent Run() call
-// The value is scoped to this specific execution and is not shared between different Run() calls or agent instances
-//
-// Values stored via SetRunLocalValue are compatible with interrupt/resume cycles - they are serialized and restored when the agent resumes
-// For custom types, they must be registered in init() using schema.RegisterName[T]() to ensure proper serialization
-//
-// This function can only be called from within a ChatModelAgentMiddleware during agent execution
-// Returns (value, true, nil) if found, (nil, false, nil) if not found,
-// returns error if called outside of agent execution context
 func GetRunLocalValue(ctx context.Context, key string) (any, bool, error)
-
-// DeleteRunLocalValue deletes a value set during the current agent Run() call
-//
-// This function can only be called from within a ChatModelAgentMiddleware during agent execution
-// Returns an error if called outside of agent execution context
 func DeleteRunLocalValue(ctx context.Context, key string) error
 ```
 
-### Usage Example: Sharing Data Across Handler Points
+> 💡
+> Custom types must be registered in `init()` via `schema.RegisterName[T]()` to ensure correct gob serialization. These functions can only be called within `ChatModelAgentMiddleware` callbacks.
+
+### Example: Sharing State Across Callbacks
 
 ```go
 func init() {
-    schema.RegisterName[*MyCustomData]("my_package.MyCustomData")
+    schema.RegisterName[*ToolStats]("mypackage.ToolStats")
 }
 
-type MyCustomData struct {
+type ToolStats struct {
     Count int
     Name  string
 }
 
-type MyHandler struct {
+type MyMiddleware struct {
     *adk.BaseChatModelAgentMiddleware
 }
 
-func (h *MyHandler) WrapInvokableToolCall(ctx context.Context, endpoint adk.InvokableToolCallEndpoint, tCtx *adk.ToolContext) (adk.InvokableToolCallEndpoint, error) {
-    return func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error) {
-        result, err := endpoint(ctx, argumentsInJSON, opts...)
-        
-        data := &MyCustomData{Count: 1, Name: tCtx.Name}
-        if err := adk.SetRunLocalValue(ctx, "my_handler.last_tool", data); err != nil {
-            log.Printf("Failed to set run local value: %v", err)
-        }
-        
+// Record stats after tool call
+func (m *MyMiddleware) WrapInvokableToolCall(ctx context.Context, endpoint adk.InvokableToolCallEndpoint, tCtx *adk.ToolContext) (adk.InvokableToolCallEndpoint, error) {
+    return func(ctx context.Context, args string, opts ...tool.Option) (string, error) {
+        result, err := endpoint(ctx, args, opts...)
+
+        _ = adk.SetRunLocalValue(ctx, "last_tool", &ToolStats{Count: 1, Name: tCtx.Name})
         return result, err
     }, nil
 }
 
-func (h *MyHandler) AfterModelRewriteState(ctx context.Context, state *adk.ChatModelAgentState, mc *adk.ModelContext) (context.Context, *adk.ChatModelAgentState, error) {
-    if val, found, err := adk.GetRunLocalValue(ctx, "my_handler.last_tool"); err == nil && found {
-        if data, ok := val.(*MyCustomData); ok {
-            log.Printf("Last tool was: %s (count: %d)", data.Name, data.Count)
+// Read stats after model call
+func (m *MyMiddleware) AfterModelRewriteState(ctx context.Context, state *adk.ChatModelAgentState, mc *adk.ModelContext) (context.Context, *adk.ChatModelAgentState, error) {
+    if val, found, _ := adk.GetRunLocalValue(ctx, "last_tool"); found {
+        if stats, ok := val.(*ToolStats); ok {
+            log.Printf("Last tool: %s (count=%d)", stats.Name, stats.Count)
         }
     }
     return ctx, state, nil
@@ -303,207 +258,24 @@ func (h *MyHandler) AfterModelRewriteState(ctx context.Context, state *adk.ChatM
 
 ## SendEvent API
 
-`SendEvent` allows sending custom `AgentEvent` to the event stream during agent execution.
+Send a custom `AgentEvent` to the event stream during agent execution. Callers iterating over the event stream will receive it:
 
 ```go
-// SendEvent sends a custom AgentEvent to the event stream during agent execution
-// Allows ChatModelAgentMiddleware implementations to emit custom events,
-// which will be received by callers iterating over the agent's event stream
-//
-// This function can only be called from within a ChatModelAgentMiddleware during agent execution
-// Returns an error if called outside of agent execution context
 func SendEvent(ctx context.Context, event *AgentEvent) error
 ```
 
----
-
-## State Type (To Be Deprecated)
-
-`State` holds agent runtime state, including messages and user-extensible storage.
-
-**⚠️ Deprecation Warning:** This type will be made unexported in v1.0.0. Please use `ChatModelAgentState` in `ChatModelAgentMiddleware` and `AgentMiddleware` callbacks. Direct use of `compose.ProcessState[*State]` is not recommended and will stop working in v1.0.0; please use the handler API instead.
-
-```go
-type State struct {
-    Messages []Message
-    extra    map[string]any  // unexported, access via SetRunLocalValue/GetRunLocalValue
-
-    // The following are internal fields - do not access directly
-    // Kept exported for backward compatibility with existing checkpoints
-    ReturnDirectlyToolCallID string
-    ToolGenActions           map[string]*AgentAction
-    AgentName                string
-    RemainingIterations      int
-
-    internals map[string]any
-}
-```
+Can only be called within `ChatModelAgentMiddleware` callbacks.
 
 ---
 
-## Architecture Diagram
+## State Type
 
-The following diagram shows how `ChatModelAgentMiddleware` works during `ChatModelAgent` execution:
-
-```
-Agent.Run(input)
-                                  │
-                                  ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│  BeforeAgent(ctx, *ChatModelAgentContext)                               │
-│    Input: Current Instruction, Tools and other Agent runtime env        │
-│    Output: Modified Agent runtime env                                   │
-│    Purpose: Called once at Run start, modifies config for entire Run    │
-│             lifecycle                                                   │
-└─────────────────────────────────────────────────────────────────────────┘
-                                  │
-                                  ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                          ReAct Loop                                     │
-│  ┌───────────────────────────────────────────────────────────────────┐  │
-│  │                                                                   │  │
-│  │  ┌─────────────────────────────────────────────────────────────┐  │  │
-│  │  │  BeforeModelRewriteState(ctx, *ChatModelAgentState, *MC)    │  │  │
-│  │  │    Input: Persistent state like message history, plus Model │  │  │
-│  │  │           runtime env                                       │  │  │
-│  │  │    Output: Modified persistent state, returns new ctx       │  │  │
-│  │  │    Purpose: Modify persistent state across iterations       │  │  │
-│  │  │             (mainly message list)                           │  │  │
-│  │  └─────────────────────────────────────────────────────────────┘  │  │
-│  │                            │                                      │  │
-│  │                            ▼                                      │  │
-│  │  ┌─────────────────────────────────────────────────────────────┐  │  │
-│  │  │  WrapModel(ctx, BaseChatModel, *ModelContext)               │  │  │
-│  │  │    Input: ChatModel being wrapped, plus Model runtime env   │  │  │
-│  │  │    Output: Wrapped Model (onion model)                      │  │  │
-│  │  │    Purpose: Modify input, output and config for single      │  │  │
-│  │  │             Model request                                   │  │  │
-│  │  │                         │                                   │  │  │
-│  │  │                         ▼                                   │  │  │
-│  │  │                 ┌───────────────┐                           │  │  │
-│  │  │                 │    Model      │                           │  │  │
-│  │  │                 │ Generate/Stream│                          │  │  │
-│  │  │                 └───────────────┘                           │  │  │
-│  │  └─────────────────────────────────────────────────────────────┘  │  │
-│  │                            │                                      │  │
-│  │                            ▼                                      │  │
-│  │  ┌─────────────────────────────────────────────────────────────┐  │  │
-│  │  │  AfterModelRewriteState(ctx, *ChatModelAgentState, *MC)     │  │  │
-│  │  │    Input: Persistent state like message history (with Model │  │  │
-│  │  │           response), plus Model runtime env                 │  │  │
-│  │  │    Output: Modified persistent state                        │  │  │
-│  │  │    Purpose: Modify persistent state across iterations       │  │  │
-│  │  │             (mainly message list)                           │  │  │
-│  │  └─────────────────────────────────────────────────────────────┘  │  │
-│  │                            │                                      │  │
-│  │                            ▼                                      │  │
-│  │                  ┌──────────────────┐                             │  │
-│  │                  │ Model return?    │                             │  │
-│  │                  └──────────────────┘                             │  │
-│  │                     │            │                                │  │
-│  │       Final response│            │ ToolCalls                      │  │
-│  │                     │            ▼                                │  │
-│  │                     │  ┌─────────────────────────────────────┐    │  │
-│  │                     │  │  WrapInvokableToolCall / WrapStream │    │  │
-│  │                     │  │  ableToolCall(ctx, endpoint, *TC)   │    │  │
-│  │                     │  │    Input: Tool being wrapped plus   │    │  │
-│  │                     │  │           Tool runtime env          │    │  │
-│  │                     │  │    Output: Wrapped endpoint         │    │  │
-│  │                     │  │            (onion model)            │    │  │
-│  │                     │  │    Purpose: Modify input, output    │    │  │
-│  │                     │  │             and config for single   │    │  │
-│  │                     │  │             Tool request            │    │  │
-│  │                     │  │                  │                  │    │  │
-│  │                     │  │                  ▼                  │    │  │
-│  │                     │  │          ┌─────────────┐            │    │  │
-│  │                     │  │          │ Tool.Run()  │            │    │  │
-│  │                     │  │          └─────────────┘            │    │  │
-│  │                     │  └─────────────────────────────────────┘    │  │
-│  │                     │            │                                │  │
-│  │                     │            │ (Result added to Messages)     │  │
-│  │                     │            │                                │  │
-│  │                     │  ┌─────────┘                                │  │
-│  │                     │  │                                          │  │
-│  │                     │  └──────────► Continue loop                 │  │
-│  │                     │                                             │  │
-│  └─────────────────────┼─────────────────────────────────────────────┘  │
-│                        │                                                │
-│                        ▼                                                │
-│               Loop until complete or maxIterations reached              │
-└─────────────────────────────────────────────────────────────────────────┘
-                                  │
-                                  ▼
-                          Agent.Run() ends
-```
-
-### Handler Method Description
-
-<table>
-<tr><td>Method</td><td>Input</td><td>Output</td><td>Scope</td></tr>
-<tr><td><pre>BeforeAgent</pre></td><td>Agent runtime env (<pre>*ChatModelAgentContext</pre>)</td><td>Modified Agent runtime env</td><td>Entire Run lifecycle, called only once</td></tr>
-<tr><td><pre>BeforeModelRewriteState</pre></td><td>Persistent state + Model runtime env</td><td>Modified persistent state</td><td>Persistent state across iterations (message list)</td></tr>
-<tr><td><pre>WrapModel</pre></td><td>ChatModel being wrapped + Model runtime env</td><td>Wrapped Model</td><td>Single Model request input, output and config</td></tr>
-<tr><td><pre>AfterModelRewriteState</pre></td><td>Persistent state (with response) + Model runtime env</td><td>Modified persistent state</td><td>Persistent state across iterations (message list)</td></tr>
-<tr><td><pre>WrapInvokableToolCall</pre></td><td>Tool being wrapped + Tool runtime env</td><td>Wrapped endpoint</td><td>Single Tool request input, output and config</td></tr>
-<tr><td><pre>WrapStreamableToolCall</pre></td><td>Tool being wrapped + Tool runtime env</td><td>Wrapped endpoint</td><td>Single Tool request input, output and config</td></tr>
-</table>
-
----
-
-## Execution Order
-
-### Model Call Lifecycle (wrapper chain from outer to inner)
-
-1. `AgentMiddleware.BeforeChatModel` (hook, runs before model call)
-2. `ChatModelAgentMiddleware.BeforeModelRewriteState` (hook, can modify state before model call)
-3. `retryModelWrapper` (internal - retries on failure, if configured)
-4. `eventSenderModelWrapper` preprocessing (internal - prepares event sending)
-5. `ChatModelAgentMiddleware.WrapModel` preprocessing (wrapper, wrapped at request time, first registered runs first)
-6. `callbackInjectionModelWrapper` (internal - injects callbacks if not enabled)
-7. `Model.Generate/Stream`
-8. `callbackInjectionModelWrapper` postprocessing
-9. `ChatModelAgentMiddleware.WrapModel` postprocessing (wrapper, first registered runs last)
-10. `eventSenderModelWrapper` postprocessing (internal - sends model response event)
-11. `retryModelWrapper` postprocessing (internal - handles retry logic)
-12. `ChatModelAgentMiddleware.AfterModelRewriteState` (hook, can modify state after model call)
-13. `AgentMiddleware.AfterChatModel` (hook, runs after model call)
-
-### Tool Call Lifecycle (from outer to inner)
-
-1. `eventSenderToolHandler` (internal ToolMiddleware - sends tool result event after all processing)
-2. `ToolsConfig.ToolCallMiddlewares` (ToolMiddleware)
-3. `AgentMiddleware.WrapToolCall` (ToolMiddleware)
-4. `ChatModelAgentMiddleware.WrapInvokableToolCall/WrapStreamableToolCall` (wrapped at request time, first registered is outermost)
-5. `Tool.InvokableRun/StreamableRun`
+> 💡
+> `State` is kept exported only for checkpoint backward compatibility. **Do not use it directly** — use `ChatModelAgentState` in `ChatModelAgentMiddleware` callbacks, and replace the former `State.Extra` with `SetRunLocalValue/GetRunLocalValue`. Usage of `compose.ProcessState[*State]` will stop working in v1.0.0.
 
 ---
 
 ## Migration Guide
-
-### Migrating from AgentMiddleware to ChatModelAgentMiddleware
-
-**Before (AgentMiddleware):**
-
-```go
-middleware := adk.AgentMiddleware{
-    BeforeChatModel: func(ctx context.Context, state *adk.ChatModelAgentState) error {
-        return nil
-    },
-}
-```
-
-**After (ChatModelAgentMiddleware):**
-
-```go
-type MyHandler struct {
-    *adk.BaseChatModelAgentMiddleware
-}
-
-func (h *MyHandler) BeforeModelRewriteState(ctx context.Context, state *adk.ChatModelAgentState, mc *adk.ModelContext) (context.Context, *adk.ChatModelAgentState, error) {
-    newCtx := context.WithValue(ctx, myKey, myValue)
-    return newCtx, state, nil
-}
-```
 
 ### Migrating from compose.ProcessState[*State]
 
@@ -516,13 +288,49 @@ compose.ProcessState(ctx, func(_ context.Context, st *adk.State) error {
 })
 ```
 
-**After (using SetRunLocalValue/GetRunLocalValue):**
+**After:**
 
 ```go
+// Write
 if err := adk.SetRunLocalValue(ctx, "myKey", myValue); err != nil {
     return ctx, state, err
 }
 
+// Read
 if val, found, err := adk.GetRunLocalValue(ctx, "myKey"); err == nil && found {
+    // use val
+}
+```
+
+### Adapting to AfterAgent (new in v0.9)
+
+`AfterAgent` is called after the agent **terminates successfully** (final answer or return-directly tool result), and can be used for post-processing:
+
+```go
+func (m *MyMiddleware) AfterAgent(ctx context.Context, state *adk.ChatModelAgentState) (context.Context, error) {
+    log.Printf("Agent completed with %d messages", len(state.Messages))
+    // Auditing, statistics, cleanup, etc.
+    return ctx, nil
+}
+```
+
+> 💡
+> `AfterAgent` is called in registration order (same as `BeforeAgent`). If any handler returns an error, subsequent handlers are not called (fail-fast), and the error is sent to the event stream.
+
+### Adapting to ToolInfos / DeferredToolInfos (new in v0.9)
+
+`ChatModelAgentState` added `ToolInfos` and `DeferredToolInfos` fields, replacing `ModelContext.Tools` as the source of truth for tool configuration:
+
+```go
+func (m *MyMiddleware) BeforeModelRewriteState(ctx context.Context, state *adk.ChatModelAgentState, mc *adk.ModelContext) (context.Context, *adk.ChatModelAgentState, error) {
+    // Dynamically filter tools
+    filtered := make([]*schema.ToolInfo, 0, len(state.ToolInfos))
+    for _, t := range state.ToolInfos {
+        if shouldInclude(t.Name) {
+            filtered = append(filtered, t)
+        }
+    }
+    state.ToolInfos = filtered
+    return ctx, state, nil
 }
 ```

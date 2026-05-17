@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2026-03-16"
+date: "2026-05-17"
 lastmod: ""
 tags: []
-title: 'Eino: ReAct Agent Manual'
+title: ReAct Agent Manual
 weight: 1
 ---
 
@@ -43,16 +43,16 @@ import (
 )
 
 func main() {
-    // first initialize the required chatModel
+    // First initialize the required chatModel
     toolableChatModel, err := openai.NewChatModel(...)
     
-    // initialize the required tools
+    // Initialize the required tools
     tools := compose.ToolsNodeConfig{
         InvokableTools:  []tool.InvokableTool{mytool},
         StreamableTools: []tool.StreamableTool{myStreamTool},
     }
     
-    // create agent
+    // Create agent
     agent, err := react.NewAgent(ctx, &react.AgentConfig{
         ToolCallingModel: toolableChatModel,
         ToolsConfig: tools,
@@ -92,10 +92,12 @@ type ToolCallingChatModel interface {
 ```
 
 Currently, eino provides implementations such as openai and ark, as long as the underlying model supports tool call.
+
 ```bash
 go get github.com/cloudwego/eino-ext/components/model/openai@latest
 go get github.com/cloudwego/eino-ext/components/model/ark@latest
 ```
+
 ```go
 import (
     "github.com/cloudwego/eino-ext/components/model/openai"
@@ -132,6 +134,7 @@ func arkExample() {
 ### ToolsConfig
 
 toolsConfig type is `compose.ToolsNodeConfig`. In eino, to build a Tool node, you need to provide the Tool's information and the function to call the Tool. The tool interface definition is as follows:
+
 ```go
 type InvokableRun func(ctx context.Context, arguments string, opts ...Option) (content string, err error)
 type StreamableRun func(ctx context.Context, arguments string, opts ...Option) (content *schema.StreamReader[string], err error)
@@ -154,19 +157,20 @@ type StreamableTool interface {
 ```
 
 Users can implement the required tools according to the tool interface definition. The framework also provides a more convenient method to build tools:
+
 ```go
 userInfoTool := utils.NewTool(
     &schema.ToolInfo{
        Name: "user_info",
-       Desc: "根据用户的姓名和邮箱，查询用户的公司、职位、薪酬信息",
+       Desc: "Query a user's company, position, and salary information based on their name and email",
        ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
           "name": {
              Type: "string",
-             Desc: "用户的姓名",
+             Desc: "The user's name",
           },
           "email": {
              Type: "string",
-             Desc: "用户的邮箱",
+             Desc: "The user's email",
           },
        }),
     },
@@ -210,17 +214,17 @@ func main() {
         MessageModifier: func(ctx context.Context, input []*schema.Message) []*schema.Message {
             res := make([]*schema.Message, 0, len(input)+1)
     
-            res = append(res, schema.SystemMessage("你是一个 golang 开发专家."))
+            res = append(res, schema.SystemMessage("You are a golang development expert."))
             res = append(res, input...)
             return res
         },
     })
     
-    agent.Generate(ctx, []*schema.Message{schema.UserMessage("Write a hello world code")})
+    agent.Generate(ctx, []*schema.Message{schema.UserMessage("Write a hello world program")})
     // The actual input to the model is:
     // []*schema.Message{
     //    {Role: schema.System, Content:"You are a golang development expert."},
-    //    {Role: schema.Human, Content: "Write a hello world code"}
+    //    {Role: schema.Human, Content: "Write a hello world program"}
     //}
 }
 ```
@@ -350,7 +354,7 @@ agent, _ := react.NewAgent(...)
 
 var outMessage *schema.Message
 outMessage, err = agent.Generate(ctx, []*schema.Message{
-    schema.UserMessage("写一个 golang 的 hello world 程序"),
+    schema.UserMessage("Write a golang hello world program"),
 })
 ```
 
@@ -361,7 +365,7 @@ agent, _ := react.NewAgent(...)
 
 var msgReader *schema.StreamReader[*schema.Message]
 msgReader, err = agent.Stream(ctx, []*schema.Message{
-    schema.UserMessage("写一个 golang 的 hello world 程序"),
+    schema.UserMessage("Write a golang hello world program"),
 })
 
 for {

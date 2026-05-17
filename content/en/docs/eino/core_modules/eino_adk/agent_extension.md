@@ -1,118 +1,133 @@
 ---
 Description: ""
-date: "2025-11-20"
+date: "2026-05-17"
 lastmod: ""
 tags: []
-title: 'Eino ADK: Agent Runner and Extension'
+title: Agent Runner and Extension
 weight: 6
 ---
 
-# Agent Runner
+# Runner
 
-## Definition
+Runner is the execution entry point for Agents, responsible for managing the Agent lifecycle, context initialization, Checkpoint persistence, and interrupt recovery. **Any Agent should be run through Runner.**
 
-Runner is the core engine in Eino ADK responsible for executing Agents. Its main purpose is to manage and control the entire lifecycle of Agents, such as handling multi-Agent collaboration, saving and passing context, etc. Cross-cutting capabilities like interrupt, callback, etc. all rely on Runner for implementation. Any Agent should be run through Runner.
+## Basic Usage
+
+```go
+import "github.com/cloudwego/eino/adk"
+
+// Create Runner
+runner := adk.NewRunner(ctx, adk.RunnerConfig{
+    Agent:           agent,
+    EnableStreaming: true,
+    CheckPointStore: store, // Optional, required for interrupt recovery
+})
+
+// Method 1: Query — directly send a user question
+iter := runner.Query(ctx, "Help me search today's news")
+
+// Method 2: Run — pass in complete Messages
+iter := runner.Run(ctx, []*schema.Message{
+    schema.UserMessage("Hello"),
+}, adk.WithSessionValues(map[string]any{"user": "alice"}))
+
+// Consume the event stream
+for {
+    event, ok := iter.Next()
+    if !ok {
+        break
+    }
+    // Handle event
+}
+```
+
+## Generics Support
+
+```go
+type TypedRunner[M MessageType] struct { ... }
+type Runner = TypedRunner[*schema.Message]
+
+func NewTypedRunner[M MessageType](conf TypedRunnerConfig[M]) *TypedRunner[M]
+```
+
+The `*schema.AgenticMessage` path uses `NewTypedRunner` for construction.
 
 ## Interrupt & Resume
 
-Agent Runner provides runtime interrupt and resume functionality. This allows a running Agent to proactively interrupt its execution and save the current state, supporting resumption from the interrupt point. This functionality is commonly used in scenarios where the Agent processing flow requires external input, long waits, or pausable operations.
+An Agent can proactively interrupt during execution, and Runner automatically saves the state (requires `CheckPointStore` configuration), allowing subsequent recovery from the breakpoint.
 
-Below we introduce three key points in an interrupt-to-resume process:
+### Interrupt
 
-1. Interrupted Action: Thrown by the Agent as an interrupt event, intercepted by Agent Runner
-2. Checkpoint: Agent Runner intercepts the event and saves the current running state
-3. Resume: After running conditions are ready again, Agent Runner resumes running from the checkpoint
-
-### Interrupted Action
-
-During the Agent's execution, you can proactively interrupt the Runner's operation by producing an AgentEvent containing an Interrupted Action.
-
-When the Event's Interrupted is not empty, the Agent Runner considers an interrupt to have occurred:
+The Agent triggers an interrupt by producing an event containing `Interrupted`:
 
 ```go
-// github.com/cloudwego/eino/adk/interface.go
-type AgentAction struct {
-    // other actions
-    Interrupted *InterruptInfo
-    // other actions
-}
-
-// github.com/cloudwego/eino/adk/interrupt.go
-type InterruptInfo struct {
-    Data any
-}
-```
-
-When an interrupt occurs, you can attach custom interrupt information through the InterruptInfo structure. This information:
-
-1. Will be passed to the caller, which can be used to explain the reason for the interrupt, etc.
-2. If the Agent run needs to be resumed later, the InterruptInfo will be re-passed to the interrupted Agent upon resumption, and the Agent can use this information to resume running
-
-```go
-// For example, when ChatModelAgent interrupts, it sends the following AgentEvent:
-h.Send(&AgentEvent{AgentName: h.agentName, Action: &AgentAction{
-    Interrupted: &InterruptInfo{
-       Data: &ChatModelAgentInterruptInfo{Data: data, Info: info},
+gen.Send(&adk.AgentEvent{
+    Action: &adk.AgentAction{
+        Interrupted: &adk.InterruptInfo{Data: myData},
     },
-}})
+})
 ```
 
-### State Persistence (Checkpoint)
+### State Persistence
 
-When Runner captures this Event with Interrupted Action, it immediately terminates the current execution flow. If:
-
-1. CheckPointStore is set in Runner
+After capturing an interrupt, Runner stores the running state (input, conversation history, InterruptInfo) into `CheckPointStore` using the CheckPointID as the key:
 
 ```go
-// github.com/cloudwego/eino/adk/runner.go
-type RunnerConfig struct {
-    // other fields
-    CheckPointStore CheckPointStore
-}
-
-// github.com/cloudwego/eino/adk/interrupt.go
 type CheckPointStore interface {
     Set(ctx context.Context, key string, value []byte) error
     Get(ctx context.Context, key string) ([]byte, bool, error)
 }
 ```
 
-1. CheckPointID is passed via AgentRunOption WithCheckPointID when calling Runner
+Pass the CheckPointID via an Option when calling:
 
 ```go
-// github.com/cloudwego/eino/adk/interrupt.go
-func WithCheckPointID(id string) AgentRunOption
+iter := runner.Run(ctx, messages, adk.WithCheckPointID("cp-123"))
 ```
 
-After terminating running, Runner persists the current running state (original input, conversation history, etc.) and the InterruptInfo thrown by the Agent to CheckPointStore using CheckPointID as the key.
-
 > 💡
-> To preserve the original types of data in interfaces, Eino ADK uses gob ([https://pkg.go.dev/encoding/gob](https://pkg.go.dev/encoding/gob)) to serialize running state. Therefore, when using custom types, you need to register the types in advance using gob.Register or gob.RegisterName (the latter is more recommended; the former uses path plus type name as the default name, so both the type's location and name cannot change). Eino automatically registers types built into the framework.
+> ADK uses gob to serialize the running state. Custom types need to be registered in advance with gob.RegisterName. Framework built-in types are automatically registered.
 
 ### Resume
 
-When running is interrupted, calling Runner's Resume interface with the CheckPointID from the interrupt can resume running:
-
 ```go
-// github.com/cloudwego/eino/adk/runner.go
-func (r *Runner) Resume(ctx context.Context, checkPointID string, opts ...AgentRunOption) (*AsyncIterator[*AgentEvent], error)
+// Simple resume: implicitly resume all interrupt points
+iter, err := runner.Resume(ctx, "cp-123")
+
+// Precise resume: specify targets and data
+iter, err := runner.ResumeWithParams(ctx, "cp-123", &adk.ResumeParams{
+    Targets: map[string]any{
+        "agent-address": resumeData,
+    },
+})
 ```
 
-Resuming Agent running requires the interrupted Agent to implement the ResumableAgent interface. Runner reads the running state from CheckPointerStore and resumes running, where the InterruptInfo and the EnableStreaming configured in the previous run are provided as input to the Agent:
+Resuming requires the interrupted Agent to implement the `ResumableAgent` interface:
 
 ```go
-// github.com/cloudwego/eino/adk/interface.go
-type ResumableAgent interface {
-    Agent
-
-    Resume(ctx context.Context, info *ResumeInfo, opts ...AgentRunOption) *AsyncIterator[*AgentEvent]
-}
-
-// github.com/cloudwego/eino/adk/interrupt.go
-type ResumeInfo struct {
-    EnableStreaming bool
-    *InterruptInfo
+type TypedResumableAgent[M MessageType] interface {
+    TypedAgent[M]
+    Resume(ctx context.Context, info *ResumeInfo, opts ...AgentRunOption) *AsyncIterator[*TypedAgentEvent[M]]
 }
 ```
 
-To pass new information to the Agent during Resume, you can define an AgentRunOption and pass it when calling Runner.Resume.
+# Multi-Turn Runtime: TurnLoop
+
+For scenarios requiring multi-turn interaction (chat applications, continuous conversations), ADK provides the `TurnLoop` runtime:
+
+- **Push-based event loop**: Push new messages to trigger Agent execution
+- **Preempt**: When the user sends a new message while the Agent is running, the current run can be cancelled
+- **Stop**: Stop the event loop
+- **Declarative Checkpoint/Resume**: TurnLoop automatically manages input bookkeeping; the application layer only needs to declare the recovery strategy
+
+See: [Agent Cancel and TurnLoop Quickstart](/docs/eino/core_modules/eino_adk/eino_adk_agent_cancel_与_turnloop_快速入门)
+
+# Agent Cancel
+
+A new runtime cancellation capability added in v0.9, supporting:
+
+- **CancelMode bitmask combination**: `CancelModelStream | CancelToolCalls`
+- **CancelHandle.Wait()**: Wait for cancellation to complete
+- **Integration with TurnLoop**: Cancel is automatically triggered on Preempt
+
+See: [Agent Cancel and TurnLoop Quickstart](/docs/eino/core_modules/eino_adk/eino_adk_agent_cancel_与_turnloop_快速入门)

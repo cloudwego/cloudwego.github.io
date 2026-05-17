@@ -1,33 +1,28 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-05-17"
 lastmod: ""
 tags: []
 title: PlanTask
-weight: 4
+weight: 6
 ---
 
-# PlanTask Middleware
-
-adk/middlewares/plantask
-
 > 💡
-> This middleware was introduced in [v0.8.0.Beta](https://github.com/cloudwego/eino/releases/tag/v0.8.0-beta.1).
+> This middleware was introduced in v0.8.0. Package path: `github.com/cloudwego/eino/adk/middlewares/plantask`
 
 ## Overview
 
-`plantask` is a task management middleware that allows Agents to create and manage task lists. The middleware injects four tools through the `BeforeAgent` hook:
+`plantask` is a task management middleware that injects four tools into the Agent via the `BeforeAgent` hook, providing structured task planning capabilities:
 
-- **TaskCreate**: Create a task
-- **TaskGet**: View task details
-- **TaskUpdate**: Update a task
-- **TaskList**: List all tasks
+<table>
+<tr><td>Tool</td><td>Function</td></tr>
+<tr><td><pre>TaskCreate</pre></td><td>Create a task</td></tr>
+<tr><td><pre>TaskGet</pre></td><td>Get details of a single task</td></tr>
+<tr><td><pre>TaskUpdate</pre></td><td>Update task status/fields, set dependencies, delete tasks</td></tr>
+<tr><td><pre>TaskList</pre></td><td>List summaries of all tasks</td></tr>
+</table>
 
-Main purposes:
-
-- Track progress of complex tasks
-- Break large tasks into smaller steps
-- Manage dependencies between tasks
+Core use case: Break down complex requests into trackable sub-tasks, manage dependencies between tasks, and show execution progress to the user.
 
 ---
 
@@ -38,7 +33,7 @@ Main purposes:
 │                              Agent                                      │
 │                                                                         │
 │  ┌───────────────────────────────────────────────────────────────────┐  │
-│  │  BeforeAgent: Inject task tools                                   │  │
+│  │  BeforeAgent: Inject task tools (with sync.Mutex for concurrency) │  │
 │  │    - TaskCreate                                                    │  │
 │  │    - TaskGet                                                       │  │
 │  │    - TaskUpdate                                                    │  │
@@ -53,7 +48,7 @@ Main purposes:
 │                                                                         │
 │  Storage structure:                                                     │
 │    baseDir/                                                             │
-│    ├── .highwatermark    # ID counter                                   │
+│    ├── .highwatermark    # Maximum allocated ID (plain-text number)     │
 │    ├── 1.json            # Task #1                                      │
 │    ├── 2.json            # Task #2                                      │
 │    └── ...                                                              │
@@ -63,29 +58,59 @@ Main purposes:
 
 ---
 
-## Configuration
+## API
+
+### Constructor
+
+```go
+// Generic version, supports *schema.Message and *schema.AgenticMessage
+func NewTyped[M adk.MessageType](ctx context.Context, config *Config) (adk.TypedChatModelAgentMiddleware[M], error)
+
+// Non-generic version, equivalent to NewTyped[*schema.Message]
+func New(ctx context.Context, config *Config) (adk.ChatModelAgentMiddleware, error)
+```
+
+### Config
 
 ```go
 type Config struct {
     Backend Backend  // Storage backend, required
-    BaseDir string   // Task file directory, required
+    BaseDir string   // Task file storage directory, required
 }
 ```
 
-- Note that the Backend implementation should be isolated by session, with different sessions corresponding to different Backends (task lists)
+> 💡
+> The Backend should be isolated at the session level — different sessions should correspond to different Backend instances (i.e., different task lists).
 
----
+### Backend Interface
 
-## Backend Interface
+`Backend` is defined within the `plantask` package and is a minimal subset of `filesystem.Backend`, retaining only the four methods needed for task storage:
 
 ```go
 type Backend interface {
     LsInfo(ctx context.Context, req *LsInfoRequest) ([]FileInfo, error)
-    Read(ctx context.Context, req *ReadRequest) (string, error)
+    Read(ctx context.Context, req *ReadRequest) (*filesystem.FileContent, error)
     Write(ctx context.Context, req *WriteRequest) error
     Delete(ctx context.Context, req *DeleteRequest) error
 }
 ```
+
+Type alias relationships:
+
+```go
+type FileInfo = filesystem.FileInfo        // Path, IsDir, Size, ModifiedAt
+type LsInfoRequest = filesystem.LsInfoRequest  // Path string
+type ReadRequest = filesystem.ReadRequest       // FilePath, Offset, Limit
+type WriteRequest = filesystem.WriteRequest     // FilePath, Content string
+
+// DeleteRequest is custom to the plantask package (not present in the filesystem package)
+type DeleteRequest struct {
+    FilePath string
+}
+```
+
+> 💡
+> Note that `Read` returns `*filesystem.FileContent` (containing a `Content string` field), not a raw string. Import path: `github.com/cloudwego/eino/adk/filesystem`.
 
 ---
 
@@ -93,71 +118,62 @@ type Backend interface {
 
 ```go
 type task struct {
-    ID          string         `json:"id"`          // Task ID
-    Subject     string         `json:"subject"`     // Title
-    Description string         `json:"description"` // Description
-    Status      string         `json:"status"`      // Status
-    Blocks      []string       `json:"blocks"`      // Tasks blocked by this one
-    BlockedBy   []string       `json:"blockedBy"`   // Tasks blocking this one
-    ActiveForm  string         `json:"activeForm"`  // Active form text
-    Owner       string         `json:"owner"`       // Responsible agent
-    Metadata    map[string]any `json:"metadata"`    // Custom data
+    ID          string         `json:"id"`
+    Subject     string         `json:"subject"`
+    Description string         `json:"description"`
+    Status      string         `json:"status"`
+    Blocks      []string       `json:"blocks"`
+    BlockedBy   []string       `json:"blockedBy"`
+    ActiveForm  string         `json:"activeForm,omitempty"`
+    Owner       string         `json:"owner,omitempty"`
+    Metadata    map[string]any `json:"metadata,omitempty"`
 }
 ```
 
 ### Status
 
 <table>
-<tr><td>Status</td><td>Description</td></tr>
-<tr><td><pre>pending</pre></td><td>Pending (default)</td></tr>
+<tr><td>Status Value</td><td>Description</td></tr>
+<tr><td><pre>pending</pre></td><td>Pending (default on creation)</td></tr>
 <tr><td><pre>in_progress</pre></td><td>In progress</td></tr>
 <tr><td><pre>completed</pre></td><td>Completed</td></tr>
-<tr><td><pre>deleted</pre></td><td>Deleted (will delete the file)</td></tr>
+<tr><td><pre>deleted</pre></td><td>Deleted (physically deletes the JSON file and removes the ID from other tasks' dependency lists)</td></tr>
 </table>
 
-Status transition: `pending` → `in_progress` → `completed`, any status can be directly `deleted`.
+Status transitions: `pending` → `in_progress` → `completed`; any status can be directly set to `deleted`.
 
 ---
 
-## Tools
+## Tool Parameters
 
 ### TaskCreate
 
-Create a task.
+Tool name constant: `TaskCreateToolName = "TaskCreate"`
 
 <table>
 <tr><td>Parameter</td><td>Type</td><td>Required</td><td>Description</td></tr>
-<tr><td><pre>subject</pre></td><td>string</td><td>Yes</td><td>Title</td></tr>
-<tr><td><pre>description</pre></td><td>string</td><td>Yes</td><td>Description</td></tr>
-<tr><td><pre>activeForm</pre></td><td>string</td><td>No</td><td>Active form text, e.g., "Running tests"</td></tr>
-<tr><td><pre>metadata</pre></td><td>object</td><td>No</td><td>Custom data</td></tr>
+<tr><td><pre>subject</pre></td><td>string</td><td>Yes</td><td>Task title (in imperative form)</td></tr>
+<tr><td><pre>description</pre></td><td>string</td><td>Yes</td><td>Detailed task description, including context and acceptance criteria</td></tr>
+<tr><td><pre>activeForm</pre></td><td>string</td><td>No</td><td>Active form text (e.g., "Running tests"), displayed to the user when status is in_progress</td></tr>
+<tr><td><pre>metadata</pre></td><td>object</td><td>No</td><td>Custom key-value pairs</td></tr>
 </table>
 
-When to use:
-
-- The task is relatively complex with 3 or more steps
-- The user has given a list of things to do
-- You need to show progress to the user
-
-When not to use:
-
-- It's just a simple task
-- Something that can be done quickly
+After creation, the task ID auto-increments (based on the `.highwatermark` file) and the initial status is `pending`.
 
 ### TaskGet
 
-View task details.
+Tool name constant: `TaskGetToolName = "TaskGet"`
 
 <table>
 <tr><td>Parameter</td><td>Type</td><td>Required</td><td>Description</td></tr>
-<tr><td><pre>taskId</pre></td><td>string</td><td>Yes</td><td>Task ID</td></tr>
+<tr><td><pre>taskId</pre></td><td>string</td><td>Yes</td><td>Task ID (numeric string)</td></tr>
 </table>
 
-Returns complete information about the task: title, description, status, dependencies, etc.
+Returns the complete task information: subject, description, status, blocks, blockedBy, owner.
 
 ### TaskUpdate
 
-Update a task.
+Tool name constant: `TaskUpdateToolName = "TaskUpdate"`
 
 <table>
 <tr><td>Parameter</td><td>Type</td><td>Required</td><td>Description</td></tr>
@@ -165,24 +181,28 @@ Update a task.
 <tr><td><pre>subject</pre></td><td>string</td><td>No</td><td>New title</td></tr>
 <tr><td><pre>description</pre></td><td>string</td><td>No</td><td>New description</td></tr>
 <tr><td><pre>activeForm</pre></td><td>string</td><td>No</td><td>New active form text</td></tr>
-<tr><td><pre>status</pre></td><td>string</td><td>No</td><td>New status</td></tr>
-<tr><td><pre>addBlocks</pre></td><td>[]string</td><td>No</td><td>Add blocked tasks</td></tr>
-<tr><td><pre>addBlockedBy</pre></td><td>[]string</td><td>No</td><td>Add tasks blocking this one</td></tr>
-<tr><td><pre>owner</pre></td><td>string</td><td>No</td><td>Responsible agent</td></tr>
-<tr><td><pre>metadata</pre></td><td>object</td><td>No</td><td>Custom data (set to null to delete)</td></tr>
+<tr><td><pre>status</pre></td><td>string</td><td>No</td><td>New status, enum: <pre>pending</pre> / <pre>in_progress</pre> / <pre>completed</pre> / <pre>deleted</pre></td></tr>
+<tr><td><pre>addBlocks</pre></td><td>[]string</td><td>No</td><td>Add task IDs that are blocked by the current task (bidirectional write)</td></tr>
+<tr><td><pre>addBlockedBy</pre></td><td>[]string</td><td>No</td><td>Add task IDs that block the current task (bidirectional write)</td></tr>
+<tr><td><pre>owner</pre></td><td>string</td><td>No</td><td>Name of the responsible agent</td></tr>
+<tr><td><pre>metadata</pre></td><td>object</td><td>No</td><td>Merged into existing metadata; setting a key to null deletes that key</td></tr>
 </table>
 
-Notes:
+Key behaviors:
 
-- `status: "deleted"` will directly delete the task file
-- Circular dependencies are checked when adding dependencies
-- Automatic cleanup occurs when all tasks are completed
+- `status: "deleted"` physically deletes the task file and removes the ID from all other tasks' blocks/blockedBy lists
+- **Circular dependency detection** is performed when adding dependencies; an error is raised if a cycle is formed
+- When **all tasks are completed**, all task files are automatically deleted (cleanup mechanism)
 
 ### TaskList
 
-List all tasks, no parameters required.
+Tool name constant: `TaskListToolName = "TaskList"`
 
-Returns a summary of each task: ID, status, title, responsible agent, dependencies.
+No parameters. Returns a summary list of all tasks (sorted by ID), with each entry formatted as:
+
+```
+#ID [status] subject [owner: xxx] [blocked by #x, #y]
+```
 
 ---
 
@@ -191,8 +211,7 @@ Returns a summary of each task: ID, status, title, responsible agent, dependenci
 ```go
 ctx := context.Background()
 
-// The plantask middleware should normally be session-scoped
-// Different sessions correspond to different task lists
+// The Backend should be isolated at the session level
 middleware, err := plantask.New(ctx, &plantask.Config{
     Backend: myBackend,
     BaseDir: "/tasks",
@@ -210,42 +229,43 @@ agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 ### Typical Flow
 
 ```
-1. Receive complex task
+1. Receive a complex task
        │
        ▼
-2. TaskCreate to create tasks
+2. TaskCreate to create multiple sub-tasks
    - #1: Analyze requirements
-   - #2: Write code
+   - #2: Implement code
+   - #3: Write tests
        │
        ▼
 3. TaskUpdate to set dependencies
-   - #2 depends on #1
-   - #3 depends on #2
+   - #2 addBlockedBy: ["1"]
+   - #3 addBlockedBy: ["2"]
        │
        ▼
-4. TaskList to see what tasks exist
+4. TaskList to view available tasks
        │
        ▼
-5. TaskUpdate to start working
-   - Change #1 to in_progress
+5. TaskUpdate #1 → in_progress
        │
        ▼
-6. When done, TaskUpdate
-   - Change #1 to completed
+6. After completion, TaskUpdate #1 → completed
        │
        ▼
 7. Loop 4-6 until all completed
        │
        ▼
-8. Automatic cleanup
+8. All completed → automatically clean up all files
 ```
 
 ---
 
 ## Dependency Management
 
-- **blocks**: These tasks can start after I complete
-- **blockedBy**: I can start after these tasks complete
+- **blocks**: "Once I complete, these tasks can start"
+- **blockedBy**: "Once these tasks complete, I can start"
+
+Dependency writes are **bidirectional**: executing `addBlocks: ["2"]` on Task A will simultaneously add A's ID to Task #2's `blockedBy`.
 
 ```
 Task #1 (blocks: ["2"])  ────►  Task #2 (blockedBy: ["1"])
@@ -253,33 +273,32 @@ Task #1 (blocks: ["2"])  ────►  Task #2 (blockedBy: ["1"])
 #2 can only start after #1 completes
 ```
 
-Circular dependencies will throw an error:
+Circular dependency detection is implemented via DFS reachability:
 
 ```
 #1 blocks #2
-#2 blocks #1  ← Not allowed, circular
+#2 blocks #1  ← Error: would create a cyclic dependency
 ```
 
 ---
 
-## Automatic Cleanup
+## Implementation Details
 
-When all tasks are `completed`, all task files will be automatically deleted.
-
----
-
-## Notes
-
-- Task files are stored in JSON format in the `BaseDir` directory, with filenames as `{id}.json`
-- The `.highwatermark` file is used to record the maximum assigned task ID, ensuring IDs don't repeat
-- All tool operations are protected by mutex locks and are concurrency-safe
-- The tool descriptions contain detailed usage guidelines that the Agent will follow
+<table>
+<tr><td>Mechanism</td><td>Description</td></tr>
+<tr><td>ID Allocation</td><td>The <pre>.highwatermark</pre> file stores the current maximum ID, incremented by 1 on creation</td></tr>
+<tr><td>Concurrency Safety</td><td>All four tools share the same <pre>sync.Mutex</pre>, serializing execution within a single middleware instance</td></tr>
+<tr><td>File Format</td><td>Each task is stored in a <pre>{id}.json</pre> file, serialized using <pre>sonic</pre></td></tr>
+<tr><td>Auto Cleanup</td><td>After TaskUpdate marks a task as completed, it checks — if all tasks are completed, they are batch deleted</td></tr>
+<tr><td>ID Validation</td><td>Numeric-only regex <pre>^\d+$</pre></td></tr>
+<tr><td>Cascading Delete</td><td>When a task is deleted, all task files are traversed to remove references to that ID</td></tr>
+</table>
 
 ---
 
 ## Multi-language Support
 
-Tool descriptions support Chinese and English switching via `adk.SetLanguage()`:
+Tool descriptions support Chinese and English, switchable via the global setting:
 
 ```go
 // Use Chinese descriptions
@@ -289,4 +308,4 @@ adk.SetLanguage(adk.LanguageChinese)
 adk.SetLanguage(adk.LanguageEnglish)
 ```
 
-This setting is global and affects all ADK built-in prompts and tool descriptions.
+This setting affects all ADK built-in prompts and tool descriptions.

@@ -3,7 +3,7 @@ Description: ""
 date: "2026-03-02"
 lastmod: ""
 tags: []
-title: 'Eino: v0.2.*-second release'
+title: v0.2.*-second release
 weight: 2
 ---
 
@@ -17,11 +17,11 @@ weight: 2
 - Support for StateChain
 - Added MessageParser node to convert ChatModel output Message to business-customized structures
   - Parse(ctx context.Context, m *Message) (T, error)
-- Support for WithNodeKey() when Chain AppendNode
+- Support for WithNodeKey() when using Chain AppendNode
 
 ### BugFix
 
-- Fixed the issue where the first Chunk was modified during ConcatMessage due to lack of deep Copy.
+- Fixed the issue where the first Chunk was modified during ConcatMessage due to lack of deep copy.
 - During ConcatMessage, FinishReason now only retains the valid value from the last Chunk
 
 ## v0.2.5
@@ -54,7 +54,7 @@ weight: 2
 ### BugFix
 
 - FinishReason may be returned in any chunk, not necessarily in the last chunk
-- callbacks.HandlerBuilder no longer provides a default Needed() method. This method defaults to returning false, which causes all aspect functions to fail in embedded callbacks.HandlerBuilder scenarios
+- callbacks.HandlerBuilder no longer provides a default Needed() method. This method defaults to returning false, which causes all aspect functions to become ineffective in embedded callbacks.HandlerBuilder scenarios
 
 ## v0.2.2
 
@@ -63,7 +63,7 @@ weight: 2
 ### Features
 
 - Added FinishReason field in Message
-- Added GetState[T]() method to get State struct in nodes
+- Added GetState[T]() method to retrieve State struct within nodes
 - Lazy Init Gonja SDK
 
 ### BugFix
@@ -74,7 +74,7 @@ weight: 2
 
 ### BugFix
 
-- Fixed the SSTI vulnerability in the Jinja chat template（langchaingo gonja template injection）
+- Fixed the SSTI vulnerability in the Jinja chat template (langchaingo gonja template injection)
 
 ## v0.2.0
 
@@ -87,10 +87,10 @@ weight: 2
   - For component implementers: Hidden and deprecated callbacks.Manager, providing simpler utility functions for injecting callback aspects.
   - For Handler implementers: Provides template methods for quick callbacks.Handler implementation, encapsulating details such as component type checking, input/output type assertion and conversion. Users only need to provide specific implementations of specific callback methods for specific components.
   - Runtime mechanism: For a specific callback aspect timing during a run, additional filtering of handlers to execute is performed based on component type and specific methods implemented by Handler.
-- Added Host Multi-Agent: Implemented Host mode Multi-Agent, where Host performs intent recognition and then redirects to various Specialist Agents for specific generation.
+- Added Host Multi-Agent: Implemented Host mode Multi-Agent, where the Host performs intent recognition and then redirects to various Specialist Agents for specific generation.
 - React Agent API changes (incompatible)
 
-  - Removed AgentCallback definition, changed to quickly inject ChatModel and Tool CallbackHandlers through BuildAgentCallback utility function. Usage:
+  - Removed AgentCallback definition, replaced with BuildAgentCallback utility function for quickly injecting ChatModel and Tool CallbackHandlers. Usage:
 
     ```go
     func BuildAgentCallback(modelHandler *model.CallbackHandler, toolHandler *tool.CallbackHandler) callbacks.Handler {
@@ -99,9 +99,9 @@ weight: 2
     ```
 
     - This achieves semantic alignment between AgentCallback and components, allowing ctx to be returned and using extended tool.CallbackInput, tool.CallbackOutput.
-  - Removed react.Option definition. React Agent now uses the common agent.Option definition for Agent, facilitating orchestration at the multi-agent level.
+  - Removed react.Option definition. React Agent now uses the common agent.Option definition, facilitating orchestration at the multi-agent level.
 
-    - WithAgentCallback is no longer needed to inject special AgentCallback, new usage:
+    - WithAgentCallback is no longer needed to inject special AgentCallback. New usage:
 
     ```
     agent.WithComposeOptions(compose.WithCallbacks(xxxCallbackHandler))
@@ -110,8 +110,8 @@ weight: 2
 
 ### BugFix
 
-- Fixed potential null pointer exception caused by embedding.GetCommonOptions and indexer.GetCommonOptions not checking apply for null.
-- During Graph runtime, preProcessor and postProcessor use the current ctx.
+- Fixed potential null pointer exception caused by embedding.GetCommonOptions and indexer.GetCommonOptions not null-checking apply.
+- During Graph runtime, preProcessor and postProcessor now use the current ctx.
 
 ## v0.2.0-dev.1
 
