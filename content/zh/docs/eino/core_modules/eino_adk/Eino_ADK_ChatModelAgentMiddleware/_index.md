@@ -1,82 +1,147 @@
 ---
 Description: ""
-date: "2026-03-09"
+date: "2026-05-17"
 lastmod: ""
 tags: []
 title: ChatModelAgentMiddleware
 weight: 8
 ---
 
-## 概述
+`ChatModelAgentMiddleware` 是自定义 `ChatModelAgent`（及基于它的 `DeepAgent`）行为的核心接口。自 v0.8.0 引入，在后续版本持续演进。
 
-## ChatModelAgentMiddleware 接口
+## 类型约定
 
-`ChatModelAgentMiddleware` 定义了自定义 `ChatModelAgent` 行为的接口。
+本文使用默认 `M = *schema.Message` 的别名。泛型原始类型以 `Typed` 前缀命名：
 
-**重要说明：** 此接口专为 `ChatModelAgent` 及基于它构建的 Agent（如 `DeepAgent`）设计。
+```go
+type ChatModelAgentMiddleware     = TypedChatModelAgentMiddleware[*schema.Message]
+type BaseChatModelAgentMiddleware = TypedBaseChatModelAgentMiddleware[*schema.Message]
+type ChatModelAgentState          = TypedChatModelAgentState[*schema.Message]
+type ModelContext                  = TypedModelContext[*schema.Message]
+```
 
-> 💡
-> ChatModelAgentMiddleware 接口在 v0.8.0 版本引入
+当需使用 `*schema.AgenticMessage` 时，直接使用 `Typed` 泛型版本即可。
 
-### 为什么使用 ChatModelAgentMiddleware 而非 AgentMiddleware？
+---
 
-<table>
-<tr><td>特性</td><td>AgentMiddleware (结构体)</td><td>ChatModelAgentMiddleware (接口)</td></tr>
-<tr><td>扩展性</td><td>封闭，用户无法添加新方法</td><td>开放，用户可实现自定义 handler</td></tr>
-<tr><td>Context 传播</td><td>回调只返回 error</td><td>所有方法返回 <pre>(context.Context, ..., error)</pre></td></tr>
-<tr><td>配置管理</td><td>分散在闭包中</td><td>集中在结构体字段中</td></tr>
-</table>
-
-### 接口定义
+## 接口定义
 
 ```go
 type ChatModelAgentMiddleware interface {
-    // BeforeAgent 在每次 agent 运行前调用，允许修改 instruction 和 tools 配置
+    // ── 生命周期 Hook ──
+
+    // BeforeAgent：agent 运行前调用一次，可修改 instruction、tools 配置
     BeforeAgent(ctx context.Context, runCtx *ChatModelAgentContext) (context.Context, *ChatModelAgentContext, error)
 
-    // BeforeModelRewriteState 在每次模型调用前调用
-    // 返回的 state 会被持久化到 agent 内部状态并传递给模型
-    // 返回的 context 会传播到模型调用和后续 handler
+    // AfterAgent：agent 成功终止后调用（最终回答或 return-directly 工具结果）
+    // 错误终止（超迭代、context 取消、model 错误）时不调用
+    AfterAgent(ctx context.Context, state *ChatModelAgentState) (context.Context, error)
+
+    // BeforeModelRewriteState：每次模型调用前调用
+    // 返回的 state 被持久化，可修改 Messages、ToolInfos、DeferredToolInfos
     BeforeModelRewriteState(ctx context.Context, state *ChatModelAgentState, mc *ModelContext) (context.Context, *ChatModelAgentState, error)
 
-    // AfterModelRewriteState 在每次模型调用后调用
-    // 输入的 state 包含模型响应作为最后一条消息
+    // AfterModelRewriteState：每次模型调用后调用
+    // 输入 state 包含模型响应作为最后一条消息
     AfterModelRewriteState(ctx context.Context, state *ChatModelAgentState, mc *ModelContext) (context.Context, *ChatModelAgentState, error)
 
-    // WrapInvokableToolCall 用自定义行为包装工具的同步执行
-    // 如果不需要包装，返回原始 endpoint 和 nil error
-    // 仅对实现了 InvokableTool 的工具调用此方法
+    // ── Wrapper ──
+
     WrapInvokableToolCall(ctx context.Context, endpoint InvokableToolCallEndpoint, tCtx *ToolContext) (InvokableToolCallEndpoint, error)
-
-    // WrapStreamableToolCall 用自定义行为包装工具的流式执行
-    // 如果不需要包装，返回原始 endpoint 和 nil error
-    // 仅对实现了 StreamableTool 的工具调用此方法
     WrapStreamableToolCall(ctx context.Context, endpoint StreamableToolCallEndpoint, tCtx *ToolContext) (StreamableToolCallEndpoint, error)
-
-    // WrapEnhancedInvokableToolCall 用自定义行为包装增强型工具的同步执行
     WrapEnhancedInvokableToolCall(ctx context.Context, endpoint EnhancedInvokableToolCallEndpoint, tCtx *ToolContext) (EnhancedInvokableToolCallEndpoint, error)
-
-    // WrapEnhancedStreamableToolCall 用自定义行为包装增强型工具的流式执行
     WrapEnhancedStreamableToolCall(ctx context.Context, endpoint EnhancedStreamableToolCallEndpoint, tCtx *ToolContext) (EnhancedStreamableToolCallEndpoint, error)
 
-    // WrapModel 用自定义行为包装聊天模型
-    // 如果不需要包装，返回原始 model 和 nil error
-    // 在请求时调用，每次模型调用前都会执行
-    WrapModel(ctx context.Context, m model.BaseChatModel, mc *ModelContext) (model.BaseChatModel, error)
+    // WrapModel：包装 ChatModel，参数类型为 model.BaseModel[M]（非 ToolCallingChatModel）
+    // 框架单独处理 WithTools 绑定，不经过用户 wrapper
+    WrapModel(ctx context.Context, m model.BaseModel[M], mc *ModelContext) (model.BaseModel[M], error)
 }
 ```
 
-### 使用 BaseChatModelAgentMiddleware
+> 💡
+> 嵌入 `*BaseChatModelAgentMiddleware` 可获得所有方法的空操作默认实现，只需覆盖关心的方法。
 
-嵌入 `*BaseChatModelAgentMiddleware` 以获得默认的空操作实现：
+### 为什么用接口而非 AgentMiddleware 结构体？
+
+`AgentMiddleware` 是结构体，有固有局限——用户无法扩展方法，回调仅返回 error 无法传播 context。`ChatModelAgentMiddleware` 是接口：
+
+- Hook 方法返回 `(context.Context, ..., error)`，支持 context 传播
+- Wrapper 方法通过 endpoint 链传播修改后的 context
+- 自定义 handler 可携带任意内部状态
+
+**选择原则**：简单静态修改（追加 instruction/tools）用 `AgentMiddleware`；需动态行为、context 修改或调用包装时用 `ChatModelAgentMiddleware`。两者可同时使用。
+
+---
+
+## 上下文类型
+
+### ChatModelAgentContext
+
+`BeforeAgent` 的输入，每次 Run 前调用一次：
 
 ```go
-type MyHandler struct {
-    *adk.BaseChatModelAgentMiddleware
-}
+type ChatModelAgentContext struct {
+    // 当前 instruction（含 agent 配置 + 框架追加 + 前序 handler 修改）
+    Instruction string
 
-func (h *MyHandler) BeforeModelRewriteState(ctx context.Context, state *adk.ChatModelAgentState, mc *adk.ModelContext) (context.Context, *adk.ChatModelAgentState, error) {
-    return ctx, state, nil
+    // 原始工具列表（含框架隐式工具如 transfer/exit）
+    Tools []tool.BaseTool
+
+    // 配置为"直接返回"的工具名集合
+    ReturnDirectly map[string]bool
+
+    // 模型原生工具搜索能力的 ToolInfo
+    // 由 handler 设置后，框架通过 model.WithToolSearchTool 传递给模型
+    ToolSearchTool *schema.ToolInfo
+}
+```
+
+### ChatModelAgentState
+
+每次模型调用前后传递的**持久化状态**（跨 iteration 保持）：
+
+```go
+type ChatModelAgentState struct {
+    // 当前会话的所有消息
+    Messages []*schema.Message
+
+    // 传递给模型的工具定义（via model.WithTools），可在 BeforeModelRewriteState 中修改
+    ToolInfos []*schema.ToolInfo
+
+    // 延迟检索工具定义（via model.WithDeferredTools），用于模型原生搜索能力
+    // 未使用时为 nil
+    DeferredToolInfos []*schema.ToolInfo
+}
+```
+
+> 💡
+> 修改 `ToolInfos` / `DeferredToolInfos` 的推荐位置是 `BeforeModelRewriteState`——这是工具配置的 source of truth。不要在 `WrapModel` 中修改工具列表。
+
+### ModelContext
+
+`WrapModel` 和 `Before/AfterModelRewriteState` 的上下文：
+
+```go
+type ModelContext struct {
+    // Deprecated: 使用 ChatModelAgentState.ToolInfos 替代
+    Tools []*schema.ToolInfo
+
+    // 模型重试配置
+    ModelRetryConfig *ModelRetryConfig
+
+    // 模型容灾切换配置
+    ModelFailoverConfig *ModelFailoverConfig[*schema.Message]
+}
+```
+
+### ToolContext
+
+工具包装的元数据：
+
+```go
+type ToolContext struct {
+    Name   string // 工具名称
+    CallID string // 本次调用唯一标识
 }
 ```
 
@@ -84,215 +149,105 @@ func (h *MyHandler) BeforeModelRewriteState(ctx context.Context, state *adk.Chat
 
 ## 工具调用端点类型
 
-工具包装使用函数类型而非接口，更清晰地表达了包装的意图：
+工具包装使用函数类型而非接口。根据工具实现的接口，框架调用对应的 Wrap 方法：
 
 ```go
-// InvokableToolCallEndpoint 是同步工具调用的函数签名
-type InvokableToolCallEndpoint func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error)
-
-// StreamableToolCallEndpoint 是流式工具调用的函数签名
+// 标准工具
+type InvokableToolCallEndpoint  func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error)
 type StreamableToolCallEndpoint func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (*schema.StreamReader[string], error)
 
-// EnhancedInvokableToolCallEndpoint 是增强型同步工具调用的函数签名
-type EnhancedInvokableToolCallEndpoint func(ctx context.Context, toolArgument *schema.ToolArgument, opts ...tool.Option) (*schema.ToolResult, error)
-
-// EnhancedStreamableToolCallEndpoint 是增强型流式工具调用的函数签名
+// 增强型工具（使用 ToolArgument/ToolResult）
+type EnhancedInvokableToolCallEndpoint  func(ctx context.Context, toolArgument *schema.ToolArgument, opts ...tool.Option) (*schema.ToolResult, error)
 type EnhancedStreamableToolCallEndpoint func(ctx context.Context, toolArgument *schema.ToolArgument, opts ...tool.Option) (*schema.StreamReader[*schema.ToolResult], error)
 ```
 
-### 为什么使用分离的端点类型？
-
-之前的 `ToolCall` 接口同时包含 `InvokableRun` 和 `StreamableRun`，但大多数工具只实现其中一个。
-分离的端点类型使得：
-
-- 只有当工具实现相应接口时才调用对应的包装方法
-- wrapper 作者更清晰的契约
-- 关于实现哪个方法没有歧义
+> 💡
+> 每个 Wrap 方法**仅在工具实现了对应接口时才被调用**。例如，工具只实现了 `InvokableTool`，则只会调用 `WrapInvokableToolCall`，不会调用 `WrapStreamableToolCall`。
 
 ---
 
-## ChatModelAgentContext
+## 执行顺序
 
-`ChatModelAgentContext` 包含在每次 `ChatModelAgent` 运行前传递给 handler 的运行时信息。
+### Model 调用生命周期（由外到内）
 
-```go
-type ChatModelAgentContext struct {
-    // Instruction 是当前 Agent 执行的指令
-    // 包括 agent 配置的指令、框架和 AgentMiddleware 追加的额外指令，
-    // 以及之前 BeforeAgent handler 应用的修改
-    Instruction string
+1. `AgentMiddleware.BeforeChatModel`
+2. **ChatModelAgentMiddleware.BeforeModelRewriteState**
+3. `retryModelWrapper`（内部 — 失败重试）
+4. `eventSenderModelWrapper` 预处理（内部 — 准备事件发送）
+5. **ChatModelAgentMiddleware.WrapModel** 预处理（先注册 → 先执行）
+6. `callbackInjectionModelWrapper`（内部）
+7. **Model.Generate / Stream**
+8. `callbackInjectionModelWrapper` 后处理
+9. **ChatModelAgentMiddleware.WrapModel** 后处理（先注册 → 后执行）
+10. `eventSenderModelWrapper` 后处理
+11. `retryModelWrapper` 后处理
+12. **ChatModelAgentMiddleware.AfterModelRewriteState**
+13. `AgentMiddleware.AfterChatModel`
 
-    // Tools 是当前为 Agent 执行配置的原始工具（无任何 wrapper 或 tool middleware）
-    // 包括 AgentConfig 中传入的工具、框架隐式添加的工具（如 transfer/exit 工具），
-    // 以及 middleware 已添加的其他工具
-    Tools []tool.BaseTool
+### Tool 调用生命周期（由外到内）
 
-    // ReturnDirectly 是当前配置为使 Agent 直接返回的工具名称集合
-    ReturnDirectly map[string]bool
-}
-```
+1. `eventSenderToolHandler`（内部 — 发送工具结果事件）
+2. `ToolsConfig.ToolCallMiddlewares`
+3. `AgentMiddleware.WrapToolCall`
+4. **ChatModelAgentMiddleware.WrapXxxToolCall**（先注册 → 最外层）
+5. **Tool.InvokableRun / StreamableRun**
 
----
+### WrapModel 使用建议
 
-## ChatModelAgentState
-
-`ChatModelAgentState` 表示对话过程中聊天模型 agent 的状态。这是 `ChatModelAgentMiddleware` 和 `AgentMiddleware` 回调的主要状态类型。
-
-```go
-type ChatModelAgentState struct {
-    // Messages 包含当前对话会话中的所有消息
-    Messages []Message
-}
-```
-
----
-
-## ToolContext
-
-`ToolContext` 提供被包装工具的元数据。在请求时创建，包含当前工具调用的信息。
-
-```go
-type ToolContext struct {
-    // Name 是工具名称
-    Name string
-
-    // CallID 是此特定工具调用的唯一标识符
-    CallID string
-}
-```
-
-### 使用示例：工具调用包装
-
-```go
-func (h *MyHandler) WrapInvokableToolCall(ctx context.Context, endpoint adk.InvokableToolCallEndpoint, tCtx *adk.ToolContext) (adk.InvokableToolCallEndpoint, error) {
-    return func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error) {
-        log.Printf("Tool %s (call %s) starting with args: %s", tCtx.Name, tCtx.CallID, argumentsInJSON)
-        
-        result, err := endpoint(ctx, argumentsInJSON, opts...)
-        
-        if err != nil {
-            log.Printf("Tool %s failed: %v", tCtx.Name, err)
-            return "", err
-        }
-        
-        log.Printf("Tool %s completed with result: %s", tCtx.Name, result)
-        return result, nil
-    }, nil
-}
-```
-
----
-
-## ModelContext
-
-`ModelContext` 包含传递给 `WrapModel` 的上下文信息。在请求时创建，包含当前模型调用的工具配置。
-
-```go
-type ModelContext struct {
-    // Tools 是当前配置给 agent 的工具列表
-    // 在请求时填充，包含将发送给模型的工具
-    Tools []*schema.ToolInfo
-
-    // ModelRetryConfig 包含模型的重试配置
-    // 在请求时从 agent 的 ModelRetryConfig 填充
-    // 用于 EventSenderModelWrapper 适当地包装流错误
-    ModelRetryConfig *ModelRetryConfig
-}
-```
-
-### 使用示例：模型包装
-
-```go
-func (h *MyHandler) WrapModel(ctx context.Context, m model.BaseChatModel, mc *adk.ModelContext) (model.BaseChatModel, error) {
-    return &myModelWrapper{
-        inner: m,
-        tools: mc.Tools,
-    }, nil
-}
-
-type myModelWrapper struct {
-    inner model.BaseChatModel
-    tools []*schema.ToolInfo
-}
-
-func (w *myModelWrapper) Generate(ctx context.Context, msgs []*schema.Message, opts ...model.Option) (*schema.Message, error) {
-    log.Printf("Model called with %d tools", len(w.tools))
-    return w.inner.Generate(ctx, msgs, opts...)
-}
-
-func (w *myModelWrapper) Stream(ctx context.Context, msgs []*schema.Message, opts ...model.Option) (*schema.StreamReader[*schema.Message], error) {
-    return w.inner.Stream(ctx, msgs, opts...)
-}
-```
+<table>
+<tr><td>✅ 推荐用途</td><td>❌ 不推荐用途</td></tr>
+<tr><td>模型调用重试逻辑</td><td>修改输入消息（不持久化，破坏 prompt cache）</td></tr>
+<tr><td>模型容灾切换（备用模型）</td><td>修改工具列表（应在 <pre>BeforeModelRewriteState</pre> 中修改 <pre>state.ToolInfos</pre>）</td></tr>
+<tr><td>发送自定义事件（如流式进度）</td><td></td></tr>
+<tr><td>处理/变换响应流、修改调用参数</td><td></td></tr>
+</table>
 
 ---
 
 ## 运行时本地存储 API
 
-`SetRunLocalValue`、`GetRunLocalValue` 和 `DeleteRunLocalValue` 提供在当前 agent Run() 调用期间存储、获取和删除值的能力。
+在当前 agent `Run()` 期间存取键值对。值与中断/恢复兼容——序列化后随 checkpoint 持久化。
 
 ```go
-// SetRunLocalValue 设置一个在当前 agent Run() 调用期间持久化的键值对
-// 值的作用域限于此特定执行，不会在不同的 Run() 调用或 agent 实例之间共享
-//
-// 存储在这里的值与中断/恢复周期兼容 - 它们会被序列化并在 agent 恢复时还原
-// 对于自定义类型，必须在 init() 函数中使用 schema.RegisterName[T]() 注册以确保正确序列化
-//
-// 此函数只能在 agent 执行期间从 ChatModelAgentMiddleware 内部调用
-// 如果在 agent 执行上下文之外调用，返回错误
 func SetRunLocalValue(ctx context.Context, key string, value any) error
-
-// GetRunLocalValue 获取在当前 agent Run() 调用期间设置的值
-// 值的作用域限于此特定执行，不会在不同的 Run() 调用或 agent 实例之间共享
-//
-// 通过 SetRunLocalValue 存储的值与中断/恢复周期兼容 - 它们会被序列化并在 agent 恢复时还原
-// 对于自定义类型，必须在 init() 函数中使用 schema.RegisterName[T]() 注册以确保正确序列化
-//
-// 此函数只能在 agent 执行期间从 ChatModelAgentMiddleware 内部调用
-// 如果找到值返回 (value, true, nil)，如果未找到返回 (nil, false, nil)，
-// 如果在 agent 执行上下文之外调用返回错误
 func GetRunLocalValue(ctx context.Context, key string) (any, bool, error)
-
-// DeleteRunLocalValue 删除在当前 agent Run() 调用期间设置的值
-//
-// 此函数只能在 agent 执行期间从 ChatModelAgentMiddleware 内部调用
-// 如果在 agent 执行上下文之外调用，返回错误
 func DeleteRunLocalValue(ctx context.Context, key string) error
 ```
 
-### 使用示例：跨 handler 点共享数据
+> 💡
+> 自定义类型必须在 `init()` 中通过 `schema.RegisterName[T]()` 注册，以确保 gob 序列化正确。这些函数只能在 `ChatModelAgentMiddleware` 回调内调用。
+
+### 示例：跨回调共享状态
 
 ```go
 func init() {
-    schema.RegisterName[*MyCustomData]("my_package.MyCustomData")
+    schema.RegisterName[*ToolStats]("mypackage.ToolStats")
 }
 
-type MyCustomData struct {
+type ToolStats struct {
     Count int
     Name  string
 }
 
-type MyHandler struct {
+type MyMiddleware struct {
     *adk.BaseChatModelAgentMiddleware
 }
 
-func (h *MyHandler) WrapInvokableToolCall(ctx context.Context, endpoint adk.InvokableToolCallEndpoint, tCtx *adk.ToolContext) (adk.InvokableToolCallEndpoint, error) {
-    return func(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error) {
-        result, err := endpoint(ctx, argumentsInJSON, opts...)
-        
-        data := &MyCustomData{Count: 1, Name: tCtx.Name}
-        if err := adk.SetRunLocalValue(ctx, "my_handler.last_tool", data); err != nil {
-            log.Printf("Failed to set run local value: %v", err)
-        }
-        
+// 在工具调用后记录统计
+func (m *MyMiddleware) WrapInvokableToolCall(ctx context.Context, endpoint adk.InvokableToolCallEndpoint, tCtx *adk.ToolContext) (adk.InvokableToolCallEndpoint, error) {
+    return func(ctx context.Context, args string, opts ...tool.Option) (string, error) {
+        result, err := endpoint(ctx, args, opts...)
+
+        _ = adk.SetRunLocalValue(ctx, "last_tool", &ToolStats{Count: 1, Name: tCtx.Name})
         return result, err
     }, nil
 }
 
-func (h *MyHandler) AfterModelRewriteState(ctx context.Context, state *adk.ChatModelAgentState, mc *adk.ModelContext) (context.Context, *adk.ChatModelAgentState, error) {
-    if val, found, err := adk.GetRunLocalValue(ctx, "my_handler.last_tool"); err == nil && found {
-        if data, ok := val.(*MyCustomData); ok {
-            log.Printf("Last tool was: %s (count: %d)", data.Name, data.Count)
+// 在模型调用后读取统计
+func (m *MyMiddleware) AfterModelRewriteState(ctx context.Context, state *adk.ChatModelAgentState, mc *adk.ModelContext) (context.Context, *adk.ChatModelAgentState, error) {
+    if val, found, _ := adk.GetRunLocalValue(ctx, "last_tool"); found {
+        if stats, ok := val.(*ToolStats); ok {
+            log.Printf("上一次工具: %s (count=%d)", stats.Name, stats.Count)
         }
     }
     return ctx, state, nil
@@ -303,200 +258,24 @@ func (h *MyHandler) AfterModelRewriteState(ctx context.Context, state *adk.ChatM
 
 ## SendEvent API
 
-`SendEvent` 允许在 agent 执行期间向事件流发送自定义 `AgentEvent`。
+在 agent 执行期间向事件流发送自定义 `AgentEvent`，调用方遍历事件流时可收到：
 
 ```go
-// SendEvent 在 agent 执行期间向事件流发送自定义 AgentEvent
-// 允许 ChatModelAgentMiddleware 实现发出自定义事件，
-// 这些事件将被遍历 agent 事件流的调用者接收
-//
-// 此函数只能在 agent 执行期间从 ChatModelAgentMiddleware 内部调用
-// 如果在 agent 执行上下文之外调用，返回错误
 func SendEvent(ctx context.Context, event *AgentEvent) error
 ```
 
----
-
-## State 类型（即将弃用）
-
-`State` 保存 agent 运行时状态，包括消息和用户可扩展存储。
-
-**⚠️ 弃用警告：** 此类型将在 v1.0.0 中设为未导出。请在 `ChatModelAgentMiddleware` 和 `AgentMiddleware` 回调中使用 `ChatModelAgentState`。不建议直接使用 `compose.ProcessState[*State]`，该用法将在 v1.0.0 中停止工作；请使用 handler API。
-
-```go
-type State struct {
-    Messages []Message
-    extra    map[string]any  // 未导出，通过 SetRunLocalValue/GetRunLocalValue 访问
-
-    // 以下为内部字段 - 请勿直接访问
-    // 为与现有 checkpoint 向后兼容而保持导出
-    ReturnDirectlyToolCallID string
-    ToolGenActions           map[string]*AgentAction
-    AgentName                string
-    RemainingIterations      int
-
-    internals map[string]any
-}
-```
+仅能在 `ChatModelAgentMiddleware` 回调内调用。
 
 ---
 
-## 架构图
+## State 类型
 
-下图展示了 `ChatModelAgentMiddleware` 在 `ChatModelAgent` 执行过程中的工作原理：
-
-```
-Agent.Run(input)
-                                  │
-                                  ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│  BeforeAgent(ctx, *ChatModelAgentContext)                               │
-│    输入: 当前 Instruction、Tools 等 Agent 运行环境                          │
-│    输出: 修改后的 Agent 运行环境                                         │
-│    作用: Run 开始时调用一次，修改整个 Run 生命周期的配置                   │
-└─────────────────────────────────────────────────────────────────────────┘
-                                  │
-                                  ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                          ReAct Loop                                     │
-│  ┌───────────────────────────────────────────────────────────────────┐  │
-│  │                                                                   │  │
-│  │  ┌─────────────────────────────────────────────────────────────┐  │  │
-│  │  │  BeforeModelRewriteState(ctx, *ChatModelAgentState, *MC)    │  │  │
-│  │  │    输入: 消息历史等持久化状态，以及 Model 运行环境            │  │  │
-│  │  │    输出: 修改后的持久化状态，返回新 ctx                       │  │  │
-│  │  │    作用: 修改跨 iteration 的持久化状态（主要是消息列表）      │  │  │
-│  │  └─────────────────────────────────────────────────────────────┘  │  │
-│  │                            │                                      │  │
-│  │                            ▼                                      │  │
-│  │  ┌─────────────────────────────────────────────────────────────┐  │  │
-│  │  │  WrapModel(ctx, BaseChatModel, *ModelContext)               │  │  │
-│  │  │    输入: 被 wrap 的 ChatModel，以及 Model 运行环境           │  │  │
-│  │  │    输出: 包装后的 Model (洋葱模型)                           │  │  │
-│  │  │    作用: 修改单次 Model 请求的输入、输出和配置               │  │  │
-│  │  │                         │                                   │  │  │
-│  │  │                         ▼                                   │  │  │
-│  │  │                 ┌───────────────┐                           │  │  │
-│  │  │                 │    Model      │                           │  │  │
-│  │  │                 │ Generate/Stream│                          │  │  │
-│  │  │                 └───────────────┘                           │  │  │
-│  │  └─────────────────────────────────────────────────────────────┘  │  │
-│  │                            │                                      │  │
-│  │                            ▼                                      │  │
-│  │  ┌─────────────────────────────────────────────────────────────┐  │  │
-│  │  │  AfterModelRewriteState(ctx, *ChatModelAgentState, *MC)     │  │  │
-│  │  │    输入: 消息历史等持久化状态（含 Model 响应），             │  │  │
-│  │  │          以及 Model 运行环境                                │  │  │
-│  │  │    输出: 修改后的持久化状态                                  │  │  │
-│  │  │    作用: 修改跨 iteration 的持久化状态（主要是消息列表）     │  │  │
-│  │  └─────────────────────────────────────────────────────────────┘  │  │
-│  │                            │                                      │  │
-│  │                            ▼                                      │  │
-│  │                  ┌──────────────────┐                             │  │
-│  │                  │ Model 返回内容?   │                            │  │
-│  │                  └──────────────────┘                             │  │
-│  │                     │            │                                │  │
-│  │            最终响应 │            │ ToolCalls                      │  │
-│  │                     │            ▼                                │  │
-│  │                     │  ┌─────────────────────────────────────┐    │  │
-│  │                     │  │  WrapInvokableToolCall / WrapStream │    │  │
-│  │                     │  │  ableToolCall(ctx, endpoint, *TC)   │    │  │
-│  │                     │  │    输入: 被 wrap 的 Tool 以及       │    │  │
-│  │                     │  │          Tool 运行环境              │    │  │
-│  │                     │  │    输出: 包装后的 endpoint (洋葱模型)│    │  │
-│  │                     │  │    作用: 修改单次 Tool 请求的       │    │  │
-│  │                     │  │          输入、输出和配置           │    │  │
-│  │                     │  │                  │                  │    │  │
-│  │                     │  │                  ▼                  │    │  │
-│  │                     │  │          ┌─────────────┐            │    │  │
-│  │                     │  │          │ Tool.Run()  │            │    │  │
-│  │                     │  │          └─────────────┘            │    │  │
-│  │                     │  └─────────────────────────────────────┘    │  │
-│  │                     │            │                                │  │
-│  │                     │            │ (结果加入 Messages)            │  │
-│  │                     │            │                                │  │
-│  │                     │  ┌─────────┘                                │  │
-│  │                     │  │                                          │  │
-│  │                     │  └──────────► 继续循环                      │  │
-│  │                     │                                             │  │
-│  └─────────────────────┼─────────────────────────────────────────────┘  │
-│                        │                                                │
-│                        ▼                                                │
-│               循环直到完成或达到 maxIterations                           │
-└─────────────────────────────────────────────────────────────────────────┘
-                                  │
-                                  ▼
-                          Agent.Run() 结束
-```
-
-### Handler 方法说明
-
-<table>
-<tr><td>方法</td><td>输入</td><td>输出</td><td>作用范围</td></tr>
-<tr><td><pre>BeforeAgent</pre></td><td>Agent 运行环境 (<pre>*ChatModelAgentContext</pre>)</td><td>修改后的 Agent 运行环境</td><td>整个 Run 生命周期，仅调用一次</td></tr>
-<tr><td><pre>BeforeModelRewriteState</pre></td><td>持久化状态 + Model 运行环境</td><td>修改后的持久化状态</td><td>跨 iteration 的持久化状态（消息列表）</td></tr>
-<tr><td><pre>WrapModel</pre></td><td>被 wrap 的 ChatModel + Model 运行环境</td><td>包装后的 Model</td><td>单次 Model 请求的输入、输出和配置</td></tr>
-<tr><td><pre>AfterModelRewriteState</pre></td><td>持久化状态（含响应）+ Model 运行环境</td><td>修改后的持久化状态</td><td>跨 iteration 的持久化状态（消息列表）</td></tr>
-<tr><td><pre>WrapInvokableToolCall</pre></td><td>被 wrap 的 Tool + Tool 运行环境</td><td>包装后的 endpoint</td><td>单次 Tool 请求的输入、输出和配置</td></tr>
-<tr><td><pre>WrapStreamableToolCall</pre></td><td>被 wrap 的 Tool + Tool 运行环境</td><td>包装后的 endpoint</td><td>单次 Tool 请求的输入、输出和配置</td></tr>
-</table>
-
----
-
-## 执行顺序
-
-### Model 调用生命周期（从外到内的 wrapper 链）
-
-1. `AgentMiddleware.BeforeChatModel`（hook，在模型调用前运行）
-2. `ChatModelAgentMiddleware.BeforeModelRewriteState`（hook，可在模型调用前修改状态）
-3. `retryModelWrapper`（内部 - 失败时重试，如已配置）
-4. `eventSenderModelWrapper` 预处理（内部 - 准备事件发送）
-5. `ChatModelAgentMiddleware.WrapModel` 预处理（wrapper，在请求时包装，先注册的先运行）
-6. `callbackInjectionModelWrapper`（内部 - 如未启用则注入回调）
-7. `Model.Generate/Stream`
-8. `callbackInjectionModelWrapper` 后处理
-9. `ChatModelAgentMiddleware.WrapModel` 后处理（wrapper，先注册的后运行）
-10. `eventSenderModelWrapper` 后处理（内部 - 发送模型响应事件）
-11. `retryModelWrapper` 后处理（内部 - 处理重试逻辑）
-12. `ChatModelAgentMiddleware.AfterModelRewriteState`（hook，可在模型调用后修改状态）
-13. `AgentMiddleware.AfterChatModel`（hook，在模型调用后运行）
-
-### Tool 调用生命周期（从外到内）
-
-1. `eventSenderToolHandler`（内部 ToolMiddleware - 在所有处理后发送工具结果事件）
-2. `ToolsConfig.ToolCallMiddlewares`（ToolMiddleware）
-3. `AgentMiddleware.WrapToolCall`（ToolMiddleware）
-4. `ChatModelAgentMiddleware.WrapInvokableToolCall/WrapStreamableToolCall`（在请求时包装，先注册的在最外层）
-5. `Tool.InvokableRun/StreamableRun`
+> 💡
+> `State` 仅为 checkpoint 向后兼容而保持导出。**不要直接使用**——请在 `ChatModelAgentMiddleware` 回调中使用 `ChatModelAgentState`，用 `SetRunLocalValue/GetRunLocalValue` 替代原 `State.Extra`。`compose.ProcessState[*State]` 用法将在 v1.0.0 中停止工作。
 
 ---
 
 ## 迁移指南
-
-### 从 AgentMiddleware 迁移到 ChatModelAgentMiddleware
-
-**之前（AgentMiddleware）：**
-
-```go
-middleware := adk.AgentMiddleware{
-    BeforeChatModel: func(ctx context.Context, state *adk.ChatModelAgentState) error {
-        return nil
-    },
-}
-```
-
-**之后（ChatModelAgentMiddleware）：**
-
-```go
-type MyHandler struct {
-    *adk.BaseChatModelAgentMiddleware
-}
-
-func (h *MyHandler) BeforeModelRewriteState(ctx context.Context, state *adk.ChatModelAgentState, mc *adk.ModelContext) (context.Context, *adk.ChatModelAgentState, error) {
-    newCtx := context.WithValue(ctx, myKey, myValue)
-    return newCtx, state, nil
-}
-```
 
 ### 从 compose.ProcessState[*State] 迁移
 
@@ -509,13 +288,49 @@ compose.ProcessState(ctx, func(_ context.Context, st *adk.State) error {
 })
 ```
 
-**之后（使用 SetRunLocalValue/GetRunLocalValue）：**
+**之后：**
 
 ```go
+// 写入
 if err := adk.SetRunLocalValue(ctx, "myKey", myValue); err != nil {
     return ctx, state, err
 }
 
+// 读取
 if val, found, err := adk.GetRunLocalValue(ctx, "myKey"); err == nil && found {
+    // use val
+}
+```
+
+### 适配 AfterAgent（v0.9 新增）
+
+`AfterAgent` 在 agent **成功终止**后调用（最终回答或 return-directly 工具结果），可用于后处理：
+
+```go
+func (m *MyMiddleware) AfterAgent(ctx context.Context, state *adk.ChatModelAgentState) (context.Context, error) {
+    log.Printf("Agent 完成，共 %d 条消息", len(state.Messages))
+    // 可在此做审计、统计、清理等
+    return ctx, nil
+}
+```
+
+> 💡
+> `AfterAgent` 按注册顺序调用（与 `BeforeAgent` 一致）。任一 handler 返回 error 后，后续 handler 不再调用（fail-fast），错误发送到事件流。
+
+### 适配 ToolInfos / DeferredToolInfos（v0.9 新增）
+
+`ChatModelAgentState` 新增了 `ToolInfos` 和 `DeferredToolInfos` 字段，取代 `ModelContext.Tools` 成为工具配置的 source of truth：
+
+```go
+func (m *MyMiddleware) BeforeModelRewriteState(ctx context.Context, state *adk.ChatModelAgentState, mc *adk.ModelContext) (context.Context, *adk.ChatModelAgentState, error) {
+    // 动态过滤工具
+    filtered := make([]*schema.ToolInfo, 0, len(state.ToolInfos))
+    for _, t := range state.ToolInfos {
+        if shouldInclude(t.Name) {
+            filtered = append(filtered, t)
+        }
+    }
+    state.ToolInfos = filtered
+    return ctx, state, nil
 }
 ```

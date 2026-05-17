@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-05-17"
 lastmod: ""
 tags: []
-title: 'Eino ADK: Plan-Execute Agent'
-weight: 4
+title: Plan-Execute Agent
+weight: 2
 ---
 
 ## Plan-Execute Agent Overview
@@ -275,7 +275,7 @@ func newPlanExecuteAgent(ctx context.Context) adk.Agent {
     replanner := newReplanner(ctx, model)
 
     // Combine into PlanExecuteAgent (fixed execute-replan max iterations 10)
-    planExecuteAgent, err := planexecute.NewPlanExecuteAgent(ctx, &planexecute.PlanExecuteConfig{
+    planExecuteAgent, err := planexecute.New(ctx, &planexecute.PlanExecuteConfig{
        Planner:       planner,
        Executor:      executor,
        Replanner:     replanner,

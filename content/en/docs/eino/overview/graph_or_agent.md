@@ -1,9 +1,9 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-05-17"
 lastmod: ""
 tags: []
-title: Agent or Graph? AI Application Path Analysis
+title: Agent or Graph? Analyzing AI Application Routes
 weight: 8
 ---
 
@@ -15,8 +15,8 @@ Many application interfaces have integrated different forms of AI capabilities, 
 
 This seemingly simple screenshot represents two forms of "AI applications":
 
-- The "Agent" represented by the "chat box". **Agents use LLM (Large Language Model) as the decision center, autonomously plan and can conduct multi-turn interactions**, naturally suited for handling open-ended, continuous tasks, manifesting as a "dialogue" form.
-- The "Graph" represented by "buttons" or "APIs". For example, the "Recording Summary" button above - the Graph behind it is roughly "Recording" → "LLM understands and summarizes" → "Save recording" - this kind of fixed process. **The core of Graph lies in the determinism of its process and the closure of tasks**, completing specific goals through predefined nodes and edges, manifesting as a "function" form. For example, video generation is an "API" form AI application:
+- The "Agent" represented by the "chat box". **Agents use LLM (Large Language Model) as the decision center, autonomously plan and conduct multi-turn interactions**, naturally suited for handling open-ended, continuous tasks, manifesting as a "dialogue" form.
+- The "Graph" represented by "buttons" or "APIs". For example, the "Recording Summary" button above — the Graph behind it is roughly "Recording" → "LLM understands and summarizes" → "Save recording", a fixed process. **The core of Graph lies in the determinism of its process and the closure of its tasks**, completing specific goals through predefined nodes and edges, manifesting as a "function" form. For example, video generation is an "API"-form AI application:
 
 <a href="/img/eino/eino_complex_workflow_as_api.png" target="_blank"><img src="/img/eino/eino_complex_workflow_as_api.png" width="100%" /></a>
 
@@ -39,7 +39,7 @@ flowchart TD
   G2("Deterministic Output")
 
   S --> D
-  D -->|"Open or Uncertain"| A
+  D -->|"Open-ended or Uncertain"| A
   D -->|"Closed and Deterministic"| G
   A --> A1
   A --> A2
@@ -51,15 +51,15 @@ flowchart TD
   class A,G,A1,A2,G1,G2 process_style
 ```
 
-This article explores in detail the differences and connections between Agent and Graph, two forms of AI applications, proposes that "the best integration point is to encapsulate Graph as Agent's Tool", and provides recommended usage patterns for [Eino](https://github.com/cloudwego/eino) developers.
+This article explores in detail the differences and connections between Agent and Graph — two forms of AI applications — proposes that "the best integration point is to encapsulate Graph as Agent's Tool", and provides recommended usage patterns for [Eino](https://github.com/cloudwego/eino) developers.
 
 ## Core Concept Analysis
 
 ### Basic Definitions
 
-- **Graph**: A flowchart **predefined** by developers with a clear topology. Its nodes can be code functions, API calls, or LLMs, and inputs and outputs are typically structured. **The core characteristic is "determinism"** - given the same input, the execution path and final output are predictable.
+- **Graph**: A flowchart **predefined** by developers with a clear topology. Its nodes can be code functions, API calls, or LLMs, and inputs and outputs are typically structured. **The core characteristic is "determinism"** — given the same input, the execution path and final output are predictable.
 - **Agent**: An entity centered on LLM that can **autonomously plan, decide, and execute** tasks. It completes goals through **dynamic interaction** with the environment (Tools, users, other Agents), and its behavior is uncertain. **The core characteristic is "autonomy"**.
-- **Tool**: Any external capability that an Agent can call, typically a **function or API that encapsulates specific functionality**. Tools themselves can be synchronous or asynchronous, stateful or stateless. They are only responsible for execution and do not have autonomous decision-making capabilities.
+- **Tool**: Any external capability that an Agent can call, typically a **function or API that encapsulates specific functionality**. Tools can be synchronous or asynchronous, stateful or stateless. They are only responsible for execution and do not have autonomous decision-making capabilities.
 - **Orchestration**: The process of **organizing and coordinating multiple compute units (nodes, Agents) to work together**. In this article, it specifically refers to predefining static processes through Graphs.
 
 ### Deep Comparison
@@ -73,7 +73,7 @@ This article explores in detail the differences and connections between Agent an
 <tr><td><strong>Runtime Mode</strong></td><td>Tends toward <strong>asynchronous</strong></td><td>Tends toward <strong>synchronous</strong></td></tr>
 </table>
 
-Summary: Agent can be considered autonomous, driven overall by LLM, using external capabilities in the form of Tool Calls. Graph is deterministic, connecting external capabilities with a clear topology, while locally utilizing LLM for decision-making/generation.
+Summary: An Agent can be considered autonomous, driven overall by LLM, using external capabilities in the form of Tool Calls. A Graph is deterministic, connecting external capabilities with a clear topology while locally utilizing LLM for decision-making/generation.
 
 ```mermaid
 flowchart TD
@@ -121,12 +121,12 @@ flowchart LR
 
 Subsequently, the [ReAct](https://react-lm.github.io/) (Reasoning and Acting) paradigm was proposed, systematically demonstrating for the first time how LLMs can not only generate text but also interact with the external world through "think-act-observe" loops to solve complex problems. This breakthrough laid the theoretical foundation for Agent's autonomous planning capabilities. Almost simultaneously, OpenAI launched the [ChatCompletions API](https://platform.openai.com/docs/api-reference/chat), driving the transformation of LLM interaction capabilities from "single text input/output" to "multi-turn dialogue". Then [Function Calling](https://platform.openai.com/docs/guides/function-calling) capability emerged, giving LLMs standard capabilities to interact with external functions and APIs. At this point, we could already build "multi-turn dialogue with autonomous external interaction" LLM application scenarios, i.e., Agents. In this context, AI application frameworks saw two important developments:
 
-- Langchain launched Langgraph: Static orchestration evolved from simple input/output Chains to complex topologies. This type of orchestration framework fits well with "Graph" type AI application forms: "arbitrary" structured inputs, with "final result" as the core deliverable, decoupling message history and other state management mechanisms from core orchestration logic, supporting flexible orchestration of various topologies, and various nodes/components represented by LLMs and knowledge bases.
-- Agent and Multi-Agent frameworks emerged in large numbers: such as AutoGen, CrewAI, Google ADK, etc. The common thread among these Agent frameworks is attempting to solve problems like "LLM-driven processes", "context passing", "memory management", and "Multi-Agent common patterns", which are different from the "connecting LLMs with external systems in complex processes" problem that orchestration frameworks try to solve.
+- Langchain launched Langgraph: Static orchestration evolved from simple input/output Chains to complex topologies. This type of orchestration framework fits well with "Graph"-type AI application forms: "arbitrary" structured inputs, with "final result" as the core deliverable, decoupling message history and other state management mechanisms from core orchestration logic, supporting flexible orchestration of various topologies, and various nodes/components represented by LLMs and knowledge bases.
+- Agent and Multi-Agent frameworks emerged in large numbers: such as AutoGen, CrewAI, Google ADK, etc. The common thread among these Agent frameworks is attempting to solve problems like "LLM-driven processes", "context passing", "memory management", and "Multi-Agent common patterns", which differ from the "connecting LLMs with external systems in complex processes" problem that orchestration frameworks try to solve.
 
-Even with different positioning, orchestration frameworks can implement ReAct Agents or other Multi-Agent patterns, because "Agent" is a special form of "LLM interacting with external systems", and "LLM-driven processes" can be implemented through "static branch enumeration" and other methods. However, this implementation is essentially a "simulation", like writing code in Word - possible, but not a good fit. Orchestration frameworks were originally designed to manage deterministic Graphs, while the core of Agents is responding to dynamically changing "chains of thought". Forcing the latter to adapt to the former will inevitably produce "mismatches" in deliverables, runtime modes, etc. For example, in actual use, you might encounter some pain points:
+Even with different positioning, orchestration frameworks can implement ReAct Agents or other Multi-Agent patterns, because "Agent" is a special form of "LLM interacting with external systems", and "LLM-driven processes" can be implemented through "static branch enumeration" and other methods. However, this implementation is essentially a "simulation" — like writing code in Word: possible, but not a good fit. Orchestration frameworks were originally designed to manage deterministic Graphs, while the core of Agents is responding to dynamically changing "chains of thought". Forcing the latter to adapt to the former will inevitably produce "mismatches" in deliverables, runtime modes, etc. For example, in practice you might encounter some pain points:
 
-- Deliverable mismatch: The output of an orchestrated ReAct Agent is the "final result", while actual applications often focus on various intermediate processes. Callbacks and other solutions can solve this - complete enough, but still a "patch".
+- Deliverable mismatch: The output of an orchestrated ReAct Agent is the "final result", while actual applications often focus on various intermediate processes. Callbacks and other solutions can address this — complete enough, but still a "patch".
 
 ```mermaid
 flowchart LR
@@ -141,7 +141,7 @@ flowchart LR
   G-.->|Side-channel extraction|P
 ```
 
-- Runtime mode mismatch: Due to synchronous execution, "to display LLM replies to users as quickly as possible", nodes within ReAct Agent orchestration need to be as "fast" as possible. This mainly means that in the branch judgment logic of "whether LLM output contains ToolCall", decisions should be made based on the first packet or first few packets as much as possible. This branch judgment logic can be customized, such as "read streaming output until Content is seen, then determine no ToolCall", but sometimes it cannot completely solve the problem, and callbacks are used as a "side-channel" to manually switch from "synchronous" to "asynchronous".
+- Runtime mode mismatch: Due to synchronous execution, "to display LLM replies to users as quickly as possible" requires nodes within the ReAct Agent orchestration to be as "fast" as possible. This mainly means that in the branch judgment logic of "whether LLM output contains a ToolCall", decisions should be made based on the first packet or first few packets as much as possible. This branch judgment logic can be customized, such as "read streaming output until Content is seen, then determine no ToolCall", but sometimes it cannot completely solve the problem — callbacks must be used as a "side-channel" to manually switch from "synchronous" to "asynchronous".
 
 ```mermaid
 flowchart LR
@@ -171,11 +171,11 @@ Below we analyze the specific relationship between "Agent" and "Graph" in the Ei
 
 ### Multi-Agent and Orchestration
 
-Although "Agent" and "Graph" have essential differences, are there scenarios that belong to the "intersection" of the two forms, where you can't make a black-or-white choice? A typical scenario is Multi-Agent, where multiple Agents interact in "some way", presenting to users as a complete Agent. Can this "interaction method" be understood as "Graph orchestration"?
+Although "Agent" and "Graph" have essential differences, are there scenarios that belong to the "intersection" of the two forms, where you cannot make a black-or-white choice? A typical scenario is Multi-Agent, where multiple Agents interact in "some way", presenting to users as a complete Agent. Can this "interaction method" be understood as "Graph orchestration"?
 
-Let's observe several mainstream collaboration patterns:
+Let us observe several mainstream collaboration patterns:
 
-- Hierarchical invocation (Agent as Tool): This is the most common pattern (see Google ADK's [definition](https://google.github.io/adk-docs/agents/multi-agents/#c-explicit-invocation-agenttool) and [examples](https://google.github.io/adk-docs/agents/multi-agents/#hierarchical-task-decomposition)). A top-level Agent delegates specific subtasks to specialized "Tool Agents". For example, a main Agent is responsible for interacting with users, and when code execution is needed, it calls a "code execution Agent". In this pattern, sub-Agents are usually stateless, don't share memory with the main Agent, and their interaction is a simple Function Call. There is only one relationship between the top-level Agent and sub-Agents: caller and callee. Therefore, we can conclude that the Agent as Tool Multi-Agent pattern is not the "node flow" relationship in "Graph orchestration".
+- Hierarchical invocation (Agent as Tool): This is the most common pattern (see Google ADK's [definition](https://google.github.io/adk-docs/agents/multi-agents/#c-explicit-invocation-agenttool) and [examples](https://google.github.io/adk-docs/agents/multi-agents/#hierarchical-task-decomposition)). A top-level Agent delegates specific subtasks to specialized "Tool Agents". For example, a main Agent is responsible for interacting with users, and when code execution is needed, it calls a "code execution Agent". In this pattern, sub-Agents are usually stateless, do not share memory with the main Agent, and their interaction is a simple Function Call. There is only one relationship between the top-level Agent and sub-Agents: caller and callee. Therefore, we can conclude that the Agent as Tool Multi-Agent pattern is not a "node flow" relationship in "Graph orchestration".
 
 ```mermaid
 flowchart LR
@@ -189,7 +189,7 @@ flowchart LR
   end
 ```
 
-- Preset flows: For some mature collaboration patterns, such as "Plan-Execute-Replan" (see Langchain's [example](https://langchain-ai.github.io/langgraph/tutorials/plan-and-execute/plan-and-execute/)), the interaction order and roles between Agents are fixed. Frameworks (like Eino adk) can encapsulate these patterns as "prebuilt Multi-Agent patterns", which developers can use directly without caring about internal details or manually setting up or adjusting the process relationships between sub-Agents. Therefore, we can conclude that for mature collaboration patterns, "Graph orchestration" is an implementation detail encapsulated inside the prebuilt pattern, which developers don't perceive.
+- Preset flows: For some mature collaboration patterns, such as "Plan-Execute-Replan" (see Langchain's [example](https://langchain-ai.github.io/langgraph/tutorials/plan-and-execute/plan-and-execute/)), the interaction order and roles between Agents are fixed. Frameworks (like Eino ADK) can encapsulate these patterns as "prebuilt Multi-Agent patterns", which developers can use directly without caring about internal details or manually setting up or adjusting the process relationships between sub-Agents. Therefore, we can conclude that for mature collaboration patterns, "Graph orchestration" is an implementation detail encapsulated inside the prebuilt pattern, invisible to developers.
 
 ```mermaid
 flowchart LR
@@ -205,7 +205,7 @@ flowchart LR
   user -->|Use as a whole| Plan-Execute-Replan
 ```
 
-- Dynamic collaboration: In more complex scenarios, the collaboration method between Agents is dynamic (see Google ADK's [definition](https://google.github.io/adk-docs/agents/multi-agents/#b-llm-driven-delegation-agent-transfer) and [examples](https://google.github.io/adk-docs/agents/multi-agents/#coordinatordispatcher-pattern)), possibly involving bidding, voting, or runtime decisions by a "coordinator Agent". In this pattern, the relationship between Agents is "Agent transfer", similar to "node flow" in "Graph orchestration" - both are complete handoffs of "control" from A to B. However, this "Agent transfer" can be completely dynamic, with its dynamic nature reflected not only in "which Agents can be transferred to", but also in "how the decision of which Agent to transfer to is made" - neither is preset by developers, but is the LLM's real-time dynamic behavior. This forms a sharp contrast with the static determinism of "Graph orchestration". Therefore, we can conclude that the dynamic collaboration Multi-Agent pattern is fundamentally different from "Graph orchestration" and is better suited for independent solutions at the Agent framework level.
+- Dynamic collaboration: In more complex scenarios, the collaboration method between Agents is dynamic (see Google ADK's [definition](https://google.github.io/adk-docs/agents/multi-agents/#b-llm-driven-delegation-agent-transfer) and [examples](https://google.github.io/adk-docs/agents/multi-agents/#coordinatordispatcher-pattern)), possibly involving bidding, voting, or runtime decisions by a "coordinator Agent". In this pattern, the relationship between Agents is "Agent transfer", similar to "node flow" in "Graph orchestration" — both are complete handoffs of "control" from A to B. However, this "Agent transfer" can be completely dynamic, with its dynamic nature reflected not only in "which Agents can be transferred to", but also in "how the decision of which Agent to transfer to is made" — neither is preset by developers, but is the LLM's real-time dynamic behavior. This forms a sharp contrast with the static determinism of "Graph orchestration". Therefore, we can conclude that the dynamic collaboration Multi-Agent pattern is fundamentally different from "Graph orchestration" and is better suited for independent solutions at the Agent framework level.
 
 ```mermaid
 flowchart LR
@@ -220,9 +220,9 @@ In summary, Multi-Agent collaboration problems can either be solved by reducing 
 
 ### Agent as a Graph Node
 
-After exploring "the relationship between Multi-Agent and Graph orchestration", we can ask from another angle: Is there a need to use Agents in Graph orchestration? In other words, can an Agent be a "node" in a Graph?
+After exploring "the relationship between Multi-Agent and Graph orchestration", we can ask from another angle: Is there a need to use Agents in Graph orchestration? In other words, can an Agent serve as a "node" in a Graph?
 
-Let's first recall the characteristics of Agent and Graph:
+Let us first recall the characteristics of Agent and Graph:
 
 - Agent's input sources are more diverse. Besides receiving structured data from upstream nodes, it heavily depends on its own conversation history (Memory). This forms a sharp contrast with Graph nodes that strictly depend on upstream outputs as the only input.
 - Agent's output is asynchronous full-process data. This means other nodes have difficulty using the output of an "Agent node".
@@ -243,7 +243,7 @@ Therefore, adding an Agent node to a Graph means forcing an Agent that requires 
 
 In fact, what we need in a Graph is not a complete Agent node, but a more functionally pure **"LLM node"**. This node is responsible for receiving specific inputs in deterministic processes, completing intent recognition or content generation, and producing structured outputs, thereby injecting intelligence into the process.
 
-At the same time, if a simple "LLM" node really doesn't meet the requirements and an "Agent" is indeed needed, a more appropriate approach might not be to stuff the Agent into a statically predefined Graph, but to add various "plugins" like pre-processing and post-processing to the "Agent", embedding specific business logic inside the Agent.
+At the same time, if a simple "LLM" node truly does not meet requirements and an "Agent" is indeed needed, a more appropriate approach may not be to stuff the Agent into a statically predefined Graph, but to add various "plugins" like pre-processing and post-processing to the "Agent", embedding specific business logic inside the Agent.
 
 In summary: Treating an Agent simply as a Graph node is **inefficient**; a better approach is to use LLM nodes, or inject business logic as plugins into Agents.
 
@@ -259,7 +259,7 @@ Since direct integration of Agent and Graph at the micro level (nodes) faces dif
 <tr><td>Runtime Mode</td><td><strong>Synchronous as a whole</strong></td><td><strong>Tool is synchronous from LLM's perspective</strong></td></tr>
 </table>
 
-These similarities mean that "Graph's presentation form matches Tool's requirements very well, so encapsulating Graph as a Tool is intuitive and simple". Therefore, most Graphs are suitable for joining Agents through the Tool mechanism, becoming part of Agent's capabilities. This way, Agents can clearly use most of Graph's capabilities, including efficient orchestration of "arbitrary" business topologies, ecosystem integration of a large number of related components, and supporting framework and governance capabilities (stream processing, callbacks, interrupt/resume, etc.).
+These similarities mean that "Graph's presentation form matches Tool's requirements very well, so encapsulating Graph as a Tool is intuitive and simple". Therefore, most Graphs are suitable for joining Agents through the Tool mechanism, becoming part of Agent's capabilities. This way, Agents can clearly leverage most of Graph's capabilities, including efficient orchestration of "arbitrary" business topologies, ecosystem integration of a large number of related components, and supporting framework and governance capabilities (stream processing, callbacks, interrupt/resume, etc.).
 
 The "route debate" between "Agent" and "Graph" achieves dialectical unity.
 
@@ -302,7 +302,7 @@ Agent and Graph are not a route debate, but two complementary AI application par
 
 The best integration point is to encapsulate Graph as Agent's Tool.
 
-Through this approach, we can fully leverage Graph's powerful capabilities in process orchestration and ecosystem integration to expand Agent's Tool list. A complex Graph application (such as a complete RAG pipeline, a data analysis pipeline) can be simplified into one of Agent's atomic capabilities, dynamically called at the right time.
+Through this approach, we can fully leverage Graph's powerful capabilities in process orchestration and ecosystem integration to expand Agent's Tool list. A complex Graph application (such as a complete RAG pipeline or a data analysis pipeline) can be simplified into one of Agent's atomic capabilities, dynamically called at the right time.
 
 For Eino developers, this means:
 

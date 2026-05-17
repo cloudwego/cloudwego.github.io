@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-24"
+date: "2026-05-17"
 lastmod: ""
 tags: []
 title: Ark Agentkit Sandbox
@@ -11,17 +11,17 @@ weight: 1
 
 Package: `github.com/cloudwego/eino-ext/adk/backend/agentkit`
 
-Note: If your eino version is v0.8.0 or above, you need to use ark agentkit backend [adk/backend/agentkit/v0.2.1](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.1).
+Note: If your eino version is v0.8.0 or above, you need to use the [adk/backend/agentkit/v0.2.1](https://github.com/cloudwego/eino-ext/releases/tag/adk%2Fbackend%2Fagentkit%2Fv0.2.1) version of the ark agentkit backend.
 
 ### Overview
 
-Agentkit Sandbox Backend is a remote sandbox implementation of EINO ADK FileSystem that executes file system operations in an isolated cloud environment through Volcengine Agentkit service.
+Agentkit Sandbox Backend is the remote sandbox implementation of EINO ADK FileSystem, executing file system operations in an isolated cloud environment through the Volcengine Agentkit service.
 
 #### Core Features
 
-- Security Isolation - All operations execute in a remote sandbox environment
-- Session Management - Supports session isolation with configurable TTL
-- Request Signing - Automatic AK/SK authentication for Volcengine API
+- Secure isolation - All operations execute in a remote sandbox environment
+- Session management - Supports session isolation with configurable TTL
+- Request signing - Automatically uses AK/SK for Volcengine API authentication
 
 ### Installation
 
@@ -131,7 +131,7 @@ agent, _ := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 <tr><td>Method</td><td>Description</td></tr>
 <tr><td>LsInfo</td><td>List directory contents</td></tr>
 <tr><td>Read</td><td>Read file content (supports pagination)</td></tr>
-<tr><td>Write</td><td>Create new file (error if exists)</td></tr>
+<tr><td>Write</td><td>Create a new file (errors if it already exists)</td></tr>
 <tr><td>Edit</td><td>Replace file content</td></tr>
 <tr><td>GrepRaw</td><td>Search file content</td></tr>
 <tr><td>GlobInfo</td><td>Find files by pattern</td></tr>
@@ -147,7 +147,7 @@ files, _ := backend.LsInfo(ctx, &filesystem.LsInfoRequest{
 })
 
 // Read file (paginated)
-content, _ := backend.Read(ctx, &filesystem.ReadRequest{
+fcontent, _ := backend.Read(ctx, &filesystem.ReadRequest{
     FilePath: "/home/gem/file.txt",
     Offset:   0,
     Limit:    100,
@@ -184,19 +184,19 @@ result, _ := backend.Execute(ctx, &filesystem.ExecuteRequest{
 
 <table>
 <tr><td>Feature</td><td>Agentkit</td><td>Local</td></tr>
-<tr><td>Execution Model</td><td>Remote Sandbox</td><td>Local Direct</td></tr>
-<tr><td>Network Dependency</td><td>Required</td><td>Not Required</td></tr>
-<tr><td>Configuration Complexity</td><td>Requires Credentials</td><td>Zero Config</td></tr>
-<tr><td>Security Model</td><td>Isolated Sandbox</td><td>OS Permissions</td></tr>
-<tr><td>Use Cases</td><td>Multi-tenant/Production</td><td>Development/Local</td></tr>
+<tr><td>Execution model</td><td>Remote sandbox</td><td>Local direct</td></tr>
+<tr><td>Network dependency</td><td>Required</td><td>Not required</td></tr>
+<tr><td>Configuration complexity</td><td>Requires credentials</td><td>Zero config</td></tr>
+<tr><td>Security model</td><td>Isolated sandbox</td><td>OS permissions</td></tr>
+<tr><td>Use case</td><td>Multi-tenant / production</td><td>Development / local environment</td></tr>
 </table>
 
 ### FAQ
 
-**Q: Authentication failed**
+**Q: Authentication failure**
 
-Check environment variables, verify AK/SK match, and ensure account has Ark Sandbox permissions.
+Check environment variables, verify AK/SK match, and ensure the account has Ark Sandbox permissions.
 
 **Q: Request timeout**
 
-Increase ExecutionTimeout or HTTPClient.Timeout configuration.
+Increase the ExecutionTimeout or HTTPClient.Timeout configuration.

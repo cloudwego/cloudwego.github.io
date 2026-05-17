@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2025-07-21"
+date: "2026-05-17"
 lastmod: ""
 tags: []
 title: Document Transformer 使用说明
@@ -160,9 +160,11 @@ for idx, doc := range outDocs {
 
 ## **已有实现**
 
-1. Markdown Header Splitter: 基于 Markdown 标题进行文档分割 [Splitter - markdown](/zh/docs/eino/ecosystem_integration/document/splitter_markdown)
-2. Text Splitter: 基于文本长度或分隔符进行文档分割 [Splitter - semantic](/zh/docs/eino/ecosystem_integration/document/splitter_semantic)
-3. Document Filter: 基于规则过滤文档内容 [Splitter - recursive](/zh/docs/eino/ecosystem_integration/document/splitter_recursive)
+<table>
+<tr><td>markdown</td><td><a href="https://github.com/cloudwego/eino-ext/blob/main/components/document/transformer/splitter/markdown/README_zh.md">README_zh.md</a></td><td><a href="https://github.com/cloudwego/eino-ext/blob/main/components/document/transformer/splitter/markdown/README.md">README.md</a></td></tr>
+<tr><td>recursive</td><td><a href="https://github.com/cloudwego/eino-ext/blob/main/components/document/transformer/splitter/recursive/README_zh.md">README_zh.md</a></td><td><a href="https://github.com/cloudwego/eino-ext/blob/main/components/document/transformer/splitter/recursive/README.md">README.md</a></td></tr>
+<tr><td>semantic</td><td><a href="https://github.com/cloudwego/eino-ext/blob/main/components/document/transformer/splitter/semantic/README_zh.md">README_zh.md</a></td><td><a href="https://github.com/cloudwego/eino-ext/blob/main/components/document/transformer/splitter/semantic/README.md">README.md</a></td></tr>
+</table>
 
 ## **自行实现参考**
 

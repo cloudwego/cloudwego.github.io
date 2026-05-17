@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-16"
+date: "2026-05-17"
 lastmod: ""
 tags: []
 title: Cookbook
@@ -78,14 +78,14 @@ This document serves as an example index for the eino-examples project, helping 
 
 ## 🔗 Compose (Orchestration)
 
-### Chain (Chain Orchestration)
+### Chain
 
 <table>
 <tr><td>Directory</td><td>Name</td><td>Description</td></tr>
 <tr><td><a href="https://github.com/cloudwego/eino-examples/tree/main/compose/chain">compose/chain</a></td><td>Chain Basic Example</td><td>Demonstrates how to use compose.Chain for sequential orchestration, including Prompt + ChatModel</td></tr>
 </table>
 
-### Graph (Graph Orchestration)
+### Graph
 
 <table>
 <tr><td>Directory</td><td>Name</td><td>Description</td></tr>
@@ -98,7 +98,7 @@ This document serves as an example index for the eino-examples project, helping 
 <tr><td><a href="https://github.com/cloudwego/eino-examples/tree/main/compose/graph/react_with_interrupt">compose/graph/react_with_interrupt</a></td><td>ReAct + Interrupt</td><td>Ticket booking scenario, demonstrating Interrupt and Checkpoint practices</td></tr>
 </table>
 
-### Workflow (Workflow Orchestration)
+### Workflow
 
 <table>
 <tr><td>Directory</td><td>Name</td><td>Description</td></tr>
@@ -110,7 +110,7 @@ This document serves as an example index for the eino-examples project, helping 
 <tr><td><a href="https://github.com/cloudwego/eino-examples/tree/main/compose/workflow/6_stream_field_map">compose/workflow/6_stream_field_map</a></td><td>Stream Field Mapping</td><td>Field mapping in streaming scenarios</td></tr>
 </table>
 
-### Batch (Batch Processing)
+### Batch
 
 <table>
 <tr><td>Directory</td><td>Name</td><td>Description</td></tr>
@@ -119,7 +119,7 @@ This document serves as an example index for the eino-examples project, helping 
 
 ---
 
-## 🌊 Flow (Flow Modules)
+## 🌊 Flow
 
 ### ReAct Agent
 

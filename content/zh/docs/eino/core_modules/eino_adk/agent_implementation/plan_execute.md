@@ -1,10 +1,10 @@
 ---
 Description: ""
-date: "2026-03-02"
+date: "2026-05-17"
 lastmod: ""
 tags: []
 title: Plan-Execute Agent
-weight: 4
+weight: 2
 ---
 
 ## Plan-Execute Agent 概述
@@ -275,7 +275,7 @@ func newPlanExecuteAgent(ctx context.Context) adk.Agent {
     replanner := newReplanner(ctx, model)
 
     // 组合为 PlanExecuteAgent（固定 execute - replan 最大迭代 10 次）
-    planExecuteAgent, err := planexecute.NewPlanExecuteAgent(ctx, &planexecute.PlanExecuteConfig{
+    planExecuteAgent, err := planexecute.New(ctx, &planexecute.PlanExecuteConfig{
        Planner:       planner,
        Executor:      executor,
        Replanner:     replanner,
