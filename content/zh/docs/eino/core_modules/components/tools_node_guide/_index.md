@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-03"
+date: "2026-05-17"
 lastmod: ""
 tags: []
 title: ToolsNode&Tool 使用说明
@@ -281,6 +281,82 @@ type ToolInfo struct {
 ### **公共 Option**
 
 Tool 组件使用 ToolOption 来定义可选参数， ToolsNode 没有抽象公共的 option。每个具体的实现可以定义自己的特定 Option，通过 WrapToolImplSpecificOptFn 函数包装成统一的 ToolOption 类型。
+
+## Tool 别名（Alias）🏷️ alpha/09
+
+Tool 别名功能允许为工具配置**名称别名**和**参数别名**，使 LLM 使用别名调用工具时能自动解析到真实工具和规范参数。
+
+### 配置结构
+
+```go
+// ToolAliasConfig 配置单个工具的名称和参数别名
+type ToolAliasConfig struct {
+    // NameAliases 是工具的替代名称列表
+    // 如果模型返回这些名称中的任何一个，将解析为规范工具名
+    NameAliases []string
+
+    // ArgumentsAliases 将规范参数 key 映射到其别名列表
+    // key=规范名, value=[]别名
+    // 例: {"query": ["q", "search_term"], "limit": ["max_results", "count"]}
+    ArgumentsAliases map[string][]string
+}
+```
+
+在 `ToolsNodeConfig` 中通过 `ToolAliases` 字段配置：
+
+```go
+config := &compose.ToolsNodeConfig{
+    Tools: []tool.BaseTool{searchTool, weatherTool},
+    ToolAliases: map[string]ToolAliasConfig{
+        "search": {
+            NameAliases: []string{"find", "query", "search_v1"},
+            ArgumentsAliases: map[string][]string{
+                "query": {"q", "search_term"},
+                "limit": {"max_results", "count"},
+            },
+        },
+    },
+}
+toolsNode, err := compose.NewToolNode(ctx, config)
+```
+
+### 动态覆盖
+
+通过 `WithToolAliases()` 调用选项可在运行时覆盖全局别名配置：
+
+```go
+// 覆盖别名配置（保留原工具列表）
+result, err := toolsNode.Invoke(ctx, input,
+    compose.WithToolAliases(map[string]compose.ToolAliasConfig{
+        "search": {
+            NameAliases: []string{"new_alias"},
+        },
+    }),
+)
+
+// 同时覆盖工具列表和别名
+result, err := toolsNode.Invoke(ctx, input,
+    compose.WithToolList(newSearchTool),
+    compose.WithToolAliases(map[string]compose.ToolAliasConfig{...}),
+)
+```
+
+### 执行流程
+
+工具调用时的处理顺序：
+
+1. **名称解析**：LLM 返回的工具名（可能是别名）通过 indexes 查找解析为规范工具名
+2. **参数重映射**：JSON 参数中的别名 key 自动替换为规范 key
+3. **ToolArgumentsHandler**（如已配置）：接收规范工具名和已重映射的参数
+4. **工具执行**：使用规范名称和参数调用工具
+
+### 注意事项
+
+- 名称别名**不能**与其他工具的规范名或已注册的别名冲突
+- 参数别名**不能**与工具 JSON Schema 中已有的属性名冲突
+- 当别名 key 和规范 key **同时存在**于参数 JSON 中时，规范 key 优先，别名 key 保持原样
+- 为不存在的工具名配置别名会被**静默忽略**
+- 别名功能同时支持**标准工具**和**增强型工具**
 
 ## **使用方式**
 

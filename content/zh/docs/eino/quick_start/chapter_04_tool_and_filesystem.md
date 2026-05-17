@@ -1,6 +1,6 @@
 ---
 Description: ""
-date: "2026-03-12"
+date: "2026-05-17"
 lastmod: ""
 tags: []
 title: 第四章：Tool 与文件系统访问
@@ -170,7 +170,7 @@ agent, err := deep.New(ctx, &deep.Config{
     Name:           "Ch04ToolAgent",
     Description:    "ChatWithDoc agent with filesystem access via LocalBackend.",
     ChatModel:      cm,
-    Instruction:    instruction,
+    Instruction:    agentInstruction,
     Backend:        backend,        // 提供文件系统操作能力
     StreamingShell: backend,        // 提供命令执行能力
     MaxIteration:   50,

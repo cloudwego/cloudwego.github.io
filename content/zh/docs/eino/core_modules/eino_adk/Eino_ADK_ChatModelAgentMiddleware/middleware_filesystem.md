@@ -1,187 +1,221 @@
 ---
 Description: ""
-date: "2026-03-24"
+date: "2026-05-17"
 lastmod: ""
 tags: []
 title: FileSystem
 weight: 2
 ---
 
-> 💡 Package: [github.com/cloudwego/eino/adk/middlewares/filesystem](https://github.com/cloudwego/eino/tree/main/adk/middlewares/filesystem)
+FileSystem 中间件为 Agent 注入一组文件系统操作工具（ls、read\_file、write\_file、edit\_file、glob、grep）以及可选的命令执行工具（execute），使 Agent 具备与本地或远程文件系统交互的能力。
 
-## 概述
+```
+import "github.com/cloudwego/eino/adk/middlewares/filesystem"
+```
 
-FileSystem Middleware 为 Agent 提供文件系统访问能力。它通过 [FileSystem Backend](/zh/docs/eino/core_modules/eino_adk/eino_adk_chatmodelagentmiddleware/filesystem_backend) 接口操作文件系统，自动向 Agent 注入一组文件操作工具及对应的 system prompt，使 Agent 能够直接进行文件读写、搜索、编辑等操作。
+---
 
-核心功能：
-
-- **文件系统工具注入** — 自动注册 ls、read_file、write_file、edit_file、glob、grep 等工具
-- **Shell 命令执行** — 可选注入 execute 工具，支持同步和流式命令执行
-- **工具级别配置** — 每个工具均可独立配置名称、描述、自定义实现或禁用
-- **多语言提示词** — 工具描述和 system prompt 支持中英文切换
-
-## 创建中间件
-
-推荐使用 `New` 函数创建中间件（返回 `ChatModelAgentMiddleware`）：
+## 快速开始
 
 ```go
-import "github.com/cloudwego/eino/adk/middlewares/filesystem"
+import (
+    "context"
+    "github.com/cloudwego/eino/adk"
+    "github.com/cloudwego/eino/adk/middlewares/filesystem"
+)
 
+// 1. 创建 middleware
 middleware, err := filesystem.New(ctx, &filesystem.MiddlewareConfig{
-    Backend: myBackend,
-    // 如果需要 shell 命令执行能力，设置 Shell 或 StreamingShell
-    Shell: myShell,
+    Backend: myBackend, // 实现 filesystem.Backend 接口
 })
-if err != nil {
-    // handle error
-}
 
+// 2. 注入 Agent
 agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
     // ...
     Middlewares: []adk.ChatModelAgentMiddleware{middleware},
 })
 ```
 
+---
+
+## 构造函数
+
+<table>
+<tr><td>函数签名</td><td>说明</td></tr>
+<tr><td><pre>New(ctx, *MiddlewareConfig) (ChatModelAgentMiddleware, error)</pre></td><td><strong>推荐</strong>。返回 <pre>ChatModelAgentMiddleware</pre>，支持通过 <pre>BeforeAgent</pre> 钩子动态修改 Instruction 和 Tools。</td></tr>
+<tr><td><pre>NewTyped[M MessageType](ctx, *MiddlewareConfig) (TypedChatModelAgentMiddleware[M], error)</pre></td><td>泛型版本，类型参数 <pre>M</pre> 支持 <pre>*schema.Message</pre> 和 <pre>*schema.AgenticMessage</pre>。<pre>New</pre> 等价于 <pre>NewTyped[*schema.Message]</pre>。</td></tr>
+</table>
+
 > 💡
-> `New` 返回 `ChatModelAgentMiddleware`，提供更好的上下文传播能力（通过 `BeforeAgent` hook 在运行时修改 Agent 的 instruction 和 tools）。
+> **Deprecated**: `NewMiddleware(ctx, *Config) (AgentMiddleware, error)` 为旧版构造函数，新代码请使用 `New`。`NewMiddleware` 返回结构体 `AgentMiddleware`，缺少 `BeforeAgent` 钩子的灵活性；此外它默认启用「大结果卸载」功能（见下文），在 `New` 路径中该功能已被移除。
 
-## MiddlewareConfig 配置项
+---
 
-```go
-type MiddlewareConfig struct {
-    // Backend 提供文件系统操作
-    // 必填
-    Backend filesystem.Backend
+## MiddlewareConfig
 
-    // Shell 提供 shell 命令执行能力
-    // 如果设置，会注册 execute 工具
-    // 可选，与 StreamingShell 互斥
-    Shell filesystem.Shell
+`MiddlewareConfig` 是 `New` / `NewTyped` 使用的配置结构体。
 
-    // StreamingShell 提供流式 shell 命令执行能力
-    // 如果设置，会注册流式 execute 工具（支持实时输出）
-    // 可选，与 Shell 互斥
-    StreamingShell filesystem.StreamingShell
+### 核心字段
 
-    // 以下为各工具的独立配置，均为可选
-    LsToolConfig        *ToolConfig  // ls 工具配置
-    ReadFileToolConfig  *ToolConfig  // read_file 工具配置
-    WriteFileToolConfig *ToolConfig  // write_file 工具配置
-    EditFileToolConfig  *ToolConfig  // edit_file 工具配置
-    GlobToolConfig      *ToolConfig  // glob 工具配置
-    GrepToolConfig      *ToolConfig  // grep 工具配置
+<table>
+<tr><td>字段</td><td>类型</td><td>说明</td></tr>
+<tr><td><pre>Backend</pre></td><td><pre>filesystem.Backend</pre></td><td><strong>必填</strong>。提供文件系统操作能力，驱动 ls、read\_file、write\_file、edit\_file、glob、grep 共 6 个工具。接口定义在 <pre>github.com/cloudwego/eino/adk/filesystem</pre> 包。</td></tr>
+<tr><td><pre>Shell</pre></td><td><pre>filesystem.Shell</pre></td><td>可选。提供命令执行能力，设置后注册 <pre>execute</pre> 工具。与 <pre>StreamingShell</pre> <strong>互斥</strong>。</td></tr>
+<tr><td><pre>StreamingShell</pre></td><td><pre>filesystem.StreamingShell</pre></td><td>可选。提供流式命令执行能力，设置后注册流式 <pre>execute</pre> 工具。与 <pre>Shell</pre> <strong>互斥</strong>。</td></tr>
+<tr><td><pre>UseMultiModalRead</pre></td><td><pre>bool</pre></td><td>可选，默认 <pre>false</pre>。开启后 <pre>read_file</pre> 工具变为 <pre>EnhancedInvokableTool</pre>，支持返回图片/PDF 等多模态内容。<strong>要求 Backend 同时实现 filesystem.MultiModalReader 接口</strong>。</td></tr>
+<tr><td><pre>CustomSystemPrompt</pre></td><td><pre>*string</pre></td><td>可选。覆盖追加到 Agent Instruction 的系统提示词。若为 <pre>nil</pre>，<strong>不追加任何系统提示词</strong>。</td></tr>
+</table>
 
-    // CustomSystemPrompt 覆盖默认的系统提示词
-    // 可选，默认 ToolsSystemPrompt
-    CustomSystemPrompt *string
+### 工具配置字段
 
-    // 以下字段已 Deprecated，请使用对应的 *ToolConfig.Desc 替代
-    // CustomLsToolDesc, CustomReadFileToolDesc, CustomGrepToolDesc,
-    // CustomGlobToolDesc, CustomWriteFileToolDesc, CustomEditToolDesc
-}
-```
+每个工具均有对应的 `*ToolConfig` 字段，用于自定义工具名称、描述、替换实现或禁用：
 
-### ToolConfig
+<table>
+<tr><td>字段</td><td>对应工具</td></tr>
+<tr><td><pre>LsToolConfig</pre></td><td>ls</td></tr>
+<tr><td><pre>ReadFileToolConfig</pre></td><td>read\_file</td></tr>
+<tr><td><pre>WriteFileToolConfig</pre></td><td>write\_file</td></tr>
+<tr><td><pre>EditFileToolConfig</pre></td><td>edit\_file</td></tr>
+<tr><td><pre>GlobToolConfig</pre></td><td>glob</td></tr>
+<tr><td><pre>GrepToolConfig</pre></td><td>grep</td></tr>
+</table>
 
-每个工具均可通过 `ToolConfig` 独立配置：
+> `execute` 工具当前不支持通过 `ToolConfig` 自定义，其注册仅由 `Shell` / `StreamingShell` 是否设置来控制。
+
+---
+
+## ToolConfig
 
 ```go
 type ToolConfig struct {
-    // Name 覆盖工具名称
-    // 可选，不设置则使用默认名称（如 "ls"、"read_file" 等）
-    Name string
-
-    // Desc 覆盖工具描述
-    // 可选，不设置则使用默认描述
-    Desc *string
-
-    // CustomTool 提供自定义工具实现
-    // 如果设置，将使用此自定义实现替代基于 Backend 的默认实现
-    // 可选
-    CustomTool tool.BaseTool
-
-    // Disable 禁用此工具
-    // 如果为 true，该工具将不会被注册
-    // 可选，默认 false
-    Disable bool
+    Name       string         // 覆盖工具名称，空串使用默认值
+    Desc       *string        // 覆盖工具描述，nil 使用默认值
+    CustomTool tool.BaseTool  // 自定义工具实现，设置后替代 Backend 默认实现
+    Disable    bool           // 设为 true 则不注册该工具
 }
 ```
 
-示例 — 自定义工具名称并禁用写入：
+**优先级**：`Disable=true` > `CustomTool` > Backend 默认实现。
+
+---
+
+## 工具名称常量
 
 ```go
-middleware, err := filesystem.New(ctx, &filesystem.MiddlewareConfig{
-    Backend: myBackend,
-    ReadFileToolConfig: &filesystem.ToolConfig{
-        Name: "cat_file",  // 自定义名称
-    },
-    WriteFileToolConfig: &filesystem.ToolConfig{
-        Disable: true,  // 禁用写入工具
-    },
-})
+const (
+    ToolNameLs        = "ls"
+    ToolNameReadFile  = "read_file"
+    ToolNameWriteFile = "write_file"
+    ToolNameEditFile  = "edit_file"
+    ToolNameGlob      = "glob"
+    ToolNameGrep      = "grep"
+    ToolNameExecute   = "execute"
+)
 ```
+
+---
 
 ## 注入的工具
 
 <table>
-<tr><td>工具</td><td>默认名称</td><td>描述</td><td>条件</td></tr>
-<tr><td>列出目录</td><td><pre>ls</pre></td><td>列出指定路径下的文件和目录</td><td>Backend 不为 nil 时注入</td></tr>
-<tr><td>读取文件</td><td><pre>read_file</pre></td><td>读取文件内容，支持按行分页（offset + limit）</td><td>Backend 不为 nil 时注入</td></tr>
-<tr><td>写入文件</td><td><pre>write_file</pre></td><td>创建或覆盖文件</td><td>Backend 不为 nil 时注入</td></tr>
-<tr><td>编辑文件</td><td><pre>edit_file</pre></td><td>替换文件中的字符串</td><td>Backend 不为 nil 时注入</td></tr>
-<tr><td>Glob 查找</td><td><pre>glob</pre></td><td>按 glob pattern 查找文件</td><td>Backend 不为 nil 时注入</td></tr>
-<tr><td>内容搜索</td><td><pre>grep</pre></td><td>按 pattern 搜索文件内容，支持多种输出模式</td><td>Backend 不为 nil 时注入</td></tr>
-<tr><td>命令执行</td><td><pre>execute</pre></td><td>执行 shell 命令</td><td>需配置 Shell 或 StreamingShell</td></tr>
+<tr><td>工具</td><td>默认名称</td><td>注册条件</td><td>功能说明</td></tr>
+<tr><td>ls</td><td><pre>ls</pre></td><td>Backend ≠ nil</td><td>列出目录下的文件和子目录</td></tr>
+<tr><td>read\_file</td><td><pre>read_file</pre></td><td>Backend ≠ nil</td><td>读取文件内容，支持 offset/limit 分页。开启 <pre>UseMultiModalRead</pre> 后可读取图片和 PDF</td></tr>
+<tr><td>write\_file</td><td><pre>write_file</pre></td><td>Backend ≠ nil</td><td>创建或覆盖写入文件</td></tr>
+<tr><td>edit\_file</td><td><pre>edit_file</pre></td><td>Backend ≠ nil</td><td>精确字符串替换编辑，支持 <pre>replace_all</pre></td></tr>
+<tr><td>glob</td><td><pre>glob</pre></td><td>Backend ≠ nil</td><td>按 glob 模式匹配文件路径</td></tr>
+<tr><td>grep</td><td><pre>grep</pre></td><td>Backend ≠ nil</td><td>正则搜索文件内容，支持多种输出模式和分页</td></tr>
+<tr><td>execute</td><td><pre>execute</pre></td><td>Shell ≠ nil 或 StreamingShell ≠ nil</td><td>执行 Shell 命令</td></tr>
 </table>
 
-每个工具均可通过对应的 `*ToolConfig` 禁用（`Disable: true`）或提供自定义实现（`CustomTool`）。
+---
 
-## 多语言支持
+## Backend 接口
 
-工具描述和内置提示词默认为英文。如需切换为中文，可通过 `adk.SetLanguage()` 设置：
-
-```go
-import "github.com/cloudwego/eino/adk"
-
-adk.SetLanguage(adk.LanguageChinese)  // 切换为中文
-adk.SetLanguage(adk.LanguageEnglish)  // 切换为英文（默认）
-```
-
-也可以通过 `ToolConfig.Desc` 或 `CustomSystemPrompt` 自定义各工具的说明文本。
-
-## [deprecated] 工具结果卸载
-
-> 💡
-> 该功能即将在 0.8.0 中 deprecate。请迁移到 Middleware: ToolReduction
-
-> 注意：工具结果卸载仅在旧的 `Config` + `NewMiddleware` 函数中可用。推荐的 `MiddlewareConfig` + `New` 不包含此功能，如需要请配合 ToolReduction middleware 使用。
-
-当工具调用结果过大（例如读取大文件、grep 命中大量内容），如果继续将完整结果放入对话上下文，会导致：
-
-- token 急剧增加
-- Agent 历史上下文污染
-- 推理效率变差
-
-为此，旧版 Middleware（`NewMiddleware`）提供了自动卸载机制：
-
-- 当结果大小超过阈值（默认 20,000 tokens）时，不直接返回全部内容给 LLM
-- 实际结果会保存到文件系统（Backend）
-- 上下文中仅包含摘要和文件路径（Agent 可再次调用 `read_file` 工具按需读取）
-
-该功能默认启用，可通过 `Config`（非 `MiddlewareConfig`）配置：
+`Backend` 定义在 `github.com/cloudwego/eino/adk/filesystem` 包中。middleware 包通过类型别名重导出了请求/响应类型（如 `ReadRequest`、`FileContent` 等），但 **Backend 接口本身需要从 adk/filesystem 包引用**。
 
 ```go
-type Config struct {
-    // ... Backend, Shell, StreamingShell, ToolConfig 等字段同 MiddlewareConfig
-
-    // 关闭自动卸载
-    WithoutLargeToolResultOffloading bool
-
-    // 自定义触发阈值（默认 20000 tokens）
-    LargeToolResultOffloadingTokenLimit int
-
-    // 自定义卸载文件生成路径
-    // 默认路径格式: /large_tool_result/{ToolCallID}
-    LargeToolResultOffloadingPathGen func(ctx context.Context, input *compose.ToolInput) (string, error)
+type Backend interface {
+    LsInfo(ctx context.Context, req *LsInfoRequest) ([]FileInfo, error)
+    Read(ctx context.Context, req *ReadRequest) (*FileContent, error)
+    GrepRaw(ctx context.Context, req *GrepRequest) ([]GrepMatch, error)
+    GlobInfo(ctx context.Context, req *GlobInfoRequest) ([]FileInfo, error)
+    Write(ctx context.Context, req *WriteRequest) error
+    Edit(ctx context.Context, req *EditRequest) error
 }
 ```
+
+### Shell 与 StreamingShell
+
+```go
+type Shell interface {
+    Execute(ctx context.Context, input *ExecuteRequest) (*ExecuteResponse, error)
+}
+
+type StreamingShell interface {
+    ExecuteStreaming(ctx context.Context, input *ExecuteRequest) (*schema.StreamReader[*ExecuteResponse], error)
+}
+```
+
+二者互斥，只能设置其中一个。`StreamingShell` 支持流式输出，适合长时间运行的命令。
+
+---
+
+## MultiModalReader 扩展接口
+
+当 `UseMultiModalRead = true` 时，Backend 需要额外实现 `MultiModalReader` 接口：
+
+```go
+type MultiModalReader interface {
+    MultiModalRead(ctx context.Context, req *MultiModalReadRequest) (*MultiFileContent, error)
+}
+```
+
+**行为说明**：
+
+- `read_file` 工具将从 `InvokableTool` 升级为 `EnhancedInvokableTool`，通过 `schema.ToolResult.Parts` 返回多模态结果
+- 默认实现支持读取图片文件（PNG、JPG 等）和 PDF 文件（支持 `pages` 参数指定页面范围，每次最多 20 页）
+- 工具描述会自动追加多模态能力后缀；若通过 `ReadFileToolConfig.Desc` 自定义了描述，则不会追加
+
+> 💡
+> 使用 `ChatModelAgentMiddleware` 时，需要实现 `WrapEnhancedInvokableToolCall` 方法，多模态 read\_file 工具才能生效。
+
+```go
+// MultiModalReadRequest 扩展了 ReadRequest
+type MultiModalReadRequest struct {
+    ReadRequest
+    Pages string  // PDF 页面范围，如 "1-5"、"3"、"10-20"
+}
+
+// MultiFileContent 返回结果
+type MultiFileContent struct {
+    *FileContent            // 纯文本结果
+    Parts []FileContentPart // 多模态结果（与 FileContent 互斥，Parts 非空时忽略 FileContent）
+}
+
+type FileContentPart struct {
+    Type     FileContentPartType // "image" 或 "pdf"
+    MIMEType string              // 如 "image/png"、"application/pdf"
+    Data     []byte              // 原始二进制数据
+}
+```
+
+---
+
+## Deprecated: 旧版 Config 与大结果卸载
+
+> 💡
+> 以下内容仅适用于 `NewMiddleware` + `Config` 旧版路径。`New` / `NewTyped` 路径**不包含**大结果卸载功能。
+
+旧版 `Config` 在 `MiddlewareConfig` 的基础上额外提供了「大工具结果卸载」(Large Tool Result Offloading) 机制：
+
+<table>
+<tr><td>字段</td><td>说明</td></tr>
+<tr><td><pre>WithoutLargeToolResultOffloading bool</pre></td><td>设为 <pre>true</pre> 禁用卸载，默认 <pre>false</pre>（启用）</td></tr>
+<tr><td><pre>LargeToolResultOffloadingTokenLimit int</pre></td><td>Token 阈值，默认 <pre>20000</pre></td></tr>
+<tr><td><pre>LargeToolResultOffloadingPathGen func(ctx, *compose.ToolInput) (string, error)</pre></td><td>卸载路径生成函数，默认 <pre>/large_tool_result/{ToolCallID}</pre></td></tr>
+</table>
+
+**触发条件**：当工具返回结果的字符数 > `tokenLimit × 4` 时触发卸载。
+
+**卸载行为**：将完整结果通过 `Backend.Write` 写入文件，并用摘要（前 10 行 + 文件路径提示）替换原始返回。Agent 可通过 `read_file` 分页读取完整结果。
