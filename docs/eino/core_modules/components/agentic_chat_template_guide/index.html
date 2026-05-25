@@ -1,7 +1,10 @@
-<!doctype html><html lang=en class=no-js data-theme-init><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><script>(function(){const t="td-color-theme",n=localStorage.getItem(t);let e=n||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");e==="auto"&&(e=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),document.documentElement.setAttribute("data-bs-theme",e)})()</script><meta name=color-scheme content="light dark"><style>html{background:Canvas;color:CanvasText}@media(prefers-color-scheme:dark){html{background:#0b0d12;color:#e6e6e6}}html[data-theme-init] *{transition:none!important}</style><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Eino: AgenticChatTemplate Guide [Beta] | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/core_modules/components/agentic_chat_template_guide/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="Eino: AgenticChatTemplate Guide [Beta]"><meta property="og:description" content="💡 This feature is available starting from v0.9.
-Introduction The Prompt component is used for processing and formatting prompt templates. AgenticChatTemplate is a component abstraction specifically designed for AgenticMessage, with definitions and usage essentially the same as the existing ChatTemplate abstraction. Its main purpose is to fill user-provided variable values into predefined message templates, generating standardized message formats for interacting with language models. This component can be used in the following scenarios:"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-03T00:00:00+00:00"><meta property="article:modified_time" content="2026-03-03T12:09:36+08:00"><meta itemprop=name content="Eino: AgenticChatTemplate Guide [Beta]"><meta itemprop=description content="💡 This feature is available starting from v0.9.
-Introduction The Prompt component is used for processing and formatting prompt templates. AgenticChatTemplate is a component abstraction specifically designed for AgenticMessage, with definitions and usage essentially the same as the existing ChatTemplate abstraction. Its main purpose is to fill user-provided variable values into predefined message templates, generating standardized message formats for interacting with language models. This component can be used in the following scenarios:"><meta itemprop=datePublished content="2026-03-03T00:00:00+00:00"><meta itemprop=dateModified content="2026-03-03T12:09:36+08:00"><meta itemprop=wordCount content="999"><meta name=twitter:card content="summary"><meta name=twitter:title content="Eino: AgenticChatTemplate Guide [Beta]"><meta name=twitter:description content="💡 This feature is available starting from v0.9.
-Introduction The Prompt component is used for processing and formatting prompt templates. AgenticChatTemplate is a component abstraction specifically designed for AgenticMessage, with definitions and usage essentially the same as the existing ChatTemplate abstraction. Its main purpose is to fill user-provided variable values into predefined message templates, generating standardized message formats for interacting with language models. This component can be used in the following scenarios:"><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.30e7edf0a315436a3eb852158c6274b97d2940d1958389de36cc4e6e851ee2f5.css as=style><link href=/scss/main.min.30e7edf0a315436a3eb852158c6274b97d2940d1958389de36cc4e6e851ee2f5.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js data-theme-init><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><script>(function(){const t="td-color-theme",n=localStorage.getItem(t);let e=n||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");e==="auto"&&(e=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),document.documentElement.setAttribute("data-bs-theme",e)})()</script><meta name=color-scheme content="light dark"><style>html{background:Canvas;color:CanvasText}@media(prefers-color-scheme:dark){html{background:#0b0d12;color:#e6e6e6}}html[data-theme-init] *{transition:none!important}</style><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>AgenticChatTemplate Guide [Beta] | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/core_modules/components/agentic_chat_template_guide/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="AgenticChatTemplate Guide [Beta]"><meta property="og:description" content="💡 This feature is available starting from v0.9. This document is based on the current main branch source code, with code primarily located in components/prompt, schema/agentic_message.go, and compose.
+Introduction AgenticChatTemplate is a Prompt component abstraction designed for *schema.AgenticMessage. It fills variables from a map[string]any into agentic message templates and outputs []*schema.AgenticMessage for use by AgenticModel or subsequent orchestration nodes.
+Its design is essentially the same as the existing ChatTemplate, but the message type is switched from *schema.Message to *schema.AgenticMessage, and template rendering only applies to user input content blocks."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-05-25T00:00:00+00:00"><meta property="article:modified_time" content="2026-05-25T14:48:01+08:00"><meta itemprop=name content="AgenticChatTemplate Guide [Beta]"><meta itemprop=description content="💡 This feature is available starting from v0.9. This document is based on the current main branch source code, with code primarily located in components/prompt, schema/agentic_message.go, and compose.
+Introduction AgenticChatTemplate is a Prompt component abstraction designed for *schema.AgenticMessage. It fills variables from a map[string]any into agentic message templates and outputs []*schema.AgenticMessage for use by AgenticModel or subsequent orchestration nodes.
+Its design is essentially the same as the existing ChatTemplate, but the message type is switched from *schema.Message to *schema.AgenticMessage, and template rendering only applies to user input content blocks."><meta itemprop=datePublished content="2026-05-25T00:00:00+00:00"><meta itemprop=dateModified content="2026-05-25T14:48:01+08:00"><meta itemprop=wordCount content="972"><meta name=twitter:card content="summary"><meta name=twitter:title content="AgenticChatTemplate Guide [Beta]"><meta name=twitter:description content="💡 This feature is available starting from v0.9. This document is based on the current main branch source code, with code primarily located in components/prompt, schema/agentic_message.go, and compose.
+Introduction AgenticChatTemplate is a Prompt component abstraction designed for *schema.AgenticMessage. It fills variables from a map[string]any into agentic message templates and outputs []*schema.AgenticMessage for use by AgenticModel or subsequent orchestration nodes.
+Its design is essentially the same as the existing ChatTemplate, but the message type is switched from *schema.Message to *schema.AgenticMessage, and template rendering only applies to user input content blocks."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.30e7edf0a315436a3eb852158c6274b97d2940d1958389de36cc4e6e851ee2f5.css as=style><link href=/scss/main.min.30e7edf0a315436a3eb852158c6274b97d2940d1958389de36cc4e6e851ee2f5.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-bs-toggle=collapse data-bs-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ms-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ms-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-bs-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdown><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -52,8 +55,8 @@ Auto
 <label for=m-docseinocore_modulescomponentschat_model_guide-check><a href=/docs/eino/core_modules/components/chat_model_guide/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentschat_model_guide><span>Eino: ChatModel User Guide</span></a></label></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id=m-docseinocore_modulescomponentstools_node_guide-li><input type=checkbox id=m-docseinocore_modulescomponentstools_node_guide-check>
 <label for=m-docseinocore_modulescomponentstools_node_guide-check><a href=/docs/eino/core_modules/components/tools_node_guide/ class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id=m-docseinocore_modulescomponentstools_node_guide><span>ToolsNode & Tool Guide</span></a></label><ul class="ul-5 foldable"><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinocore_modulescomponentstools_node_guidehow_to_create_a_tool-li><input type=checkbox id=m-docseinocore_modulescomponentstools_node_guidehow_to_create_a_tool-check>
 <label for=m-docseinocore_modulescomponentstools_node_guidehow_to_create_a_tool-check><a href=/docs/eino/core_modules/components/tools_node_guide/how_to_create_a_tool/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentstools_node_guidehow_to_create_a_tool><span>How to Create a Tool</span></a></label></li></ul></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinocore_modulescomponentsagentic_chat_model_guide-li><input type=checkbox id=m-docseinocore_modulescomponentsagentic_chat_model_guide-check>
-<label for=m-docseinocore_modulescomponentsagentic_chat_model_guide-check><a href=/docs/eino/core_modules/components/agentic_chat_model_guide/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentsagentic_chat_model_guide><span>Eino: AgenticModel User Guide [Beta]</span></a></label></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child active-path" id=m-docseinocore_modulescomponentsagentic_chat_template_guide-li><input type=checkbox id=m-docseinocore_modulescomponentsagentic_chat_template_guide-check checked>
-<label for=m-docseinocore_modulescomponentsagentic_chat_template_guide-check><a href=/docs/eino/core_modules/components/agentic_chat_template_guide/ class="align-left ps-0 active td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentsagentic_chat_template_guide><span class=td-sidebar-nav-active-item>Eino: AgenticChatTemplate Guide [Beta]</span></a></label></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinocore_modulescomponentsagentic_tools_node_guide-li><input type=checkbox id=m-docseinocore_modulescomponentsagentic_tools_node_guide-check>
+<label for=m-docseinocore_modulescomponentsagentic_chat_model_guide-check><a href=/docs/eino/core_modules/components/agentic_chat_model_guide/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentsagentic_chat_model_guide><span>AgenticModel User Guide [Beta]</span></a></label></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child active-path" id=m-docseinocore_modulescomponentsagentic_chat_template_guide-li><input type=checkbox id=m-docseinocore_modulescomponentsagentic_chat_template_guide-check checked>
+<label for=m-docseinocore_modulescomponentsagentic_chat_template_guide-check><a href=/docs/eino/core_modules/components/agentic_chat_template_guide/ class="align-left ps-0 active td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentsagentic_chat_template_guide><span class=td-sidebar-nav-active-item>AgenticChatTemplate Guide [Beta]</span></a></label></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinocore_modulescomponentsagentic_tools_node_guide-li><input type=checkbox id=m-docseinocore_modulescomponentsagentic_tools_node_guide-check>
 <label for=m-docseinocore_modulescomponentsagentic_tools_node_guide-check><a href=/docs/eino/core_modules/components/agentic_tools_node_guide/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentsagentic_tools_node_guide><span>AgenticToolsNode & Tool User Guide [Beta]</span></a></label></li></ul></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id=m-docseinocore_moduleschain_and_graph_orchestration-li><input type=checkbox id=m-docseinocore_moduleschain_and_graph_orchestration-check>
 <label for=m-docseinocore_moduleschain_and_graph_orchestration-check><a href=/docs/eino/core_modules/chain_and_graph_orchestration/ class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id=m-docseinocore_moduleschain_and_graph_orchestration><span>Eino: Chain & Graph & Workflow Orchestration</span></a></label><ul class="ul-4 foldable"><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinocore_moduleschain_and_graph_orchestrationchain_graph_introduction-li><input type=checkbox id=m-docseinocore_moduleschain_and_graph_orchestrationchain_graph_introduction-check>
 <label for=m-docseinocore_moduleschain_and_graph_orchestrationchain_graph_introduction-check><a href=/docs/eino/core_modules/chain_and_graph_orchestration/chain_graph_introduction/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_moduleschain_and_graph_orchestrationchain_graph_introduction><span>Eino: Chain/Graph Orchestration Introduction</span></a></label></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinocore_moduleschain_and_graph_orchestrationorchestration_design_principles-li><input type=checkbox id=m-docseinocore_moduleschain_and_graph_orchestrationorchestration_design_principles-check>
@@ -121,8 +124,8 @@ Auto
 <label for=m-docseinorelease_notes_and_migrationeino_v09_agentic-runtimeeino_v09_migration_notes-check><a href=/docs/eino/release_notes_and_migration/eino_v0.9._agentic-runtime/eino_v0.9_migration_notes/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinorelease_notes_and_migrationeino_v09_agentic-runtimeeino_v09_migration_notes><span>Eino V0.9 Migration Notes</span></a></label></li></ul></li></ul></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinofaq-li><input type=checkbox id=m-docseinofaq-check checked>
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ms-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/components/agentic_chat_template_guide.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/components?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
-<a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=Eino:%20AgenticChatTemplate%20Guide%20[Beta]" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#component-definition>Component Definition</a><ul><li><a href=#interface>Interface</a></li><li><a href=#built-in-templating-methods>Built-in Templating Methods</a></li><li><a href=#common-options>Common Options</a></li></ul></li><li><a href=#usage>Usage</a><ul><li><a href=#creation-methods>Creation Methods</a></li><li><a href=#standalone-usage>Standalone Usage</a></li><li><a href=#in-orchestration>In Orchestration</a></li><li><a href=#pull-data-from-predecessor-node-output>Pull Data from Predecessor Node Output</a></li></ul></li><li><a href=#options-and-callback-usage>Options and Callback Usage</a><ul><li><a href=#callback-usage-example>Callback Usage Example</a></li></ul></li><li><a href=#implementation-reference>Implementation Reference</a><ul><li><a href=#option-mechanism>Option Mechanism</a></li><li><a href=#callback-handling>Callback Handling</a></li><li><a href=#complete-implementation-example>Complete Implementation Example</a></li></ul></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 ps-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/components/>Eino: Components</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/components/agentic_chat_template_guide/>Eino: AgenticChatTemplate Guide [Beta]</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="Eino: AgenticChatTemplate Guide [Beta]" data-url=https://www.cloudwego.io/docs/eino/core_modules/components/agentic_chat_template_guide/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=AgenticChatTemplate%20Guide%20[Beta]" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#component-definition>Component Definition</a></li><li><a href=#construction-methods>Construction Methods</a><ul><li><a href=#fromagenticmessages>FromAgenticMessages</a></li><li><a href=#supported-formattypes>Supported FormatTypes</a></li></ul></li><li><a href=#agenticmessagestemplate>AgenticMessagesTemplate</a><ul><li><a href=#template-rendering-scope>Template Rendering Scope</a></li></ul></li><li><a href=#placeholder>Placeholder</a></li><li><a href=#standalone-usage>Standalone Usage</a></li><li><a href=#usage-in-orchestration>Usage in Orchestration</a><ul><li><a href=#chain>Chain</a></li><li><a href=#graph>Graph</a></li><li><a href=#workflow>Workflow</a></li><li><a href=#parallel-and-chainbranch>Parallel and ChainBranch</a></li></ul></li><li><a href=#getting-variables-from-predecessor-nodes>Getting Variables from Predecessor Nodes</a></li><li><a href=#callback>Callback</a><ul><li><a href=#component-level-callback-payload>Component-level Callback Payload</a></li><li><a href=#utilscallbacks-helper>utils/callbacks Helper</a></li></ul></li><li><a href=#custom-implementation>Custom Implementation</a></li><li><a href=#best-practices>Best Practices</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 ps-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/components/>Eino: Components</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/components/agentic_chat_template_guide/>AgenticChatTemplate Guide [Beta]</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="AgenticChatTemplate Guide [Beta]" data-url=https://www.cloudwego.io/docs/eino/core_modules/components/agentic_chat_template_guide/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
 <i class="fa-regular fa-copy"></i>
 <span>Copy Full Text</span>
 </button>
@@ -133,21 +136,17 @@ Copy Markdown
 <button class=dropdown-item data-copy-type=text>
 Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
 > 💡
-> This feature is available starting from [v0.9](https://github.com/cloudwego/eino/releases/tag/v0.9.0-alpha.2).
+> This feature is available starting from [v0.9](https://github.com/cloudwego/eino/releases/tag/v0.9.0-alpha.2). This document is based on the current main branch source code, with code primarily located in `components/prompt`, `schema/agentic_message.go`, and `compose`.
 
 ## Introduction
 
-The Prompt component is used for processing and formatting prompt templates. AgenticChatTemplate is a component abstraction specifically designed for AgenticMessage, with definitions and usage essentially the same as the existing ChatTemplate abstraction. Its main purpose is to fill user-provided variable values into predefined message templates, generating standardized message formats for interacting with language models. This component can be used in the following scenarios:
+`AgenticChatTemplate` is a Prompt component abstraction designed for `*schema.AgenticMessage`. It fills variables from a `map[string]any` into agentic message templates and outputs `[]*schema.AgenticMessage` for use by `AgenticModel` or subsequent orchestration nodes.
 
-- Building structured system prompts
-- Processing multi-turn dialogue templates (including history)
-- Implementing reusable prompt patterns
+Its design is essentially the same as the existing `ChatTemplate`, but the message type is switched from `*schema.Message` to `*schema.AgenticMessage`, and template rendering only applies to user input content blocks.
 
 ## Component Definition
 
-### Interface
-
-> Code: [https://github.com/cloudwego/eino/tree/main/components/prompt/interface.go](https://github.com/cloudwego/eino/tree/main/components/prompt/interface.go)
+Code location: `components/prompt/interface.go`
 
 ```go
 type AgenticChatTemplate interface {
@@ -155,488 +154,444 @@ type AgenticChatTemplate interface {
 }
 ```
 
-#### Format Method
+`Format` parameter description:
 
-- Purpose: Fill variable values into the message template
-- Params:
-  - ctx: Context object for passing request-level information, also used to pass the Callback Manager
-  - vs: Variable value mapping used to fill placeholders in the template
-  - opts: Optional parameters for configuring formatting behavior
-- Returns:
-  - `[]*schema.AgenticMessage`: Formatted message list
-  - error: Error information during formatting
+<table>
+<tr><td>Parameter</td><td>Description</td></tr>
+<tr><td><pre>ctx</pre></td><td>Request context, also carries runtime information such as the callback manager</td></tr>
+<tr><td><pre>vs</pre></td><td>Template variable map, where the key is the placeholder name and value is the actual value</td></tr>
+<tr><td><pre>opts</pre></td><td>Prompt component Option, supports implementation-side custom extensions</td></tr>
+</table>
 
-### Built-in Templating Methods
+Return values:
 
-The Prompt component has built-in support for three templating methods:
+<table>
+<tr><td>Return Value</td><td>Description</td></tr>
+<tr><td><pre>[]*schema.AgenticMessage</pre></td><td>The rendered agentic message list</td></tr>
+<tr><td><pre>error</pre></td><td>Returns an error when variables are missing, variable types don't match, or template rendering fails</td></tr>
+</table>
 
-1. FString Format (schema.FString)
+## Construction Methods
 
-   - Uses `{variable}` syntax for variable substitution
-   - Simple and intuitive, suitable for basic text replacement scenarios
-   - Example: `"You are a {role}, please help me {task}."`
-2. GoTemplate Format (schema.GoTemplate)
+### FromAgenticMessages
 
-   - Uses Go standard library's text/template syntax
-   - Supports conditional statements, loops, and other complex logic
-   - Example: `"{{if .expert}}As an expert{{end}} please {{.action}}"`
-3. Jinja2 Format (schema.Jinja2)
-
-   - Uses Jinja2 template syntax
-   - Example: `"{% if level == 'expert' %}From an expert perspective{% endif %} analyze {{topic}}"`
-
-### Common Options
-
-AgenticChatTemplate shares a common set of Options with ChatTemplate.
-
-## Usage
-
-AgenticChatTemplate is typically used before AgenticModel to prepare context.
-
-### Creation Methods
-
-- `prompt.FromAgenticMessages()`
-  - Used to combine multiple messages into an agentic chat template.
-- `schema.AgenticMessage{}`
-  - schema.AgenticMessage is a struct that implements the Format interface, so you can directly construct `schema.AgenticMessage{}` as a template
-- `schema.DeveloperAgenticMessage()`
-  - A shortcut method for building a message with role "developer"
-- `schema.SystemAgenticMessage()`
-  - A shortcut method for building a message with role "system"
-- `schema.UserAgenticMessage()`
-  - A shortcut method for building a message with role "user"
-- `schema.FunctionToolResultAgenticMessage()`
-  - A shortcut method for building a tool call message with role "user"
-- `schema.AgenticMessagesPlaceholder()`
-  - Can be used to insert a `[]*schema.AgenticMessage` into the message list, commonly used for inserting conversation history
-
-### Standalone Usage
+Code location: `components/prompt/agentic_chat_template.go`
 
 ```go
-import (
-    "github.com/cloudwego/eino/components/prompt"
-    "github.com/cloudwego/eino/schema"
-)
+func FromAgenticMessages(formatType schema.FormatType, templates ...schema.AgenticMessagesTemplate) *DefaultAgenticChatTemplate
+```
 
-// Create template
+`FromAgenticMessages` does not return an `error`. It accepts a template format and a set of `schema.AgenticMessagesTemplate`, and returns the default implementation `*DefaultAgenticChatTemplate`.
+
+```go
 template := prompt.FromAgenticMessages(schema.FString,
     schema.SystemAgenticMessage("You are a {role}."),
-    schema.AgenticMessagesPlaceholder("history_key", false),
-    schema.UserAgenticMessage("Please help me {task}")
+    schema.AgenticMessagesPlaceholder("history", true),
+    schema.UserAgenticMessage("Please help me {task}."),
 )
+```
 
-// Prepare variables
-variables := map[string]any{
-    "role": "professional assistant",
-    "task": "write a poem",
-    "history_key": []*schema.AgenticMessage{
-       {
-          Role: schema.AgenticRoleTypeUser,
-          ContentBlocks: []*schema.ContentBlock{
-             schema.NewContentBlock(&schema.UserInputText{Text: "Tell me what is oil painting?"}),
-          },
-       },
-       {
-          Role: schema.AgenticRoleTypeAssistant,
-          ContentBlocks: []*schema.ContentBlock{
-             schema.NewContentBlock(&schema.AssistantGenText{Text: "Oil painting is xxx"}),
-          },
-       },
+### Supported FormatTypes
+
+<table>
+<tr><td>Format</td><td>Constant</td><td>Placeholder Example</td><td>Applicable Scenarios</td></tr>
+<tr><td>FString</td><td><pre>schema.FString</pre></td><td><pre>{role}</pre></td><td>Simple variable substitution</td></tr>
+<tr><td>GoTemplate</td><td><pre>schema.GoTemplate</pre></td><td><pre>{{.role}}</pre></td><td>Scenarios requiring Go <pre>text/template</pre> capabilities</td></tr>
+<tr><td>Jinja2</td><td><pre>schema.Jinja2</pre></td><td><pre>{{ role }}</pre></td><td>Scenarios requiring Jinja2 syntax</td></tr>
+</table>
+
+## AgenticMessagesTemplate
+
+Code location: `schema/agentic_message.go`
+
+```go
+type AgenticMessagesTemplate interface {
+    Format(ctx context.Context, vs map[string]any, formatType FormatType) ([]*AgenticMessage, error)
+}
+```
+
+Common implementations include:
+
+<table>
+<tr><td>Construction Method</td><td>Description</td></tr>
+<tr><td><pre>&schema.AgenticMessage{...}</pre></td><td><pre>AgenticMessage</pre> itself implements <pre>AgenticMessagesTemplate</pre></td></tr>
+<tr><td><pre>schema.SystemAgenticMessage(text)</pre></td><td>Constructs a <pre>system</pre> role message</td></tr>
+<tr><td><pre>schema.UserAgenticMessage(text)</pre></td><td>Constructs a <pre>user</pre> role message</td></tr>
+<tr><td><pre>schema.AgenticMessagesPlaceholder(key, optional)</pre></td><td>Inserts a set of historical agentic messages from the variable map</td></tr>
+</table>
+
+### Template Rendering Scope
+
+`AgenticMessage.Format` only formats user input blocks:
+
+- `ContentBlockTypeUserInputText`
+- `ContentBlockTypeUserInputImage`
+- `ContentBlockTypeUserInputAudio`
+- `ContentBlockTypeUserInputVideo`
+- `ContentBlockTypeUserInputFile`
+
+Model output, reasoning, tool call, tool result, MCP, and server tool related blocks are not rendered as prompt template content.
+
+> 💡
+> It is recommended to use `schema.SystemAgenticMessage`, `schema.UserAgenticMessage`, and `schema.NewContentBlock` to construct templates, avoiding inconsistencies between `ContentBlock.Type` and content fields when setting them manually.
+
+## Placeholder
+
+Code location: `schema/agentic_message.go`
+
+```go
+func AgenticMessagesPlaceholder(key string, optional bool) AgenticMessagesTemplate
+```
+
+Behavior rules:
+
+<table>
+<tr><td>Scenario</td><td>Behavior</td></tr>
+<tr><td><pre>vs[key]</pre> exists and type is <pre>[]*schema.AgenticMessage</pre></td><td>Inserts the message list as-is</td></tr>
+<tr><td><pre>vs[key]</pre> does not exist and <pre>optional=true</pre></td><td>Returns an empty slice without error</td></tr>
+<tr><td><pre>vs[key]</pre> does not exist and <pre>optional=false</pre></td><td>Returns an error</td></tr>
+<tr><td><pre>vs[key]</pre> type is not <pre>[]*schema.AgenticMessage</pre></td><td>Returns an error</td></tr>
+</table>
+
+Example:
+
+```go
+history := []*schema.AgenticMessage{
+    schema.UserAgenticMessage("What is oil painting?"),
+    {
+        Role: schema.AgenticRoleTypeAssistant,
+        ContentBlocks: []*schema.ContentBlock{
+            schema.NewContentBlock(&schema.AssistantGenText{Text: "Oil painting is ..."}),
+        },
     },
 }
 
-// Format template
-messages, err := template.Format(context.Background(), variables)
-```
-
-### In Orchestration
-
-```go
-import (
-    "github.com/cloudwego/eino/components/prompt"
-    "github.com/cloudwego/eino/schema"
-    "github.com/cloudwego/eino/compose"
-)
-
-// Use in Chain
-chain := compose.NewChain[map[string]any, []*schema.AgenticMessage]()
-chain.AppendAgenticChatTemplate(template)
-
-// Compile and run
-runnable, err := chain.Compile()
+messages, err := template.Format(ctx, map[string]any{
+    "role":    "professional assistant",
+    "task":    "write a short poem",
+    "history": history,
+})
 if err != nil {
     return err
 }
-result, err := runnable.Invoke(ctx, variables)
-
-// Use in Graph
-graph := compose.NewGraph[map[string]any, []*schema.AgenticMessage]()
-graph.AddAgenticChatTemplateNode("template_node", template)
 ```
 
-### Pull Data from Predecessor Node Output
-
-When using AddNode, you can add the WithOutputKey Option to convert the node's output to a Map:
+## Standalone Usage
 
 ```go
-// This node's output will change from string to map[string]any,
-// and the map will have only one element with key "your_output_key" and value being the actual string output from the node
-graph.AddLambdaNode("your_node_key", compose.InvokableLambda(func(ctx context.Context, input []*schema.AgenticMessage) (str string, err error) {
-    // your logic
-    return
-}), compose.WithOutputKey("your_output_key"))
-```
-
-After converting the predecessor node's output to map[string]any and setting the key, use the value corresponding to that key in the downstream AgenticChatTemplate node.
-
-## Options and Callback Usage
-
-### Callback Usage Example
-
-```go
-import (
-    "context"
-
-    callbackHelper "github.com/cloudwego/eino/utils/callbacks"
-    "github.com/cloudwego/eino/callbacks"
-    "github.com/cloudwego/eino/compose"
-    "github.com/cloudwego/eino/components/prompt"
+template := prompt.FromAgenticMessages(schema.FString,
+    schema.SystemAgenticMessage("You are a {role}."),
+    schema.AgenticMessagesPlaceholder("history", true),
+    schema.UserAgenticMessage("Please help me {task}."),
 )
 
-// Create callback handler
-handler := &callbackHelper.AgenticPromptCallbackHandler{
-    OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *prompt.AgenticCallbackInput) context.Context {
-        fmt.Printf("Starting template formatting, variables: %v\n", input.Variables)
-        return ctx
+messages, err := template.Format(ctx, map[string]any{
+    "role": "concise assistant",
+    "task": "summarize the following requirement",
+    "history": []*schema.AgenticMessage{
+        schema.UserAgenticMessage("Previous question"),
     },
-    OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *prompt.AgenticCallbackOutput) context.Context {
-        fmt.Printf("Template formatting complete, number of messages generated: %d\n", len(output.Result))
-        return ctx
-    },
+})
+if err != nil {
+    return err
+}
+```
+
+## Usage in Orchestration
+
+### Chain
+
+Code location: `compose/chain.go`
+
+```go
+func (c *Chain[I, O]) AppendAgenticChatTemplate(node prompt.AgenticChatTemplate, opts ...GraphAddNodeOpt) *Chain[I, O]
+```
+
+```go
+chain := compose.NewChain[map[string]any, *schema.AgenticMessage]()
+chain.AppendAgenticChatTemplate(template)
+chain.AppendAgenticModel(model)
+```
+
+### Graph
+
+Code location: `compose/graph.go`
+
+```go
+func (g *graph) AddAgenticChatTemplateNode(key string, node prompt.AgenticChatTemplate, opts ...GraphAddNodeOpt) error
+```
+
+```go
+graph := compose.NewGraph[map[string]any, *schema.AgenticMessage]()
+err := graph.AddAgenticChatTemplateNode("prompt", template)
+if err != nil {
+    return err
+}
+```
+
+### Workflow
+
+Code location: `compose/workflow.go`
+
+```go
+func (wf *Workflow[I, O]) AddAgenticChatTemplateNode(key string, chatTemplate prompt.AgenticChatTemplate, opts ...GraphAddNodeOpt) *WorkflowNode
+```
+
+### Parallel and ChainBranch
+
+Agentic prompt can also be placed in `Parallel` or `ChainBranch`:
+
+```go
+func (p *Parallel) AddAgenticChatTemplate(outputKey string, node prompt.AgenticChatTemplate, opts ...GraphAddNodeOpt) *Parallel
+
+func (cb *ChainBranch) AddAgenticChatTemplate(key string, node prompt.AgenticChatTemplate, opts ...GraphAddNodeOpt) *ChainBranch
+```
+
+## Getting Variables from Predecessor Nodes
+
+`AgenticChatTemplate.Format` requires `map[string]any`. If the predecessor node's output is not a map, you can use `compose.WithOutputKey` when adding the node to wrap the output as a single-field map.
+
+```go
+graph.AddLambdaNode("query",
+    compose.InvokableLambda(func(ctx context.Context, input string) (string, error) {
+        return input, nil
+    }),
+    compose.WithOutputKey("task"),
+)
+
+graph.AddAgenticChatTemplateNode("prompt", template)
+```
+
+The wrapped map looks like:
+
+```go
+map[string]any{
+    "task": previousNodeOutput,
+}
+```
+
+## Callback
+
+### Component-level Callback Payload
+
+Code location: `components/prompt/agentic_callback_extra.go`
+
+```go
+type AgenticCallbackInput struct {
+    Variables map[string]any
+    Templates []schema.AgenticMessagesTemplate
+    Extra     map[string]any
 }
 
-// Use callback handler
-helper := callbackHelper.NewHandlerHelper().
-    AgenticPrompt(handler).
+type AgenticCallbackOutput struct {
+    Result    []*schema.AgenticMessage
+    Templates []schema.AgenticMessagesTemplate
+    Extra     map[string]any
+}
+
+func ConvAgenticCallbackInput(src callbacks.CallbackInput) *AgenticCallbackInput
+func ConvAgenticCallbackOutput(src callbacks.CallbackOutput) *AgenticCallbackOutput
+```
+
+`DefaultAgenticChatTemplate.Format` triggers callbacks at the start and end, passing the above agentic payload.
+
+### utils/callbacks Helper
+
+Code location: `utils/callbacks/template.go`
+
+The current public signature of `AgenticPromptCallbackHandler` is as follows:
+
+```go
+type AgenticPromptCallbackHandler struct {
+    OnStart func(ctx context.Context, runInfo *callbacks.RunInfo, input *prompt.CallbackInput) context.Context
+    OnEnd   func(ctx context.Context, runInfo *callbacks.RunInfo, output *prompt.CallbackOutput) context.Context
+    OnError func(ctx context.Context, runInfo *callbacks.RunInfo, err error) context.Context
+}
+```
+
+Register using the helper:
+
+```go
+handler := callbackHelper.NewHandlerHelper().
+    AgenticPrompt(&callbackHelper.AgenticPromptCallbackHandler{
+        OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *prompt.CallbackInput) context.Context {
+            if input != nil {
+                fmt.Printf("variables: %v\n", input.Variables)
+            }
+            return ctx
+        },
+        OnError: func(ctx context.Context, info *callbacks.RunInfo, err error) context.Context {
+            fmt.Printf("prompt error: %v\n", err)
+            return ctx
+        },
+    }).
     Handler()
 
-// Use at runtime
-runnable, err := chain.Compile()
-if err != nil {
-    return err
-}
-result, err := runnable.Invoke(ctx, variables, compose.WithCallbacks(helper))
+result, err := runnable.Invoke(ctx, variables, compose.WithCallbacks(handler))
 ```
 
-## Implementation Reference
+> 💡
+> If you need to directly handle `*prompt.AgenticCallbackInput` or `*prompt.AgenticCallbackOutput`, you should use the component-level callback payload along with `prompt.ConvAgenticCallbackInput/Output`. The current public signature of `utils/callbacks.AgenticPromptCallbackHandler` still reuses `prompt.CallbackInput/Output`.
 
-### Option Mechanism
+## Custom Implementation
 
-If needed, component implementers can implement custom prompt options:
-
-```go
-import (
-    "github.com/cloudwego/eino/components/prompt"
-)
-
-// Define Option struct
-type MyPromptOptions struct {
-    StrictMode bool
-    DefaultValues map[string]string
-}
-
-// Define Option functions
-func WithStrictMode(strict bool) prompt.Option {
-    return prompt.WrapImplSpecificOptFn(func(o *MyPromptOptions) {
-        o.StrictMode = strict
-    })
-}
-
-func WithDefaultValues(values map[string]string) prompt.Option {
-    return prompt.WrapImplSpecificOptFn(func(o *MyPromptOptions) {
-        o.DefaultValues = values
-    })
-}
-```
-
-### Callback Handling
-
-Prompt implementations need to trigger callbacks at appropriate times. The following structures are defined by the component:
-
-> Code: [github.com/cloudwego/eino/tree/main/components/prompt/agentic_callback_extra.go](http://github.com/cloudwego/eino/tree/main/components/prompt/agentic_callback_extra.go)
+Implementing a custom `AgenticChatTemplate` only requires satisfying the interface:
 
 ```go
-// AgenticCallbackInput is the input for the callback.
-type AgenticCallbackInput struct {
-    // Variables is the variables for the callback.
-    Variables map[string]any
-    // Templates is the agentic templates for the callback.
-    Templates []schema.AgenticMessagesTemplate
-    // Extra is the extra information for the callback.
-    Extra map[string]any
-}
-
-// AgenticCallbackOutput is the output for the callback.
-type AgenticCallbackOutput struct {
-    // Result is the agentic result for the callback.
-    Result []*schema.AgenticMessage
-    // Templates is the agentic templates for the callback.
-    Templates []schema.AgenticMessagesTemplate
-    // Extra is the extra information for the callback.
-    Extra map[string]any
-}
-```
-
-### Complete Implementation Example
-
-```go
-type MyPrompt struct {
-    templates []schema.AgenticMessagesTemplate
+type MyAgenticPrompt struct {
+    templates  []schema.AgenticMessagesTemplate
     formatType schema.FormatType
-    strictMode bool
-    defaultValues map[string]string
 }
 
-func NewMyPrompt(config *MyPromptConfig) (*MyPrompt, error) {
-    return &MyPrompt{
-        templates: config.Templates,
-        formatType: config.FormatType,
-        strictMode: config.DefaultStrictMode,
-        defaultValues: config.DefaultValues,
-    }, nil
-}
-
-func (p *MyPrompt) Format(ctx context.Context, vs map[string]any, opts ...prompt.Option) ([]*schema.AgenticMessage, error) {
-    // 1. Handle Options
-    options := &MyPromptOptions{
-        StrictMode: p.strictMode,
-        DefaultValues: p.defaultValues,
+func (p *MyAgenticPrompt) Format(ctx context.Context, vs map[string]any, opts ...prompt.Option) ([]*schema.AgenticMessage, error) {
+    result := make([]*schema.AgenticMessage, 0, len(p.templates))
+    for _, tpl := range p.templates {
+        msgs, err := tpl.Format(ctx, vs, p.formatType)
+        if err != nil {
+            return nil, err
+        }
+        result = append(result, msgs...)
     }
-    options = prompt.GetImplSpecificOptions(options, opts...)
-    
-    // 2. Get callback manager
-    cm := callbacks.ManagerFromContext(ctx)
-    
-    // 3. Callback before starting formatting
-    ctx = cm.OnStart(ctx, info, &prompt.AgenticCallbackInput{
-        Variables: vs,
-        Templates: p.templates,
-    })
-    
-    // 4. Execute formatting logic
-    messages, err := p.doFormat(ctx, vs, options)
-    
-    // 5. Handle error and completion callbacks
-    if err != nil {
-        ctx = cm.OnError(ctx, info, err)
-        return nil, err
-    }
-    
-    ctx = cm.OnEnd(ctx, info, &prompt.AgenticCallbackOutput{
-        Result: messages,
-        Templates: p.templates,
-    })
-    
-    return messages, nil
-}
-
-func (p *MyPrompt) doFormat(ctx context.Context, vs map[string]any, opts *MyPromptOptions) ([]*schema.AgenticMessage, error) {
-    // Implement your custom logic
-    return messages, nil
+    return result, nil
 }
 ```
-</script><h1>Eino: AgenticChatTemplate Guide [Beta]</h1><header class=article-meta></header><blockquote><p>💡
-This feature is available starting from <a href=https://github.com/cloudwego/eino/releases/tag/v0.9.0-alpha.2>v0.9</a>.</p></blockquote><h2 id=introduction>Introduction</h2><p>The Prompt component is used for processing and formatting prompt templates. AgenticChatTemplate is a component abstraction specifically designed for AgenticMessage, with definitions and usage essentially the same as the existing ChatTemplate abstraction. Its main purpose is to fill user-provided variable values into predefined message templates, generating standardized message formats for interacting with language models. This component can be used in the following scenarios:</p><ul><li>Building structured system prompts</li><li>Processing multi-turn dialogue templates (including history)</li><li>Implementing reusable prompt patterns</li></ul><h2 id=component-definition>Component Definition</h2><h3 id=interface>Interface</h3><blockquote><p>Code: <a href=https://github.com/cloudwego/eino/tree/main/components/prompt/interface.go>https://github.com/cloudwego/eino/tree/main/components/prompt/interface.go</a></p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>AgenticChatTemplate</span><span class=w> </span><span class=kd>interface</span><span class=w> </span><span class=p>{</span><span class=w>
+
+If you need to support custom options, you can implement them using `prompt.WrapImplSpecificOptFn` and `prompt.GetImplSpecificOptions`.
+
+## Best Practices
+
+- `FromAgenticMessages` does not return an `error`, so examples should not be written as `template, err := ...`.
+- The variable value for `AgenticMessagesPlaceholder` must be `[]*schema.AgenticMessage`.
+- Template variable names should be stable and consistent; missing variables will return an error at runtime.
+- Use `AgenticMessagesPlaceholder("history", true)` for conversation history, which naturally returns an empty list when there is no history.
+- In Graph/Chain, ensure that the node following the Agentic prompt accepts `[]*schema.AgenticMessage` type, such as `AgenticModel`.
+</script><h1>AgenticChatTemplate Guide [Beta]</h1><header class=article-meta></header><blockquote><p>💡
+This feature is available starting from <a href=https://github.com/cloudwego/eino/releases/tag/v0.9.0-alpha.2>v0.9</a>. This document is based on the current main branch source code, with code primarily located in <code>components/prompt</code>, <code>schema/agentic_message.go</code>, and <code>compose</code>.</p></blockquote><h2 id=introduction>Introduction</h2><p><code>AgenticChatTemplate</code> is a Prompt component abstraction designed for <code>*schema.AgenticMessage</code>. It fills variables from a <code>map[string]any</code> into agentic message templates and outputs <code>[]*schema.AgenticMessage</code> for use by <code>AgenticModel</code> or subsequent orchestration nodes.</p><p>Its design is essentially the same as the existing <code>ChatTemplate</code>, but the message type is switched from <code>*schema.Message</code> to <code>*schema.AgenticMessage</code>, and template rendering only applies to user input content blocks.</p><h2 id=component-definition>Component Definition</h2><p>Code location: <code>components/prompt/interface.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>AgenticChatTemplate</span><span class=w> </span><span class=kd>interface</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>Format</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>vs</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>Option</span><span class=p>)</span><span class=w> </span><span class=p>([]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h4 id=format-method>Format Method</h4><ul><li>Purpose: Fill variable values into the message template</li><li>Params:<ul><li>ctx: Context object for passing request-level information, also used to pass the Callback Manager</li><li>vs: Variable value mapping used to fill placeholders in the template</li><li>opts: Optional parameters for configuring formatting behavior</li></ul></li><li>Returns:<ul><li><code>[]*schema.AgenticMessage</code>: Formatted message list</li><li>error: Error information during formatting</li></ul></li></ul><h3 id=built-in-templating-methods>Built-in Templating Methods</h3><p>The Prompt component has built-in support for three templating methods:</p><ol><li><p>FString Format (schema.FString)</p><ul><li>Uses <code>{variable}</code> syntax for variable substitution</li><li>Simple and intuitive, suitable for basic text replacement scenarios</li><li>Example: <code>"You are a {role}, please help me {task}."</code></li></ul></li><li><p>GoTemplate Format (schema.GoTemplate)</p><ul><li>Uses Go standard library&rsquo;s text/template syntax</li><li>Supports conditional statements, loops, and other complex logic</li><li>Example: <code>"{{if .expert}}As an expert{{end}} please {{.action}}"</code></li></ul></li><li><p>Jinja2 Format (schema.Jinja2)</p><ul><li>Uses Jinja2 template syntax</li><li>Example: <code>"{% if level == 'expert' %}From an expert perspective{% endif %} analyze {{topic}}"</code></li></ul></li></ol><h3 id=common-options>Common Options</h3><p>AgenticChatTemplate shares a common set of Options with ChatTemplate.</p><h2 id=usage>Usage</h2><p>AgenticChatTemplate is typically used before AgenticModel to prepare context.</p><h3 id=creation-methods>Creation Methods</h3><ul><li><code>prompt.FromAgenticMessages()</code><ul><li>Used to combine multiple messages into an agentic chat template.</li></ul></li><li><code>schema.AgenticMessage{}</code><ul><li>schema.AgenticMessage is a struct that implements the Format interface, so you can directly construct <code>schema.AgenticMessage{}</code> as a template</li></ul></li><li><code>schema.DeveloperAgenticMessage()</code><ul><li>A shortcut method for building a message with role &ldquo;developer&rdquo;</li></ul></li><li><code>schema.SystemAgenticMessage()</code><ul><li>A shortcut method for building a message with role &ldquo;system&rdquo;</li></ul></li><li><code>schema.UserAgenticMessage()</code><ul><li>A shortcut method for building a message with role &ldquo;user&rdquo;</li></ul></li><li><code>schema.FunctionToolResultAgenticMessage()</code><ul><li>A shortcut method for building a tool call message with role &ldquo;user&rdquo;</li></ul></li><li><code>schema.AgenticMessagesPlaceholder()</code><ul><li>Can be used to insert a <code>[]*schema.AgenticMessage</code> into the message list, commonly used for inserting conversation history</li></ul></li></ul><h3 id=standalone-usage>Standalone Usage</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=p>(</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/components/prompt&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/schema&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Create template</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>template</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nf>FromAgenticMessages</span><span class=p>(</span><span class=nx>schema</span><span class=p>.</span><span class=nx>FString</span><span class=p>,</span><span class=w>
+</span></span></span></code></pre></div><p><code>Format</code> parameter description:</p><table><tr><td>Parameter</td><td>Description</td></tr><tr><td><pre>ctx</pre></td><td>Request context, also carries runtime information such as the callback manager</td></tr><tr><td><pre>vs</pre></td><td>Template variable map, where the key is the placeholder name and value is the actual value</td></tr><tr><td><pre>opts</pre></td><td>Prompt component Option, supports implementation-side custom extensions</td></tr></table><p>Return values:</p><table><tr><td>Return Value</td><td>Description</td></tr><tr><td><pre>[]*schema.AgenticMessage</pre></td><td>The rendered agentic message list</td></tr><tr><td><pre>error</pre></td><td>Returns an error when variables are missing, variable types don't match, or template rendering fails</td></tr></table><h2 id=construction-methods>Construction Methods</h2><h3 id=fromagenticmessages>FromAgenticMessages</h3><p>Code location: <code>components/prompt/agentic_chat_template.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=nf>FromAgenticMessages</span><span class=p>(</span><span class=nx>formatType</span><span class=w> </span><span class=nx>schema</span><span class=p>.</span><span class=nx>FormatType</span><span class=p>,</span><span class=w> </span><span class=nx>templates</span><span class=w> </span><span class=o>...</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessagesTemplate</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=nx>DefaultAgenticChatTemplate</span><span class=w>
+</span></span></span></code></pre></div><p><code>FromAgenticMessages</code> does not return an <code>error</code>. It accepts a template format and a set of <code>schema.AgenticMessagesTemplate</code>, and returns the default implementation <code>*DefaultAgenticChatTemplate</code>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>template</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nf>FromAgenticMessages</span><span class=p>(</span><span class=nx>schema</span><span class=p>.</span><span class=nx>FString</span><span class=p>,</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>schema</span><span class=p>.</span><span class=nf>SystemAgenticMessage</span><span class=p>(</span><span class=s>&#34;You are a {role}.&#34;</span><span class=p>),</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>schema</span><span class=p>.</span><span class=nf>AgenticMessagesPlaceholder</span><span class=p>(</span><span class=s>&#34;history_key&#34;</span><span class=p>,</span><span class=w> </span><span class=kc>false</span><span class=p>),</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>schema</span><span class=p>.</span><span class=nf>UserAgenticMessage</span><span class=p>(</span><span class=s>&#34;Please help me {task}&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>schema</span><span class=p>.</span><span class=nf>AgenticMessagesPlaceholder</span><span class=p>(</span><span class=s>&#34;history&#34;</span><span class=p>,</span><span class=w> </span><span class=kc>true</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>schema</span><span class=p>.</span><span class=nf>UserAgenticMessage</span><span class=p>(</span><span class=s>&#34;Please help me {task}.&#34;</span><span class=p>),</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Prepare variables</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>variables</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;role&#34;</span><span class=p>:</span><span class=w> </span><span class=s>&#34;professional assistant&#34;</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;task&#34;</span><span class=p>:</span><span class=w> </span><span class=s>&#34;write a poem&#34;</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;history_key&#34;</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nx>Role</span><span class=p>:</span><span class=w> </span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticRoleTypeUser</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nx>ContentBlocks</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>ContentBlock</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=nx>schema</span><span class=p>.</span><span class=nf>NewContentBlock</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>schema</span><span class=p>.</span><span class=nx>UserInputText</span><span class=p>{</span><span class=nx>Text</span><span class=p>:</span><span class=w> </span><span class=s>&#34;Tell me what is oil painting?&#34;</span><span class=p>}),</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=p>},</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=p>},</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nx>Role</span><span class=p>:</span><span class=w> </span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticRoleTypeAssistant</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nx>ContentBlocks</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>ContentBlock</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=nx>schema</span><span class=p>.</span><span class=nf>NewContentBlock</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AssistantGenText</span><span class=p>{</span><span class=nx>Text</span><span class=p>:</span><span class=w> </span><span class=s>&#34;Oil painting is xxx&#34;</span><span class=p>}),</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=p>},</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=p>},</span><span class=w>
+</span></span></span></code></pre></div><h3 id=supported-formattypes>Supported FormatTypes</h3><table><tr><td>Format</td><td>Constant</td><td>Placeholder Example</td><td>Applicable Scenarios</td></tr><tr><td>FString</td><td><pre>schema.FString</pre></td><td><pre>{role}</pre></td><td>Simple variable substitution</td></tr><tr><td>GoTemplate</td><td><pre>schema.GoTemplate</pre></td><td><pre>{{.role}}</pre></td><td>Scenarios requiring Go<pre>text/template</pre>capabilities</td></tr><tr><td>Jinja2</td><td><pre>schema.Jinja2</pre></td><td><pre>{{ role }}</pre></td><td>Scenarios requiring Jinja2 syntax</td></tr></table><h2 id=agenticmessagestemplate>AgenticMessagesTemplate</h2><p>Code location: <code>schema/agentic_message.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>AgenticMessagesTemplate</span><span class=w> </span><span class=kd>interface</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>Format</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>vs</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>,</span><span class=w> </span><span class=nx>formatType</span><span class=w> </span><span class=nx>FormatType</span><span class=p>)</span><span class=w> </span><span class=p>([]</span><span class=o>*</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><p>Common implementations include:</p><table><tr><td>Construction Method</td><td>Description</td></tr><tr><td><pre>&schema.AgenticMessage{...}</pre></td><td><pre>AgenticMessage</pre>itself implements<pre>AgenticMessagesTemplate</pre></td></tr><tr><td><pre>schema.SystemAgenticMessage(text)</pre></td><td>Constructs a<pre>system</pre>role message</td></tr><tr><td><pre>schema.UserAgenticMessage(text)</pre></td><td>Constructs a<pre>user</pre>role message</td></tr><tr><td><pre>schema.AgenticMessagesPlaceholder(key, optional)</pre></td><td>Inserts a set of historical agentic messages from the variable map</td></tr></table><h3 id=template-rendering-scope>Template Rendering Scope</h3><p><code>AgenticMessage.Format</code> only formats user input blocks:</p><ul><li><code>ContentBlockTypeUserInputText</code></li><li><code>ContentBlockTypeUserInputImage</code></li><li><code>ContentBlockTypeUserInputAudio</code></li><li><code>ContentBlockTypeUserInputVideo</code></li><li><code>ContentBlockTypeUserInputFile</code></li></ul><p>Model output, reasoning, tool call, tool result, MCP, and server tool related blocks are not rendered as prompt template content.</p><blockquote><p>💡
+It is recommended to use <code>schema.SystemAgenticMessage</code>, <code>schema.UserAgenticMessage</code>, and <code>schema.NewContentBlock</code> to construct templates, avoiding inconsistencies between <code>ContentBlock.Type</code> and content fields when setting them manually.</p></blockquote><h2 id=placeholder>Placeholder</h2><p>Code location: <code>schema/agentic_message.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=nf>AgenticMessagesPlaceholder</span><span class=p>(</span><span class=nx>key</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>optional</span><span class=w> </span><span class=kt>bool</span><span class=p>)</span><span class=w> </span><span class=nx>AgenticMessagesTemplate</span><span class=w>
+</span></span></span></code></pre></div><p>Behavior rules:</p><table><tr><td>Scenario</td><td>Behavior</td></tr><tr><td><pre>vs[key]</pre>exists and type is<pre>[]*schema.AgenticMessage</pre></td><td>Inserts the message list as-is</td></tr><tr><td><pre>vs[key]</pre>does not exist and<pre>optional=true</pre></td><td>Returns an empty slice without error</td></tr><tr><td><pre>vs[key]</pre>does not exist and<pre>optional=false</pre></td><td>Returns an error</td></tr><tr><td><pre>vs[key]</pre>type is not<pre>[]*schema.AgenticMessage</pre></td><td>Returns an error</td></tr></table><p>Example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>history</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>schema</span><span class=p>.</span><span class=nf>UserAgenticMessage</span><span class=p>(</span><span class=s>&#34;What is oil painting?&#34;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>Role</span><span class=p>:</span><span class=w> </span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticRoleTypeAssistant</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>ContentBlocks</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>ContentBlock</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nx>schema</span><span class=p>.</span><span class=nf>NewContentBlock</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AssistantGenText</span><span class=p>{</span><span class=nx>Text</span><span class=p>:</span><span class=w> </span><span class=s>&#34;Oil painting is ...&#34;</span><span class=p>}),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>},</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>},</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Format template</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>messages</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>template</span><span class=p>.</span><span class=nf>Format</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span><span class=w> </span><span class=nx>variables</span><span class=p>)</span><span class=w>
-</span></span></span></code></pre></div><h3 id=in-orchestration>In Orchestration</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=p>(</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/components/prompt&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/schema&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/compose&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Use in Chain</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>chain</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nx>NewChain</span><span class=p>[</span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>,</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>]()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>chain</span><span class=p>.</span><span class=nf>AppendAgenticChatTemplate</span><span class=p>(</span><span class=nx>template</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Compile and run</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>runnable</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>chain</span><span class=p>.</span><span class=nf>Compile</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>messages</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>template</span><span class=p>.</span><span class=nf>Format</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;role&#34;</span><span class=p>:</span><span class=w>    </span><span class=s>&#34;professional assistant&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;task&#34;</span><span class=p>:</span><span class=w>    </span><span class=s>&#34;write a short poem&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;history&#34;</span><span class=p>:</span><span class=w> </span><span class=nx>history</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>})</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=k>if</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>nil</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>err</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>result</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>runnable</span><span class=p>.</span><span class=nf>Invoke</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=nx>variables</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Use in Graph</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>graph</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nx>NewGraph</span><span class=p>[</span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>,</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>]()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>graph</span><span class=p>.</span><span class=nf>AddAgenticChatTemplateNode</span><span class=p>(</span><span class=s>&#34;template_node&#34;</span><span class=p>,</span><span class=w> </span><span class=nx>template</span><span class=p>)</span><span class=w>
-</span></span></span></code></pre></div><h3 id=pull-data-from-predecessor-node-output>Pull Data from Predecessor Node Output</h3><p>When using AddNode, you can add the WithOutputKey Option to convert the node&rsquo;s output to a Map:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=c1>// This node&#39;s output will change from string to map[string]any,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// and the map will have only one element with key &#34;your_output_key&#34; and value being the actual string output from the node</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>graph</span><span class=p>.</span><span class=nf>AddLambdaNode</span><span class=p>(</span><span class=s>&#34;your_node_key&#34;</span><span class=p>,</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nf>InvokableLambda</span><span class=p>(</span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=nx>str</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// your logic</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}),</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nf>WithOutputKey</span><span class=p>(</span><span class=s>&#34;your_output_key&#34;</span><span class=p>))</span><span class=w>
-</span></span></span></code></pre></div><p>After converting the predecessor node&rsquo;s output to map[string]any and setting the key, use the value corresponding to that key in the downstream AgenticChatTemplate node.</p><h2 id=options-and-callback-usage>Options and Callback Usage</h2><h3 id=callback-usage-example>Callback Usage Example</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=p>(</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;context&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>callbackHelper</span><span class=w> </span><span class=s>&#34;github.com/cloudwego/eino/utils/callbacks&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/callbacks&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/compose&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/components/prompt&#34;</span><span class=w>
+</span></span></span></code></pre></div><h2 id=standalone-usage>Standalone Usage</h2><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>template</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nf>FromAgenticMessages</span><span class=p>(</span><span class=nx>schema</span><span class=p>.</span><span class=nx>FString</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>schema</span><span class=p>.</span><span class=nf>SystemAgenticMessage</span><span class=p>(</span><span class=s>&#34;You are a {role}.&#34;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>schema</span><span class=p>.</span><span class=nf>AgenticMessagesPlaceholder</span><span class=p>(</span><span class=s>&#34;history&#34;</span><span class=p>,</span><span class=w> </span><span class=kc>true</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>schema</span><span class=p>.</span><span class=nf>UserAgenticMessage</span><span class=p>(</span><span class=s>&#34;Please help me {task}.&#34;</span><span class=p>),</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Create callback handler</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>handler</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=o>&amp;</span><span class=nx>callbackHelper</span><span class=p>.</span><span class=nx>AgenticPromptCallbackHandler</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>OnStart</span><span class=p>:</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=o>*</span><span class=nx>prompt</span><span class=p>.</span><span class=nx>AgenticCallbackInput</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;Starting template formatting, variables: %v\n&#34;</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=p>.</span><span class=nx>Variables</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=nx>ctx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>messages</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>template</span><span class=p>.</span><span class=nf>Format</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;role&#34;</span><span class=p>:</span><span class=w> </span><span class=s>&#34;concise assistant&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;task&#34;</span><span class=p>:</span><span class=w> </span><span class=s>&#34;summarize the following requirement&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;history&#34;</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>schema</span><span class=p>.</span><span class=nf>UserAgenticMessage</span><span class=p>(</span><span class=s>&#34;Previous question&#34;</span><span class=p>),</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>},</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>OnEnd</span><span class=p>:</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>output</span><span class=w> </span><span class=o>*</span><span class=nx>prompt</span><span class=p>.</span><span class=nx>AgenticCallbackOutput</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;Template formatting complete, number of messages generated: %d\n&#34;</span><span class=p>,</span><span class=w> </span><span class=nb>len</span><span class=p>(</span><span class=nx>output</span><span class=p>.</span><span class=nx>Result</span><span class=p>))</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=nx>ctx</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>})</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>if</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>nil</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>err</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><h2 id=usage-in-orchestration>Usage in Orchestration</h2><h3 id=chain>Chain</h3><p>Code location: <code>compose/chain.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>c</span><span class=w> </span><span class=o>*</span><span class=nx>Chain</span><span class=p>[</span><span class=nx>I</span><span class=p>,</span><span class=w> </span><span class=nx>O</span><span class=p>])</span><span class=w> </span><span class=nf>AppendAgenticChatTemplate</span><span class=p>(</span><span class=nx>node</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nx>AgenticChatTemplate</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>GraphAddNodeOpt</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=nx>Chain</span><span class=p>[</span><span class=nx>I</span><span class=p>,</span><span class=w> </span><span class=nx>O</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>chain</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nx>NewChain</span><span class=p>[</span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>,</span><span class=w> </span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>]()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>chain</span><span class=p>.</span><span class=nf>AppendAgenticChatTemplate</span><span class=p>(</span><span class=nx>template</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>chain</span><span class=p>.</span><span class=nf>AppendAgenticModel</span><span class=p>(</span><span class=nx>model</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></div><h3 id=graph>Graph</h3><p>Code location: <code>compose/graph.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>g</span><span class=w> </span><span class=o>*</span><span class=nx>graph</span><span class=p>)</span><span class=w> </span><span class=nf>AddAgenticChatTemplateNode</span><span class=p>(</span><span class=nx>key</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>node</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nx>AgenticChatTemplate</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>GraphAddNodeOpt</span><span class=p>)</span><span class=w> </span><span class=kt>error</span><span class=w>
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>graph</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nx>NewGraph</span><span class=p>[</span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>,</span><span class=w> </span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>]()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>graph</span><span class=p>.</span><span class=nf>AddAgenticChatTemplateNode</span><span class=p>(</span><span class=s>&#34;prompt&#34;</span><span class=p>,</span><span class=w> </span><span class=nx>template</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>if</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>nil</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>err</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><h3 id=workflow>Workflow</h3><p>Code location: <code>compose/workflow.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>wf</span><span class=w> </span><span class=o>*</span><span class=nx>Workflow</span><span class=p>[</span><span class=nx>I</span><span class=p>,</span><span class=w> </span><span class=nx>O</span><span class=p>])</span><span class=w> </span><span class=nf>AddAgenticChatTemplateNode</span><span class=p>(</span><span class=nx>key</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>chatTemplate</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nx>AgenticChatTemplate</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>GraphAddNodeOpt</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=nx>WorkflowNode</span><span class=w>
+</span></span></span></code></pre></div><h3 id=parallel-and-chainbranch>Parallel and ChainBranch</h3><p>Agentic prompt can also be placed in <code>Parallel</code> or <code>ChainBranch</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>p</span><span class=w> </span><span class=o>*</span><span class=nx>Parallel</span><span class=p>)</span><span class=w> </span><span class=nf>AddAgenticChatTemplate</span><span class=p>(</span><span class=nx>outputKey</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>node</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nx>AgenticChatTemplate</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>GraphAddNodeOpt</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=nx>Parallel</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>cb</span><span class=w> </span><span class=o>*</span><span class=nx>ChainBranch</span><span class=p>)</span><span class=w> </span><span class=nf>AddAgenticChatTemplate</span><span class=p>(</span><span class=nx>key</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>node</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nx>AgenticChatTemplate</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>GraphAddNodeOpt</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=nx>ChainBranch</span><span class=w>
+</span></span></span></code></pre></div><h2 id=getting-variables-from-predecessor-nodes>Getting Variables from Predecessor Nodes</h2><p><code>AgenticChatTemplate.Format</code> requires <code>map[string]any</code>. If the predecessor node&rsquo;s output is not a map, you can use <code>compose.WithOutputKey</code> when adding the node to wrap the output as a single-field map.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>graph</span><span class=p>.</span><span class=nf>AddLambdaNode</span><span class=p>(</span><span class=s>&#34;query&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>compose</span><span class=p>.</span><span class=nf>InvokableLambda</span><span class=p>(</span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=kt>string</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=nx>input</span><span class=p>,</span><span class=w> </span><span class=kc>nil</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>compose</span><span class=p>.</span><span class=nf>WithOutputKey</span><span class=p>(</span><span class=s>&#34;task&#34;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>graph</span><span class=p>.</span><span class=nf>AddAgenticChatTemplateNode</span><span class=p>(</span><span class=s>&#34;prompt&#34;</span><span class=p>,</span><span class=w> </span><span class=nx>template</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></div><p>The wrapped map looks like:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;task&#34;</span><span class=p>:</span><span class=w> </span><span class=nx>previousNodeOutput</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><h2 id=callback>Callback</h2><h3 id=component-level-callback-payload>Component-level Callback Payload</h3><p>Code location: <code>components/prompt/agentic_callback_extra.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>AgenticCallbackInput</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Variables</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Templates</span><span class=w> </span><span class=p>[]</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessagesTemplate</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Extra</span><span class=w>     </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Use callback handler</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>helper</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>callbackHelper</span><span class=p>.</span><span class=nf>NewHandlerHelper</span><span class=p>().</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>AgenticPrompt</span><span class=p>(</span><span class=nx>handler</span><span class=p>).</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>AgenticCallbackOutput</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Result</span><span class=w>    </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Templates</span><span class=w> </span><span class=p>[]</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessagesTemplate</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Extra</span><span class=w>     </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=nf>ConvAgenticCallbackInput</span><span class=p>(</span><span class=nx>src</span><span class=w> </span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>CallbackInput</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=nx>AgenticCallbackInput</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=nf>ConvAgenticCallbackOutput</span><span class=p>(</span><span class=nx>src</span><span class=w> </span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>CallbackOutput</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=nx>AgenticCallbackOutput</span><span class=w>
+</span></span></span></code></pre></div><p><code>DefaultAgenticChatTemplate.Format</code> triggers callbacks at the start and end, passing the above agentic payload.</p><h3 id=utilscallbacks-helper>utils/callbacks Helper</h3><p>Code location: <code>utils/callbacks/template.go</code></p><p>The current public signature of <code>AgenticPromptCallbackHandler</code> is as follows:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>AgenticPromptCallbackHandler</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>OnStart</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>runInfo</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=o>*</span><span class=nx>prompt</span><span class=p>.</span><span class=nx>CallbackInput</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>OnEnd</span><span class=w>   </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>runInfo</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>output</span><span class=w> </span><span class=o>*</span><span class=nx>prompt</span><span class=p>.</span><span class=nx>CallbackOutput</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>OnError</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>runInfo</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><p>Register using the helper:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>handler</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>callbackHelper</span><span class=p>.</span><span class=nf>NewHandlerHelper</span><span class=p>().</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>AgenticPrompt</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>callbackHelper</span><span class=p>.</span><span class=nx>AgenticPromptCallbackHandler</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>OnStart</span><span class=p>:</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=o>*</span><span class=nx>prompt</span><span class=p>.</span><span class=nx>CallbackInput</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>nil</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;variables: %v\n&#34;</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=p>.</span><span class=nx>Variables</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=nx>ctx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>OnError</span><span class=p>:</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;prompt error: %v\n&#34;</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=nx>ctx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}).</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>Handler</span><span class=p>()</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Use at runtime</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>runnable</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>chain</span><span class=p>.</span><span class=nf>Compile</span><span class=p>()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>if</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>nil</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>err</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>result</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>runnable</span><span class=p>.</span><span class=nf>Invoke</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=nx>variables</span><span class=p>,</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nf>WithCallbacks</span><span class=p>(</span><span class=nx>helper</span><span class=p>))</span><span class=w>
-</span></span></span></code></pre></div><h2 id=implementation-reference>Implementation Reference</h2><h3 id=option-mechanism>Option Mechanism</h3><p>If needed, component implementers can implement custom prompt options:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=p>(</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/components/prompt&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Define Option struct</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>MyPromptOptions</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>StrictMode</span><span class=w> </span><span class=kt>bool</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>DefaultValues</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>string</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Define Option functions</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=nf>WithStrictMode</span><span class=p>(</span><span class=nx>strict</span><span class=w> </span><span class=kt>bool</span><span class=p>)</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nx>Option</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nf>WrapImplSpecificOptFn</span><span class=p>(</span><span class=kd>func</span><span class=p>(</span><span class=nx>o</span><span class=w> </span><span class=o>*</span><span class=nx>MyPromptOptions</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>o</span><span class=p>.</span><span class=nx>StrictMode</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=nx>strict</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>})</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=nf>WithDefaultValues</span><span class=p>(</span><span class=nx>values</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>string</span><span class=p>)</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nx>Option</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nf>WrapImplSpecificOptFn</span><span class=p>(</span><span class=kd>func</span><span class=p>(</span><span class=nx>o</span><span class=w> </span><span class=o>*</span><span class=nx>MyPromptOptions</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>o</span><span class=p>.</span><span class=nx>DefaultValues</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=nx>values</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>})</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=callback-handling>Callback Handling</h3><p>Prompt implementations need to trigger callbacks at appropriate times. The following structures are defined by the component:</p><blockquote><p>Code: <a href=http://github.com/cloudwego/eino/tree/main/components/prompt/agentic_callback_extra.go>github.com/cloudwego/eino/tree/main/components/prompt/agentic_callback_extra.go</a></p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=c1>// AgenticCallbackInput is the input for the callback.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>AgenticCallbackInput</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Variables is the variables for the callback.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Variables</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Templates is the agentic templates for the callback.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Templates</span><span class=w> </span><span class=p>[]</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessagesTemplate</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Extra is the extra information for the callback.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Extra</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// AgenticCallbackOutput is the output for the callback.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>AgenticCallbackOutput</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Result is the agentic result for the callback.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Result</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Templates is the agentic templates for the callback.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Templates</span><span class=w> </span><span class=p>[]</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessagesTemplate</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Extra is the extra information for the callback.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Extra</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=complete-implementation-example>Complete Implementation Example</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>MyPrompt</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>templates</span><span class=w> </span><span class=p>[]</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessagesTemplate</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>result</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>runnable</span><span class=p>.</span><span class=nf>Invoke</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=nx>variables</span><span class=p>,</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nf>WithCallbacks</span><span class=p>(</span><span class=nx>handler</span><span class=p>))</span><span class=w>
+</span></span></span></code></pre></div><blockquote><p>💡
+If you need to directly handle <code>*prompt.AgenticCallbackInput</code> or <code>*prompt.AgenticCallbackOutput</code>, you should use the component-level callback payload along with <code>prompt.ConvAgenticCallbackInput/Output</code>. The current public signature of <code>utils/callbacks.AgenticPromptCallbackHandler</code> still reuses <code>prompt.CallbackInput/Output</code>.</p></blockquote><h2 id=custom-implementation>Custom Implementation</h2><p>Implementing a custom <code>AgenticChatTemplate</code> only requires satisfying the interface:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>MyAgenticPrompt</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>templates</span><span class=w>  </span><span class=p>[]</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessagesTemplate</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>formatType</span><span class=w> </span><span class=nx>schema</span><span class=p>.</span><span class=nx>FormatType</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>strictMode</span><span class=w> </span><span class=kt>bool</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>defaultValues</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>string</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=nf>NewMyPrompt</span><span class=p>(</span><span class=nx>config</span><span class=w> </span><span class=o>*</span><span class=nx>MyPromptConfig</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=o>*</span><span class=nx>MyPrompt</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=o>&amp;</span><span class=nx>MyPrompt</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>templates</span><span class=p>:</span><span class=w> </span><span class=nx>config</span><span class=p>.</span><span class=nx>Templates</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>formatType</span><span class=p>:</span><span class=w> </span><span class=nx>config</span><span class=p>.</span><span class=nx>FormatType</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>strictMode</span><span class=p>:</span><span class=w> </span><span class=nx>config</span><span class=p>.</span><span class=nx>DefaultStrictMode</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>defaultValues</span><span class=p>:</span><span class=w> </span><span class=nx>config</span><span class=p>.</span><span class=nx>DefaultValues</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>},</span><span class=w> </span><span class=kc>nil</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>p</span><span class=w> </span><span class=o>*</span><span class=nx>MyPrompt</span><span class=p>)</span><span class=w> </span><span class=nf>Format</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>vs</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>prompt</span><span class=p>.</span><span class=nx>Option</span><span class=p>)</span><span class=w> </span><span class=p>([]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 1. Handle Options</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>options</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=o>&amp;</span><span class=nx>MyPromptOptions</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>StrictMode</span><span class=p>:</span><span class=w> </span><span class=nx>p</span><span class=p>.</span><span class=nx>strictMode</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>DefaultValues</span><span class=p>:</span><span class=w> </span><span class=nx>p</span><span class=p>.</span><span class=nx>defaultValues</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>p</span><span class=w> </span><span class=o>*</span><span class=nx>MyAgenticPrompt</span><span class=p>)</span><span class=w> </span><span class=nf>Format</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>vs</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>prompt</span><span class=p>.</span><span class=nx>Option</span><span class=p>)</span><span class=w> </span><span class=p>([]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>result</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nb>make</span><span class=p>([]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=nb>len</span><span class=p>(</span><span class=nx>p</span><span class=p>.</span><span class=nx>templates</span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>for</span><span class=w> </span><span class=nx>_</span><span class=p>,</span><span class=w> </span><span class=nx>tpl</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=k>range</span><span class=w> </span><span class=nx>p</span><span class=p>.</span><span class=nx>templates</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>msgs</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>tpl</span><span class=p>.</span><span class=nf>Format</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=nx>vs</span><span class=p>,</span><span class=w> </span><span class=nx>p</span><span class=p>.</span><span class=nx>formatType</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>nil</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=kc>nil</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>result</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=nb>append</span><span class=p>(</span><span class=nx>result</span><span class=p>,</span><span class=w> </span><span class=nx>msgs</span><span class=o>...</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>options</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=nx>prompt</span><span class=p>.</span><span class=nf>GetImplSpecificOptions</span><span class=p>(</span><span class=nx>options</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=o>...</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 2. Get callback manager</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>cm</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>callbacks</span><span class=p>.</span><span class=nf>ManagerFromContext</span><span class=p>(</span><span class=nx>ctx</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 3. Callback before starting formatting</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ctx</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=nx>cm</span><span class=p>.</span><span class=nf>OnStart</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=nx>prompt</span><span class=p>.</span><span class=nx>AgenticCallbackInput</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>Variables</span><span class=p>:</span><span class=w> </span><span class=nx>vs</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>Templates</span><span class=p>:</span><span class=w> </span><span class=nx>p</span><span class=p>.</span><span class=nx>templates</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>})</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 4. Execute formatting logic</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>messages</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>p</span><span class=p>.</span><span class=nf>doFormat</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=nx>vs</span><span class=p>,</span><span class=w> </span><span class=nx>options</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 5. Handle error and completion callbacks</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>nil</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>ctx</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=nx>cm</span><span class=p>.</span><span class=nf>OnError</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=kc>nil</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ctx</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=nx>cm</span><span class=p>.</span><span class=nf>OnEnd</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=nx>prompt</span><span class=p>.</span><span class=nx>AgenticCallbackOutput</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>Result</span><span class=p>:</span><span class=w> </span><span class=nx>messages</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>Templates</span><span class=p>:</span><span class=w> </span><span class=nx>p</span><span class=p>.</span><span class=nx>templates</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>})</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>messages</span><span class=p>,</span><span class=w> </span><span class=kc>nil</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>result</span><span class=p>,</span><span class=w> </span><span class=kc>nil</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>p</span><span class=w> </span><span class=o>*</span><span class=nx>MyPrompt</span><span class=p>)</span><span class=w> </span><span class=nf>doFormat</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>vs</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>*</span><span class=nx>MyPromptOptions</span><span class=p>)</span><span class=w> </span><span class=p>([]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Implement your custom logic</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>messages</span><span class=p>,</span><span class=w> </span><span class=kc>nil</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
-<button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified March 3, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/8788f90c35c1a1e1c0c3a0644a2b725b1bed1fa9>fix: eino docs (#1515) (8788f90c)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class=container-fluid><div class="row mx-sm-5"><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-end text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
+</span></span></span></code></pre></div><p>If you need to support custom options, you can implement them using <code>prompt.WrapImplSpecificOptFn</code> and <code>prompt.GetImplSpecificOptions</code>.</p><h2 id=best-practices>Best Practices</h2><ul><li><code>FromAgenticMessages</code> does not return an <code>error</code>, so examples should not be written as <code>template, err := ...</code>.</li><li>The variable value for <code>AgenticMessagesPlaceholder</code> must be <code>[]*schema.AgenticMessage</code>.</li><li>Template variable names should be stable and consistent; missing variables will return an error at runtime.</li><li>Use <code>AgenticMessagesPlaceholder("history", true)</code> for conversation history, which naturally returns an empty list when there is no history.</li><li>In Graph/Chain, ensure that the node following the Agentic prompt accepts <code>[]*schema.AgenticMessage</code> type, such as <code>AgenticModel</code>.</li></ul><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
+<button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified May 25, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/98051087d0aecee395c85217620959ef82ac47e3>docs(eino): sync docs from feishu (#1552) (98051087)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class=container-fluid><div class="row mx-sm-5"><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-end text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
 <a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.54d0dd7223fe3e2197b7f524e7b447770198007158f1bc4f5c20a42ea747bbee.js integrity="sha256-VNDdciP+PiGXt/Uk57RHdwGYAHFY8bxPXCCkLqdHu+4=" crossorigin=anonymous></script><script defer src=/js/click-to-copy.min.383b566d46ea827745a12d56f9f3bafd4eea8f8788fe225e4d72ff25e2752b35.js integrity="sha256-ODtWbUbqgndFoS1W+fO6/U7qj4eI/iJeTXL/JeJ1KzU=" crossorigin=anonymous></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>

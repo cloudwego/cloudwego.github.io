@@ -1,16 +1,7 @@
-<!doctype html><html lang=en class=no-js data-theme-init><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><script>(function(){const t="td-color-theme",n=localStorage.getItem(t);let e=n||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");e==="auto"&&(e=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),document.documentElement.setAttribute("data-bs-theme",e)})()</script><meta name=color-scheme content="light dark"><style>html{background:Canvas;color:CanvasText}@media(prefers-color-scheme:dark){html{background:#0b0d12;color:#e6e6e6}}html[data-theme-init] *{transition:none!important}</style><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>AgenticToolsNode & Tool User Guide [Beta] | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/core_modules/components/agentic_tools_node_guide/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="AgenticToolsNode & Tool User Guide [Beta]"><meta property="og:description" content="💡 This feature is available starting from v0.9.
-Introduction In the eino framework, a Tool is defined as “an external capability that an AgenticModel can choose to invoke”, including local functions, MCP server tools, etc.
-AgenticToolsNode is the designated “Tool executor” in the eino framework. The methods for executing tools are defined as follows:
-Code location: https://github.com/cloudwego/eino/tree/main/compose/agentic_tools_node.go
-func (a *AgenticToolsNode) Invoke(ctx context.Context, input *schema.AgenticMessage, opts ...ToolsNodeOption) ([]*schema.AgenticMessage, error) {} func (a *AgenticToolsNode) Stream(ctx context.Context, input *schema.AgenticMessage, opts ...ToolsNodeOption) (*schema.StreamReader[[]*schema.AgenticMessage], error) {} AgenticToolsNode and ToolsNode share the same configuration and usage, such as configuring execution sequence, exception handling, input processing, middleware extensions, etc."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-03-03T00:00:00+00:00"><meta property="article:modified_time" content="2026-05-21T19:31:45+08:00"><meta itemprop=name content="AgenticToolsNode & Tool User Guide [Beta]"><meta itemprop=description content="💡 This feature is available starting from v0.9.
-Introduction In the eino framework, a Tool is defined as “an external capability that an AgenticModel can choose to invoke”, including local functions, MCP server tools, etc.
-AgenticToolsNode is the designated “Tool executor” in the eino framework. The methods for executing tools are defined as follows:
-Code location: https://github.com/cloudwego/eino/tree/main/compose/agentic_tools_node.go
-func (a *AgenticToolsNode) Invoke(ctx context.Context, input *schema.AgenticMessage, opts ...ToolsNodeOption) ([]*schema.AgenticMessage, error) {} func (a *AgenticToolsNode) Stream(ctx context.Context, input *schema.AgenticMessage, opts ...ToolsNodeOption) (*schema.StreamReader[[]*schema.AgenticMessage], error) {} AgenticToolsNode and ToolsNode share the same configuration and usage, such as configuring execution sequence, exception handling, input processing, middleware extensions, etc."><meta itemprop=datePublished content="2026-03-03T00:00:00+00:00"><meta itemprop=dateModified content="2026-05-21T19:31:45+08:00"><meta itemprop=wordCount content="1438"><meta name=twitter:card content="summary"><meta name=twitter:title content="AgenticToolsNode & Tool User Guide [Beta]"><meta name=twitter:description content="💡 This feature is available starting from v0.9.
-Introduction In the eino framework, a Tool is defined as “an external capability that an AgenticModel can choose to invoke”, including local functions, MCP server tools, etc.
-AgenticToolsNode is the designated “Tool executor” in the eino framework. The methods for executing tools are defined as follows:
-Code location: https://github.com/cloudwego/eino/tree/main/compose/agentic_tools_node.go
-func (a *AgenticToolsNode) Invoke(ctx context.Context, input *schema.AgenticMessage, opts ...ToolsNodeOption) ([]*schema.AgenticMessage, error) {} func (a *AgenticToolsNode) Stream(ctx context.Context, input *schema.AgenticMessage, opts ...ToolsNodeOption) (*schema.StreamReader[[]*schema.AgenticMessage], error) {} AgenticToolsNode and ToolsNode share the same configuration and usage, such as configuring execution sequence, exception handling, input processing, middleware extensions, etc."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.30e7edf0a315436a3eb852158c6274b97d2940d1958389de36cc4e6e851ee2f5.css as=style><link href=/scss/main.min.30e7edf0a315436a3eb852158c6274b97d2940d1958389de36cc4e6e851ee2f5.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
+<!doctype html><html lang=en class=no-js data-theme-init><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.151.0"><script>(function(){const t="td-color-theme",n=localStorage.getItem(t);let e=n||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");e==="auto"&&(e=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),document.documentElement.setAttribute("data-bs-theme",e)})()</script><meta name=color-scheme content="light dark"><style>html{background:Canvas;color:CanvasText}@media(prefers-color-scheme:dark){html{background:#0b0d12;color:#e6e6e6}}html[data-theme-init] *{transition:none!important}</style><meta name=ROBOTS content="INDEX, FOLLOW"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>AgenticToolsNode & Tool User Guide [Beta] | CloudWeGo</title><meta name=description content="A leading practice for building enterprise cloud native middleware!"><meta property="og:url" content="https://www.cloudwego.io/docs/eino/core_modules/components/agentic_tools_node_guide/"><meta property="og:site_name" content="CloudWeGo"><meta property="og:title" content="AgenticToolsNode & Tool User Guide [Beta]"><meta property="og:description" content="💡 This feature is available starting from v0.9. This document is based on the current main branch source code, with code primarily located in compose/agentic_tools_node.go, compose/tool_node.go, components/tool/interface.go, and schema/tool.go.
+Introduction AgenticToolsNode is the tool execution node on the agentic message path in Eino. It receives *schema.AgenticMessage, extracts tool calls from the FunctionToolCall content blocks, leverages ToolsNode’s execution capabilities to perform local tool execution, and then converts the results into FunctionToolResult content blocks for return."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:published_time" content="2026-05-25T00:00:00+00:00"><meta property="article:modified_time" content="2026-05-25T14:48:01+08:00"><meta itemprop=name content="AgenticToolsNode & Tool User Guide [Beta]"><meta itemprop=description content="💡 This feature is available starting from v0.9. This document is based on the current main branch source code, with code primarily located in compose/agentic_tools_node.go, compose/tool_node.go, components/tool/interface.go, and schema/tool.go.
+Introduction AgenticToolsNode is the tool execution node on the agentic message path in Eino. It receives *schema.AgenticMessage, extracts tool calls from the FunctionToolCall content blocks, leverages ToolsNode’s execution capabilities to perform local tool execution, and then converts the results into FunctionToolResult content blocks for return."><meta itemprop=datePublished content="2026-05-25T00:00:00+00:00"><meta itemprop=dateModified content="2026-05-25T14:48:01+08:00"><meta itemprop=wordCount content="1451"><meta name=twitter:card content="summary"><meta name=twitter:title content="AgenticToolsNode & Tool User Guide [Beta]"><meta name=twitter:description content="💡 This feature is available starting from v0.9. This document is based on the current main branch source code, with code primarily located in compose/agentic_tools_node.go, compose/tool_node.go, components/tool/interface.go, and schema/tool.go.
+Introduction AgenticToolsNode is the tool execution node on the agentic message path in Eino. It receives *schema.AgenticMessage, extracts tool calls from the FunctionToolCall content blocks, leverages ToolsNode’s execution capabilities to perform local tool execution, and then converts the results into FunctionToolResult content blocks for return."><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYWRQRLPRM"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYWRQRLPRM")</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?f1808c42af827f368aa7eca3baae6d55",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><link rel=preload href=/scss/main.min.30e7edf0a315436a3eb852158c6274b97d2940d1958389de36cc4e6e851ee2f5.css as=style><link href=/scss/main.min.30e7edf0a315436a3eb852158c6274b97d2940d1958389de36cc4e6e851ee2f5.css rel=stylesheet integrity><script src=/js/jquery.min.js></script><link rel=stylesheet href=/css/docsearch.css></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand-xl navbar-dark td-navbar"><a class=navbar-brand href=/><span class=navbar-logo><img src=/img/logo.png></span>
 </a><button class=navbar-toggler type=button data-bs-toggle=collapse data-bs-target=#main_navbar aria-controls=main_navbar aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse td-navbar-nav-scroll ms-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0 ms-auto"><li class="dropdown sub-menu active"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-bs-toggle=dropdown aria-haspopup=true aria-expanded=false><span>Documentation</span></a><div class=dropdown-menu aria-labelledby=navbarDropdown><a class=dropdown-item href=/docs/kitex/>Kitex</a>
 <a class=dropdown-item href=/docs/hertz/>Hertz</a>
@@ -61,8 +52,8 @@ Auto
 <label for=m-docseinocore_modulescomponentschat_model_guide-check><a href=/docs/eino/core_modules/components/chat_model_guide/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentschat_model_guide><span>Eino: ChatModel User Guide</span></a></label></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id=m-docseinocore_modulescomponentstools_node_guide-li><input type=checkbox id=m-docseinocore_modulescomponentstools_node_guide-check>
 <label for=m-docseinocore_modulescomponentstools_node_guide-check><a href=/docs/eino/core_modules/components/tools_node_guide/ class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id=m-docseinocore_modulescomponentstools_node_guide><span>ToolsNode & Tool Guide</span></a></label><ul class="ul-5 foldable"><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinocore_modulescomponentstools_node_guidehow_to_create_a_tool-li><input type=checkbox id=m-docseinocore_modulescomponentstools_node_guidehow_to_create_a_tool-check>
 <label for=m-docseinocore_modulescomponentstools_node_guidehow_to_create_a_tool-check><a href=/docs/eino/core_modules/components/tools_node_guide/how_to_create_a_tool/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentstools_node_guidehow_to_create_a_tool><span>How to Create a Tool</span></a></label></li></ul></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinocore_modulescomponentsagentic_chat_model_guide-li><input type=checkbox id=m-docseinocore_modulescomponentsagentic_chat_model_guide-check>
-<label for=m-docseinocore_modulescomponentsagentic_chat_model_guide-check><a href=/docs/eino/core_modules/components/agentic_chat_model_guide/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentsagentic_chat_model_guide><span>Eino: AgenticModel User Guide [Beta]</span></a></label></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinocore_modulescomponentsagentic_chat_template_guide-li><input type=checkbox id=m-docseinocore_modulescomponentsagentic_chat_template_guide-check>
-<label for=m-docseinocore_modulescomponentsagentic_chat_template_guide-check><a href=/docs/eino/core_modules/components/agentic_chat_template_guide/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentsagentic_chat_template_guide><span>Eino: AgenticChatTemplate Guide [Beta]</span></a></label></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child active-path" id=m-docseinocore_modulescomponentsagentic_tools_node_guide-li><input type=checkbox id=m-docseinocore_modulescomponentsagentic_tools_node_guide-check checked>
+<label for=m-docseinocore_modulescomponentsagentic_chat_model_guide-check><a href=/docs/eino/core_modules/components/agentic_chat_model_guide/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentsagentic_chat_model_guide><span>AgenticModel User Guide [Beta]</span></a></label></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinocore_modulescomponentsagentic_chat_template_guide-li><input type=checkbox id=m-docseinocore_modulescomponentsagentic_chat_template_guide-check>
+<label for=m-docseinocore_modulescomponentsagentic_chat_template_guide-check><a href=/docs/eino/core_modules/components/agentic_chat_template_guide/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentsagentic_chat_template_guide><span>AgenticChatTemplate Guide [Beta]</span></a></label></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child active-path" id=m-docseinocore_modulescomponentsagentic_tools_node_guide-li><input type=checkbox id=m-docseinocore_modulescomponentsagentic_tools_node_guide-check checked>
 <label for=m-docseinocore_modulescomponentsagentic_tools_node_guide-check><a href=/docs/eino/core_modules/components/agentic_tools_node_guide/ class="align-left ps-0 active td-sidebar-link td-sidebar-link__page" id=m-docseinocore_modulescomponentsagentic_tools_node_guide><span class=td-sidebar-nav-active-item>AgenticToolsNode & Tool User Guide [Beta]</span></a></label></li></ul></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id=m-docseinocore_moduleschain_and_graph_orchestration-li><input type=checkbox id=m-docseinocore_moduleschain_and_graph_orchestration-check>
 <label for=m-docseinocore_moduleschain_and_graph_orchestration-check><a href=/docs/eino/core_modules/chain_and_graph_orchestration/ class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id=m-docseinocore_moduleschain_and_graph_orchestration><span>Eino: Chain & Graph & Workflow Orchestration</span></a></label><ul class="ul-4 foldable"><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinocore_moduleschain_and_graph_orchestrationchain_graph_introduction-li><input type=checkbox id=m-docseinocore_moduleschain_and_graph_orchestrationchain_graph_introduction-check>
 <label for=m-docseinocore_moduleschain_and_graph_orchestrationchain_graph_introduction-check><a href=/docs/eino/core_modules/chain_and_graph_orchestration/chain_graph_introduction/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinocore_moduleschain_and_graph_orchestrationchain_graph_introduction><span>Eino: Chain/Graph Orchestration Introduction</span></a></label></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id=m-docseinocore_moduleschain_and_graph_orchestrationorchestration_design_principles-li><input type=checkbox id=m-docseinocore_moduleschain_and_graph_orchestrationorchestration_design_principles-check>
@@ -131,7 +122,7 @@ Auto
 <label for=m-docseinofaq-check><a href=/docs/eino/faq/ class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id=m-docseinofaq><span>FAQ</span></a></label></li></ul></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ms-2 pb-1 pt-2 mb-0"><a href=https://github.com/cloudwego/cloudwego.github.io/edit/main/content/en/docs/eino/core_modules/components/agentic_tools_node_guide.md class="td-page-meta--edit td-page-meta__edit" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/new/main/content/en/docs/eino/core_modules/components?filename=change-me.md&amp;value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A+++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A%2A+Give+it+a+good+name%2C+ending+in+%60.md%60+-+e.g.+%60getting-started.md%60%0A%2A+Edit+the+%22front+matter%22+section+at+the+top+of+the+page+%28weight+controls+how+its+ordered+amongst+other+pages+in+the+same+directory%3B+lowest+number+first%29.%0A%2A+Add+a+good+commit+message+at+the+bottom+of+the+page+%28%3C80+characters%3B+use+the+extended+description+field+for+more+detail%29.%0A%2A+Create+a+new+branch+so+you+can+preview+your+new+file+and+request+a+review+via+Pull+Request.%0A" class="td-page-meta--child td-page-meta__child" target=_blank rel=noopener><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
 <a href="https://github.com/cloudwego/cloudwego.github.io/issues/new?title=AgenticToolsNode%20&%20Tool%20User%20Guide%20[Beta]" class="td-page-meta--issue td-page-meta__issue" target=_blank rel=noopener><i class="fa-brands fa-github fa-fw"></i> Create documentation issue</a>
-<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction><strong>Introduction</strong></a></li><li><a href=#tool-definition><strong>Tool Definition</strong></a><ul><li><a href=#interface-definition><strong>Interface Definition</strong></a></li><li><a href=#toolinfo-struct><strong>ToolInfo Struct</strong></a></li><li><a href=#common-options><strong>Common Options</strong></a></li></ul></li><li><a href=#usage><strong>Usage</strong></a><ul><li><a href=#using-in-orchestration><strong>Using in Orchestration</strong></a></li></ul></li><li><a href=#option-mechanism><strong>Option Mechanism</strong></a></li><li><a href=#option-and-callback-usage><strong>Option and Callback Usage</strong></a><ul><li><a href=#callback-usage-example><strong>Callback Usage Example</strong></a></li></ul></li><li><a href=#how-to-get-toolcallid>How to Get ToolCallID</a></li><li><a href=#existing-implementations><strong>Existing Implementations</strong></a></li><li><a href=#tool-implementation-methods><strong>Tool Implementation Methods</strong></a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 ps-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/components/>Eino: Components</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/components/agentic_tools_node_guide/>AgenticToolsNode & Tool User Guide [Beta]</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="AgenticToolsNode & Tool User Guide [Beta]" data-url=https://www.cloudwego.io/docs/eino/core_modules/components/agentic_tools_node_guide/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
+<a href=https://github.com/cloudwego/eino/issues/new/choose class="td-page-meta--project td-page-meta__project-issue" target=_blank rel=noopener><i class="fa-solid fa-list-check fa-fw"></i> Create project issue</a></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#agentictoolsnode-definition>AgenticToolsNode Definition</a></li><li><a href=#execution-flow>Execution Flow</a></li><li><a href=#toolsnodeconfig>ToolsNodeConfig</a><ul><li><a href=#toolsnodeoption>ToolsNodeOption</a></li></ul></li><li><a href=#tool-alias>Tool alias</a></li><li><a href=#tool-interface>Tool Interface</a></li><li><a href=#toolinfo>ToolInfo</a></li><li><a href=#toolargument-and-toolresult>ToolArgument and ToolResult</a></li><li><a href=#functiontoolcall-and-functiontoolresult>FunctionToolCall and FunctionToolResult</a></li><li><a href=#standalone-usage-example>Standalone Usage Example</a></li><li><a href=#using-in-orchestration>Using in Orchestration</a><ul><li><a href=#chain>Chain</a></li><li><a href=#graph>Graph</a></li><li><a href=#workflow-parallel-chainbranch>Workflow, Parallel, ChainBranch</a></li></ul></li><li><a href=#callback>Callback</a></li><li><a href=#getting-toolcallid>Getting ToolCallID</a></li><li><a href=#usage-recommendations>Usage Recommendations</a></li><li><a href=#existing-implementations>Existing Implementations</a></li><li><a href=#tool-implementation-methods>Tool Implementation Methods</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 ps-md-5" role=main><nav aria-label=breadcrumb class="d-none d-md-block d-print-none"><ol class="breadcrumb spb-1"><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/>Documentation</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/>Eino</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/>Eino: Core Modules</a></li><li class=breadcrumb-item><a href=https://www.cloudwego.io/docs/eino/core_modules/components/>Eino: Components</a></li><li class="breadcrumb-item active" aria-current=page><a href=https://www.cloudwego.io/docs/eino/core_modules/components/agentic_tools_node_guide/>AgenticToolsNode & Tool User Guide [Beta]</a></li></ol></nav><div class=td-content><div class="copy-fulltext btn-group" id=copy-fulltext data-title="AgenticToolsNode & Tool User Guide [Beta]" data-url=https://www.cloudwego.io/docs/eino/core_modules/components/agentic_tools_node_guide/ data-success-markdown="Copied as Markdown" data-success-text="Copied as plain text"><button type=button class="btn btn-sm btn-outline-secondary" id=copy-fulltext-default title="Copy Full Text">
 <i class="fa-regular fa-copy"></i>
 <span>Copy Full Text</span>
 </button>
@@ -142,617 +133,575 @@ Copy Markdown
 <button class=dropdown-item data-copy-type=text>
 Copy Text</button></div><div class=copy-fulltext__toast id=copy-fulltext-toast></div></div><script id=copy-fulltext-markdown type=text/plain>
 > 💡
-> This feature is available starting from [v0.9](https://github.com/cloudwego/eino/releases/tag/v0.9.0-alpha.2).
+> This feature is available starting from [v0.9](https://github.com/cloudwego/eino/releases/tag/v0.9.0-alpha.2). This document is based on the current main branch source code, with code primarily located in `compose/agentic_tools_node.go`, `compose/tool_node.go`, `components/tool/interface.go`, and `schema/tool.go`.
 
-## **Introduction**
+## Introduction
 
-In the eino framework, a `Tool` is defined as "an external capability that an AgenticModel can choose to invoke", including local functions, MCP server tools, etc.
+`AgenticToolsNode` is the tool execution node on the agentic message path in Eino. It receives `*schema.AgenticMessage`, extracts tool calls from the `FunctionToolCall` content blocks, leverages `ToolsNode`'s execution capabilities to perform local tool execution, and then converts the results into `FunctionToolResult` content blocks for return.
 
-`AgenticToolsNode` is the designated "Tool executor" in the eino framework. The methods for executing tools are defined as follows:
+It is not responsible for "deciding which tool to call". Tool selection is done by the upstream `AgenticModel`; `AgenticToolsNode` only executes the corresponding tools based on the function tool calls in the input message.
 
-> Code location: [https://github.com/cloudwego/eino/tree/main/compose/agentic_tools_node.go](https://github.com/cloudwego/eino/tree/main/compose/agentic_tools_node.go)
+> 💡
+> `AgenticToolsNode` is an agentic wrapper layer around `ToolsNode`, so it reuses `ToolsNodeConfig`, `ToolsNodeOption`, tool aliases, exception handling, execution order, argument handlers, and tool middleware capabilities.
+
+## AgenticToolsNode Definition
+
+Code location: `compose/agentic_tools_node.go`
 
 ```go
-func (a *AgenticToolsNode) Invoke(ctx context.Context, input *schema.AgenticMessage, opts ...ToolsNodeOption) ([]*schema.AgenticMessage, error) {}
+func NewAgenticToolsNode(ctx context.Context, conf *ToolsNodeConfig) (*AgenticToolsNode, error)
 
-func (a *AgenticToolsNode) Stream(ctx context.Context, input *schema.AgenticMessage,
-    opts ...ToolsNodeOption) (*schema.StreamReader[[]*schema.AgenticMessage], error) {}
+type AgenticToolsNode struct {
+    inner *ToolsNode
+}
+
+func (a *AgenticToolsNode) Invoke(ctx context.Context, input *schema.AgenticMessage, opts ...ToolsNodeOption) ([]*schema.AgenticMessage, error)
+
+func (a *AgenticToolsNode) Stream(ctx context.Context, input *schema.AgenticMessage, opts ...ToolsNodeOption) (*schema.StreamReader[[]*schema.AgenticMessage], error)
 ```
 
-AgenticToolsNode and ToolsNode share the same configuration and usage, such as configuring execution sequence, exception handling, input processing, middleware extensions, etc.
+Input/Output rules:
 
-> Code location: [https://github.com/cloudwego/eino/tree/main/compose/tool_node.go](https://github.com/cloudwego/eino/tree/main/compose/tool_node.go)
+<table>
+<tr><td>Method</td><td>Input</td><td>Output</td></tr>
+<tr><td><pre>Invoke</pre></td><td>assistant message containing one or more <pre>FunctionToolCall</pre> blocks</td><td>multiple user messages, each containing one <pre>FunctionToolResult</pre> or <pre>ToolSearchFunctionToolResult</pre> block</td></tr>
+<tr><td><pre>Stream</pre></td><td>assistant message containing one or more <pre>FunctionToolCall</pre> blocks</td><td><pre>StreamReader</pre>, each chunk is <pre>[]*schema.AgenticMessage</pre></td></tr>
+</table>
+
+## Execution Flow
+
+<a href="/img/eino/RHFww5teMhOfEybBazKcMpWynIb.png" target="_blank"><img src="/img/eino/RHFww5teMhOfEybBazKcMpWynIb.png" width="100%" /></a>
+
+Core conversion logic:
+
+- Only processes blocks with `ContentBlockTypeFunctionToolCall` type and non-nil `FunctionToolCall`.
+- `FunctionToolCall.CallID` is converted to `schema.ToolCall.ID` for correlating tool results.
+- Standard tool output is converted to text blocks in `FunctionToolResult.Content`.
+- Enhanced tool output is converted to text/image/audio/video/file blocks in `FunctionToolResult.Content`.
+- Tool search results are converted to `ToolSearchFunctionToolResult` blocks.
+- The output message role is `schema.AgenticRoleTypeUser`.
+
+## ToolsNodeConfig
+
+Code location: `compose/tool_node.go`
 
 ```go
 type ToolsNodeConfig struct {
-    // Tools specify the list of tools can be called which are BaseTool but must implement InvokableTool or StreamableTool.
-    Tools []tool.BaseTool
-
-    // UnknownToolsHandler handles tool calls for non-existent tools when LLM hallucinates.
-    // This field is optional. When not set, calling a non-existent tool will result in an error.
-    // When provided, if the LLM attempts to call a tool that doesn't exist in the Tools list,
-    // this handler will be invoked instead of returning an error, allowing graceful handling of hallucinated tools.
-    // Parameters:
-    //   - ctx: The context for the tool call
-    //   - name: The name of the non-existent tool
-    //   - input: The tool call input generated by llm
-    // Returns:
-    //   - string: The response to be returned as if the tool was executed
-    //   - error: Any error that occurred during handling
-    UnknownToolsHandler func(ctx context.Context, name, input string) (string, error)
-
-    // ExecuteSequentially determines whether tool calls should be executed sequentially (in order) or in parallel.
-    // When set to true, tool calls will be executed one after another in the order they appear in the input message.
-    // When set to false (default), tool calls will be executed in parallel.
-    ExecuteSequentially bool
-
-    // ToolArgumentsHandler allows handling of tool arguments before execution.
-    // When provided, this function will be called for each tool call to process the arguments.
-    // Parameters:
-    //   - ctx: The context for the tool call
-    //   - name: The name of the tool being called
-    //   - arguments: The original arguments string for the tool
-    // Returns:
-    //   - string: The processed arguments string to be used for tool execution
-    //   - error: Any error that occurred during preprocessing
+    Tools                []tool.BaseTool
+    ToolAliases          map[string]ToolAliasConfig
+    UnknownToolsHandler  func(ctx context.Context, name, input string) (string, error)
+    ExecuteSequentially  bool
     ToolArgumentsHandler func(ctx context.Context, name, arguments string) (string, error)
-
-    // ToolCallMiddlewares configures middleware for tool calls.
-    // Each element can contain Invokable and/or Streamable middleware.
-    // Invokable middleware only applies to tools implementing InvokableTool interface.
-    // Streamable middleware only applies to tools implementing StreamableTool interface.
-    ToolCallMiddlewares []ToolMiddleware
+    ToolCallMiddlewares  []ToolMiddleware
 }
 ```
 
-How does AgenticToolsNode "decide" which Tool to execute? It doesn't make decisions; instead, it executes based on the input `*schema.AgenticMessage`. The AgenticModel generates FunctionToolCalls to be invoked (containing ToolName, Argument, etc.) and places them in `*schema.AgenticMessage` to pass to AgenticToolsNode. AgenticToolsNode then actually executes each FunctionToolCall.
+<table>
+<tr><td>Field</td><td>Description</td></tr>
+<tr><td><pre>Tools</pre></td><td>List of executable tools. Each tool must implement <pre>tool.BaseTool</pre> and at least one execution interface</td></tr>
+<tr><td><pre>ToolAliases</pre></td><td>Tool name aliases and argument alias configuration for compatibility with non-standard names generated by models</td></tr>
+<tr><td><pre>UnknownToolsHandler</pre></td><td>Handles unknown tools hallucinated by the model; raises an error for unknown tools when not set</td></tr>
+<tr><td><pre>ExecuteSequentially</pre></td><td><pre>true</pre> means execute tool calls sequentially in order; default <pre>false</pre> executes in parallel</td></tr>
+<tr><td><pre>ToolArgumentsHandler</pre></td><td>Called after argument alias processing and before tool execution; can be used for argument cleaning or completion</td></tr>
+<tr><td><pre>ToolCallMiddlewares</pre></td><td>Tool execution middleware, supporting standard and enhanced, non-streaming and streaming tools</td></tr>
+</table>
 
-If ExecuteSequentially is configured, AgenticToolsNode will execute tools in the order they appear in `[]*ContentBlock`.
-
-After each FunctionToolCall execution completes, the result is wrapped as `*schema.AgenticMessage` and becomes part of the AgenticToolsNode output.
+### ToolsNodeOption
 
 ```go
-// https://github.com/cloudwego/eino/tree/main/schema/agentic_message.go
+type ToolsNodeOption func(o *toolsNodeOptions)
 
-type AgenticMessage struct {
-    // role should be 'assistant' for tool call message
-    Role AgenticRoleType
+func WithToolOption(opts ...tool.Option) ToolsNodeOption
+func WithToolList(tool ...tool.BaseTool) ToolsNodeOption
+func WithToolAliases(toolAliases map[string]ToolAliasConfig) ToolsNodeOption
+```
 
-    // ContentBlocks is the list of content blocks.
-    ContentBlocks []*ContentBlock
+`WithToolList` and `WithToolAliases` are call-level override configurations:
 
-     // other fields...
-}
+- `WithToolList`: Replaces the tool list for the current call.
+- `WithToolAliases` combined with `WithToolList`: Configures aliases for dynamic tool lists.
+- `WithToolAliases` used alone: Replaces the global alias configuration while keeping the original tool list.
 
-type ContentBlock struct {
-    Type ContentBlockType
+## Tool alias
 
-    // FunctionToolCall contains the invocation details for a user-defined tool.
-    FunctionToolCall *FunctionToolCall
+Code location: `compose/tool_node.go`
 
-    // FunctionToolResult contains the result returned from a user-defined tool call.
-    FunctionToolResult *FunctionToolResult
-
-    // other fields...
-}
-
-// FunctionToolCall is the function call in a message.
-// It's used in assistant message.
-type FunctionToolCall struct {
-    // CallID is the unique identifier for the tool call.
-    CallID string
-
-    // Name specifies the function tool invoked.
-    Name string
-
-    // Arguments is the JSON string arguments for the function tool call.
-    Arguments string
-}
-
-// FunctionToolResult is the function call result in a message.
-// It's used in user message.
-type FunctionToolResult struct {
-    // CallID is the unique identifier for the tool call.
-    CallID string
-
-    // Name specifies the function tool invoked.
-    Name string
-
-    // Result is the function tool result returned by the user
-    Result string
+```go
+type ToolAliasConfig struct {
+    NameAliases      []string
+    ArgumentsAliases map[string][]string
 }
 ```
 
-## **Tool Definition**
+Semantic description:
 
-### **Interface Definition**
+<table>
+<tr><td>Config</td><td>Description</td></tr>
+<tr><td><pre>NameAliases</pre></td><td>Tool name aliases. When the model returns an alias, it will be resolved to the canonical tool name</td></tr>
+<tr><td><pre>ArgumentsAliases</pre></td><td>Argument aliases. Key is the canonical argument name, value is a list of aliases</td></tr>
+</table>
 
-The Tool component provides three levels of interfaces:
-
-> Code location: [https://github.com/cloudwego/eino/components/tool/interface.go](https://github.com/cloudwego/eino/components/tool/interface.go)
+Example:
 
 ```go
-// BaseTool get tool info for ChatModel intent recognition.
+toolsNode, err := compose.NewAgenticToolsNode(ctx, &compose.ToolsNodeConfig{
+    Tools: []tool.BaseTool{searchTool},
+    ToolAliases: map[string]compose.ToolAliasConfig{
+        "search": {
+            NameAliases: []string{"web_search", "lookup"},
+            ArgumentsAliases: map[string][]string{
+                "query": {"q", "keyword"},
+                "limit": {"count", "max_results"},
+            },
+        },
+    },
+})
+```
+
+Argument alias processing rules:
+
+- Only processes keys in the top-level JSON object.
+- Returns the original value when the string is empty, not an object, or JSON parsing fails.
+- When the canonical key already exists, the alias will not override the canonical value.
+- Alias remapping occurs before `ToolArgumentsHandler`.
+- Alias configuration validates: empty aliases, empty canonical keys, canonical keys containing `.`, aliases conflicting with schema properties, and the same alias mapping to multiple canonical names.
+
+## Tool Interface
+
+Eino currently does not export a unified interface named `Tool`. Tool capabilities are composed of the following interfaces in the `components/tool` package.
+
+Code location: `components/tool/interface.go`
+
+```go
 type BaseTool interface {
     Info(ctx context.Context) (*schema.ToolInfo, error)
 }
 
-// InvokableTool the tool for ChatModel intent recognition and ToolsNode execution.
 type InvokableTool interface {
     BaseTool
     InvokableRun(ctx context.Context, argumentsInJSON string, opts ...Option) (string, error)
 }
 
-// StreamableTool the stream tool for ChatModel intent recognition and ToolsNode execution.
 type StreamableTool interface {
     BaseTool
     StreamableRun(ctx context.Context, argumentsInJSON string, opts ...Option) (*schema.StreamReader[string], error)
 }
+
+type EnhancedInvokableTool interface {
+    BaseTool
+    InvokableRun(ctx context.Context, toolArgument *schema.ToolArgument, opts ...Option) (*schema.ToolResult, error)
+}
+
+type EnhancedStreamableTool interface {
+    BaseTool
+    StreamableRun(ctx context.Context, toolArgument *schema.ToolArgument, opts ...Option) (*schema.StreamReader[*schema.ToolResult], error)
+}
 ```
 
-#### **Info Method**
+Interface layers:
 
-- Function: Get the tool's description information
-- Parameters:
-  - ctx: Context object
-- Return values:
-  - `*schema.ToolInfo`: Tool description information
-  - error: Error during information retrieval
+<table>
+<tr><td>Interface</td><td>Purpose</td></tr>
+<tr><td><pre>BaseTool</pre></td><td>Provides tool metadata that can be passed to the model for tool recognition</td></tr>
+<tr><td><pre>InvokableTool</pre></td><td>Non-streaming execution; input is a JSON string, returns a string</td></tr>
+<tr><td><pre>StreamableTool</pre></td><td>Streaming execution; input is a JSON string, returns a string stream</td></tr>
+<tr><td><pre>EnhancedInvokableTool</pre></td><td>Non-streaming enhanced tool; input is <pre>*schema.ToolArgument</pre>, returns multimodal <pre>*schema.ToolResult</pre></td></tr>
+<tr><td><pre>EnhancedStreamableTool</pre></td><td>Streaming enhanced tool; returns a <pre>*schema.ToolResult</pre> stream</td></tr>
+</table>
 
-#### **InvokableRun Method**
+> 💡
+> If a tool implements both the standard interface and the enhanced interface, `ToolsNode` will prioritize using the enhanced interface to preserve structured multimodal results.
 
-- Function: Execute the tool synchronously
-- Parameters:
-  - ctx: Context object, used for passing request-level information and also for passing the Callback Manager
-  - `argumentsInJSON`: JSON-formatted argument string
-  - opts: Tool execution options
-- Return values:
-  - string: Execution result
-  - error: Error during execution
+## ToolInfo
 
-#### **StreamableRun Method**
-
-- Function: Execute the tool in streaming mode
-- Parameters:
-  - ctx: Context object, used for passing request-level information and also for passing the Callback Manager
-  - `argumentsInJSON`: JSON-formatted argument string
-  - opts: Tool execution options
-- Return values:
-  - `*schema.StreamReader[string]`: Streaming execution result
-  - error: Error during execution
-
-### **ToolInfo Struct**
-
-> Code location: [https://github.com/cloudwego/eino/components/tool/interface.go](https://github.com/cloudwego/eino/components/tool/interface.go)
+Code location: `schema/tool.go`
 
 ```go
 type ToolInfo struct {
-    // Unique name of the tool that clearly expresses its purpose
-    Name string
-    // Used to tell the model how/when/why to use this tool
-    // Can include few-shot examples in the description
-    Desc string
-    // Definition of parameters accepted by the tool
-    // Can be described in two ways:
-    // 1. Using ParameterInfo: schema.NewParamsOneOfByParams(params)
-    // 2. Using JSONSchema: schema.NewParamsOneOfByJSONSchema(jsonschema)
+    Name  string
+    Desc  string
+    Extra map[string]any
     *ParamsOneOf
 }
 ```
 
-### **Common Options**
+Field descriptions:
 
-The Tool component uses ToolOption to define optional parameters. AgenticToolsNode does not abstract common options. Each specific implementation can define its own specific Options, which are wrapped into the unified ToolOption type through the WrapToolImplSpecificOptFn function.
+<table>
+<tr><td>Field</td><td>Description</td></tr>
+<tr><td><pre>Name</pre></td><td>Unique tool name; should be concise and unique within the tool set</td></tr>
+<tr><td><pre>Desc</pre></td><td>Tells the model when, why, and how to use the tool; can include a few examples</td></tr>
+<tr><td><pre>Extra</pre></td><td>Additional metadata, defined by component implementations or business customizations</td></tr>
+<tr><td><pre>ParamsOneOf</pre></td><td>Parameter definition; can be constructed via <pre>schema.NewParamsOneOfByParams</pre> or <pre>schema.NewParamsOneOfByJSONSchema</pre>; <pre>nil</pre> means no parameters</td></tr>
+</table>
 
-## **Usage**
+## ToolArgument and ToolResult
 
-ToolsNode is typically not used alone; it is generally used in orchestration after an AgenticModel.
+Enhanced tools use structured input and multimodal output.
 
 ```go
-import (
-    "github.com/cloudwego/eino/components/tool"
-    "github.com/cloudwego/eino/compose"
-    "github.com/cloudwego/eino/schema"
-)
+type ToolArgument struct {
+    Text string
+}
 
-// Create tools node
-toolsNode := compose.NewAgenticToolsNode([]tool.Tool{
-    searchTool,    // Search tool
-    weatherTool,   // Weather query tool
-    calculatorTool, // Calculator tool
+type ToolResult struct {
+    Parts []ToolOutputPart
+}
+```
+
+`ToolOutputPart` can represent text, image, audio, video, file, and tool search results. `AgenticToolsNode` converts enhanced output into multimodal blocks in `FunctionToolResult.Content`.
+
+## FunctionToolCall and FunctionToolResult
+
+The input to `AgenticToolsNode` comes from `FunctionToolCall` blocks in `schema.AgenticMessage`:
+
+```go
+type FunctionToolCall struct {
+    CallID    string
+    Name      string
+    Arguments string
+}
+```
+
+Tool execution results are converted to `FunctionToolResult`:
+
+```go
+type FunctionToolResult struct {
+    CallID  string
+    Name    string
+    Content []*FunctionToolResultContentBlock
+}
+```
+
+`FunctionToolResultContentBlock` supports five content types: text, image, audio, video, and file. The current implementation no longer uses the `Result string` field.
+
+## Standalone Usage Example
+
+```go
+toolsNode, err := compose.NewAgenticToolsNode(ctx, &compose.ToolsNodeConfig{
+    Tools: []tool.BaseTool{weatherTool},
 })
-
-// Mock LLM output as input
-input := &schema.AgenticMessage{
-    Role: schema.AgenticRoleTypeAssistant,
-    ContentBlocks: []*schema.ContentBlock{
-       {
-          Type: schema.ContentBlockTypeFunctionToolCall,
-          FunctionToolCall: &schema.FunctionToolCall{
-             CallID:    "1",
-             Name:      "get_weather",
-             Arguments: `{"city": "深圳", "date": "tomorrow"}`,
-          },
-       },
-    },
-}
-
-toolMessages, err := toolsNode.Invoke(ctx, input)
-```
-
-### **Using in Orchestration**
-
-```go
-import (
-    "github.com/cloudwego/eino/components/tool"
-    "github.com/cloudwego/eino/compose"
-    "github.com/cloudwego/eino/schema"
-)
-
-// Create tools node
-toolsNode := compose.NewAgenticToolsNode([]tool.Tool{
-    searchTool,    // Search tool
-    weatherTool,   // Weather query tool
-    calculatorTool, // Calculator tool
-})
-
-// Use in Chain
-chain := compose.NewChain[*schema.AgenticMessage, []*schema.AgenticMessage]()
-chain.AppendAgenticToolsNode(toolsNode)
-
-// In graph
-graph := compose.NewGraph[*schema.AgenticMessage, []*schema.AgenticMessage]()
-graph.AddAgenticToolsNode(toolsNode)
-```
-
-## **Option Mechanism**
-
-Custom Tools can implement specific Options as needed:
-
-```go
-import "github.com/cloudwego/eino/components/tool"
-
-// Define Option struct
-type MyToolOptions struct {
-    Timeout time.Duration
-    MaxRetries int
-    RetryInterval time.Duration
-}
-
-// Define Option function
-func WithTimeout(timeout time.Duration) tool.Option {
-    return tool.WrapImplSpecificOptFn(func(o *MyToolOptions) {
-        o.Timeout = timeout
-    })
-}
-```
-
-## **Option and Callback Usage**
-
-### **Callback Usage Example**
-
-```go
-import (
-    "context"
-
-    callbackHelper "github.com/cloudwego/eino/utils/callbacks"
-    "github.com/cloudwego/eino/callbacks"
-    "github.com/cloudwego/eino/compose"
-    "github.com/cloudwego/eino/components/tool"
-)
-
-// Create callback handler
-handler := &callbackHelper.ToolCallbackHandler{
-    OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *tool.CallbackInput) context.Context {
-       fmt.Printf("Starting tool execution, arguments: %s\n", input.ArgumentsInJSON)
-       return ctx
-    },
-    OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output *tool.CallbackOutput) context.Context {
-       fmt.Printf("Tool execution completed, result: %s\n", output.Response)
-       return ctx
-    },
-    OnEndWithStreamOutput: func(ctx context.Context, info *callbacks.RunInfo, output *schema.StreamReader[*tool.CallbackOutput]) context.Context {
-       fmt.Println("Tool starting streaming output")
-       go func() {
-          defer output.Close()
-
-          for {
-             chunk, err := output.Recv()
-             if errors.Is(err, io.EOF) {
-                return
-             }
-             if err != nil {
-                return
-             }
-             fmt.Printf("Received streaming output: %s\n", chunk.Response)
-          }
-       }()
-       return ctx
-    },
-}
-
-// Use callback handler
-helper := callbackHelper.NewHandlerHelper().
-    Tool(handler).
-    Handler()
- 
-/*** compose a chain
-* chain := NewChain
-* chain.appendxxx().
-*       appendxxx().
-*       ...
-*/
-
-// Use at runtime
-runnable, err := chain.Compile()
 if err != nil {
     return err
 }
-result, err := runnable.Invoke(ctx, input, compose.WithCallbacks(helper))
+
+input := &schema.AgenticMessage{
+    Role: schema.AgenticRoleTypeAssistant,
+    ContentBlocks: []*schema.ContentBlock{
+        schema.NewContentBlock(&schema.FunctionToolCall{
+            CallID:    "call_1",
+            Name:      "get_weather",
+            Arguments: `{"city":"Shenzhen","date":"tomorrow"}`,
+        }),
+    },
+}
+
+messages, err := toolsNode.Invoke(ctx, input)
+if err != nil {
+    return err
+}
 ```
 
-## How to Get ToolCallID
+Output example:
 
-In the tool function body and tool callback handler, you can use the `compose.GetToolCallID(ctx)` function to get the ToolCallID of the current Tool.
+```go
+[]*schema.AgenticMessage{
+    {
+        Role: schema.AgenticRoleTypeUser,
+        ContentBlocks: []*schema.ContentBlock{
+            schema.NewContentBlock(&schema.FunctionToolResult{
+                CallID: "call_1",
+                Name:   "get_weather",
+                Content: []*schema.FunctionToolResultContentBlock{
+                    {
+                        Type: schema.FunctionToolResultContentBlockTypeText,
+                        Text: &schema.UserInputText{Text: "sunny"},
+                    },
+                },
+            }),
+        },
+    },
+}
+```
 
-## **Existing Implementations**
+## Using in Orchestration
+
+### Chain
+
+Code location: `compose/chain.go`
+
+```go
+func (c *Chain[I, O]) AppendAgenticToolsNode(node *AgenticToolsNode, opts ...GraphAddNodeOpt) *Chain[I, O]
+```
+
+```go
+chain := compose.NewChain[*schema.AgenticMessage, []*schema.AgenticMessage]()
+chain.AppendAgenticToolsNode(toolsNode)
+```
+
+### Graph
+
+Code location: `compose/graph.go`
+
+```go
+func (g *graph) AddAgenticToolsNode(key string, node *AgenticToolsNode, opts ...GraphAddNodeOpt) error
+```
+
+```go
+graph := compose.NewGraph[*schema.AgenticMessage, []*schema.AgenticMessage]()
+err := graph.AddAgenticToolsNode("tools", toolsNode)
+if err != nil {
+    return err
+}
+```
+
+### Workflow, Parallel, ChainBranch
+
+```go
+func (wf *Workflow[I, O]) AddAgenticToolsNode(key string, tools *AgenticToolsNode, opts ...GraphAddNodeOpt) *WorkflowNode
+
+func (p *Parallel) AddAgenticToolsNode(outputKey string, node *AgenticToolsNode, opts ...GraphAddNodeOpt) *Parallel
+
+func (cb *ChainBranch) AddAgenticToolsNode(key string, node *AgenticToolsNode, opts ...GraphAddNodeOpt) *ChainBranch
+```
+
+## Callback
+
+Code location: `utils/callbacks/template.go`
+
+```go
+type AgenticToolsNodeCallbackHandlers struct {
+    OnStart               func(ctx context.Context, info *callbacks.RunInfo, input *schema.AgenticMessage) context.Context
+    OnEnd                 func(ctx context.Context, info *callbacks.RunInfo, input []*schema.AgenticMessage) context.Context
+    OnEndWithStreamOutput func(ctx context.Context, info *callbacks.RunInfo, output *schema.StreamReader[[]*schema.AgenticMessage]) context.Context
+    OnError               func(ctx context.Context, info *callbacks.RunInfo, err error) context.Context
+}
+```
+
+Registration example:
+
+```go
+handler := callbackHelper.NewHandlerHelper().
+    AgenticToolsNode(&callbackHelper.AgenticToolsNodeCallbackHandlers{
+        OnStart: func(ctx context.Context, info *callbacks.RunInfo, input *schema.AgenticMessage) context.Context {
+            fmt.Printf("tool call blocks: %d\n", len(input.ContentBlocks))
+            return ctx
+        },
+        OnEnd: func(ctx context.Context, info *callbacks.RunInfo, output []*schema.AgenticMessage) context.Context {
+            fmt.Printf("tool results: %d\n", len(output))
+            return ctx
+        },
+    }).
+    Handler()
+
+result, err := runnable.Invoke(ctx, input, compose.WithCallbacks(handler))
+```
+
+## Getting ToolCallID
+
+Code location: `compose/tool_node.go`
+
+```go
+func GetToolCallID(ctx context.Context) string
+```
+
+Within a tool function body or tool callback handler, you can use `compose.GetToolCallID(ctx)` to get the current tool call ID.
+
+```go
+func (t *MyTool) InvokableRun(ctx context.Context, args string, opts ...tool.Option) (string, error) {
+    callID := compose.GetToolCallID(ctx)
+    // An empty callID indicates the current ctx is not in a tool call execution context, or the context value type does not match.
+    return callID, nil
+}
+```
+
+## Usage Recommendations
+
+- In documentation and code, refer to `tool.BaseTool`, `InvokableTool`, `StreamableTool`, `EnhancedInvokableTool`, `EnhancedStreamableTool`—do not use an exported `Tool` interface that does not exist in the source code.
+- If a tool may return images, audio, video, or files, prefer implementing the enhanced interface to avoid flattening multimodal results into a string.
+- Multiple tool calls execute in parallel by default; set `ExecuteSequentially: true` when order needs to be preserved or tools have side-effect dependencies.
+- When using `ToolArgumentsHandler` for argument cleaning, note that it executes after argument alias remapping.
+- `UnknownToolsHandler` is suitable as a fallback for tool names hallucinated by the model, but should not mask real configuration errors.
+
+## Existing Implementations
 
 1. Google Search Tool: Tool implementation based on Google search [Tool - Googlesearch](/docs/eino/ecosystem_integration/tool/tool_googlesearch)
 2. DuckDuckGo Search Tool: Tool implementation based on DuckDuckGo search [Tool - DuckDuckGoSearch](/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search)
 3. MCP: Use MCP server as a tool [Eino Tool - MCP](/docs/eino/ecosystem_integration/tool/tool_mcp)
 
-## **Tool Implementation Methods**
-
-There are multiple ways to implement tools. You can refer to the following approaches:
+## Tool Implementation Methods
 
 - HTTP API-based tool implementation: [How to create a tool/function call using OpenAPI?](https://bytedance.larkoffice.com/wiki/FjXzwf3exijtKyk2hh7cAmnZn1g)
 - gRPC-based tool implementation: [How to create a tool/function call using proto3?](https://bytedance.larkoffice.com/wiki/EPkawUVbdiGwxCkWCJTcAMQonbh)
 - Thrift-based tool implementation: [How to create a tool/function call using thrift IDL?](https://bytedance.larkoffice.com/wiki/PcHfwo6x0iOrXxkIjJecez8xnNg)
 - Local function-based tool implementation: [How to create a tool?](/docs/eino/core_modules/components/tools_node_guide/how_to_create_a_tool)
-- ……
 </script><h1>AgenticToolsNode & Tool User Guide [Beta]</h1><header class=article-meta></header><blockquote><p>💡
-This feature is available starting from <a href=https://github.com/cloudwego/eino/releases/tag/v0.9.0-alpha.2>v0.9</a>.</p></blockquote><h2 id=introduction><strong>Introduction</strong></h2><p>In the eino framework, a <code>Tool</code> is defined as &ldquo;an external capability that an AgenticModel can choose to invoke&rdquo;, including local functions, MCP server tools, etc.</p><p><code>AgenticToolsNode</code> is the designated &ldquo;Tool executor&rdquo; in the eino framework. The methods for executing tools are defined as follows:</p><blockquote><p>Code location: <a href=https://github.com/cloudwego/eino/tree/main/compose/agentic_tools_node.go>https://github.com/cloudwego/eino/tree/main/compose/agentic_tools_node.go</a></p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>a</span><span class=w> </span><span class=o>*</span><span class=nx>AgenticToolsNode</span><span class=p>)</span><span class=w> </span><span class=nf>Invoke</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>ToolsNodeOption</span><span class=p>)</span><span class=w> </span><span class=p>([]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w> </span><span class=p>{}</span><span class=w>
+This feature is available starting from <a href=https://github.com/cloudwego/eino/releases/tag/v0.9.0-alpha.2>v0.9</a>. This document is based on the current main branch source code, with code primarily located in <code>compose/agentic_tools_node.go</code>, <code>compose/tool_node.go</code>, <code>components/tool/interface.go</code>, and <code>schema/tool.go</code>.</p></blockquote><h2 id=introduction>Introduction</h2><p><code>AgenticToolsNode</code> is the tool execution node on the agentic message path in Eino. It receives <code>*schema.AgenticMessage</code>, extracts tool calls from the <code>FunctionToolCall</code> content blocks, leverages <code>ToolsNode</code>&rsquo;s execution capabilities to perform local tool execution, and then converts the results into <code>FunctionToolResult</code> content blocks for return.</p><p>It is not responsible for &ldquo;deciding which tool to call&rdquo;. Tool selection is done by the upstream <code>AgenticModel</code>; <code>AgenticToolsNode</code> only executes the corresponding tools based on the function tool calls in the input message.</p><blockquote><p>💡
+<code>AgenticToolsNode</code> is an agentic wrapper layer around <code>ToolsNode</code>, so it reuses <code>ToolsNodeConfig</code>, <code>ToolsNodeOption</code>, tool aliases, exception handling, execution order, argument handlers, and tool middleware capabilities.</p></blockquote><h2 id=agentictoolsnode-definition>AgenticToolsNode Definition</h2><p>Code location: <code>compose/agentic_tools_node.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=nf>NewAgenticToolsNode</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>conf</span><span class=w> </span><span class=o>*</span><span class=nx>ToolsNodeConfig</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=o>*</span><span class=nx>AgenticToolsNode</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>a</span><span class=w> </span><span class=o>*</span><span class=nx>AgenticToolsNode</span><span class=p>)</span><span class=w> </span><span class=nf>Stream</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>ToolsNodeOption</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>StreamReader</span><span class=p>[[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>],</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w> </span><span class=p>{}</span><span class=w>
-</span></span></span></code></pre></div><p>AgenticToolsNode and ToolsNode share the same configuration and usage, such as configuring execution sequence, exception handling, input processing, middleware extensions, etc.</p><blockquote><p>Code location: <a href=https://github.com/cloudwego/eino/tree/main/compose/tool_node.go>https://github.com/cloudwego/eino/tree/main/compose/tool_node.go</a></p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>ToolsNodeConfig</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Tools specify the list of tools can be called which are BaseTool but must implement InvokableTool or StreamableTool.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Tools</span><span class=w> </span><span class=p>[]</span><span class=nx>tool</span><span class=p>.</span><span class=nx>BaseTool</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>AgenticToolsNode</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>inner</span><span class=w> </span><span class=o>*</span><span class=nx>ToolsNode</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// UnknownToolsHandler handles tool calls for non-existent tools when LLM hallucinates.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// This field is optional. When not set, calling a non-existent tool will result in an error.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// When provided, if the LLM attempts to call a tool that doesn&#39;t exist in the Tools list,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// this handler will be invoked instead of returning an error, allowing graceful handling of hallucinated tools.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Parameters:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//   - ctx: The context for the tool call</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//   - name: The name of the non-existent tool</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//   - input: The tool call input generated by llm</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Returns:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//   - string: The response to be returned as if the tool was executed</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//   - error: Any error that occurred during handling</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>UnknownToolsHandler</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>name</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=kt>string</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>a</span><span class=w> </span><span class=o>*</span><span class=nx>AgenticToolsNode</span><span class=p>)</span><span class=w> </span><span class=nf>Invoke</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>ToolsNodeOption</span><span class=p>)</span><span class=w> </span><span class=p>([]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// ExecuteSequentially determines whether tool calls should be executed sequentially (in order) or in parallel.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// When set to true, tool calls will be executed one after another in the order they appear in the input message.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// When set to false (default), tool calls will be executed in parallel.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ExecuteSequentially</span><span class=w> </span><span class=kt>bool</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// ToolArgumentsHandler allows handling of tool arguments before execution.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// When provided, this function will be called for each tool call to process the arguments.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Parameters:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//   - ctx: The context for the tool call</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//   - name: The name of the tool being called</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//   - arguments: The original arguments string for the tool</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Returns:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//   - string: The processed arguments string to be used for tool execution</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//   - error: Any error that occurred during preprocessing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>a</span><span class=w> </span><span class=o>*</span><span class=nx>AgenticToolsNode</span><span class=p>)</span><span class=w> </span><span class=nf>Stream</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>ToolsNodeOption</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>StreamReader</span><span class=p>[[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>],</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></div><p>Input/Output rules:</p><table><tr><td>Method</td><td>Input</td><td>Output</td></tr><tr><td><pre>Invoke</pre></td><td>assistant message containing one or more<pre>FunctionToolCall</pre>blocks</td><td>multiple user messages, each containing one<pre>FunctionToolResult</pre>or<pre>ToolSearchFunctionToolResult</pre>block</td></tr><tr><td><pre>Stream</pre></td><td>assistant message containing one or more<pre>FunctionToolCall</pre>blocks</td><td><pre>StreamReader</pre>, each chunk is<pre>[]*schema.AgenticMessage</pre></td></tr></table><h2 id=execution-flow>Execution Flow</h2><p><a href=/img/eino/RHFww5teMhOfEybBazKcMpWynIb.png target=_blank><img src=/img/eino/RHFww5teMhOfEybBazKcMpWynIb.png width=100%></a></p><p>Core conversion logic:</p><ul><li>Only processes blocks with <code>ContentBlockTypeFunctionToolCall</code> type and non-nil <code>FunctionToolCall</code>.</li><li><code>FunctionToolCall.CallID</code> is converted to <code>schema.ToolCall.ID</code> for correlating tool results.</li><li>Standard tool output is converted to text blocks in <code>FunctionToolResult.Content</code>.</li><li>Enhanced tool output is converted to text/image/audio/video/file blocks in <code>FunctionToolResult.Content</code>.</li><li>Tool search results are converted to <code>ToolSearchFunctionToolResult</code> blocks.</li><li>The output message role is <code>schema.AgenticRoleTypeUser</code>.</li></ul><h2 id=toolsnodeconfig>ToolsNodeConfig</h2><p>Code location: <code>compose/tool_node.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>ToolsNodeConfig</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Tools</span><span class=w>                </span><span class=p>[]</span><span class=nx>tool</span><span class=p>.</span><span class=nx>BaseTool</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ToolAliases</span><span class=w>          </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=nx>ToolAliasConfig</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>UnknownToolsHandler</span><span class=w>  </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>name</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=kt>string</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ExecuteSequentially</span><span class=w>  </span><span class=kt>bool</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ToolArgumentsHandler</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>name</span><span class=p>,</span><span class=w> </span><span class=nx>arguments</span><span class=w> </span><span class=kt>string</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// ToolCallMiddlewares configures middleware for tool calls.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Each element can contain Invokable and/or Streamable middleware.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Invokable middleware only applies to tools implementing InvokableTool interface.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Streamable middleware only applies to tools implementing StreamableTool interface.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ToolCallMiddlewares</span><span class=w> </span><span class=p>[]</span><span class=nx>ToolMiddleware</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ToolCallMiddlewares</span><span class=w>  </span><span class=p>[]</span><span class=nx>ToolMiddleware</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><p>How does AgenticToolsNode &ldquo;decide&rdquo; which Tool to execute? It doesn&rsquo;t make decisions; instead, it executes based on the input <code>*schema.AgenticMessage</code>. The AgenticModel generates FunctionToolCalls to be invoked (containing ToolName, Argument, etc.) and places them in <code>*schema.AgenticMessage</code> to pass to AgenticToolsNode. AgenticToolsNode then actually executes each FunctionToolCall.</p><p>If ExecuteSequentially is configured, AgenticToolsNode will execute tools in the order they appear in <code>[]*ContentBlock</code>.</p><p>After each FunctionToolCall execution completes, the result is wrapped as <code>*schema.AgenticMessage</code> and becomes part of the AgenticToolsNode output.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=c1>// https://github.com/cloudwego/eino/tree/main/schema/agentic_message.go</span><span class=w>
+</span></span></span></code></pre></div><table><tr><td>Field</td><td>Description</td></tr><tr><td><pre>Tools</pre></td><td>List of executable tools. Each tool must implement<pre>tool.BaseTool</pre>and at least one execution interface</td></tr><tr><td><pre>ToolAliases</pre></td><td>Tool name aliases and argument alias configuration for compatibility with non-standard names generated by models</td></tr><tr><td><pre>UnknownToolsHandler</pre></td><td>Handles unknown tools hallucinated by the model; raises an error for unknown tools when not set</td></tr><tr><td><pre>ExecuteSequentially</pre></td><td><pre>true</pre>means execute tool calls sequentially in order; default<pre>false</pre>executes in parallel</td></tr><tr><td><pre>ToolArgumentsHandler</pre></td><td>Called after argument alias processing and before tool execution; can be used for argument cleaning or completion</td></tr><tr><td><pre>ToolCallMiddlewares</pre></td><td>Tool execution middleware, supporting standard and enhanced, non-streaming and streaming tools</td></tr></table><h3 id=toolsnodeoption>ToolsNodeOption</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>ToolsNodeOption</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>o</span><span class=w> </span><span class=o>*</span><span class=nx>toolsNodeOptions</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>AgenticMessage</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// role should be &#39;assistant&#39; for tool call message</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Role</span><span class=w> </span><span class=nx>AgenticRoleType</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// ContentBlocks is the list of content blocks.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ContentBlocks</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>ContentBlock</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=c1>// other fields...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=nf>WithToolOption</span><span class=p>(</span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>tool</span><span class=p>.</span><span class=nx>Option</span><span class=p>)</span><span class=w> </span><span class=nx>ToolsNodeOption</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=nf>WithToolList</span><span class=p>(</span><span class=nx>tool</span><span class=w> </span><span class=o>...</span><span class=nx>tool</span><span class=p>.</span><span class=nx>BaseTool</span><span class=p>)</span><span class=w> </span><span class=nx>ToolsNodeOption</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=nf>WithToolAliases</span><span class=p>(</span><span class=nx>toolAliases</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=nx>ToolAliasConfig</span><span class=p>)</span><span class=w> </span><span class=nx>ToolsNodeOption</span><span class=w>
+</span></span></span></code></pre></div><p><code>WithToolList</code> and <code>WithToolAliases</code> are call-level override configurations:</p><ul><li><code>WithToolList</code>: Replaces the tool list for the current call.</li><li><code>WithToolAliases</code> combined with <code>WithToolList</code>: Configures aliases for dynamic tool lists.</li><li><code>WithToolAliases</code> used alone: Replaces the global alias configuration while keeping the original tool list.</li></ul><h2 id=tool-alias>Tool alias</h2><p>Code location: <code>compose/tool_node.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>ToolAliasConfig</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>NameAliases</span><span class=w>      </span><span class=p>[]</span><span class=kt>string</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ArgumentsAliases</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>][]</span><span class=kt>string</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>ContentBlock</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Type</span><span class=w> </span><span class=nx>ContentBlockType</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// FunctionToolCall contains the invocation details for a user-defined tool.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>FunctionToolCall</span><span class=w> </span><span class=o>*</span><span class=nx>FunctionToolCall</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// FunctionToolResult contains the result returned from a user-defined tool call.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>FunctionToolResult</span><span class=w> </span><span class=o>*</span><span class=nx>FunctionToolResult</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// other fields...</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// FunctionToolCall is the function call in a message.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// It&#39;s used in assistant message.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>FunctionToolCall</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// CallID is the unique identifier for the tool call.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>CallID</span><span class=w> </span><span class=kt>string</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Name specifies the function tool invoked.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Name</span><span class=w> </span><span class=kt>string</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Arguments is the JSON string arguments for the function tool call.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Arguments</span><span class=w> </span><span class=kt>string</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// FunctionToolResult is the function call result in a message.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// It&#39;s used in user message.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>FunctionToolResult</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// CallID is the unique identifier for the tool call.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>CallID</span><span class=w> </span><span class=kt>string</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Name specifies the function tool invoked.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Name</span><span class=w> </span><span class=kt>string</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Result is the function tool result returned by the user</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Result</span><span class=w> </span><span class=kt>string</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h2 id=tool-definition><strong>Tool Definition</strong></h2><h3 id=interface-definition><strong>Interface Definition</strong></h3><p>The Tool component provides three levels of interfaces:</p><blockquote><p>Code location: <a href=https://github.com/cloudwego/eino/components/tool/interface.go>https://github.com/cloudwego/eino/components/tool/interface.go</a></p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=c1>// BaseTool get tool info for ChatModel intent recognition.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>BaseTool</span><span class=w> </span><span class=kd>interface</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span></code></pre></div><p>Semantic description:</p><table><tr><td>Config</td><td>Description</td></tr><tr><td><pre>NameAliases</pre></td><td>Tool name aliases. When the model returns an alias, it will be resolved to the canonical tool name</td></tr><tr><td><pre>ArgumentsAliases</pre></td><td>Argument aliases. Key is the canonical argument name, value is a list of aliases</td></tr></table><p>Example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>toolsNode</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nf>NewAgenticToolsNode</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=nx>compose</span><span class=p>.</span><span class=nx>ToolsNodeConfig</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Tools</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=nx>tool</span><span class=p>.</span><span class=nx>BaseTool</span><span class=p>{</span><span class=nx>searchTool</span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ToolAliases</span><span class=p>:</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=nx>compose</span><span class=p>.</span><span class=nx>ToolAliasConfig</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=s>&#34;search&#34;</span><span class=p>:</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nx>NameAliases</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=s>&#34;web_search&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;lookup&#34;</span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nx>ArgumentsAliases</span><span class=p>:</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>][]</span><span class=kt>string</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=s>&#34;query&#34;</span><span class=p>:</span><span class=w> </span><span class=p>{</span><span class=s>&#34;q&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;keyword&#34;</span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=s>&#34;limit&#34;</span><span class=p>:</span><span class=w> </span><span class=p>{</span><span class=s>&#34;count&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;max_results&#34;</span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>})</span><span class=w>
+</span></span></span></code></pre></div><p>Argument alias processing rules:</p><ul><li>Only processes keys in the top-level JSON object.</li><li>Returns the original value when the string is empty, not an object, or JSON parsing fails.</li><li>When the canonical key already exists, the alias will not override the canonical value.</li><li>Alias remapping occurs before <code>ToolArgumentsHandler</code>.</li><li>Alias configuration validates: empty aliases, empty canonical keys, canonical keys containing <code>.</code>, aliases conflicting with schema properties, and the same alias mapping to multiple canonical names.</li></ul><h2 id=tool-interface>Tool Interface</h2><p>Eino currently does not export a unified interface named <code>Tool</code>. Tool capabilities are composed of the following interfaces in the <code>components/tool</code> package.</p><p>Code location: <code>components/tool/interface.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>BaseTool</span><span class=w> </span><span class=kd>interface</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>Info</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>ToolInfo</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// InvokableTool the tool for ChatModel intent recognition and ToolsNode execution.</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>InvokableTool</span><span class=w> </span><span class=kd>interface</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>BaseTool</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>InvokableRun</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>argumentsInJSON</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>Option</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// StreamableTool the stream tool for ChatModel intent recognition and ToolsNode execution.</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>StreamableTool</span><span class=w> </span><span class=kd>interface</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>BaseTool</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>StreamableRun</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>argumentsInJSON</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>Option</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>StreamReader</span><span class=p>[</span><span class=kt>string</span><span class=p>],</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h4 id=info-method><strong>Info Method</strong></h4><ul><li>Function: Get the tool&rsquo;s description information</li><li>Parameters:<ul><li>ctx: Context object</li></ul></li><li>Return values:<ul><li><code>*schema.ToolInfo</code>: Tool description information</li><li>error: Error during information retrieval</li></ul></li></ul><h4 id=invokablerun-method><strong>InvokableRun Method</strong></h4><ul><li>Function: Execute the tool synchronously</li><li>Parameters:<ul><li>ctx: Context object, used for passing request-level information and also for passing the Callback Manager</li><li><code>argumentsInJSON</code>: JSON-formatted argument string</li><li>opts: Tool execution options</li></ul></li><li>Return values:<ul><li>string: Execution result</li><li>error: Error during execution</li></ul></li></ul><h4 id=streamablerun-method><strong>StreamableRun Method</strong></h4><ul><li>Function: Execute the tool in streaming mode</li><li>Parameters:<ul><li>ctx: Context object, used for passing request-level information and also for passing the Callback Manager</li><li><code>argumentsInJSON</code>: JSON-formatted argument string</li><li>opts: Tool execution options</li></ul></li><li>Return values:<ul><li><code>*schema.StreamReader[string]</code>: Streaming execution result</li><li>error: Error during execution</li></ul></li></ul><h3 id=toolinfo-struct><strong>ToolInfo Struct</strong></h3><blockquote><p>Code location: <a href=https://github.com/cloudwego/eino/components/tool/interface.go>https://github.com/cloudwego/eino/components/tool/interface.go</a></p></blockquote><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>ToolInfo</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Unique name of the tool that clearly expresses its purpose</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Name</span><span class=w> </span><span class=kt>string</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Used to tell the model how/when/why to use this tool</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Can include few-shot examples in the description</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Desc</span><span class=w> </span><span class=kt>string</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Definition of parameters accepted by the tool</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Can be described in two ways:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 1. Using ParameterInfo: schema.NewParamsOneOfByParams(params)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 2. Using JSONSchema: schema.NewParamsOneOfByJSONSchema(jsonschema)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>EnhancedInvokableTool</span><span class=w> </span><span class=kd>interface</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>BaseTool</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>InvokableRun</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>toolArgument</span><span class=w> </span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>ToolArgument</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>Option</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>ToolResult</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>EnhancedStreamableTool</span><span class=w> </span><span class=kd>interface</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>BaseTool</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>StreamableRun</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>toolArgument</span><span class=w> </span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>ToolArgument</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>Option</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>StreamReader</span><span class=p>[</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>ToolResult</span><span class=p>],</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><p>Interface layers:</p><table><tr><td>Interface</td><td>Purpose</td></tr><tr><td><pre>BaseTool</pre></td><td>Provides tool metadata that can be passed to the model for tool recognition</td></tr><tr><td><pre>InvokableTool</pre></td><td>Non-streaming execution; input is a JSON string, returns a string</td></tr><tr><td><pre>StreamableTool</pre></td><td>Streaming execution; input is a JSON string, returns a string stream</td></tr><tr><td><pre>EnhancedInvokableTool</pre></td><td>Non-streaming enhanced tool; input is<pre>*schema.ToolArgument</pre>, returns multimodal<pre>*schema.ToolResult</pre></td></tr><tr><td><pre>EnhancedStreamableTool</pre></td><td>Streaming enhanced tool; returns a<pre>*schema.ToolResult</pre>stream</td></tr></table><blockquote><p>💡
+If a tool implements both the standard interface and the enhanced interface, <code>ToolsNode</code> will prioritize using the enhanced interface to preserve structured multimodal results.</p></blockquote><h2 id=toolinfo>ToolInfo</h2><p>Code location: <code>schema/tool.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>ToolInfo</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Name</span><span class=w>  </span><span class=kt>string</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Desc</span><span class=w>  </span><span class=kt>string</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Extra</span><span class=w> </span><span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>any</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>*</span><span class=nx>ParamsOneOf</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=common-options><strong>Common Options</strong></h3><p>The Tool component uses ToolOption to define optional parameters. AgenticToolsNode does not abstract common options. Each specific implementation can define its own specific Options, which are wrapped into the unified ToolOption type through the WrapToolImplSpecificOptFn function.</p><h2 id=usage><strong>Usage</strong></h2><p>ToolsNode is typically not used alone; it is generally used in orchestration after an AgenticModel.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=p>(</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/components/tool&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/compose&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/schema&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></div><p>Field descriptions:</p><table><tr><td>Field</td><td>Description</td></tr><tr><td><pre>Name</pre></td><td>Unique tool name; should be concise and unique within the tool set</td></tr><tr><td><pre>Desc</pre></td><td>Tells the model when, why, and how to use the tool; can include a few examples</td></tr><tr><td><pre>Extra</pre></td><td>Additional metadata, defined by component implementations or business customizations</td></tr><tr><td><pre>ParamsOneOf</pre></td><td>Parameter definition; can be constructed via<pre>schema.NewParamsOneOfByParams</pre>or<pre>schema.NewParamsOneOfByJSONSchema</pre>;<pre>nil</pre>means no parameters</td></tr></table><h2 id=toolargument-and-toolresult>ToolArgument and ToolResult</h2><p>Enhanced tools use structured input and multimodal output.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>ToolArgument</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Text</span><span class=w> </span><span class=kt>string</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Create tools node</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>toolsNode</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nf>NewAgenticToolsNode</span><span class=p>([]</span><span class=nx>tool</span><span class=p>.</span><span class=nx>Tool</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>searchTool</span><span class=p>,</span><span class=w>    </span><span class=c1>// Search tool</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>weatherTool</span><span class=p>,</span><span class=w>   </span><span class=c1>// Weather query tool</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>calculatorTool</span><span class=p>,</span><span class=w> </span><span class=c1>// Calculator tool</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>ToolResult</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Parts</span><span class=w> </span><span class=p>[]</span><span class=nx>ToolOutputPart</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><p><code>ToolOutputPart</code> can represent text, image, audio, video, file, and tool search results. <code>AgenticToolsNode</code> converts enhanced output into multimodal blocks in <code>FunctionToolResult.Content</code>.</p><h2 id=functiontoolcall-and-functiontoolresult>FunctionToolCall and FunctionToolResult</h2><p>The input to <code>AgenticToolsNode</code> comes from <code>FunctionToolCall</code> blocks in <code>schema.AgenticMessage</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>FunctionToolCall</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>CallID</span><span class=w>    </span><span class=kt>string</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Name</span><span class=w>      </span><span class=kt>string</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Arguments</span><span class=w> </span><span class=kt>string</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><p>Tool execution results are converted to <code>FunctionToolResult</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>FunctionToolResult</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>CallID</span><span class=w>  </span><span class=kt>string</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Name</span><span class=w>    </span><span class=kt>string</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Content</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>FunctionToolResultContentBlock</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><p><code>FunctionToolResultContentBlock</code> supports five content types: text, image, audio, video, and file. The current implementation no longer uses the <code>Result string</code> field.</p><h2 id=standalone-usage-example>Standalone Usage Example</h2><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>toolsNode</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nf>NewAgenticToolsNode</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=nx>compose</span><span class=p>.</span><span class=nx>ToolsNodeConfig</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Tools</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=nx>tool</span><span class=p>.</span><span class=nx>BaseTool</span><span class=p>{</span><span class=nx>weatherTool</span><span class=p>},</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>})</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Mock LLM output as input</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>input</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=o>&amp;</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Role</span><span class=p>:</span><span class=w> </span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticRoleTypeAssistant</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ContentBlocks</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>ContentBlock</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nx>Type</span><span class=p>:</span><span class=w> </span><span class=nx>schema</span><span class=p>.</span><span class=nx>ContentBlockTypeFunctionToolCall</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nx>FunctionToolCall</span><span class=p>:</span><span class=w> </span><span class=o>&amp;</span><span class=nx>schema</span><span class=p>.</span><span class=nx>FunctionToolCall</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=nx>CallID</span><span class=p>:</span><span class=w>    </span><span class=s>&#34;1&#34;</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=nx>Name</span><span class=p>:</span><span class=w>      </span><span class=s>&#34;get_weather&#34;</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=nx>Arguments</span><span class=p>:</span><span class=w> </span><span class=s>`{&#34;city&#34;: &#34;深圳&#34;, &#34;date&#34;: &#34;tomorrow&#34;}`</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=p>},</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=p>},</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>},</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>toolMessages</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>toolsNode</span><span class=p>.</span><span class=nf>Invoke</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=p>)</span><span class=w>
-</span></span></span></code></pre></div><h3 id=using-in-orchestration><strong>Using in Orchestration</strong></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=p>(</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/components/tool&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/compose&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/schema&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Create tools node</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>toolsNode</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nf>NewAgenticToolsNode</span><span class=p>([]</span><span class=nx>tool</span><span class=p>.</span><span class=nx>Tool</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>searchTool</span><span class=p>,</span><span class=w>    </span><span class=c1>// Search tool</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>weatherTool</span><span class=p>,</span><span class=w>   </span><span class=c1>// Weather query tool</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>calculatorTool</span><span class=p>,</span><span class=w> </span><span class=c1>// Calculator tool</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>})</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Use in Chain</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>chain</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nx>NewChain</span><span class=p>[</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>]()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>chain</span><span class=p>.</span><span class=nf>AppendAgenticToolsNode</span><span class=p>(</span><span class=nx>toolsNode</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// In graph</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>graph</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nx>NewGraph</span><span class=p>[</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>]()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>graph</span><span class=p>.</span><span class=nf>AddAgenticToolsNode</span><span class=p>(</span><span class=nx>toolsNode</span><span class=p>)</span><span class=w>
-</span></span></span></code></pre></div><h2 id=option-mechanism><strong>Option Mechanism</strong></h2><p>Custom Tools can implement specific Options as needed:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=s>&#34;github.com/cloudwego/eino/components/tool&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Define Option struct</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nx>MyToolOptions</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Timeout</span><span class=w> </span><span class=nx>time</span><span class=p>.</span><span class=nx>Duration</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>MaxRetries</span><span class=w> </span><span class=kt>int</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>RetryInterval</span><span class=w> </span><span class=nx>time</span><span class=p>.</span><span class=nx>Duration</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Define Option function</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=nf>WithTimeout</span><span class=p>(</span><span class=nx>timeout</span><span class=w> </span><span class=nx>time</span><span class=p>.</span><span class=nx>Duration</span><span class=p>)</span><span class=w> </span><span class=nx>tool</span><span class=p>.</span><span class=nx>Option</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>tool</span><span class=p>.</span><span class=nf>WrapImplSpecificOptFn</span><span class=p>(</span><span class=kd>func</span><span class=p>(</span><span class=nx>o</span><span class=w> </span><span class=o>*</span><span class=nx>MyToolOptions</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>o</span><span class=p>.</span><span class=nx>Timeout</span><span class=w> </span><span class=p>=</span><span class=w> </span><span class=nx>timeout</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>})</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h2 id=option-and-callback-usage><strong>Option and Callback Usage</strong></h2><h3 id=callback-usage-example><strong>Callback Usage Example</strong></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=p>(</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;context&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>callbackHelper</span><span class=w> </span><span class=s>&#34;github.com/cloudwego/eino/utils/callbacks&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/callbacks&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/compose&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;github.com/cloudwego/eino/components/tool&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Create callback handler</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>handler</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=o>&amp;</span><span class=nx>callbackHelper</span><span class=p>.</span><span class=nx>ToolCallbackHandler</span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>OnStart</span><span class=p>:</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=o>*</span><span class=nx>tool</span><span class=p>.</span><span class=nx>CallbackInput</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;Starting tool execution, arguments: %s\n&#34;</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=p>.</span><span class=nx>ArgumentsInJSON</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=k>return</span><span class=w> </span><span class=nx>ctx</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>},</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>OnEnd</span><span class=p>:</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>output</span><span class=w> </span><span class=o>*</span><span class=nx>tool</span><span class=p>.</span><span class=nx>CallbackOutput</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;Tool execution completed, result: %s\n&#34;</span><span class=p>,</span><span class=w> </span><span class=nx>output</span><span class=p>.</span><span class=nx>Response</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=k>return</span><span class=w> </span><span class=nx>ctx</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>},</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>OnEndWithStreamOutput</span><span class=p>:</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>output</span><span class=w> </span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>StreamReader</span><span class=p>[</span><span class=o>*</span><span class=nx>tool</span><span class=p>.</span><span class=nx>CallbackOutput</span><span class=p>])</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;Tool starting streaming output&#34;</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=k>go</span><span class=w> </span><span class=kd>func</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=k>defer</span><span class=w> </span><span class=nx>output</span><span class=p>.</span><span class=nf>Close</span><span class=p>()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=k>for</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=nx>chunk</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>output</span><span class=p>.</span><span class=nf>Recv</span><span class=p>()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=k>if</span><span class=w> </span><span class=nx>errors</span><span class=p>.</span><span class=nf>Is</span><span class=p>(</span><span class=nx>err</span><span class=p>,</span><span class=w> </span><span class=nx>io</span><span class=p>.</span><span class=nx>EOF</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=k>if</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>nil</span><span class=w> </span><span class=p>{</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;Received streaming output: %s\n&#34;</span><span class=p>,</span><span class=w> </span><span class=nx>chunk</span><span class=p>.</span><span class=nx>Response</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=p>}()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=k>return</span><span class=w> </span><span class=nx>ctx</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>},</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Use callback handler</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>helper</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>callbackHelper</span><span class=p>.</span><span class=nf>NewHandlerHelper</span><span class=p>().</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>Tool</span><span class=p>(</span><span class=nx>handler</span><span class=p>).</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>Handler</span><span class=p>()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w> 
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=cm>/*** compose a chain
-</span></span></span><span class=line><span class=cl><span class=cm>* chain := NewChain
-</span></span></span><span class=line><span class=cl><span class=cm>* chain.appendxxx().
-</span></span></span><span class=line><span class=cl><span class=cm>*       appendxxx().
-</span></span></span><span class=line><span class=cl><span class=cm>*       ...
-</span></span></span><span class=line><span class=cl><span class=cm>*/</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Use at runtime</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>runnable</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>chain</span><span class=p>.</span><span class=nf>Compile</span><span class=p>()</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=k>if</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>nil</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>err</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>result</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>runnable</span><span class=p>.</span><span class=nf>Invoke</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=p>,</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nf>WithCallbacks</span><span class=p>(</span><span class=nx>helper</span><span class=p>))</span><span class=w>
-</span></span></span></code></pre></div><h2 id=how-to-get-toolcallid>How to Get ToolCallID</h2><p>In the tool function body and tool callback handler, you can use the <code>compose.GetToolCallID(ctx)</code> function to get the ToolCallID of the current Tool.</p><h2 id=existing-implementations><strong>Existing Implementations</strong></h2><ol><li>Google Search Tool: Tool implementation based on Google search <a href=/docs/eino/ecosystem_integration/tool/tool_googlesearch>Tool - Googlesearch</a></li><li>DuckDuckGo Search Tool: Tool implementation based on DuckDuckGo search <a href=/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search>Tool - DuckDuckGoSearch</a></li><li>MCP: Use MCP server as a tool <a href=/docs/eino/ecosystem_integration/tool/tool_mcp>Eino Tool - MCP</a></li></ol><h2 id=tool-implementation-methods><strong>Tool Implementation Methods</strong></h2><p>There are multiple ways to implement tools. You can refer to the following approaches:</p><ul><li>HTTP API-based tool implementation: <a href=https://bytedance.larkoffice.com/wiki/FjXzwf3exijtKyk2hh7cAmnZn1g>How to create a tool/function call using OpenAPI?</a></li><li>gRPC-based tool implementation: <a href=https://bytedance.larkoffice.com/wiki/EPkawUVbdiGwxCkWCJTcAMQonbh>How to create a tool/function call using proto3?</a></li><li>Thrift-based tool implementation: <a href=https://bytedance.larkoffice.com/wiki/PcHfwo6x0iOrXxkIjJecez8xnNg>How to create a tool/function call using thrift IDL?</a></li><li>Local function-based tool implementation: <a href=/docs/eino/core_modules/components/tools_node_guide/how_to_create_a_tool/>How to create a tool?</a></li><li>……</li></ul><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
-<button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified May 21, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/14c457e4b31e5215ffb722a7f0d1c47dae30835d>docs(eino): sync docs from feishu (2026-05-21) (#1545) (14c457e4)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class=container-fluid><div class="row mx-sm-5"><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-end text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>input</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=o>&amp;</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>Role</span><span class=p>:</span><span class=w> </span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticRoleTypeAssistant</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>ContentBlocks</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>ContentBlock</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>schema</span><span class=p>.</span><span class=nf>NewContentBlock</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>schema</span><span class=p>.</span><span class=nx>FunctionToolCall</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nx>CallID</span><span class=p>:</span><span class=w>    </span><span class=s>&#34;call_1&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nx>Name</span><span class=p>:</span><span class=w>      </span><span class=s>&#34;get_weather&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nx>Arguments</span><span class=p>:</span><span class=w> </span><span class=s>`{&#34;city&#34;:&#34;Shenzhen&#34;,&#34;date&#34;:&#34;tomorrow&#34;}`</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>messages</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>toolsNode</span><span class=p>.</span><span class=nf>Invoke</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>if</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>nil</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>err</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><p>Output example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>Role</span><span class=p>:</span><span class=w> </span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticRoleTypeUser</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>ContentBlocks</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>ContentBlock</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nx>schema</span><span class=p>.</span><span class=nf>NewContentBlock</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>schema</span><span class=p>.</span><span class=nx>FunctionToolResult</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nx>CallID</span><span class=p>:</span><span class=w> </span><span class=s>&#34;call_1&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nx>Name</span><span class=p>:</span><span class=w>   </span><span class=s>&#34;get_weather&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nx>Content</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>FunctionToolResultContentBlock</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=nx>Type</span><span class=p>:</span><span class=w> </span><span class=nx>schema</span><span class=p>.</span><span class=nx>FunctionToolResultContentBlockTypeText</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=nx>Text</span><span class=p>:</span><span class=w> </span><span class=o>&amp;</span><span class=nx>schema</span><span class=p>.</span><span class=nx>UserInputText</span><span class=p>{</span><span class=nx>Text</span><span class=p>:</span><span class=w> </span><span class=s>&#34;sunny&#34;</span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><h2 id=using-in-orchestration>Using in Orchestration</h2><h3 id=chain>Chain</h3><p>Code location: <code>compose/chain.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>c</span><span class=w> </span><span class=o>*</span><span class=nx>Chain</span><span class=p>[</span><span class=nx>I</span><span class=p>,</span><span class=w> </span><span class=nx>O</span><span class=p>])</span><span class=w> </span><span class=nf>AppendAgenticToolsNode</span><span class=p>(</span><span class=nx>node</span><span class=w> </span><span class=o>*</span><span class=nx>AgenticToolsNode</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>GraphAddNodeOpt</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=nx>Chain</span><span class=p>[</span><span class=nx>I</span><span class=p>,</span><span class=w> </span><span class=nx>O</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>chain</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nx>NewChain</span><span class=p>[</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>]()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>chain</span><span class=p>.</span><span class=nf>AppendAgenticToolsNode</span><span class=p>(</span><span class=nx>toolsNode</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></div><h3 id=graph>Graph</h3><p>Code location: <code>compose/graph.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>g</span><span class=w> </span><span class=o>*</span><span class=nx>graph</span><span class=p>)</span><span class=w> </span><span class=nf>AddAgenticToolsNode</span><span class=p>(</span><span class=nx>key</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>node</span><span class=w> </span><span class=o>*</span><span class=nx>AgenticToolsNode</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>GraphAddNodeOpt</span><span class=p>)</span><span class=w> </span><span class=kt>error</span><span class=w>
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>graph</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nx>NewGraph</span><span class=p>[</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>,</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>]()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>graph</span><span class=p>.</span><span class=nf>AddAgenticToolsNode</span><span class=p>(</span><span class=s>&#34;tools&#34;</span><span class=p>,</span><span class=w> </span><span class=nx>toolsNode</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>if</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>nil</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>err</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><h3 id=workflow-parallel-chainbranch>Workflow, Parallel, ChainBranch</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>wf</span><span class=w> </span><span class=o>*</span><span class=nx>Workflow</span><span class=p>[</span><span class=nx>I</span><span class=p>,</span><span class=w> </span><span class=nx>O</span><span class=p>])</span><span class=w> </span><span class=nf>AddAgenticToolsNode</span><span class=p>(</span><span class=nx>key</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>tools</span><span class=w> </span><span class=o>*</span><span class=nx>AgenticToolsNode</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>GraphAddNodeOpt</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=nx>WorkflowNode</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>p</span><span class=w> </span><span class=o>*</span><span class=nx>Parallel</span><span class=p>)</span><span class=w> </span><span class=nf>AddAgenticToolsNode</span><span class=p>(</span><span class=nx>outputKey</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>node</span><span class=w> </span><span class=o>*</span><span class=nx>AgenticToolsNode</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>GraphAddNodeOpt</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=nx>Parallel</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>cb</span><span class=w> </span><span class=o>*</span><span class=nx>ChainBranch</span><span class=p>)</span><span class=w> </span><span class=nf>AddAgenticToolsNode</span><span class=p>(</span><span class=nx>key</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>node</span><span class=w> </span><span class=o>*</span><span class=nx>AgenticToolsNode</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>GraphAddNodeOpt</span><span class=p>)</span><span class=w> </span><span class=o>*</span><span class=nx>ChainBranch</span><span class=w>
+</span></span></span></code></pre></div><h2 id=callback>Callback</h2><p>Code location: <code>utils/callbacks/template.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nx>AgenticToolsNodeCallbackHandlers</span><span class=w> </span><span class=kd>struct</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>OnStart</span><span class=w>               </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>OnEnd</span><span class=w>                 </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>OnEndWithStreamOutput</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>output</span><span class=w> </span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>StreamReader</span><span class=p>[[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>])</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>OnError</span><span class=w>               </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><p>Registration example:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=nx>handler</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>callbackHelper</span><span class=p>.</span><span class=nf>NewHandlerHelper</span><span class=p>().</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>AgenticToolsNode</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>callbackHelper</span><span class=p>.</span><span class=nx>AgenticToolsNodeCallbackHandlers</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>OnStart</span><span class=p>:</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=w> </span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;tool call blocks: %d\n&#34;</span><span class=p>,</span><span class=w> </span><span class=nb>len</span><span class=p>(</span><span class=nx>input</span><span class=p>.</span><span class=nx>ContentBlocks</span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=nx>ctx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nx>OnEnd</span><span class=p>:</span><span class=w> </span><span class=kd>func</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>info</span><span class=w> </span><span class=o>*</span><span class=nx>callbacks</span><span class=p>.</span><span class=nx>RunInfo</span><span class=p>,</span><span class=w> </span><span class=nx>output</span><span class=w> </span><span class=p>[]</span><span class=o>*</span><span class=nx>schema</span><span class=p>.</span><span class=nx>AgenticMessage</span><span class=p>)</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;tool results: %d\n&#34;</span><span class=p>,</span><span class=w> </span><span class=nb>len</span><span class=p>(</span><span class=nx>output</span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=nx>ctx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}).</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nf>Handler</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nx>result</span><span class=p>,</span><span class=w> </span><span class=nx>err</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>runnable</span><span class=p>.</span><span class=nf>Invoke</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span><span class=w> </span><span class=nx>input</span><span class=p>,</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nf>WithCallbacks</span><span class=p>(</span><span class=nx>handler</span><span class=p>))</span><span class=w>
+</span></span></span></code></pre></div><h2 id=getting-toolcallid>Getting ToolCallID</h2><p>Code location: <code>compose/tool_node.go</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=nf>GetToolCallID</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>)</span><span class=w> </span><span class=kt>string</span><span class=w>
+</span></span></span></code></pre></div><p>Within a tool function body or tool callback handler, you can use <code>compose.GetToolCallID(ctx)</code> to get the current tool call ID.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=p>(</span><span class=nx>t</span><span class=w> </span><span class=o>*</span><span class=nx>MyTool</span><span class=p>)</span><span class=w> </span><span class=nf>InvokableRun</span><span class=p>(</span><span class=nx>ctx</span><span class=w> </span><span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span><span class=w> </span><span class=nx>args</span><span class=w> </span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=nx>opts</span><span class=w> </span><span class=o>...</span><span class=nx>tool</span><span class=p>.</span><span class=nx>Option</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=kt>string</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>callID</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>compose</span><span class=p>.</span><span class=nf>GetToolCallID</span><span class=p>(</span><span class=nx>ctx</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// An empty callID indicates the current ctx is not in a tool call execution context, or the context value type does not match.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nx>callID</span><span class=p>,</span><span class=w> </span><span class=kc>nil</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><h2 id=usage-recommendations>Usage Recommendations</h2><ul><li>In documentation and code, refer to <code>tool.BaseTool</code>, <code>InvokableTool</code>, <code>StreamableTool</code>, <code>EnhancedInvokableTool</code>, <code>EnhancedStreamableTool</code>—do not use an exported <code>Tool</code> interface that does not exist in the source code.</li><li>If a tool may return images, audio, video, or files, prefer implementing the enhanced interface to avoid flattening multimodal results into a string.</li><li>Multiple tool calls execute in parallel by default; set <code>ExecuteSequentially: true</code> when order needs to be preserved or tools have side-effect dependencies.</li><li>When using <code>ToolArgumentsHandler</code> for argument cleaning, note that it executes after argument alias remapping.</li><li><code>UnknownToolsHandler</code> is suitable as a fallback for tool names hallucinated by the model, but should not mask real configuration errors.</li></ul><h2 id=existing-implementations>Existing Implementations</h2><ol><li>Google Search Tool: Tool implementation based on Google search <a href=/docs/eino/ecosystem_integration/tool/tool_googlesearch>Tool - Googlesearch</a></li><li>DuckDuckGo Search Tool: Tool implementation based on DuckDuckGo search <a href=/docs/eino/ecosystem_integration/tool/tool_duckduckgo_search>Tool - DuckDuckGoSearch</a></li><li>MCP: Use MCP server as a tool <a href=/docs/eino/ecosystem_integration/tool/tool_mcp>Eino Tool - MCP</a></li></ol><h2 id=tool-implementation-methods>Tool Implementation Methods</h2><ul><li>HTTP API-based tool implementation: <a href=https://bytedance.larkoffice.com/wiki/FjXzwf3exijtKyk2hh7cAmnZn1g>How to create a tool/function call using OpenAPI?</a></li><li>gRPC-based tool implementation: <a href=https://bytedance.larkoffice.com/wiki/EPkawUVbdiGwxCkWCJTcAMQonbh>How to create a tool/function call using proto3?</a></li><li>Thrift-based tool implementation: <a href=https://bytedance.larkoffice.com/wiki/PcHfwo6x0iOrXxkIjJecez8xnNg>How to create a tool/function call using thrift IDL?</a></li><li>Local function-based tool implementation: <a href=/docs/eino/core_modules/components/tools_node_guide/how_to_create_a_tool/>How to create a tool?</a></li></ul><style>.feedback--answer{display:inline-block}.feedback--answer-no{margin-left:1em}.feedback--response{display:none;margin-top:1em}.feedback--response__visible{display:block}</style><div class=d-print-none><h2 class=feedback--title>Feedback</h2><p class=feedback--question>Was this page helpful?</p><button class="btn btn-primary mb-4 feedback--answer feedback--answer-yes">Yes</button>
+<button class="btn btn-primary mb-4 feedback--answer feedback--answer-no">No</button><p class="feedback--response feedback--response-yes"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p><p class="feedback--response feedback--response-no"><a href=https://github.com/cloudwego/cloudwego.github.io/issues/new>Please tell us how we can improve</a>.</p></div><script>const yesButton=document.querySelector(".feedback--answer-yes"),noButton=document.querySelector(".feedback--answer-no"),yesResponse=document.querySelector(".feedback--response-yes"),noResponse=document.querySelector(".feedback--response-no"),disableButtons=()=>{yesButton.disabled=!0,noButton.disabled=!0},sendFeedback=e=>{if(typeof ga!="function")return;const t={command:"send",hitType:"event",category:"Helpful",action:"click",label:window.location.pathname,value:e};ga(t.command,t.hitType,t.category,t.action,t.label,t.value)};yesButton.addEventListener("click",()=>{yesResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(1)}),noButton.addEventListener("click",()=>{noResponse.classList.add("feedback--response__visible"),disableButtons(),sendFeedback(0)})</script><br><div class=td-page-meta__lastmod>Last modified May 25, 2026: <a data-proofer-ignore href=https://github.com/cloudwego/cloudwego.github.io/commit/98051087d0aecee395c85217620959ef82ac47e3>docs(eino): sync docs from feishu (#1552) (98051087)</a></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class=container-fluid><div class="row mx-sm-5"><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Lark aria-label=Lark><a class=text-white target=_blank rel=noopener href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=693v2544-2664-4421-b50f-7f1912p745r6" aria-label=Lark><img src=/webfonts/lark.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/CloudWeGo aria-label=Twitter><img src=/webfonts/x-twitter.svg alt style=width:26px;line-height:32.5px;margin-bottom:6px;fill:#fff></a></li></ul></div><div class="col-6 col-sm-4 text-end text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/cloudwego aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Discord aria-label=Discord><a class=text-white target=_blank rel=noopener href=https://discord.gg/jceZSE7DsW aria-label=Discord><i class="fa-brands fa-discord"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2026 The CloudWeGo Authors</small><p class="mt-2 text-white"><a class=cloudwego-link href=/about/ target=_blank rel=noopener>About</a>
 |
 <a class=cloudwego-link href=https://github.com/cloudwego/cloudwego.github.io/blob/main/LICENSE target=_blank rel=noopener>License</a></p></div></div></div></footer></div><script src=https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js></script><script src=https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js></script><script src=/js/main.min.54d0dd7223fe3e2197b7f524e7b447770198007158f1bc4f5c20a42ea747bbee.js integrity="sha256-VNDdciP+PiGXt/Uk57RHdwGYAHFY8bxPXCCkLqdHu+4=" crossorigin=anonymous></script><script defer src=/js/click-to-copy.min.383b566d46ea827745a12d56f9f3bafd4eea8f8788fe225e4d72ff25e2752b35.js integrity="sha256-ODtWbUbqgndFoS1W+fO6/U7qj4eI/iJeTXL/JeJ1KzU=" crossorigin=anonymous></script><script src=/js/tabpane-persist.js></script><script src=/js/docsearch.js></script><script type=text/javascript>let siteLang=window.location.pathname.startsWith("/zh/")?"zh":"en";docsearch({appId:"V7I042F992",apiKey:"8380a7ac88106841cb43fb000fa2edb4",indexName:"cloudwego",container:"#docsearch",searchParameters:{hitsPerPage:5,facetFilters:[`lang:${siteLang}`]},transformItems(e){return e.map(e=>({...e,url:e.url.replace("www.cloudwego.io",location.host).replace("https:",location.protocol)}))}})</script><script src=/js/outbound-link.js></script><script src=/js/navScroll.js></script></body></html>
