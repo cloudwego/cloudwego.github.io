@@ -341,7 +341,7 @@ Common scenarios include:
 
 ### Asynchronous Use of RPCInfo
 
-Panic occurs when attempting to access data such as `RPCInfo` outside of the `handler` method by passing the `context` parameter of the `handler`.
+Panic occurs when attempting to access data such as `RPCInfo` outside of the `handler` method by passing the `context` parameter of the `handler`. For correct usage, see [Asynchronous usage](/docs/kitex/tutorials/basic-feature/acquire_rpcinfo/#12-asynchronous-usage).
 
 ## Known Panics Resolved by Upgrading the Framework Version
 

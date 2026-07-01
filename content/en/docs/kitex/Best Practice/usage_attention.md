@@ -2,16 +2,18 @@
 title: "Usage Attention"
 linkTitle: "Usage Attention"
 weight: 1
-date: 2024-02-18
+date: 2026-07-01
 keywords: ["Kitex", "RPCInfo", "client", "Set", "Map"]
 description: "This doc describes usage attentions in Kitex RPCInfo, client creation, and mass data transfer scenarios."
 ---
 
 ## Do not use RPCInfo asynchronously
 
-By default, the lifecycle of Kitex's RPCInfo is from the start of the request until the response is returned (for performance reasons). Afterward, it is put into a `sync.Pool` for reuse. In the server-side, if RPCInfo is asynchronously accessed and used within the business handler, it may read dirty data or encounter a null pointer and panic.
+When RPCInfo pooling and reuse is enabled, Kitex's RPCInfo lifecycle is from the start of the request until the response is returned for performance reasons. Afterward, it is put into `sync.Pool` for reuse. On the server side, if RPCInfo is asynchronously accessed and used within the business handler, dirty data or nil pointer panic may occur.
 
-If there is indeed a scenario where asynchronous usage is required, there are two approaches:
+For safety, Kitex (>= v0.16.3) disables RPCInfo pooling and reuse by default. After a request finishes, the framework does not reset RPCInfo and put it back into the pool by default.
+
+If asynchronous usage is required, there are two approaches:
 
 - Use `rpcinfo.FreezeRPCInfo` provided by Kitex to make a copy of the initial RPCInfo before using it.
 

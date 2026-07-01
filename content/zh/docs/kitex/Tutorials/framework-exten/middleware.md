@@ -1,6 +1,6 @@
 ---
 title: "Middleware 扩展"
-date: 2021-08-26
+date: 2026-07-01
 weight: 1
 description: >
 ---
@@ -125,7 +125,7 @@ func ExampleMiddleware(next endpoint.Endpoint) endpoint.Endpoint {
 
 ### 注意事项
 
-1. 如果自定义 middleware 中用到了 RPCInfo，注意 RPCInfo 在 rpc 结束之后会被回收。如果在 middleware 中开启 goroutine 操作 RPCInfo 有可能会出现问题，请避免这类操作。
+1. [Kitex <= v0.16.2] 如果自定义 middleware 中用到了 RPCInfo，注意 RPCInfo 在 rpc 结束之后会被回收。如果在 middleware 中开启 goroutine 操作 RPCInfo 有可能会出现问题，请避免这类操作，详情见 [异步使用方式](/zh/docs/kitex/tutorials/basic-feature/acquire_rpcinfo/#12-异步使用方式)。
 2. Middleware 为链式调用，若在任一 middleware 中使用 `result.SetSuccess()` 或其他方式修改了 response，上游 middleware 会接收到修改后的 response。
 
 ### gRPC 中间件
