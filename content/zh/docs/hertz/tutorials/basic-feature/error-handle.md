@@ -104,7 +104,7 @@ func NewPrivatef(format string, v ...interface{}) *Error {
 
 ### 如何使用
 
-对应的 API 为：`RequestContext.Error(err)`，调用该 API 会将 err 绑到对应的请求上下文上之上。
+对应的 API 为：`RequestContext.Error(err)`，调用该 API 会将 err 绑到对应的请求上下文之上。
 
 获取请求上下文已绑定的所有错误的方式：`RequestContext.Errors`。
 
