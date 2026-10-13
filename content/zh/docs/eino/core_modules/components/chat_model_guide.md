@@ -265,14 +265,16 @@ response, err := cm.Generate(ctx, messages,
 
 ```go
 import (
-    "context"
-    "fmt"
+	"context"
+	"errors"
+	"fmt"
+	"io"
 
-    "github.com/cloudwego/eino/callbacks"
-    "github.com/cloudwego/eino/components/model"
-    "github.com/cloudwego/eino/compose"
-    "github.com/cloudwego/eino/schema"
-    callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
+	"github.com/cloudwego/eino/callbacks"
+	"github.com/cloudwego/eino/components/model"
+	"github.com/cloudwego/eino/compose"
+	"github.com/cloudwego/eino/schema"
+	callbacksHelper "github.com/cloudwego/eino/utils/callbacks"
 )
 
 // 创建 callback handler
@@ -296,7 +298,7 @@ handler := &callbacksHelper.ModelCallbackHandler{
             }
             if err != nil {
                 fmt.Printf("流读取错误: %v\n", err)
-                return
+                return ctx
             }
             if chunk == nil || chunk.Message == nil {
                 continue
