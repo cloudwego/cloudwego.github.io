@@ -2,7 +2,7 @@
 title: "Panic 自查手册"
 linkTitle: "Panic 自查手册"
 weight: 1
-date: 2024-02-18
+date: 2026-07-01
 description: "发生 Panic 时如何快速排查"
 
 ---
@@ -343,7 +343,7 @@ Map 并发操作属于不可挽回的错误，因此系统会直接 crash，无�
 
 ### 异步使用 RPCInfo
 
-将 `handler` 方法的 `context` 参数传递到 `handler` 外使用并尝试获取诸如 `RPCInfo` 这样的数据导致 panic。
+将 `handler` 方法的 `context` 参数传递到 `handler` 外使用并尝试获取诸如 `RPCInfo` 这样的数据导致 panic。正确使用方式见 [异步使用方式](/zh/docs/kitex/tutorials/basic-feature/acquire_rpcinfo/#12-异步使用方式)。
 
 ## 已知升级框架版本可解决的 Panic
 

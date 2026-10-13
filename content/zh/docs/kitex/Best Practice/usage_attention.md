@@ -2,14 +2,16 @@
 title: "使用注意事项"
 linkTitle: "使用注意事项"
 weight: 1
-date: 2024-02-18
+date: 2026-07-01
 keywords: ["Kitex", "RPCInfo", "client", "Set", "Map"]
 description: "介绍 Kitex RPCInfo、client 创建、大量数据传输场景下的注意事项。"
 ---
 
 ## 勿异步使用 RPCInfo
 
-Kitex 的 RPCInfo 的生命周期默认是从请求开始到请求返回（性能考虑），随后会被放到 `sync.Pool` 中复用，在 Server 端，如果在业务 Handler 中异步获取使用，可能会读到脏数据 / 空指针而 panic。
+当开启 RPCInfo 池化复用功能时，Kitex 的 RPCInfo 的生命周期默认是从请求开始到请求返回（性能考虑），随后会被放到 `sync.Pool` 中复用，在 Server 端，如果在业务 Handler 中异步获取使用，可能会读到脏数据 / 空指针而 panic。
+
+出于安全性考虑，Kitex (>= v0.16.3) 默认关闭 RPCInfo 池化复用。请求结束后，框架不会默认将 RPCInfo 重置并放回池中。
 
 如果的确存在异步使用的场景，有两种方式：
 

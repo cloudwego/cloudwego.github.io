@@ -1,14 +1,34 @@
 ---
 title: "Acquire Kitex RPC Info "
-date: 2023-11-29
+date: 2026-07-01
 weight: 8
 keywords: ["Acquire Kitex RPC Info "]
 description: ""
 ---
 
+> ⚠️ Note: RPCInfo pooling and reuse will be gradually removed in the versions after [v0.16.2](https://github.com/cloudwego/kitex/releases/tag/v0.16.2), in order to reduce the mental burden on users during development.
+
 ## Acquire RPC information
 
-The default lifecycle of Kitex's RPCInfo is from the start of the request to the return of the request (performance considerations), and then it will be placed in sync.Pool to reuse. On the Server side, if it is asynchronously obtained and used in the business Handler, it may lead to read dirty data, nil panic.
+When RPCInfo pooling and reuse is enabled, Kitex's RPCInfo lifecycle is from the start of the request to the return of the request for performance reasons. After that, it is put into `sync.Pool` for reuse. On the server side, if RPCInfo is asynchronously obtained and used in a business handler, dirty data or nil pointer panic may occur.
+
+For safety, Kitex disables RPCInfo pooling and reuse by default. After a request finishes, the framework does not reset RPCInfo and put it back into the pool by default. Therefore, when business code reads a captured `ctx` asynchronously after the request returns, it will not panic due to the framework reusing the object and clearing its fields.
+
+### RPCInfo Pooling Switch
+
+RPCInfo pooling is disabled by default. To explicitly enable reuse, set the following environment variable:
+
+```bash
+KITEX_ENABLE_RPCINFO_POOL=1
+```
+
+The legacy disable switch is still kept for compatibility:
+
+```bash
+KITEX_DISABLE_RPCINFO_POOL=1
+```
+
+Priority: `KITEX_ENABLE_RPCINFO_POOL` > `KITEX_DISABLE_RPCINFO_POOL`
 
 **Note:** Some information needs to rely on the transport protocol (TTHeader or HTTP2) and corresponding MetaHandler. Please refer to [here](/docs/kitex/tutorials/basic-feature/protocol/transport_protocol/#thrift).
 
@@ -26,7 +46,9 @@ The default lifecycle of Kitex's RPCInfo is from the start of the request to the
 
 ### 1.2 Asynchronous usage
 
-If you need to get RPCInfo in the new goroutine, there are two ways to use it. Choose one and get the specific information as above.
+> If the framework version is earlier than v0.16.2 and the environment variable `KITEX_DISABLE_RPCINFO_POOL=true` is not explicitly set
+
+If you need to get RPCInfo in a new goroutine, there are two ways to use it. Choose one and get the specific information as above.
 
 - **Method 1:** Use the rpcinfo.FreezeRPCInfo provided by Kitex to copy the initial RPCInfo and then use it.
   However, there is additional consumption due to deep copying of rpcinfo.
@@ -49,8 +71,7 @@ go func(ctx context.Context) {
 
 ```
 
-- **Method 2 [Kitex v0.8.0+]:** Disable RPCInfo pool
-  Set environment variables _KITEX_DISABLE_RPCINFO_POOL=true_ or configure _rpcinfo.EnablePool(false)_ in the code.
+- **Method 2 [Kitex v0.8.0+]:** Disable RPCInfo recycling. You can either set the environment variable `KITEX_DISABLE_RPCINFO_POOL=true`, or configure `rpcinfo.EnablePool(false)` in code.
 
 ## Meta Info Transparent Transmission
 

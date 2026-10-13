@@ -124,7 +124,7 @@ The provided example is for illustrative purposes, and it is indeed important to
 
 ### Precautions
 
-1. If RPCInfo is used in custom middleware, be aware that RPCInfo will be recycled after the rpc ends, so if you use goroutine operation RPCInfo in middleware, there will be issues . Please avoid such operations .
+1. [Kitex <= v0.16.2] If RPCInfo is used in custom middleware, be aware that RPCInfo will be recycled after the rpc ends. If you operate RPCInfo in a goroutine in middleware, issues may occur. Please avoid such operations. For details, see [Asynchronous usage](/docs/kitex/tutorials/basic-feature/acquire_rpcinfo/#12-asynchronous-usage).
 2. Middleware is a chained call, if you use `result. SetSuccess()` or some other way to modify the response in any middleware, the upstream middlewares will receive the modified response.
 
 ### gRPC Middleware
