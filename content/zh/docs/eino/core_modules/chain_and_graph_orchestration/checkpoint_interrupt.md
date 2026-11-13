@@ -235,6 +235,63 @@ func CompositeInterrupt(ctx context.Context, info any, state any, errs ...error)
 
 详细设计参见：[Eino human-in-the-loop 框架：技术架构指南](/zh/docs/eino/core_modules/eino_adk/agent_hitl)
 
+## DAG 局部中断
+
+> 适用版本：本节介绍 `compose.WithLocalInterrupts()`。请使用包含该选项的 Eino 版本；较早版本不提供此选项。
+
+默认情况下，中断会停止图内后续调度。当一个分支等待外部输入，而其他可运行分支仍应继续推进时，可以开启局部中断。中断节点在本次调用内保持挂起，其后继仍需等待依赖满足；其他依赖已满足的节点可以继续执行。
+
+### 开启局部中断
+
+编译 Workflow 时，传入 `WithLocalInterrupts()`，并配置用于持久化的 checkpoint store：
+
+```go
+runner, err := workflow.Compile(ctx,
+    compose.WithLocalInterrupts(),
+    compose.WithCheckPointStore(store),
+)
+// 使用 runner 前先处理 err。
+```
+
+对于 Graph，还需要选择 `AllPredecessor`：
+
+```go
+runner, err := graph.Compile(ctx,
+    compose.WithNodeTriggerMode(compose.AllPredecessor),
+    compose.WithLocalInterrupts(),
+    compose.WithCheckPointStore(store),
+)
+// 使用 runner 前先处理 err。
+```
+
+按前文说明，在调用时传入 `compose.WithCheckPointID(checkpointID)` 保存和恢复进度。此选项默认关闭，Chain、默认 Graph 和 `AnyPredecessor` Graph 不支持。原有 eager 执行配置仍然适用，包括 `WithEagerExecutionDisabled()`。
+
+此模式仅支持图级 `Invoke`。图级 `Stream`、`Collect` 和 `Transform` 会在消费输入、初始化业务状态、执行节点或写入检查点之前返回错误。`Invoke` 内仍可使用流式组件的适配能力。
+
+### 聚合中断与部分恢复
+
+图会收集本次调用实际到达的中断点。只有没有可运行工作、且所有已提交任务的结果都已收取后，才保存检查点并统一返回这些中断点。等待节点在本次调用内不重试，也不会释放其后继的依赖。
+
+例如，A 等待审批时，另一个分支仍在执行准备工作。如果该准备工作完成后可以进入审批 B 和 C，本次调用就可以继续到达 B、C，并一次返回 A、B、C。END 提前就绪不会跳过尚未结束的旁路或等待点；终端转换会延后到等待消解之后执行。
+
+对于需要显式指定恢复目标的审批节点，在后续调用中使用既有恢复 API：
+
+1. 从 `compose.ExtractInterruptInfo(err)` 的结果中提取当前中断 ID。
+2. 使用 `compose.Resume` 或 `compose.ResumeWithData` 恢复 A，并传入同一个 checkpoint ID。B、C 仍保持等待，依赖它们的汇总节点不会执行。
+3. 从本次返回的中断信息中提取 B、C 的最新 ID，再使用 `compose.Resume` 或 `compose.BatchResumeWithData` 恢复这些中断点。已经完成的准备工作不需要重跑。
+
+既有 explicit/implicit 恢复协议继续适用。非目标等待节点可能重入并再次中断，中断 ID 也可能变化。部分恢复不保证非目标节点的函数入口或回调零调用；后续恢复请使用最新返回的 ID。此模式不支持在原调用仍运行时动态恢复等待节点。
+
+### 全局停止与兼容边界
+
+before/after 断点和外部 `WithGraphInterrupt` 请求仍会停止整个图的后续调度，沿用既有宽限及超时行为，同时保留此前的局部等待、待执行输入和子图检查点进度。普通执行错误、后处理错误、context 错误和持久化失败会作为失败返回，不会被已收集的等待点掩盖。
+
+选项仅作用于当前编译的图，父图和子图各自选择策略。共享状态按各图自己的检查点边界记录，不提供整棵图的事务快照。
+
+检查点兼容性有方向限制：旧的合法非流式 DAG 检查点可以在此模式下恢复；此模式创建的检查点可以在保持选项开启时恢复。不保证关闭选项后，默认执行模式仍能恢复所有此类检查点。既有的图编排及适用调用选项保持一致的要求仍然适用。
+
+局部中断不会自动持久化中断 `Info` 或全部原始业务输入。所需业务数据仍应通过 interrupt state 或既有图状态机制保存；自定义持久化类型仍需按前文说明注册。外部超时可能在业务函数仍运行时返回；此模式不强制终止业务函数，也不提供外部副作用 exactly-once 保证。
+
 ## 外部主动 Interrupt
 
 有时，我们希望能在 Graph 外部主动触发中断，保存现场，之后择机恢复。这些场景可能包括实例优雅退出等。这时，可以通过调用 `WithGraphInterrupt` 获取一个 ctx 和一个 interrupt function。其中 ctx 用于传递给 `graph.Invoke()` 等运行方法，interrupt function 用于在用户希望主动中断时调用：

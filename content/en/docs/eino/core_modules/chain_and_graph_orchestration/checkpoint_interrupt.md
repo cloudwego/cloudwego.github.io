@@ -235,6 +235,63 @@ func CompositeInterrupt(ctx context.Context, info any, state any, errs ...error)
 
 For detailed design, see: [Eino human-in-the-loop Framework: Technical Architecture Guide](/docs/eino/core_modules/eino_adk/agent_hitl)
 
+## Local Interrupts in DAGs
+
+> Availability: This section describes `compose.WithLocalInterrupts()`. Use an Eino version that includes this option; it is not available in earlier releases.
+
+By default, an interrupt stops further graph scheduling. Enable local interrupts when one branch needs external input while other runnable branches should continue. The interrupted node remains suspended for the current invocation; its successors remain blocked, but other nodes whose dependencies are satisfied can run.
+
+### Enabling Local Interrupts
+
+Pass `WithLocalInterrupts()` when compiling a Workflow, together with the checkpoint store used for persistence:
+
+```go
+runner, err := workflow.Compile(ctx,
+    compose.WithLocalInterrupts(),
+    compose.WithCheckPointStore(store),
+)
+// Handle err before using runner.
+```
+
+For a Graph, also select `AllPredecessor`:
+
+```go
+runner, err := graph.Compile(ctx,
+    compose.WithNodeTriggerMode(compose.AllPredecessor),
+    compose.WithLocalInterrupts(),
+    compose.WithCheckPointStore(store),
+)
+// Handle err before using runner.
+```
+
+Invoke the compiled graph with `compose.WithCheckPointID(checkpointID)` to save and resume progress, as described above. The option is disabled by default. Chain, default Graph, and `AnyPredecessor` Graph do not support it. Existing eager execution settings, including `WithEagerExecutionDisabled()`, remain applicable.
+
+This mode supports graph-level `Invoke` only. Graph-level `Stream`, `Collect`, and `Transform` return an error before consuming input, initializing business state, executing nodes, or writing checkpoints. A streaming component can still be adapted within `Invoke`.
+
+### Aggregated Interrupts and Partial Resume
+
+The graph collects the interrupt points actually reached during the invocation. It returns them together only when no more work is runnable and all submitted task results have been collected, after saving the checkpoint. A waiting node is not retried during that invocation and does not release its successors' dependencies.
+
+For example, A waits for approval while another branch is still preparing work. If that preparation enables approvals B and C, the invocation can reach B and C and return A, B, and C together. An early-ready END does not bypass unfinished branches or pending waits; terminal conversion is deferred until the waits are resolved.
+
+For approval nodes that require explicit targeting, use the existing resume APIs in subsequent invocations:
+
+1. Extract the current interrupt IDs from `compose.ExtractInterruptInfo(err)`.
+2. Resume A with `compose.Resume` or `compose.ResumeWithData`, using the same checkpoint ID. B and C remain waiting, so a join that depends on them does not run.
+3. Extract the latest B and C IDs from the newly returned interrupt information. Resume those points with `compose.Resume` or `compose.BatchResumeWithData`. Completed preparation work does not need to run again.
+
+The existing explicit/implicit resume protocol still applies. A non-target waiting node can be re-entered and interrupt again, possibly with a new ID. Partial resume does not guarantee zero function-entry or callback invocations for non-target nodes. Use the latest returned IDs for subsequent resumes. This mode does not dynamically resume a waiting node while the original invocation is still running.
+
+### Global Stops and Compatibility
+
+Before/after breakpoints and external `WithGraphInterrupt` requests still stop further scheduling across the graph. They retain their existing grace and timeout behavior, while preserving prior local waits, pending inputs, and nested checkpoint progress. Ordinary execution errors, post-processing errors, context errors, and persistence failures are returned as failures rather than being hidden by collected waits.
+
+The option applies only to the graph being compiled. Parent and child graphs choose their policies independently. Shared state is recorded at each graph's own checkpoint boundary; this is not a transactional snapshot of the entire graph hierarchy.
+
+Checkpoint compatibility is directional: existing valid non-streaming DAG checkpoints can be resumed in this mode, and checkpoints created in this mode can be resumed with the option enabled. Resuming all such checkpoints after disabling the option is not guaranteed. The existing requirement to preserve the graph orchestration and applicable call options still applies.
+
+Local interrupts do not automatically persist interrupt `Info` or all original business inputs. Continue to save required business data through interrupt state or the existing graph-state mechanisms, and register custom persisted types as described above. An external timeout may return while a business function is still running; this mode does not forcibly terminate it or guarantee exactly-once external side effects.
+
 ## External Proactive Interrupt
 
 Sometimes, we want to proactively trigger an interrupt from outside the Graph, save the scene, and resume later. These scenarios may include graceful instance shutdown, etc. In this case, you can call `WithGraphInterrupt` to get a ctx and an interrupt function. The ctx is passed to running methods like `graph.Invoke()`, and the interrupt function is called when the user wants to proactively interrupt:
