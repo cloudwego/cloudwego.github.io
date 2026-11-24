@@ -142,6 +142,32 @@ func WithGRPCReadBufferSize(s uint32) Option
 
 WithGRPCReadBufferSize lets you set the size of read buffer, this determines how much data can be read at most for one read syscall. The default value for this buffer is 32KB. Zero will disable read buffer for a connection so data framer can access the underlying conn directly. It corresponds to the ReadBufferSize ServerOption of gRPC.
 
+#### WithGRPCSharedRPCInfoPool
+
+```go
+func WithGRPCSharedRPCInfoPool(enable bool) Option
+```
+
+By default, each gRPC connection has its own `RPCInfo` pool. Set this option to `true` to share one pool across connections managed by the same server transport handler. Kitex initializes the call information for the current connection each time it borrows an entry. Only requests eligible for reuse, such as unary RPCs, return their `RPCInfo` to the pool.
+
+#### WithGRPCSharedReceiveBufferPool
+
+```go
+func WithGRPCSharedReceiveBufferPool(enable bool) Option
+```
+
+By default, each gRPC connection has its own pool of receive buffers for HTTP/2 DATA frames. Set this option to `true` to share that pool with other clients and servers in the same process that also enable it. Clients opt in independently with [client.WithGRPCSharedReceiveBufferPool](../client_options/#withgrpcsharedreceivebufferpool).
+
+You can enable these two options independently. For example, a server that accepts many long-lived connections can enable both to reduce the number of pools it maintains.
+
+```go
+svr := api.NewServer(
+	new(DemoImpl),
+	server.WithGRPCSharedRPCInfoPool(true),
+	server.WithGRPCSharedReceiveBufferPool(true),
+)
+```
+
 #### WithGRPCInitialWindowSize
 
 ```go

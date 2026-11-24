@@ -225,6 +225,22 @@ func WithGRPCReadBufferSize(s uint32) Option
 
 WithGRPCReadBufferSize lets you set the size of read buffer, this determines how much data can be read at most for one read syscall. The default value for this buffer is 32KB. Zero will disable read buffer for a connection so data framer can access the underlying conn directly. It corresponds to the ReadBufferSize ServerOption of gRPC.
 
+#### WithGRPCSharedReceiveBufferPool
+
+```go
+func WithGRPCSharedReceiveBufferPool(enable bool) Option
+```
+
+By default, each outgoing gRPC connection has its own pool of receive buffers for HTTP/2 DATA frames. Set this option to `true` to share that pool with other clients and servers in the same process that also enable it. Servers opt in independently with [server.WithGRPCSharedReceiveBufferPool](../server_options/#withgrpcsharedreceivebufferpool).
+
+```go
+cli, err := echo.NewClient(
+	"targetService",
+	client.WithTransportProtocol(transport.GRPC),
+	client.WithGRPCSharedReceiveBufferPool(true),
+)
+```
+
 #### WithGRPCInitialWindowSize
 
 ```go

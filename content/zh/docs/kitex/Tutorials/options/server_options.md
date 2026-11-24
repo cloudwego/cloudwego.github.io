@@ -140,6 +140,32 @@ func WithGRPCReadBufferSize(s uint32) Option
 
 设置 gRPC 的读缓冲大小，读缓冲决定了每次批量从底层读取多少数据。默认值为 32KB，如果设置为 0，则相当于禁用缓冲区，每次读操作都直接从底层连接进行读操作。该设置只对传输协议使用 gRPC 的场景生效。
 
+#### WithGRPCSharedRPCInfoPool
+
+```go
+func WithGRPCSharedRPCInfoPool(enable bool) Option
+```
+
+默认每条 gRPC 连接使用独立的 `RPCInfo` 池。设为 `true` 后，同一服务端传输处理器的连接共享一个池。每次借出时，Kitex 会按当前连接重置调用信息。只有允许复用的请求（如一元 RPC）才会将 `RPCInfo` 归还到池中。
+
+#### WithGRPCSharedReceiveBufferPool
+
+```go
+func WithGRPCSharedReceiveBufferPool(enable bool) Option
+```
+
+默认每条 gRPC 连接使用独立的 HTTP/2 DATA 帧接收缓冲池。设为 `true` 后，该服务端的连接与同一进程内其他显式开启此选项的客户端和服务端共享接收缓冲池。客户端通过 [client.WithGRPCSharedReceiveBufferPool](../client_options/#withgrpcsharedreceivebufferpool) 独立配置。
+
+这两个选项可以分别开启。例如，接受大量长连接的服务端可以同时开启两项，以减少连接持有的池数量。
+
+```go
+svr := api.NewServer(
+	new(DemoImpl),
+	server.WithGRPCSharedRPCInfoPool(true),
+	server.WithGRPCSharedReceiveBufferPool(true),
+)
+```
+
 #### WithGRPCInitialWindowSize
 
 ```go
