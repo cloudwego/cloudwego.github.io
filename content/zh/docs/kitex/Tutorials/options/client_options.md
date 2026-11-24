@@ -223,6 +223,22 @@ func WithGRPCReadBufferSize(s uint32) Option
 
 设置 gRPC 的读缓冲大小，读缓冲决定了每次批量从底层读取多少数据。默认值为 32KB，如果设置为 0，则相当于禁用缓冲区，每次读操作都直接从底层连接进行读操作。该设置只对传输协议使用 gRPC 的场景生效。
 
+#### WithGRPCSharedReceiveBufferPool
+
+```go
+func WithGRPCSharedReceiveBufferPool(enable bool) Option
+```
+
+默认每条出站 gRPC 连接使用独立的 HTTP/2 DATA 帧接收缓冲池。设为 `true` 后，该客户端的连接与同一进程内其他显式开启此选项的客户端和服务端共享接收缓冲池。服务端通过 [server.WithGRPCSharedReceiveBufferPool](../server_options/#withgrpcsharedreceivebufferpool) 独立配置。
+
+```go
+cli, err := echo.NewClient(
+	"targetService",
+	client.WithTransportProtocol(transport.GRPC),
+	client.WithGRPCSharedReceiveBufferPool(true),
+)
+```
+
 #### WithGRPCInitialWindowSize
 
 ```go
